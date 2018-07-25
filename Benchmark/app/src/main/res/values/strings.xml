@@ -1,0 +1,273 @@
+<resources>
+    <string name="app_name">Benchmark</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_go">Perform the transition</string>
+
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_inventory">Manage Inventory</string>
+    <string name="nav_journey">Journey Plan</string>
+    <string name="nav_payment">Payments</string>
+    <string name="nav_route">Route Recone</string>
+    <string name="nav_sales">Sales Snap</string>
+    <string name="nav_data">Data Posting Audit</string>
+    <string name="nav_catalogue">Catalogue</string>
+    <string name="nav_share">Share App</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about_us">About Us</string>
+    <string name="nav_rate">Rate This App</string>
+    <string name="nav_logout">Logout</string>
+    <string name="your_suggestions">Query And Suggestions</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>Requests</item>
+        <item>Notifications</item>
+        <item>Connections</item>
+        <item>Messages</item>
+        <!--
+                <item>Blocked users</item>
+        -->
+        <item>Todays Match</item>
+        <item>Employee Code Search</item>
+        <item>Settings</item>
+        <item>Share App</item>
+        <item>Rate This App</item>
+        <item>Suggestions</item>
+    </string-array>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles_own">
+
+        <item>Home</item>
+        <item>Manage Inventory</item>
+        <item>Journey Plan</item>
+        <item>Payments</item>
+        <!-- <item>Route Recone</item>-->
+        <item>Sales Snap</item>
+        <item>Data Posting Audit</item>
+        <item>Catalogue</item>
+        <item>Share App</item>
+        <item>Rate This App</item>
+        <item>Suggestions</item>
+    </string-array>
+
+    <string name="closeDrawer">Navigation View</string>
+    <string name="openDrawer">Navigation View Closed</string>
+
+    <string name="tab_2">Search</string>
+    <string name="tab_1">Recommendations</string>
+
+
+    <string name="tab_load">Load</string>
+    <string name="tab_load_req">Load Request</string>
+    <string name="tab_van_stock">Van Stock</string>
+    <string name="tab_unload">Unload</string>
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Manage Sales!</string>
+    <string name="slide_1_desc">The easiest way to automize your sale!</string>
+
+    <string name="slide_2_title">Track Transactions</string>
+    <string name="slide_2_desc">Track and review your warehouse anytime!</string>
+
+    <string name="slide_3_title">Access from everywhere</string>
+    <string name="slide_3_desc">Best way to centralized everything so you can access it from anywhere!</string>
+
+    <string name="slide_4_title">Eliminate Paper work</string>
+    <string name="slide_4_desc">Dont need to have record physically, just take printout from cloud anytime!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+
+    <string name="login_resp">{
+                    "unique_id":"546",
+                    "salesman_id":"546",
+                    "salesman_name_en":"546",
+                    "salesman_name_ar":"546",
+                    "salesman_dis_channel":"546",
+                    "salesman_org":"546",
+                    "salesman_division":"546",
+                    "salesman_route":"546",
+                    "salesman_vehicle_no":"546",
+                    "status":"1",
+                    "message":"546"
+                    }</string>
+
+    <string name="load_resp">[
+                    {
+                    "load_no":"546",
+                    "delivery_date":"19-07-2018",
+
+                    "load_items":[
+                    {
+                    "load_no":"1",
+                    "item_code":"1",
+                    "item_name":"GBC Bottle with Water",
+                    "item_qty":"12",
+                    "item_uom":"Bottle",
+                    "load_date":"19-07-2018",
+                    "total_price":"546"
+                    },
+
+
+                    {"load_no":"2",
+                    "item_code":"2",
+                    "item_name":"GBC Empty Bottle",
+                    "item_qty":"14",
+                    "item_uom":"Bottle",
+                    "load_date":"19-07-2018",
+                    "total_price":"685"}
+                    ]
+                    }
+
+                    ]</string>
+
+    <string name="customer_resp">[
+                    {
+                    "cust_num":"45",
+                    "cust_name_en":"Al Maya Market",
+                    "cust_name_ar":"سوق المايا",
+                    "cust_dist_channel":"divsion1",
+                    "cust_division":"org1",
+                    "cust_sales_org":"2563",
+                    "cust_credit_limit":"256",
+                    "cust_avail_bal":"30",
+                    "cust_payment_term":"Al Maya Market",
+                    "cust_address":"Credit",
+                    "cust_type":"2",
+                    "cust_possessed_empty_bottle":"0",
+                    "cust_possessed_filled_bottle":"21.318709",
+                    "customer_long":"43.104137",
+                    "customer_lat":"43.104137"
+
+                    },
+
+                    {
+                   "cust_num":"65",
+                    "cust_name_en":"Al Maya Market",
+                    "cust_name_ar":"سوق المايا",
+                    "cust_dist_channel":"divsion1",
+                    "cust_division":"org1",
+                    "cust_sales_org":"2563",
+                    "cust_credit_limit":"256",
+                    "cust_avail_bal":"30",
+                    "cust_payment_term":"Al Maya Market",
+                    "cust_address":"Credit",
+                    "cust_type":"2",
+                    "cust_possessed_empty_bottle":"0",
+                    "cust_possessed_filled_bottle":"21.318709",
+                    "customer_long":"43.104137",
+                    "customer_lat":"43.104137"
+                    }
+                    ,
+
+                    {
+                   "cust_num":"33",
+                    "cust_name_en":"Al Maya Market",
+                    "cust_name_ar":"سوق المايا",
+                    "cust_dist_channel":"divsion1",
+                    "cust_division":"org1",
+                    "cust_sales_org":"2563",
+                    "cust_credit_limit":"256",
+                    "cust_avail_bal":"30",
+                    "cust_payment_term":"Al Maya Market",
+                    "cust_address":"Credit",
+                    "cust_type":"2",
+                    "cust_possessed_empty_bottle":"0",
+                    "cust_possessed_filled_bottle":"21.318709",
+                    "customer_long":"43.104137",
+                    "customer_lat":"43.104137"
+                    }
+
+                    ]</string>
+
+    <string name="item_resp">
+        [
+                    {
+                    "item_code":"1",
+                    "item_name_en":"GBC Coupon Book 20’s",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"232",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    },
+                    {
+                    "item_code":"2",
+                    "item_name_en":"GBC Coupon Book 50’s",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"543",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    },
+                    {
+                    "item_code":"3",
+                    "item_name_en":"GBC Coupon Book 100’s",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"543",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    },
+                    {
+                    "item_code":"4",
+                    "item_name_en":"GBC Water",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"43",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    },
+
+                    {
+                    "item_code":"5",
+                    "item_name_en":"GBC Empty Bottle",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"66",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    },
+                    {
+                    "item_code":"6",
+                    "item_name_en":"GBC Bottle with Water",
+                    "item_name_ar":"",
+                    "item_type":"coupon",
+                    "item_price":"65",
+                    "item_barcode":"52365926",
+                    "division":"division1",
+                    "conversion_factor":"5"
+
+
+                    }
+]
+                        </string>
+
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_details"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Details" />
+    <item
+        android:id="@+id/nav_stock"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Van Stock" />
+    <item
+        android:id="@+id/nav_message"
+        android:icon="@drawable/ic_menu_slideshow"
+        android:title="Message" />
+    <item
+        android:id="@+id/nav_sales"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Sales history" />
+
+    <item
+        android:id="@+id/nav_Print"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Print" />
+    <item
+        android:id="@+id/nav_bal"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Balance" />
+
+    <item
+        android:id="@+id/nav_promo"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Per List Promotion" />
+
+    <item
+        android:id="@+id/coupon_history"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Coupon history" />
+
+
+</menu>
