@@ -26,6 +26,9 @@ public class Customer implements Parcelable {
     public String cust_possessed_filled_bottle;
     public String cust_latitude;
     public String cust_longitude;
+    public String cust_sale;
+    public String cust_order;
+    public String cust_collection;
 
     public Customer() {
     }
@@ -46,6 +49,10 @@ public class Customer implements Parcelable {
         cust_possessed_filled_bottle = in.readString();
         cust_latitude = in.readString();
         cust_longitude = in.readString();
+
+        cust_sale = in.readString();
+        cust_order = in.readString();
+        cust_collection = in.readString();
     }
 
     @Override
@@ -70,6 +77,10 @@ public class Customer implements Parcelable {
         dest.writeString(cust_possessed_filled_bottle);
         dest.writeString(cust_latitude);
         dest.writeString(cust_longitude);
+
+        dest.writeString(cust_sale);
+        dest.writeString(cust_order);
+        dest.writeString(cust_collection);
     }
 
     @SuppressWarnings("unused")

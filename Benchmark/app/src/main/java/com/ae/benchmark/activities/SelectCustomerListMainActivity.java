@@ -89,7 +89,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
     @InjectView(R.id.txt_title_seq)
     TextView txt_title_seq;
-    MaterialShowcaseSequence sequence;
+//    MaterialShowcaseSequence sequence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,15 +184,15 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
             }
         });
 
-        sequence = new MaterialShowcaseSequence(this, "ADDCUST");
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        sequence.setConfig(config);
-
-        sequence.addSequenceItem(fab,
-                "Add Customer.", "GOT IT");
-
-        sequence.start();
+//        sequence = new MaterialShowcaseSequence(this, "ADDCUST");
+//        ShowcaseConfig config = new ShowcaseConfig();
+//        config.setDelay(500); // half second between each showcase view
+//        sequence.setConfig(config);
+//
+//        sequence.addSequenceItem(fab,
+//                "Add Customer.", "GOT IT");
+//
+//        sequence.start();
 
     }
 

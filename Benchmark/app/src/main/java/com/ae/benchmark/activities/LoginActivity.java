@@ -315,43 +315,6 @@ public class LoginActivity extends AppCompatActivity {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
 
-//                UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.USERNAME, id);
-//
-//                UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.EMPTYES, "12");
-//
-//                UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.ISSTOCKCAPTURED, false);
-//
-//                int item_id = 100;
-//                int load_no = 10000;
-//
-//                //inserting items
-//                for (int i = 0; i < itemCodes.length; i++) {
-//
-//                    dbManager.insertItems(itemCodes[i], itemNames[i], itemPrices[i]);
-//                }
-//
-//                //Inserting customers
-//                for (int i = 0; i < custNames.length; i++) {
-//
-//                    dbManager.insertCustomer(custNames[i], "CUST " + i + 1, custTel[i]);
-//                }
-//
-//                //inserting load items
-//                for (int i = 0; i < 2; i++) {
-//
-//                    dbManager.insertLoad("" + load_no, "25/03/2018", "0");
-//                    dbManager.insertLoadItems("" + item_id, "Butter 250gm " + item_id, "130", "" + load_no);
-//
-//                    item_id++;
-//                    load_no++;
-//                }
-//
-//                //inserting operational transactions
-//                for (int i = 0; i < Transaction.length; i++) {
-//                    dbManager.insertTransaction(Transaction[i], date[i], time[i]);
-//                }
-
-
                 // SALESMAN
 //                JSONObject SalesmanObj = new JSONObject(String.valueOf(salesman));
 ////                JSONArray itemJArr = itemObj.getJSONArray("data");
