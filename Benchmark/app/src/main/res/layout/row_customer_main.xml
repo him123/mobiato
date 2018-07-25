@@ -46,12 +46,14 @@
                             android:orientation="horizontal">
 
                             <ImageView
+                                android:visibility="invisible"
                                 android:id="@+id/img_order"
                                 android:layout_width="@dimen/_46sdp"
                                 android:layout_height="@dimen/_46sdp"
                                 app:srcCompat="@drawable/ic_icon_order_ring" />
 
                             <ImageView
+                                android:visibility="invisible"
                                 android:id="@+id/img_sales"
                                 android:layout_width="@dimen/_46sdp"
                                 android:layout_height="@dimen/_46sdp"
@@ -59,6 +61,7 @@
                                 app:srcCompat="@drawable/ic_icon_collection_ring" />
 
                             <ImageView
+                                android:visibility="invisible"
                                 android:id="@+id/img_collection"
                                 android:layout_width="@dimen/_46sdp"
                                 android:layout_height="@dimen/_46sdp"
@@ -66,6 +69,7 @@
                                 app:srcCompat="@drawable/ic_icon_sales_rign" />
 
                             <ImageView
+                                android:visibility="invisible"
                                 android:id="@+id/img_merchandize"
                                 android:layout_width="@dimen/_46sdp"
                                 android:layout_height="@dimen/_46sdp"
@@ -73,6 +77,7 @@
                                 app:srcCompat="@drawable/ic_icon_shop_rign" />
 
                             <ImageView
+                                android:visibility="invisible"
                                 android:id="@+id/img_delivery"
                                 android:layout_width="@dimen/_46sdp"
                                 android:layout_height="@dimen/_46sdp"
@@ -295,29 +300,39 @@
                                     android:orientation="horizontal">
 
                                     <ImageView
+                                        android:id="@+id/img_small_order"
                                         android:layout_width="@dimen/_25sdp"
                                         android:layout_height="@dimen/_25sdp"
+                                        android:visibility="invisible"
                                         app:srcCompat="@drawable/ic_icon_order_ring" />
 
                                     <ImageView
+                                        android:id="@+id/img_small_sales"
+                                        android:visibility="invisible"
                                         android:layout_width="@dimen/_25sdp"
                                         android:layout_height="@dimen/_25sdp"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         app:srcCompat="@drawable/ic_icon_collection_ring" />
 
                                     <ImageView
+                                        android:id="@+id/img_small_collection"
+                                        android:visibility="invisible"
                                         android:layout_width="@dimen/_25sdp"
                                         android:layout_height="@dimen/_25sdp"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         app:srcCompat="@drawable/ic_icon_sales_rign" />
 
                                     <ImageView
+                                        android:id="@+id/img_small_deposit"
+                                        android:visibility="invisible"
                                         android:layout_width="@dimen/_25sdp"
                                         android:layout_height="@dimen/_25sdp"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         app:srcCompat="@drawable/ic_icon_shop_rign" />
 
                                     <ImageView
+                                        android:id="@+id/img_small_delivey"
+                                        android:visibility="invisible"
                                         android:layout_width="@dimen/_25sdp"
                                         android:layout_height="@dimen/_25sdp"
                                         android:layout_marginLeft="@dimen/_10sdp"

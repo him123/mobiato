@@ -327,6 +327,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                             item.item_barcode = barCodeArr.get(i);
                         else
                             item.item_barcode = "0";
+
                         item.item_disc_val = "0";
                         item.item_disc_per = "0";
                         item.item_vat_val = "0";
@@ -335,6 +336,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                         dbManager.insertSalesInvoiceItem(item);
 
                         dbManager.updateVanStock(arrItem.get(i).item_code, "" + remaining_qty);
+
+                        dbManager.updateCustomerTransactionType(customer.cust_num, "sale", "1");
+                        if (customer.cust_type.equals("credit"))
+                            dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
 
 //                        dbManager.updateUnloadVanStock(arrItem.get(i).item_code, "" + remaining_qty);
 

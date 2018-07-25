@@ -104,6 +104,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUST_POSSESSED_FILLED_BOTTLE = "cust_possessed_filled_bottle";
     public static final String CUST_LONGITUDE = "cust_longitude";
     public static final String CUST_LATITUDE = "cust_latitude";
+    public static final String CUST_SALE = "cust_sale";
+    public static final String CUST_ORDER = "cust_order";
+    public static final String CUST_COLLECTION = "cust_collection";
+    public static final String IS_STOCK_CAPTURED = "is_stock_captured";
 
 
     //SALES INVOICE HEADER COLUMNS
@@ -198,7 +202,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + CUST_CREDIT_LIMIT + " TEXT NOT NULL, " + CUST_AVAIL_BAL + " TEXT NOT NULL, " +
             "" + CUST_PAYMENT_TERM + " TEXT NOT NULL, " + CUST_ADDRESS + " TEXT NOT NULL, " +
             "" + CUST_TYPE + " TEXT NOT NULL, " + CUST_POSSESSED_EMPTY_BOTTLE + " TEXT NOT NULL, " +
-            "" + CUST_POSSESSED_FILLED_BOTTLE + " TEXT NOT NULL, " + CUST_LATITUDE + " TEXT NOT NULL, " +
+            "" + CUST_POSSESSED_FILLED_BOTTLE + " TEXT NOT NULL, " +
+            "" + CUST_SALE + " TEXT NOT NULL, " + CUST_ORDER + " TEXT NOT NULL, " +
+            "" + CUST_COLLECTION + " TEXT NOT NULL, " + "" + CUST_LATITUDE + " TEXT NOT NULL, " +
+            "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " +
             "" + CUST_LONGITUDE + " TEXT NOT NULL);";
 
     // CREATE ITEM MASTER

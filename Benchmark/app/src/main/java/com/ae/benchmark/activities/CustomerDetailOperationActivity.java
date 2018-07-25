@@ -69,6 +69,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
     TextView txt_empty;
     Customer customer;
     String oldOrNew;
+    String isStockCaptured = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +80,14 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         dbManager = new DBManager(CustomerDetailOperationActivity.this);
         dbManager.open();
 
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 //            custName = extras.getString("name");
             oldOrNew = extras.getString("tag");
             customer = extras.getParcelable("cust");
         }
+
 
 
         txt_credit_days.setText(customer.cust_payment_term);
@@ -287,7 +290,14 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         String emptydBottles = dbManager.getLoadEmptyOrFilledBottles(0, customer.cust_num);
         txt_empty.setText(emptydBottles);
 
-        if (UtilApp.ReadSharePrefrence(CustomerDetailOperationActivity.this, Constant.SHRED_PR.ISSTOCKCAPTURED)) {
+        isStockCaptured = dbManager.getCustStockCaptured(customer.cust_num);
+
+
+
+        if (isStockCaptured.equals("1")) {
+
+//            fam.setSelected(true);
+
             fab2.setEnabled(true);
             fab3.setEnabled(true);
             fab4.setEnabled(true);

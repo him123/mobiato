@@ -401,6 +401,10 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("cust_possessed_filled_bottle"));
                 contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("cust_lat"));
                 contentValue.put(DatabaseHelper.CUST_LONGITUDE, singleObj.getString("cust_long"));
+                contentValue.put(DatabaseHelper.CUST_SALE, "0");
+                contentValue.put(DatabaseHelper.CUST_ORDER, "0");
+                contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
+                contentValue.put(DatabaseHelper.IS_STOCK_CAPTURED, "0");
 
 
                 db.insert(DatabaseHelper.TABLE_CUSTOMER, null, contentValue);
@@ -517,6 +521,32 @@ public class DBManager {
         return i;
     }
 
+    public int updateCustCaptredStock(String cust_num, String val) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.IS_STOCK_CAPTURED, val);
+        int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues, DatabaseHelper.CUST_NUM + " = " + cust_num, null);
+        return i;
+    }
+
+
+    public int updateCustomerTransactionType(String cust_num, String transaction_type, String transaction_val) {
+
+        ContentValues contentValues = new ContentValues();
+        if (transaction_type.equals("sale")) {
+            contentValues.put(DatabaseHelper.CUST_SALE, transaction_val);
+        } else if (transaction_type.equals("order")) {
+            contentValues.put(DatabaseHelper.CUST_ORDER, transaction_val);
+        } else if (transaction_type.equals("collection")) {
+            contentValues.put(DatabaseHelper.CUST_COLLECTION, transaction_val);
+        }
+
+        int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues,
+                DatabaseHelper.CUST_NUM + " = " + cust_num, null);
+
+        return i;
+    }
+
     public int updateLoadItemQty(String load_num, String item_code, String item_qty) {
 
         ContentValues contentValues = new ContentValues();
@@ -606,12 +636,12 @@ public class DBManager {
 
                             //UPDATE
 
-                            ContentValues contentValueItem  = new ContentValues();
+                            ContentValues contentValueItem = new ContentValues();
 
                             contentValueItem.put(DatabaseHelper.ITEM_CODE, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_CODE)));
                             contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_NAME_EN)));
 
-                            String current_qty = getUnloadBottleQty( cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_CODE)), db, DatabaseHelper.TABLE_VANSTOCK_ITEMS);
+                            String current_qty = getUnloadBottleQty(cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_CODE)), db, DatabaseHelper.TABLE_VANSTOCK_ITEMS);
                             int tot_qty = Integer.parseInt(cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_QTY))) +
                                     Integer.parseInt(current_qty);
                             contentValueItem.put(DatabaseHelper.ITEM_QTY, tot_qty);
@@ -853,6 +883,19 @@ public class DBManager {
         return true;
     }
 
+
+    public boolean checkIsCustWithType(String cust_num, String type, String table) {
+        String Query = "Select * from " + table +
+                " WHERE " + DatabaseHelper.LOAD_IS_VERIFIED + "='" + "0" + "'";
+        Cursor cursor = database.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     //========================================== CHECK CONDITION PART OVER ========================================================
 
 
@@ -940,6 +983,10 @@ public class DBManager {
                         customer.cust_possessed_filled_bottle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE));
                         customer.cust_latitude = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LATITUDE));
                         customer.cust_longitude = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LONGITUDE));
+
+                        customer.cust_sale = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ORDER));
+                        customer.cust_order = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ORDER));
+                        customer.cust_collection = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_COLLECTION));
 
                         //you could add additional columns here..
                         list.add(customer);
@@ -1518,6 +1565,44 @@ public class DBManager {
 
 
         return bottlesCount;
+    }
+
+
+    //GET EMPTY OR FILLEd BOTTLES
+    public String getCustStockCaptured(String cust_num) { // type = 0 empty, 1 = filled
+
+        String isCaptured = "0";
+
+        String selectQuery;
+//        if (type == 1) {
+        // Get FILLED BOTTLE
+        selectQuery = "SELECT " + DatabaseHelper.IS_STOCK_CAPTURED + " FROM " + DatabaseHelper.TABLE_CUSTOMER +
+                " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
+//        } else {
+//            // Get EMPTY BOTTLE
+//            selectQuery = "SELECT " + DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE + " FROM " + DatabaseHelper.TABLE_CUSTOMER +
+//                    " WHERE " + DatabaseHelper.CUST_NUM + " = " + custNum;
+//        }
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            cursor.moveToFirst();
+            int count = cursor.getCount();
+            if (count > 0)
+
+                isCaptured = cursor.getString(cursor.getColumnIndex(DatabaseHelper.IS_STOCK_CAPTURED));
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return isCaptured;
     }
 
 

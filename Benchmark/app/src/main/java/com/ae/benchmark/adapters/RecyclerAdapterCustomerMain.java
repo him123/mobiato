@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
 import com.ae.benchmark.activities.FragmentContainActivity;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.github.ivbaranov.mli.MaterialLetterIcon;
 
@@ -35,8 +36,8 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /*
-* RecyclerView Adapter that allows to add a header view.
-* */
+ * RecyclerView Adapter that allows to add a header view.
+ * */
 public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 2;
@@ -48,17 +49,18 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
     private List<Customer> mItemList;
     private static final Random RANDOM = new Random();
     private int[] mMaterialColors;
-    MaterialShowcaseSequence sequence;
+//    MaterialShowcaseSequence sequence;
+    DBManager db;
 
     public RecyclerAdapterCustomerMain(List<Customer> itemList, Context context) {
         this.mItemList = itemList;
         mContext = context;
 
-
-        sequence = new MaterialShowcaseSequence((Activity) mContext, "Cust");
+        db = new DBManager(context);
+//        sequence = new MaterialShowcaseSequence((Activity) mContext, "Cust");
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
-        sequence.setConfig(config);
+//        sequence.setConfig(config);
     }
 
     private static final String[] desuNoto = {
@@ -99,7 +101,7 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
             holder.iv_color.setImageResource(R.drawable.ic_mark_blue);
         } else if (customer.cust_type.equals("credit")) {
             holder.iv_color.setImageResource(R.drawable.ic_mark_red);
-        }else
+        } else
             holder.iv_color.setImageResource(R.drawable.ic_mark_yellow);
 
         holder.rl_main.setOnClickListener(new View.OnClickListener() {
@@ -109,10 +111,35 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
-        if (position == 1) {
-            sequence.addSequenceItem(holder.rl_main,
-                    "Swipe left for on any Customer.", "GOT IT");
-            sequence.start();
+//        if (position == 1) {
+//            sequence.addSequenceItem(holder.rl_main,
+//                    "Swipe left for on any Customer.", "GOT IT");
+//            sequence.start();
+//        }
+
+
+        if (customer.cust_sale.equals("1")) {
+            holder.img_small_sales.setVisibility(View.VISIBLE);
+            holder.img_sales.setVisibility(View.VISIBLE);
+        } else {
+            holder.img_small_sales.setVisibility(View.INVISIBLE);
+            holder.img_sales.setVisibility(View.INVISIBLE);
+        }
+
+        if (customer.cust_order.equals("1")) {
+            holder.img_small_order.setVisibility(View.VISIBLE);
+            holder.img_order.setVisibility(View.VISIBLE);
+        } else {
+            holder.img_small_order.setVisibility(View.INVISIBLE);
+            holder.img_order.setVisibility(View.INVISIBLE);
+        }
+
+        if (customer.cust_collection.equals("1")) {
+            holder.img_small_collection.setVisibility(View.VISIBLE);
+            holder.img_collection.setVisibility(View.VISIBLE);
+        } else {
+            holder.img_small_collection.setVisibility(View.INVISIBLE);
+            holder.img_collection.setVisibility(View.INVISIBLE);
         }
 
 
@@ -203,7 +230,8 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
         ImageView iv_color;
         public RelativeLayout rl_new, rl_back;
         MaterialLetterIcon icon;
-        ImageView img_order, img_sales, img_collection, img_merchandize, img_delivery;
+        ImageView img_order, img_sales, img_collection, img_merchandize, img_delivery,
+                img_small_order, img_small_sales, img_small_collection;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolderCustomer(View parent, final Context context) {
@@ -223,6 +251,11 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
             img_collection = (ImageView) parent.findViewById(R.id.img_collection);
             img_merchandize = (ImageView) parent.findViewById(R.id.img_merchandize);
             img_delivery = (ImageView) parent.findViewById(R.id.img_delivery);
+
+            img_small_order = (ImageView) parent.findViewById(R.id.img_small_order);
+            img_small_sales = (ImageView) parent.findViewById(R.id.img_small_sales);
+            img_small_collection = (ImageView) parent.findViewById(R.id.img_small_collection);
+
 
             icon.setInitials(true);
             icon.setInitialsNumber(2);

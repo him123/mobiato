@@ -105,6 +105,8 @@ public class CaptureStockActivity extends AppCompatActivity {
 
                 dbManager.updateEmptyBottles("" + tot, customer.cust_num);
 
+                dbManager.updateCustCaptredStock(customer.cust_num, "1");
+
                 dbManager.insertTransaction("Stock Captured", date, time);
 
                 finish();
