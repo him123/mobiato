@@ -77,6 +77,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case RecycleModel.PROGRESS_VIEW:
                 ((RecyclerItemViewHolder) viewHolder).txt_activity.setText(feed.name);
                 ((RecyclerItemViewHolder) viewHolder).txt_timestamp.setText(feed.desc);
+                ((RecyclerItemViewHolder) viewHolder).txt_inv_no.setText(feed.inv_no);
 
                 break;
             default:
@@ -129,7 +130,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txt_activity, txt_timestamp;
+        public TextView txt_activity, txt_timestamp, txt_inv_no;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolder(View parent, final Context context) {
@@ -137,6 +138,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             txt_activity = (TextView) parent.findViewById(R.id.txt_activity);
             txt_timestamp = (TextView) parent.findViewById(R.id.txt_timestamp);
+            txt_inv_no = (TextView) parent.findViewById(R.id.txt_inv_no);
 
         }
     }

@@ -145,9 +145,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Transaction table columns
-    public static final String TRA_ACT = "activity";
-    public static final String TRA_TIME = "tra_time";
-    public static final String TRA_DATE = "tra_date";
+    public static final String TR_TYPE = "tr_type";
+    public static final String TR_DATE = "tr_date_time";
+
+    public static final String TR_CUSTOMER_NUM = "tr_customer_num";
+    public static final String TR_CUSTOMER_NAME = "tr_customer_name";
+    public static final String TR_SALESMAN_ID = "tr_salesman_id";
+    public static final String TR_INVOICE_ID = "tr_invoice_id";
+    public static final String TR_ORDER_ID = "tr_order_id";
+    public static final String TR_COLLECTION_ID = "tr_collection_id";
+    public static final String TR_PYAMENT_ID = "tr_pyament_id";
 
     // PAYMENT Table columns
     public static final String PAYMENT_ID = "payment_id";
@@ -272,10 +279,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + COL_PAY_TERM + " TEXT NOT NULL);";
 
 
-    private static final String CREATE_TRANSACTION = "create table " + TABLE_TRANSACTION + "(" + _ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRA_ACT + " TEXT NOT NULL, " + TRA_DATE + " TEXT NOT NULL," +
-            "" + TRA_TIME + " TEXT NOT NULL);";
-
     // CREATE LOAD ITEM
     private static final String CREATE_TABLE_UNLOAD_ITEMS = "create table " + TABLE_UNLOAD_ITEMS + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
@@ -292,6 +295,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             PAYMENT_BANK_NAME + " TEXT NOT NULL, " +
             PAYMENT_AMOUNT + " TEXT NOT NULL, " +
             PAYMENT_CUSTOMER_ID + " TEXT NOT NULL);";
+
+    private static final String CREATE_TRANSACTION = "create table " + TABLE_TRANSACTION + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TR_TYPE + " TEXT NOT NULL, " + TR_DATE + " TEXT NOT NULL," +
+            TR_CUSTOMER_NUM + " TEXT, " + "" + TR_CUSTOMER_NAME + " TEXT , " +
+            TR_SALESMAN_ID + " TEXT , " + "" + TR_INVOICE_ID + " TEXT , " +
+            TR_ORDER_ID + " TEXT , " + "" + TR_COLLECTION_ID + " TEXT , " +
+            "" + TR_PYAMENT_ID + " TEXT );";
+
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

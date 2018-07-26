@@ -487,13 +487,19 @@ public class DBManager {
 
 
     //INSERT TRANSACTION FOR CUSTOMER TIMELINE
-    public void insertTransaction(String act, String date, String time) {
+    public void insertTransaction(Transaction transaction) {
 
         ContentValues contentValue = new ContentValues();
 
-        contentValue.put(DatabaseHelper.TRA_ACT, act);
-        contentValue.put(DatabaseHelper.TRA_DATE, date);
-        contentValue.put(DatabaseHelper.TRA_TIME, time);
+        contentValue.put(DatabaseHelper.TR_TYPE, transaction.tr_type);
+        contentValue.put(DatabaseHelper.TR_DATE, transaction.tr_date_time);
+        contentValue.put(DatabaseHelper.TR_CUSTOMER_NUM, transaction.tr_customer_num);
+        contentValue.put(DatabaseHelper.TR_CUSTOMER_NAME, transaction.tr_customer_name);
+        contentValue.put(DatabaseHelper.TR_SALESMAN_ID, transaction.tr_salesman_id);
+        contentValue.put(DatabaseHelper.TR_INVOICE_ID, transaction.tr_invoice_id);
+        contentValue.put(DatabaseHelper.TR_ORDER_ID, transaction.tr_order_id);
+        contentValue.put(DatabaseHelper.TR_COLLECTION_ID, transaction.tr_collection_id);
+        contentValue.put(DatabaseHelper.TR_PYAMENT_ID, transaction.tr_pyament_id);
 
         database.insert(DatabaseHelper.TABLE_TRANSACTION, null, contentValue);
     }
@@ -891,7 +897,8 @@ public class DBManager {
     //========================================== CHECK CONDITION PART START ========================================================
 
     public boolean checkIsNotVerified() {
-        String Query = "Select * from " + DatabaseHelper.TABLE_LOAD_HEADER + " WHERE " + DatabaseHelper.LOAD_IS_VERIFIED + "='" + "0" + "'";
+        String Query = "Select * from " + DatabaseHelper.TABLE_LOAD_HEADER +
+                " WHERE " + DatabaseHelper.LOAD_IS_VERIFIED + "='" + "0" + "'";
         Cursor cursor = database.rawQuery(Query, null);
         if (cursor.getCount() <= 0) {
             cursor.close();
@@ -1034,6 +1041,7 @@ public class DBManager {
     }
 
 
+
     public ArrayList<Transaction> getAllTransactions() {
 
         ArrayList<Transaction> list = new ArrayList<Transaction>();
@@ -1052,10 +1060,67 @@ public class DBManager {
                     do {
                         Transaction transaction = new Transaction();
                         //only one column
-                        transaction.act = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TRA_ACT));
-                        transaction.date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TRA_DATE));
-                        transaction.time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TRA_TIME));
-//                        item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+
+                        //you could add additional columns here..
+                        list.add(transaction);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    public ArrayList<Transaction> getAllTransactionsForCustomer(String cust_num) {
+
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION  +
+                " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = " + cust_num;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Transaction transaction = new Transaction();
+                        //only one column
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
 
                         //you could add additional columns here..
                         list.add(transaction);

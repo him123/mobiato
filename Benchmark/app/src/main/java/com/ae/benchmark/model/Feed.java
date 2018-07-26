@@ -15,6 +15,7 @@ public class Feed implements Parcelable {
     public String desc;
     public int type;
     public String date;
+    public String inv_no;
 
     public Feed() {
     }
@@ -26,6 +27,7 @@ public class Feed implements Parcelable {
         desc = in.readString();
         type = in.readInt();
         date = in.readString();
+        inv_no = in.readString();
     }
 
     @Override
@@ -41,6 +43,7 @@ public class Feed implements Parcelable {
         dest.writeString(desc);
         dest.writeInt(type);
         dest.writeString(date);
+        dest.writeString(inv_no);
     }
 
     @SuppressWarnings("unused")

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
+import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 
@@ -107,7 +108,19 @@ public class CaptureStockActivity extends AppCompatActivity {
 
                 dbManager.updateCustCaptredStock(customer.cust_num, "1");
 
-                dbManager.insertTransaction("Stock Captured", date, time);
+                Transaction transaction = new Transaction();
+
+                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_STOCK_CAP;
+                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                transaction.tr_customer_num = customer.cust_num;
+                transaction.tr_customer_name = customer.cust_name_en;
+                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(CaptureStockActivity.this, Constant.SHRED_PR.SALESMANID);
+                transaction.tr_invoice_id = "";
+                transaction.tr_order_id = "";
+                transaction.tr_collection_id = "";
+                transaction.tr_pyament_id = "";
+
+                dbManager.insertTransaction(transaction);
 
                 finish();
 
