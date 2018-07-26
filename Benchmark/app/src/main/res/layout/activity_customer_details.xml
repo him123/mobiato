@@ -241,7 +241,7 @@
         fab:fab_colorNormal="@color/theme_color"
         fab:fab_colorPressed="@color/color_10"
         fab:fab_colorRipple="#99FFFFFF"
-        fab:fab_shadowColor="#66000000"
+        fab:fab_shadowColor="@color/black"
         fab:fab_showShadow="true"
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_labels_colorNormal="#333333"

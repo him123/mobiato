@@ -15,6 +15,7 @@ import com.ae.benchmark.model.Collection;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Load;
+import com.ae.benchmark.model.Payment;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
 import com.google.gson.JsonArray;
@@ -497,6 +498,23 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_TRANSACTION, null, contentValue);
     }
 
+    //INSERT TRANSACTION FOR CUSTOMER TIMELINE
+    public void insertPayment(Payment payment) {
+
+        ContentValues contentValue = new ContentValues();
+
+        //contentValue.put(DatabaseHelper.PAYMENT_ID, payment.getPayment_id());
+        contentValue.put(DatabaseHelper.PAYMENT_INVOICE_ID, payment.getInvoice_id());
+        contentValue.put(DatabaseHelper.PAYMENT_COLLECTION_ID, payment.getCollection_id());
+        contentValue.put(DatabaseHelper.PAYMENT_TYPE, payment.getPayment_type());
+        contentValue.put(DatabaseHelper.PAYMENT_DATE, payment.getPayment_date());
+        contentValue.put(DatabaseHelper.PAYMENT_CHEQUE_NO, payment.getCheque_no());
+        contentValue.put(DatabaseHelper.PAYMENT_BANK_NAME, payment.getBank_name());
+        contentValue.put(DatabaseHelper.PAYMENT_AMOUNT, payment.getPayment_amount());
+        contentValue.put(DatabaseHelper.PAYMENT_CUSTOMER_ID, payment.getCust_id());
+
+        database.insert(DatabaseHelper.TABLE_PAYMENT, null, contentValue);
+    }
 //    //INSERT TRANSACTION FOR CUSTOMER TIMELINE
 //    public void insertFromLoadToVanStock() {
 //

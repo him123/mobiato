@@ -367,9 +367,9 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                         finish();
                     } else {
-//                        Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
-//                        i.putExtra("name", custName);
-//                        startActivity(i);
+                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
+                        i.putExtra("name", custName);
+                        startActivity(i);
                         finish();
                     }
 

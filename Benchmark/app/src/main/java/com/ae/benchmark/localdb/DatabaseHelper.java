@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_TRANSACTION = "transactions";
 
     public static final String TABLE_UNLOAD_ITEMS = "unload_items";
+    public static final String TABLE_PAYMENT = "payment";
 
     //Salesman columns
     public static final String UNIQUE_ID = "u_id";
@@ -147,6 +148,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TRA_ACT = "activity";
     public static final String TRA_TIME = "tra_time";
     public static final String TRA_DATE = "tra_date";
+
+    // PAYMENT Table columns
+    public static final String PAYMENT_ID = "payment_id";
+    public static final String PAYMENT_INVOICE_ID = "invoice_id";
+    public static final String PAYMENT_COLLECTION_ID = "collection_id";
+    public static final String PAYMENT_TYPE = "payment_type";
+    public static final String PAYMENT_DATE = "payment_date";
+    public static final String PAYMENT_CHEQUE_NO = "cheque_no";
+    public static final String PAYMENT_BANK_NAME = "bank_name";
+    public static final String PAYMENT_AMOUNT = "payment_amount";
+    public static final String PAYMENT_CUSTOMER_ID = "cust_id";
 
 
     // Database Information
@@ -272,6 +284,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ITEM_UOM + " TEXT NOT NULL, " +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
+    // CREATE LOAD ITEM
+    private static final String CREATE_TABLE_PAYMENT = "create table " + TABLE_PAYMENT + "(" + PAYMENT_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PAYMENT_INVOICE_ID + " TEXT NOT NULL, " +
+            PAYMENT_COLLECTION_ID + " TEXT NOT NULL, " + PAYMENT_TYPE + " TEXT NOT NULL, " +
+            PAYMENT_DATE + " TEXT NOT NULL, " + "" + PAYMENT_CHEQUE_NO + " TEXT NOT NULL, " +
+            PAYMENT_BANK_NAME + " TEXT NOT NULL, " +
+            PAYMENT_AMOUNT + " TEXT NOT NULL, " +
+            PAYMENT_CUSTOMER_ID + " TEXT NOT NULL);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -294,6 +314,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_VANSTOCK_HEADER);
         db.execSQL(CREATE_TABLE_VANSTOCK_ITEMS);
         db.execSQL(CREATE_TABLE_UNLOAD_ITEMS);
+        db.execSQL(CREATE_TABLE_PAYMENT);
     }
 
     @Override

@@ -46,6 +46,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private com.github.clans.fab.FloatingActionMenu fam;
     private com.github.clans.fab.FloatingActionButton fab1, fab2, fab3, fab4, fab5;
+    Context context;
 
     @InjectView(R.id.recycle_feed)
     RecyclerView recycle_feed;
@@ -76,6 +77,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_details);
         ButterKnife.inject(this);
+        context = this;
 
         dbManager = new DBManager(CustomerDetailOperationActivity.this);
         dbManager.open();
@@ -293,7 +295,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         isStockCaptured = dbManager.getCustStockCaptured(customer.cust_num);
 
 
-
+        fab1.setLabelTextColor(context.getResources().getColor(R.color.white));
         if (isStockCaptured.equals("1")) {
 
 //            fam.setSelected(true);
@@ -302,11 +304,22 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
             fab3.setEnabled(true);
             fab4.setEnabled(true);
             fab5.setEnabled(true);
+
+            fab2.setLabelTextColor(context.getResources().getColor(R.color.white));
+            fab3.setLabelTextColor(context.getResources().getColor(R.color.white));
+            fab4.setLabelTextColor(context.getResources().getColor(R.color.white));
+            fab5.setLabelTextColor(context.getResources().getColor(R.color.white));
+
         } else {
             fab2.setEnabled(false);
             fab3.setEnabled(false);
             fab4.setEnabled(false);
             fab5.setEnabled(false);
+
+            fab2.setLabelTextColor(context.getResources().getColor(R.color.gray));
+            fab3.setLabelTextColor(context.getResources().getColor(R.color.gray));
+            fab4.setLabelTextColor(context.getResources().getColor(R.color.gray));
+            fab5.setLabelTextColor(context.getResources().getColor(R.color.gray));
         }
 
 

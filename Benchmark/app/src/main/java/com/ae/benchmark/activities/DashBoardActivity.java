@@ -283,7 +283,8 @@ public class DashBoardActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_map:
-                Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+                startActivity(intent);
                 break;
 
         }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.model.Payment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +65,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     EditText edtDate;
     @InjectView(R.id.llCheque)
     LinearLayout llCheque;
+    @InjectView(R.id.btnPayment)
+    Button btnPayment;
 
     String name;
     Calendar myCalendar;
@@ -102,10 +106,11 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         edt_amount.addTextChangedListener(textWatcher);
 
+        swcPayment.setChecked(true);
         swcPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                if (!isChecked) {
                     llCash.setVisibility(View.VISIBLE);
                     llCheque.setVisibility(View.GONE);
                 } else {
@@ -130,9 +135,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 edtDate.setText(sdf.format(myCalendar.getTime()));
-
             }
-
         };
 
         edtDate.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +151,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         });
 
         spinner.setOnItemSelectedListener(this);
-        List<String> categories = new ArrayList ();
+        List<String> categories = new ArrayList();
         categories.add("Bank A");
         categories.add("Bank B");
         categories.add("Bank C");
@@ -162,6 +165,32 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
+        btnPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Payment payment  = new Payment();
+                if (swcPayment.isChecked()){
+                    payment.setInvoice_id("");
+                    payment.setCollection_id("");
+                    payment.setPayment_type("Cash");
+                    payment.setPayment_date("");
+                    payment.setCheque_no("");
+                    payment.setBank_name("");
+                    payment.setPayment_amount(edt_amount.getText().toString());
+                    payment.setCust_id("");
+                } else {
+                    payment.setInvoice_id("");
+                    payment.setCollection_id("");
+                    payment.setPayment_type("Cheque");
+                    payment.setPayment_date(edtDate.getText().toString());
+                    payment.setCheque_no(edtChequeNumber.getText().toString());
+                    payment.setBank_name(spinner.getSelectedItem().toString());
+                    payment.setPayment_amount(edtChequeAmount.getText().toString());
+                    payment.setCust_id("");
+                }
+            }
+        });
     }
 
 
