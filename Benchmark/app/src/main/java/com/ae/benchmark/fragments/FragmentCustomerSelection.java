@@ -29,11 +29,14 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.AddCustomerActivity;
 import com.ae.benchmark.adapters.RecyclerAdapterCustomerRecent;
-import com.ae.benchmark.model.Customer;
+import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.model.Collection;
+import com.ae.benchmark.model.RecentCustomer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,8 +56,8 @@ public class FragmentCustomerSelection extends Fragment {
     LinearLayoutManager mLayoutManager_recent;
 
     RecyclerAdapterCustomerRecent recyclerAdapter_recent;
-    List<Customer> itemList;
-    Customer customer;
+    List<RecentCustomer> itemList;
+    RecentCustomer recentCustomer;
     boolean flag_seq;
     ViewPager viewPager;
 
@@ -69,6 +72,8 @@ public class FragmentCustomerSelection extends Fragment {
 
     @InjectView(R.id.pg)
     ProgressBar pg;
+
+    DBManager dbManager;
 
     public FragmentCustomerSelection() {
         // Required empty public constructor
@@ -253,16 +258,12 @@ public class FragmentCustomerSelection extends Fragment {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
                 itemList = new ArrayList<>();
+                dbManager = new DBManager(getActivity());
+                dbManager.open();
+                itemList = dbManager.getAllREcentCust();
 
-                for (int i = 0; i < 10; i++) {
-                    customer = new Customer();
-
-//                    customer.cust_id = "2012462260";
-//                    customer.name = "Load No. 800302051";
-//                    customer.address = "Delivery Date: 2017.02.10";
-
-                    itemList.add(customer);
-                }
+                recentCustomer = new RecentCustomer();
+                itemList.add(recentCustomer);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -277,7 +278,18 @@ public class FragmentCustomerSelection extends Fragment {
 //            progressDialog.dismiss();
 //            finalResult.setText(result);
 
-            recyclerAdapter_recent = new RecyclerAdapterCustomerRecent(itemList, getActivity());
+            Collections.reverse(itemList);
+
+            List<RecentCustomer> newData = new ArrayList<>();
+            if (itemList.size()>5){
+                for (int i=0 ; i<5; i++){
+                    newData.add(i , itemList.get(i));
+                }
+            } else {
+                newData = itemList;
+            }
+
+            recyclerAdapter_recent = new RecyclerAdapterCustomerRecent(newData, getActivity());
 
             recyclerview_recent.setAdapter(recyclerAdapter_recent);
 

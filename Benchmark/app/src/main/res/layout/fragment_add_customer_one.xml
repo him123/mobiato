@@ -16,38 +16,47 @@
 
 
         <EditText
+            android:id="@+id/edtTradeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:hint="Trade Name" />
+            android:hint="Name"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Area" />
+            android:hint="Distinct Channel"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtStreet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Street" />
+            android:hint="Division"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Email ID" />
+            android:hint="Sales Org"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtMobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Mobile" />
+            android:hint="Address"
+            android:inputType="text"/>
 
 
     </LinearLayout>

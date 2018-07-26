@@ -37,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_UNLOAD_ITEMS = "unload_items";
     public static final String TABLE_PAYMENT = "payment";
+    public static final String TABLE_RECENT_CUSTOMER = "recent_customer";
 
     //Salesman columns
     public static final String UNIQUE_ID = "u_id";
@@ -170,6 +171,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PAYMENT_AMOUNT = "payment_amount";
     public static final String PAYMENT_CUSTOMER_ID = "cust_id";
 
+    // RECENT_CUSTOMER Table columns
+    public static final String RECENT_CUSTOMER_ID = "reent_customer_id";
+    public static final String CUSTOMER_ID = "customer_id";
+    public static final String CUSTOMER_NAME = "customer_name";
+    public static final String DATE_TIME = "date_time";
 
     // ORDER HEADER Table columns
     public static final String ORDER_NO = "order_no";
@@ -178,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Database Information
-    static final String DB_NAME = "5GALLON.DB";
+        static final String DB_NAME = "5GALLON.DB";
 
     // database version
     static final int DB_VERSION = 1;
@@ -312,6 +318,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             TR_ORDER_ID + " TEXT , " + "" + TR_COLLECTION_ID + " TEXT , " +
             "" + TR_PYAMENT_ID + " TEXT );";
 
+    private static final String CREATE_RECENT_CUSTOMER = "create table " + TABLE_RECENT_CUSTOMER + "(" + RECENT_CUSTOMER_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOMER_ID + " TEXT NOT NULL, "
+            + CUSTOMER_NAME + " TEXT NOT NULL," +
+             DATE_TIME + " TEXT );";
 
     // ORDER HEADER
     private static final String CREATE_TABLE_ORDER_HEADER = "create table " + TABLE_ORDER_HEADER + "(" + _ID
@@ -353,6 +363,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PAYMENT);
         db.execSQL(CREATE_TABLE_ORDER_HEADER);
         db.execSQL(CREATE_TABLE_ORDER_ITEMS);
+        db.execSQL(CREATE_RECENT_CUSTOMER);
     }
 
     @Override

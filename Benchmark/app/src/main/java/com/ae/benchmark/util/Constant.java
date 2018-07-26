@@ -44,4 +44,16 @@ public class Constant {
         public static final String TT_OREDER_CREATED= "tt_order_created";
         public static final String TT_END_DAY= "tt_end_day";
     }
+
+    public static class NEW_CUSTOMER {
+        public static  String edtTradeName = "edtTradeName";
+        public static  String edtArea = "edtArea";
+        public static  String edtStreet = "edtStreet";
+        public static  String edtEmail = "edtEmail";
+        public static  String edtMobile = "edtMobile";
+        public static  String edtCrNum = "edtCrNum";
+        public static  String edtCrExpDate = "edtCrExpDate";
+        public static  String edtIqmaNo = "edtIqmaNo";
+        public static  String edtIqamExpDate = "edtIqamExpDate";
+    }
 }

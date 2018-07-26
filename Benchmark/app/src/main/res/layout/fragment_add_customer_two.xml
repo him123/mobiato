@@ -17,31 +17,38 @@
 
 
         <EditText
+            android:id="@+id/edtCrNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:hint="CR Number" />
+            android:hint="Available Balance"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtCrExpDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="CR Expiry Date" />
+            android:hint="Payment Term"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtIqmaNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Iqama No" />
+            android:hint="Address"
+            android:inputType="text"/>
 
 
         <EditText
+            android:id="@+id/edtIqamExpDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Iqam Expiry Date" />
+            android:hint="Type"
+            android:inputType="text"/>
 
 
     </LinearLayout>

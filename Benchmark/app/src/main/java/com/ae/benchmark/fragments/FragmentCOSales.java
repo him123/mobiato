@@ -61,7 +61,7 @@ public class FragmentCOSales extends Fragment {
     RecyclerAdapterOrdersPast recyclerAdapterPast;
 
     //    List<Customer> itemCustList;
-//    Customer customer;
+//    Customer recentCustomer;
     private GridLayoutManager mGridLayoutManager;
     protected static final String[] CONTENT2 = new String[]{"Pager Carousel", "Title 2",
             "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9"};
@@ -145,13 +145,13 @@ public class FragmentCOSales extends Fragment {
 //        itemCustList = new ArrayList<>();
 
 //        for (int i = 0; i < 10; i++) {
-//            customer = new Customer();
+//            recentCustomer = new Customer();
 //
-//            customer.cust_id = "2012462260";
-//            customer.name = "Load No. 800302051";
-//            customer.address = "Delivery Date: 2017.02.10";
+//            recentCustomer.cust_id = "2012462260";
+//            recentCustomer.name = "Load No. 800302051";
+//            recentCustomer.address = "Delivery Date: 2017.02.10";
 //
-//            itemCustList.add(customer);
+//            itemCustList.add(recentCustomer);
 //        }
 
         mGridLayoutManager = new GridLayoutManager(getActivity(), 2);

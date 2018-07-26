@@ -67,7 +67,7 @@ public class FragmentCOOrder extends Fragment {
     protected static final String[] CONTENT2 = new String[]{"Pager Carousel", "Title 2",
             "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9"};
     //    List<Customer> itemCustList;
-//    Customer customer;
+//    Customer recentCustomer;
     private GridLayoutManager mGridLayoutManager;
 
     Customer customer;
@@ -127,6 +127,17 @@ public class FragmentCOOrder extends Fragment {
                 startActivity(intent);
             }
         });
+//        itemCustList = new ArrayList<>();
+
+//        for (int i = 0; i < 10; i++) {
+//            recentCustomer = new Customer();
+//
+//            recentCustomer.cust_id = "2012462260";
+//            recentCustomer.name = "Load No. 800302051";
+//            recentCustomer.address = "Delivery Date: 2017.02.10";
+//
+//            itemCustList.add(recentCustomer);
+//        }
 
 
         return v;

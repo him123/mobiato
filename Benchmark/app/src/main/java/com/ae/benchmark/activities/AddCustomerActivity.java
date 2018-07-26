@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.fragments.FragmentAddCustOne;
 import com.ae.benchmark.fragments.FragmentAddCustTwo;
+import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.util.Constant;
 
 import java.util.Timer;
 
@@ -61,7 +63,7 @@ public class AddCustomerActivity extends AppCompatActivity {
     Button btn_next;
 
     int current = 0;
-
+    DBManager db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,9 +135,16 @@ public class AddCustomerActivity extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (current <= 1) {
+                if (current < 1) {
                     current++;
                     viewPager.setCurrentItem(current);
+                } else {
+                    db = new DBManager(getApplicationContext());
+                    db.insertCustomer("49" , Constant.NEW_CUSTOMER.edtTradeName , "" ,
+                            Constant.NEW_CUSTOMER.edtArea , Constant.NEW_CUSTOMER.edtStreet , Constant.NEW_CUSTOMER.edtEmail ,
+                            "5000" , "300" , "35" , Constant.NEW_CUSTOMER.edtMobile ,
+                            "credit" , "8" , "15" , "43.104137" , "43.104137");
+                    onBackPressed();
                 }
             }
         });

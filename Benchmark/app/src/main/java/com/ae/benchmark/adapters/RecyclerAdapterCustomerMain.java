@@ -26,6 +26,7 @@ import com.ae.benchmark.activities.CustomerDetailOperationActivity;
 import com.ae.benchmark.activities.FragmentContainActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
+import com.ae.benchmark.model.RecentCustomer;
 import com.github.ivbaranov.mli.MaterialLetterIcon;
 
 import java.util.ArrayList;
@@ -304,6 +305,13 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
                     i.putExtra("tag", "old");
                     i.putExtra("cust", customer);
                 }
+
+                RecentCustomer recentCustomer = new RecentCustomer();
+
+                recentCustomer.setCustomer_id(customer.cust_num);
+                recentCustomer.setCustomer_name(customer.cust_name_en);
+                recentCustomer.setDate_time("");
+                db.insertRecentCustomer(recentCustomer);
                 mContext.startActivity(i);
 
             }
