@@ -139,7 +139,13 @@
             android:name=".activities.EndInventoryRITActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activities.ScanActivity" />
+
+        <activity
+            android:name=".activities.ALLItemsListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SERVICES -->
         <service android:name=".util.MyFirebaseMessagingService">

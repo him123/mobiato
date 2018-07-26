@@ -66,7 +66,7 @@ public class FragmentContainActivity extends AppCompatActivity {
             fragment = new FragmentCOSales();
         } else if (flag.equals("ORD")) {
             mTitle.setText("ORDER");
-            fragment = new FragmentCOOrder();
+            fragment = new FragmentCOOrder(customer);
         } else if (flag.equals("COL")) {
             mTitle.setText("COLLECTIONS");
             fragment = new FragmentCOCollection(customer);

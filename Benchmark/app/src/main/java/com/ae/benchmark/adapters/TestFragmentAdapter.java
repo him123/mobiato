@@ -1,8 +1,8 @@
 package com.ae.benchmark.adapters;
 /*
- * 
+ *
  * Copyright (C) 2014 Krishna Kumar Sharma
- * 
+ *
  *  */
 
 import android.content.Context;
@@ -15,11 +15,15 @@ import android.view.ViewGroup;
 import com.ae.benchmark.fragments.FragmentCOOrder;
 import com.ae.benchmark.fragments.TestFragment;
 import com.ae.benchmark.fragments.TileFragment;
+import com.ae.benchmark.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestFragmentAdapter extends FragmentStatePagerAdapter {
 
     private Context context;
-    private String[] content;
+    List<Item> items;
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
@@ -37,10 +41,10 @@ public class TestFragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     public TestFragmentAdapter(FragmentManager fm,
-                               Context context, String[] data) {
+                               Context context, List<Item> items) {
         super(fm);
         this.context = context;
-        content = data;
+        this.items = items;
     }
 
     @Override
@@ -52,18 +56,18 @@ public class TestFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return TestFragment.newInstance(content[position],
+        return TestFragment.newInstance(items.get(position),
                 context);
     }
 
     @Override
     public int getCount() {
-        return content == null ? 0 : content.length;
+        return items == null ? 0 : items.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return content[position];
+        return items.get(position).order_id;
     }
 
 }

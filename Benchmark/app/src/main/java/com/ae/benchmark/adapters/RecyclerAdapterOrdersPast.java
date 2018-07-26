@@ -21,8 +21,8 @@ import java.util.Random;
 import butterknife.InjectView;
 
 /*
-* RecyclerView Adapter that allows to add a header view.
-* */
+ * RecyclerView Adapter that allows to add a header view.
+ * */
 public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 2;
@@ -54,19 +54,19 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         final View view = LayoutInflater.from(context).inflate(R.layout.row_past_orders, parent, false);
-        return new RecyclerItemViewHolderCustomer(view, mContext);
+        return new RecyclerItemViewHolderOrder(view, mContext);
 
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 //        if (!isPositionHeader(position)) {
-        final RecyclerItemViewHolderCustomer holder = (RecyclerItemViewHolderCustomer) viewHolder;
+        final RecyclerItemViewHolderOrder holder = (RecyclerItemViewHolderOrder) viewHolder;
 
-//        final Customer item = mItemList.get(position);
+        final Item item = mItemList.get(position);
 
-//        holder.txt_name.setText("Lorem Ipsum");
-//        holder.txt_address.setText(item.address);
+        holder.txt_order_amt.setText(item.item_price);
+        holder.txt_order_no.setText(item.order_id);
 //        holder.txt_cust_id.setText(item.cust_id);
 //
 //        holder.setOnClickListener(new View.OnClickListener() {
@@ -108,17 +108,18 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
         void onLoadMore();
     }
 
-    class RecyclerItemViewHolderCustomer extends RecyclerView.ViewHolder {
+    class RecyclerItemViewHolderOrder extends RecyclerView.ViewHolder {
 
-        public TextView txt_name;
+        public TextView txt_order_no, txt_order_amt;
         public ImageView img_profile;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-        public RecyclerItemViewHolderCustomer(View parent, final Context context) {
+        public RecyclerItemViewHolderOrder(View parent, final Context context) {
             super(parent);
 
-            txt_name = (TextView) parent.findViewById(R.id.txt_name);
-            img_profile = (ImageView) parent.findViewById(R.id.img_profile);
+            txt_order_no = (TextView) parent.findViewById(R.id.txt_order_no);
+            txt_order_amt = (TextView) parent.findViewById(R.id.txt_order_amt);
+//            img_profile = (ImageView) parent.findViewById(R.id.img_profile);
 
         }
 

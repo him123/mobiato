@@ -79,7 +79,7 @@
                                 android:id="@+id/txt_credit_days"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="40"
+                                android:text="0"
                                 android:textColor="@color/white_200"
                                 android:textSize="@dimen/_19sdp" />
 
@@ -116,7 +116,7 @@
                                 android:id="@+id/txt_credit_limit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20K"
+                                android:text="0"
                                 android:textColor="@color/white_200"
                                 android:textSize="@dimen/_19sdp" />
 
@@ -151,16 +151,17 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/txt_available_bal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="40K"
+                                android:text="0"
                                 android:textColor="@color/white_200"
                                 android:textSize="@dimen/_19sdp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Credit Limits"
+                                android:text="Available Balance"
                                 android:textColor="@color/white_200"
                                 android:textSize="@dimen/_11sdp" />
                         </LinearLayout>

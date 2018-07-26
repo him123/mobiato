@@ -28,6 +28,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_COLLECTION_HEADER = "collection_header";
     public static final String TABLE_COLLECTION_ITEMS = "collection_items";
 
+    public static final String TABLE_ORDER_HEADER = "order_header";
+    public static final String TABLE_ORDER_ITEMS = "order_items";
+
     public static final String TABLE_CUSTOMER = "customers";
 
     public static final String TABLE_TRANSACTION = "transactions";
@@ -168,6 +171,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PAYMENT_CUSTOMER_ID = "cust_id";
 
 
+    // ORDER HEADER Table columns
+    public static final String ORDER_NO = "order_no";
+    public static final String ORDER_DATE = "order_date";
+    public static final String ORDER_AMOUNT = "order_amount";
+
+
     // Database Information
     static final String DB_NAME = "5GALLON.DB";
 
@@ -304,6 +313,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + TR_PYAMENT_ID + " TEXT );";
 
 
+    // ORDER HEADER
+    private static final String CREATE_TABLE_ORDER_HEADER = "create table " + TABLE_ORDER_HEADER + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "" + ORDER_NO + " TEXT NOT NULL, " + "" + SALESMAN_ID + " TEXT NOT NULL, " +
+            "" + CUST_NUM + " TEXT NOT NULL, " + "" + ORDER_AMOUNT + " TEXT NOT NULL, " +
+            "" + ORDER_DATE + " TEXT NOT NULL);";
+
+    // CREATE LOAD ITEM
+    private static final String CREATE_TABLE_ORDER_ITEMS = "create table " + TABLE_ORDER_ITEMS + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
+            ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
+            ORDER_NO + " TEXT NOT NULL, " + "" + ORDER_DATE + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " +
+            ITEM_PRICE + " TEXT NOT NULL);";
+
+
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -326,6 +351,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_VANSTOCK_ITEMS);
         db.execSQL(CREATE_TABLE_UNLOAD_ITEMS);
         db.execSQL(CREATE_TABLE_PAYMENT);
+        db.execSQL(CREATE_TABLE_ORDER_HEADER);
+        db.execSQL(CREATE_TABLE_ORDER_ITEMS);
     }
 
     @Override

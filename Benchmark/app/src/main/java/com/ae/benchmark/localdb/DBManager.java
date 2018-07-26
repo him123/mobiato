@@ -107,6 +107,47 @@ public class DBManager {
     }
 
 
+    //INSERT LOAD ITEMS ONKY SINGLE
+    public void insertOrderItems(List<Item> items, String order_no, String salesman_id, String cust_num,
+                                 String order_amount, String order_date) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.beginTransaction();
+            ContentValues contentValueHead = new ContentValues();
+            ContentValues contentValue = new ContentValues();
+
+            contentValueHead.put(DatabaseHelper.ORDER_NO, order_no);
+            contentValueHead.put(DatabaseHelper.SALESMAN_ID, salesman_id);
+            contentValueHead.put(DatabaseHelper.CUST_NUM, cust_num);
+            contentValueHead.put(DatabaseHelper.ORDER_AMOUNT, order_amount);
+            contentValueHead.put(DatabaseHelper.ORDER_DATE, order_date);
+
+            db.insert(DatabaseHelper.TABLE_ORDER_HEADER, null, contentValueHead);
+
+            for (int i = 0; i < items.size(); i++) {
+                contentValue.put(DatabaseHelper.ITEM_CODE, items.get(i).item_code);
+                contentValue.put(DatabaseHelper.ITEM_NAME_EN, items.get(i).item_name_en);
+                contentValue.put(DatabaseHelper.ITEM_QTY, items.get(i).item_qty);
+                contentValue.put(DatabaseHelper.ITEM_PRICE, items.get(i).item_price);
+                contentValue.put(DatabaseHelper.ITEM_UOM, items.get(i).item_uom);
+
+                contentValue.put(DatabaseHelper.ORDER_NO, order_no);
+                contentValue.put(DatabaseHelper.ORDER_DATE, order_date);
+
+
+                db.insert(DatabaseHelper.TABLE_ORDER_ITEMS, null, contentValue);
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void insertCollectionHeader(String docNum, String invNum,
                                        String custNum, String custName,
                                        String payMethod, String isCollected,
@@ -488,6 +529,7 @@ public class DBManager {
 
     //INSERT TRANSACTION FOR CUSTOMER TIMELINE
     public void insertTransaction(Transaction transaction) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues contentValue = new ContentValues();
 
@@ -501,7 +543,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.TR_COLLECTION_ID, transaction.tr_collection_id);
         contentValue.put(DatabaseHelper.TR_PYAMENT_ID, transaction.tr_pyament_id);
 
-        database.insert(DatabaseHelper.TABLE_TRANSACTION, null, contentValue);
+        db.insert(DatabaseHelper.TABLE_TRANSACTION, null, contentValue);
     }
 
     //INSERT TRANSACTION FOR CUSTOMER TIMELINE
@@ -555,6 +597,8 @@ public class DBManager {
 
 
     public int updateCustomerTransactionType(String cust_num, String transaction_type, String transaction_val) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
 
         ContentValues contentValues = new ContentValues();
         if (transaction_type.equals("sale")) {
@@ -565,7 +609,7 @@ public class DBManager {
             contentValues.put(DatabaseHelper.CUST_COLLECTION, transaction_val);
         }
 
-        int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues,
+        int i = db.update(DatabaseHelper.TABLE_CUSTOMER, contentValues,
                 DatabaseHelper.CUST_NUM + " = " + cust_num, null);
 
         return i;
@@ -948,7 +992,58 @@ public class DBManager {
                         item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
                         item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
                         item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
+                        item.item_qty = "0";
+                        item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
 //                        item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+//                        item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+
+                        //you could add additional columns here..
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+
+    //Item List
+    public ArrayList<Item> getAllOrdersForCustomer(String cust_num) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_HEADER+
+                " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
 
                         //you could add additional columns here..
                         list.add(item);
@@ -1041,7 +1136,6 @@ public class DBManager {
     }
 
 
-
     public ArrayList<Transaction> getAllTransactions() {
 
         ArrayList<Transaction> list = new ArrayList<Transaction>();
@@ -1066,7 +1160,7 @@ public class DBManager {
                         transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
                         transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
                         transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
-                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
 
@@ -1098,7 +1192,7 @@ public class DBManager {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION  +
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION +
                 " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = " + cust_num;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -1118,7 +1212,7 @@ public class DBManager {
                         transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
                         transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
                         transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
-                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
 
@@ -1494,6 +1588,35 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CODE));
+                index = Integer.parseInt(count);
+            } else {
+                index = 0;
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return index;
+    }
+
+
+    //GET LAST INVOICE GENERETED NUMBER
+    public long getLastOrderID() { // type = 0 empty, 1 = filled
+        long index = 0;
+        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_ORDER_HEADER;
+//                " WHERE " + DatabaseHelper.CUST_NUM + " = " + custNum;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
                 index = Integer.parseInt(count);
             } else {
                 index = 0;

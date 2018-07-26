@@ -31,6 +31,7 @@ import com.ae.benchmark.fragments.FragmentDashboardOne;
 import com.ae.benchmark.fragments.FragmentManageInventory;
 import com.ae.benchmark.fragments.FragmentPayments;
 import com.ae.benchmark.fragments.FragmentSales;
+import com.ae.benchmark.fragments.FragmentSettings;
 import com.ae.benchmark.fragments.InvoiceSummury;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.util.Constant;
@@ -57,9 +58,9 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final String TAG_JOURNEY_PLAN = "Journey_Plan";
     private static final String TAG_PAYMENTS = "Payments";
     //    private static final String TAG_ROUTE_RECONE = "Route_Recone";
-    private static final String TAG_SALE_SNAP = "Sales_Snap";
+//    private static final String TAG_SALE_SNAP = "Sales_Snap";
     private static final String TAG_DATA_POSTING = "Data_Posting_Audit";
-    private static final String TAG_CATALOGUE = "Catalogue";
+//    private static final String TAG_CATALOGUE = "Catalogue";
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_SUGGESTIONS = "suggestions";
     private static final String TAG_RATE_APP = "RATE_APP";
@@ -142,6 +143,11 @@ public class DashBoardActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
+
+//        Bundle extras = getIntent().getExtras();
+//        if(extras!=null){
+//
+//        }
     }
 
     @Override
@@ -153,7 +159,7 @@ public class DashBoardActivity extends AppCompatActivity {
         MenuItem nav_itemMI = menuNav.findItem(R.id.nav_inventory);
         MenuItem nav_itemJP = menuNav.findItem(R.id.nav_journey);
         MenuItem nav_itemMIPy = menuNav.findItem(R.id.nav_payment);
-        MenuItem nav_itemSa = menuNav.findItem(R.id.nav_sales);
+        MenuItem nav_itemSa = menuNav.findItem(R.id.nav_inventory);
         MenuItem nav_itemDa = menuNav.findItem(R.id.nav_data);
 
         if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
@@ -246,51 +252,51 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_select_customer, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        switch (item.getItemId()) {
-            case R.id.nav_import:
-                Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_stock:
-                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_dashboard:
-                Toast.makeText(getBaseContext(), "You selected Dashboard", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_sales:
-                Toast.makeText(getBaseContext(), "You selected Sales", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_Print:
-                Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_cat:
-                Toast.makeText(getBaseContext(), "You selected Catalogue", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_map:
-                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
-                startActivity(intent);
-                break;
-
-        }
-        return true;
-
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_select_customer, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        super.onOptionsItemSelected(item);
+//
+//        switch (item.getItemId()) {
+//            case R.id.nav_import:
+//                Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_stock:
+//                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_dashboard:
+//                Toast.makeText(getBaseContext(), "You selected Dashboard", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_sales:
+//                Toast.makeText(getBaseContext(), "You selected Sales", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_Print:
+//                Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_cat:
+//                Toast.makeText(getBaseContext(), "You selected Catalogue", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.nav_map:
+//                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+//                startActivity(intent);
+//                break;
+//
+//        }
+//        return true;
+//
+//    }
 
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
@@ -313,37 +319,37 @@ public class DashBoardActivity extends AppCompatActivity {
 //                // ROUTE RECON
 //                FragmentOrder messagesFragments = new FragmentOrder();
 //                return messagesFragments;
-            case 5:
-                // SALES SNAP
-                InvoiceSummury dailyActivityFragment = new InvoiceSummury();
-                return dailyActivityFragment;
-            case 6:
+//            case 5:
+//                // SALES SNAP
+//                InvoiceSummury dailyActivityFragment = new InvoiceSummury();
+//                return dailyActivityFragment;
+            case 4:
                 // DATA POSTING AUDIT
                 FragmentSales employeeCodeSearchFragment = new FragmentSales();
                 return employeeCodeSearchFragment;
             case 7:
-                // CATALOGUE
+//                // CATALOGUE
                 FragmentSales settingsFragment = new FragmentSales();
                 return settingsFragment;
 
-            case 8:
+            case 5:
                 // SETTINGS
-                FragmentSales shareAppFragment = new FragmentSales();
+                FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
-            case 9:
-                // SHARE APP
-                FragmentManageInventory rateThisAppFragment = new FragmentManageInventory();
-                return rateThisAppFragment;
-
-            case 10:
-                // RATE THIS APP
-                FragmentSales suggestionsFragment = new FragmentSales();
-                return suggestionsFragment;
-
-            case 11:
-                // QUERY AND SUGGESTIONS
-                FragmentSales queryFragment = new FragmentSales();
-                return queryFragment;
+//            case 6:
+//                // SHARE APP
+//                FragmentManageInventory rateThisAppFragment = new FragmentManageInventory();
+//                return rateThisAppFragment;
+//
+////            case 7:
+////                // RATE THIS APP
+////                FragmentSales suggestionsFragment = new FragmentSales();
+////                return suggestionsFragment;
+//
+//            case 8:
+//                // QUERY AND SUGGESTIONS
+//                FragmentSales queryFragment = new FragmentSales();
+//                return queryFragment;
 
 
             default:
@@ -391,56 +397,56 @@ public class DashBoardActivity extends AppCompatActivity {
 //                        navItemIndex = 4;
 //                        CURRENT_TAG = TAG_ROUTE_RECONE;
 //                        break;
-                    case R.id.nav_sales:
-                        navItemIndex = 4;
-                        CURRENT_TAG = TAG_SALE_SNAP;
-                        break;
+//                    case R.id.nav_sales:
+//                        navItemIndex = 4;
+//                        CURRENT_TAG = TAG_SALE_SNAP;
+//                        break;
                     case R.id.nav_data:
-                        navItemIndex = 5;
+                        navItemIndex = 4;
                         CURRENT_TAG = TAG_DATA_POSTING;
                         break;
-                    case R.id.nav_catalogue:
-                        navItemIndex = 6;
-                        CURRENT_TAG = TAG_CATALOGUE;
-                        break;
+//                    case R.id.nav_catalogue:
+//                        navItemIndex = 6;
+//                        CURRENT_TAG = TAG_CATALOGUE;
+//                        break;
 
                     case R.id.nav_settings:
-                        navItemIndex = 7;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
 
-                    case R.id.nav_share:
-                        navItemIndex = 8;
-                        CURRENT_TAG = TAG_SHARE_APP;
-                        break;
-
-
-                    case R.id.nav_rate: // Rate this app
-                        navItemIndex = 9;
-                        CURRENT_TAG = TAG_RATE_APP;
-//                        Intent intent = new Intent(MainActivity.this, RateThisAppActivity.class);
-//                        startActivity(intent);
-//                        drawer.closeDrawers();
-
-                        Uri uri = Uri.parse("market://details?id=" + getPackageName());
-                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                        // To count with Play market backstack, After pressing back button,
-                        // to taken back to our application, we need to add following flags to intent.
-                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                        try {
-                            startActivity(goToMarket);
-                        } catch (ActivityNotFoundException e) {
-                            startActivity(new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-                        }
-                        break;
-
-                    case R.id.nav_your_suggestions:
-                        navItemIndex = 10;
-                        CURRENT_TAG = TAG_SUGGESTIONS;
-                        break;
+//                    case R.id.nav_share:
+//                        navItemIndex = 6;
+//                        CURRENT_TAG = TAG_SHARE_APP;
+//                        break;
+//
+//
+//                    case R.id.nav_rate: // Rate this app
+//                        navItemIndex = 7;
+//                        CURRENT_TAG = TAG_RATE_APP;
+////                        Intent intent = new Intent(MainActivity.this, RateThisAppActivity.class);
+////                        startActivity(intent);
+////                        drawer.closeDrawers();
+//
+//                        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+//                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+//                        // To count with Play market backstack, After pressing back button,
+//                        // to taken back to our application, we need to add following flags to intent.
+//                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+//                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+//                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//                        try {
+//                            startActivity(goToMarket);
+//                        } catch (ActivityNotFoundException e) {
+//                            startActivity(new Intent(Intent.ACTION_VIEW,
+//                                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+//                        }
+//                        break;
+//
+//                    case R.id.nav_your_suggestions:
+//                        navItemIndex = 8;
+//                        CURRENT_TAG = TAG_SUGGESTIONS;
+//                        break;
                     default:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
@@ -474,6 +480,35 @@ public class DashBoardActivity extends AppCompatActivity {
             public void onDrawerOpened(View drawerView) {
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
+
+
+                Menu menuNav = navigationView.getMenu();
+
+                MenuItem nav_itemMI = menuNav.findItem(R.id.nav_inventory);
+                MenuItem nav_itemJP = menuNav.findItem(R.id.nav_journey);
+                MenuItem nav_itemMIPy = menuNav.findItem(R.id.nav_payment);
+                MenuItem nav_itemSa = menuNav.findItem(R.id.nav_inventory);
+                MenuItem nav_itemDa = menuNav.findItem(R.id.nav_data);
+
+                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
+                    nav_itemJP.setEnabled(true);
+                else
+                    nav_itemJP.setEnabled(false);
+
+                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISPAYMET))
+                    nav_itemMIPy.setEnabled(true);
+                else
+                    nav_itemMIPy.setEnabled(false);
+
+                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISSALES))
+                    nav_itemSa.setEnabled(true);
+                else
+                    nav_itemSa.setEnabled(false);
+
+                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
+                    nav_itemDa.setEnabled(true);
+                else
+                    nav_itemDa.setEnabled(false);
             }
         };
 

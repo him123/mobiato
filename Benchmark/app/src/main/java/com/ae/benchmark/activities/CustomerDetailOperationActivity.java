@@ -57,6 +57,9 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
     @InjectView(R.id.txt_credit_days)
     TextView txt_credit_days;
 
+    @InjectView(R.id.txt_available_bal)
+    TextView txt_available_bal;
+
     FeedAdapter recyclerAdapter;
 
     List<Feed> itemList;
@@ -92,7 +95,8 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 
 
         txt_credit_days.setText(customer.cust_payment_term);
-        txt_credit_days.setText(customer.cust_credit_limit);
+        txt_credit_limit.setText(customer.cust_credit_limit + " SAR");
+        txt_available_bal.setText(customer.cust_avail_bal + " SAR");
 
         sequence = new MaterialShowcaseSequence(this, "OPR");
         ShowcaseConfig config = new ShowcaseConfig();
@@ -103,7 +107,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        UtilApp.WriteSharePrefrence(CustomerDetailOperationActivity.this, Constant.SHRED_PR.ISPAYMET, true);
+//        UtilApp.WriteSharePrefrence(CustomerDetailOperationActivity.this, Constant.SHRED_PR.ISPAYMET, true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -349,31 +353,31 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                         switch (itemListTransaction.get(i).tr_type) {
                             case Constant.TRANSACTION_TYPES.TT_CASH_COLLECTION:
                                 feed.name = "Cash collection created";
-                                feed.inv_no = "Collection id: "+itemListTransaction.get(i).tr_collection_id;
+                                feed.inv_no = "Collection id: " + itemListTransaction.get(i).tr_collection_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_CREDIT_COLLECTION:
                                 feed.name = "Credit collection created";
-                                feed.inv_no ="Collection id: "+ itemListTransaction.get(i).tr_collection_id;
+                                feed.inv_no = "Collection id: " + itemListTransaction.get(i).tr_collection_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CASH:
                                 feed.name = "Payment done by cash.";
-                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                feed.inv_no = "Payment id: " + itemListTransaction.get(i).tr_pyament_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CHEQUE:
                                 feed.name = "Payment done by cheque.";
-                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                feed.inv_no = "Payment id: " + itemListTransaction.get(i).tr_pyament_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_STOCK_CAP:
                                 feed.name = "Stock captured.";
                                 feed.inv_no = "";
                                 break;
-                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED :
+                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED:
                                 feed.name = "Sales created.";
-                                feed.inv_no = "Invoice id: "+itemListTransaction.get(i).tr_invoice_id;
+                                feed.inv_no = "Invoice id: " + itemListTransaction.get(i).tr_invoice_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
                                 feed.name = "Order created.";
-                                feed.inv_no = "Order id: "+itemListTransaction.get(i).tr_order_id;
+                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_order_id;
                                 break;
 
                             default:
@@ -407,31 +411,31 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                         switch (itemListTransaction.get(i).tr_type) {
                             case Constant.TRANSACTION_TYPES.TT_CASH_COLLECTION:
                                 feed.name = "Cash collection created";
-                                feed.inv_no = "Collection id: "+itemListTransaction.get(i).tr_collection_id;
+                                feed.inv_no = "Collection id: " + itemListTransaction.get(i).tr_collection_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_CREDIT_COLLECTION:
                                 feed.name = "Credit collection created";
-                                feed.inv_no ="Collection id: "+ itemListTransaction.get(i).tr_collection_id;
+                                feed.inv_no = "Collection id: " + itemListTransaction.get(i).tr_collection_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CASH:
                                 feed.name = "Payment done by cash.";
-                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                feed.inv_no = "Payment id: " + itemListTransaction.get(i).tr_pyament_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CHEQUE:
                                 feed.name = "Payment done by cheque.";
-                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                feed.inv_no = "Payment id: " + itemListTransaction.get(i).tr_pyament_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_STOCK_CAP:
                                 feed.name = "Stock captured.";
                                 feed.inv_no = "";
                                 break;
-                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED :
+                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED:
                                 feed.name = "Sales created.";
-                                feed.inv_no = "Invoice id: "+itemListTransaction.get(i).tr_invoice_id;
+                                feed.inv_no = "Invoice id: " + itemListTransaction.get(i).tr_invoice_id;
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
                                 feed.name = "Order created.";
-                                feed.inv_no = "Order id: "+itemListTransaction.get(i).tr_order_id;
+                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_order_id;
                                 break;
 
                             default:

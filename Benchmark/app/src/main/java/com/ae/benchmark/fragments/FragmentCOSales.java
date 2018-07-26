@@ -93,12 +93,12 @@ public class FragmentCOSales extends Fragment {
         View v = inflater.inflate(R.layout.fragment_co_sales, container, false);
         ButterKnife.inject(this, v);
 
-        viewPager = (KKViewPager) v.findViewById(R.id.kk_pager);
-        viewPager.setAdapter(new TestFragmentAdapter(getChildFragmentManager(),
-                getActivity(), CONTENT2));
-        viewPager.setAnimationEnabled(true);
-        viewPager.setFadeEnabled(true);
-        viewPager.setFadeFactor(0.6f);
+//        viewPager = (KKViewPager) v.findViewById(R.id.kk_pager);
+//        viewPager.setAdapter(new TestFragmentAdapter(getChildFragmentManager(),
+//                getActivity(), CONTENT2));
+//        viewPager.setAnimationEnabled(true);
+//        viewPager.setFadeEnabled(true);
+//        viewPager.setFadeFactor(0.6f);
 
 //        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            public void onPageScrollStateChanged(int state) {

@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.model.Item;
+
+import org.w3c.dom.Text;
 
 public final class TestFragment extends Fragment {
 
@@ -47,15 +50,16 @@ public final class TestFragment extends Fragment {
             "iPhone", "WindowsMobile"};
     int col[] = {Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.CYAN};
 
-    public static TestFragment newInstance(String content, Context c) {
+    public static TestFragment newInstance(Item item, Context c) {
 
         TestFragment fragment = new TestFragment();
 
-        fragment.mContent = content;
+        fragment.item = item;
         return fragment;
     }
 
     private String mContent = "???";
+    Item item;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +77,13 @@ public final class TestFragment extends Fragment {
 //        int bg = Color.rgb((int) Math.floor(Math.random() * 128) + 64,
 //                (int) Math.floor(Math.random() * 128) + 64,
 //                (int) Math.floor(Math.random() * 128) + 64);
-//        ListView listView = (ListView) Rootview.findViewById(R.id.listView1);
+        TextView txt_order_no = (TextView) Rootview.findViewById(R.id.txt_order_no);
+        TextView txt_order_amt = (TextView) Rootview.findViewById(R.id.txt_order_amt);
 //
+
+        txt_order_amt.setText(item.item_price);
+        txt_order_no.setText(item.order_id);
+
 //        listView.setAdapter(new ArrayAdapter<String>(getActivity(),
 //                android.R.layout.simple_list_item_1, values){
 //            @Override

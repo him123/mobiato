@@ -390,6 +390,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_map:
+                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+                startActivity(intent);
                 Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
                 break;
 

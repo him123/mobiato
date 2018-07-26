@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.ae.benchmark.activities.SplashActivity;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -115,5 +118,19 @@ public class UtilApp {
         String formattedDate = df.format(c);
 
         return formattedDate;
+    }
+
+
+    public static void clearSharedPreferences(Context context) {
+        File sharedPreferenceFile = new File("/data/data/" +
+                context.getPackageName() + "/shared_prefs/");
+        File[] listFiles = sharedPreferenceFile.listFiles();
+        for (File file : listFiles) {
+            file.delete();
+        }
+
+//        UtilApp.ReadSharePrefrence(SplashActivity.this, Constant.SHRED_PR.ISINTRO
+        UtilApp.WriteSharePrefrence(context, Constant.SHRED_PR.ISINTRO, true);
+
     }
 }

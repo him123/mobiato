@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_en\":\"GBC Coupon Book 20’s\",\n" +
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
+            "                    \"item_uom\":\"pcs\",\n" +
             "                    \"item_price\":\"232\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_en\":\"GBC Coupon Book 50’s\",\n" +
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
+            "                    \"item_uom\":\"pcs\",\n" +
             "                    \"item_price\":\"543\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_en\":\"GBC Coupon Book 100’s\",\n" +
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
+            "                    \"item_uom\":\"pcs\",\n" +
             "                    \"item_price\":\"543\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
@@ -314,6 +314,10 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
+
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISSALES, true);
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISJPLOADED, false);
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISPAYMET, false);
 
                 // SALESMAN
 //                JSONObject SalesmanObj = new JSONObject(String.valueOf(salesman));

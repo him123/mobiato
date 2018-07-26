@@ -53,6 +53,7 @@
                         app:srcCompat="@drawable/ic_bg_blue_circle" />
 
                     <TextView
+                        android:id="@+id/txt_order_amt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"

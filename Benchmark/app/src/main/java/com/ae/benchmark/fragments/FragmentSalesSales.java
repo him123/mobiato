@@ -65,7 +65,7 @@ public class FragmentSalesSales extends Fragment {
         View v = inflater.inflate(R.layout.fragment_sales_sales, container, false);
         ButterKnife.inject(this, v);
 
-        UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, true);
+//        UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, true);
         UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, true);
         UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISDATA, true);
 

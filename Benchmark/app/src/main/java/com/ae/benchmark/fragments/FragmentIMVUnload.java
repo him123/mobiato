@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.DashBoardActivity;
 import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.FreshUnloadActivity;
 import com.ae.benchmark.activities.LoginActivity;
@@ -127,6 +128,15 @@ public class FragmentIMVUnload extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "uload", Toast.LENGTH_SHORT).show();
+
+                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
+                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISJPLOADED, false);
+                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, true);
+
+//                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
+//                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
+//                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
+//                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
             }
         });
 

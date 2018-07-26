@@ -28,21 +28,21 @@
             android:title="@string/nav_route"
             app:actionViewClass="android.widget.TextView" />-->
 
-        <item
-            android:id="@+id/nav_sales"
-            android:icon="@drawable/ic_icon_sales"
-            android:title="@string/nav_sales"
-            app:actionViewClass="android.widget.TextView" />
+        <!--<item-->
+            <!--android:id="@+id/nav_sales"-->
+            <!--android:icon="@drawable/ic_icon_sales"-->
+            <!--android:title="@string/nav_sales"-->
+            <!--app:actionViewClass="android.widget.TextView" />-->
 
         <item
             android:id="@+id/nav_data"
             android:icon="@drawable/ic_icon_collection"
             android:title="@string/nav_data" />
 
-        <item
-            android:id="@+id/nav_catalogue"
-            android:icon="@drawable/ic_icon_collection"
-            android:title="@string/nav_catalogue" />
+        <!--<item-->
+            <!--android:id="@+id/nav_catalogue"-->
+            <!--android:icon="@drawable/ic_icon_collection"-->
+            <!--android:title="@string/nav_catalogue" />-->
 
         <item
             android:id="@+id/nav_settings"
@@ -50,19 +50,19 @@
             android:title="@string/nav_settings" />
     </group>
 
-    <item android:title="Other">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:title="@string/nav_share" />
-            <item
-                android:id="@+id/nav_rate"
-                android:title="@string/nav_rate" />
-            <item
-                android:id="@+id/nav_your_suggestions"
-                android:title="@string/your_suggestions" />
+    <!--<item android:title="Other">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:title="@string/nav_share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_rate"-->
+                <!--android:title="@string/nav_rate" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_your_suggestions"-->
+                <!--android:title="@string/your_suggestions" />-->
 
-        </menu>
-    </item>
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>
