@@ -36,11 +36,47 @@
                         android:layout_alignParentRight="true"
                         android:checked="true"
                         android:textOff="MTD"
-                        android:textOn="DTD" />
+                        android:textOn="DTD"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/llSwitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp"
+                        android:gravity="end"
+                        android:layout_marginRight="@dimen/_5sdp">
+
+                        <TextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="DTD"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Switch
+                            android:id="@+id/swcPayment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="20dp"
+                            android:text="MTD"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_below="@+id/llSwitch"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_margin="@dimen/_10sdp"
@@ -58,7 +94,7 @@
                             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                             <com.ae.benchmark.views.TwoLevelCircularProgressBar
-                                android:id="@+id/progress3"
+                                android:id="@+id/progressMain"
                                 android:layout_width="@dimen/_200sdp"
                                 android:layout_height="@dimen/_200sdp"
                                 android:layout_centerHorizontal="true"
@@ -75,6 +111,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
+                                android:gravity="center"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -88,7 +125,7 @@
                                     android:background="@drawable/ic_icon_collection" />
 
                                 <TextView
-                                    android:id="@+id/txt_center"
+                                    android:id="@+id/txtMainSell"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -141,7 +178,7 @@
                                         android:layout_height="wrap_content">
 
                                         <com.ae.benchmark.views.TwoLevelCircularProgressBar
-                                            android:id="@+id/progress_left"
+                                            android:id="@+id/progressSell"
                                             android:layout_width="@dimen/_40sdp"
                                             android:layout_height="@dimen/_40sdp"
                                             android:layout_centerHorizontal="true"
@@ -167,7 +204,7 @@
                                         android:orientation="vertical">
 
                                         <TextView
-                                            android:id="@+id/txt_cir_left"
+                                            android:id="@+id/txtSell"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="left"
@@ -209,7 +246,7 @@
                                         android:layout_height="wrap_content">
 
                                         <com.ae.benchmark.views.TwoLevelCircularProgressBar
-                                            android:id="@+id/progress_right"
+                                            android:id="@+id/progressCollection"
                                             android:layout_width="@dimen/_40sdp"
                                             android:layout_height="@dimen/_40sdp"
                                             android:layout_centerHorizontal="true"
@@ -236,7 +273,7 @@
                                         android:orientation="vertical">
 
                                         <TextView
-                                            android:id="@+id/txt_cir_right"
+                                            android:id="@+id/txtCollection"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="left"

@@ -69,7 +69,7 @@ public class FragmentCOCollection extends Fragment {
         View v = inflater.inflate(R.layout.fragment_collection, container, false);
         ButterKnife.inject(this, v);
 
-//        customer = getActivity().getIntent().getExtras().getParcelable("cust");
+//        recentCustomer = getActivity().getIntent().getExtras().getParcelable("cust");
 
         dbManager = new DBManager(getActivity());
 

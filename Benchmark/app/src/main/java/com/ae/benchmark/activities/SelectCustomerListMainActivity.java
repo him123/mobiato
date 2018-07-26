@@ -33,7 +33,9 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.RecyclerAdapterCustomerRecent;
 import com.ae.benchmark.fragments.FragmentCustAll;
 import com.ae.benchmark.fragments.FragmentCustSeq;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
+import com.ae.benchmark.model.RecentCustomer;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 
@@ -64,8 +66,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
     RecyclerAdapterCustomerRecent recyclerAdapter_recent;
 
-    List<Customer> itemList;
-    Customer customer;
+    List<RecentCustomer> itemList;
+    RecentCustomer recentCustomer;
     boolean flag_seq;
     ViewPager viewPager;
 
@@ -91,6 +93,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
     TextView txt_title_seq;
 //    MaterialShowcaseSequence sequence;
 
+    DBManager dbManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -270,15 +273,12 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
                 itemList = new ArrayList<>();
 
-                for (int i = 0; i < 10; i++) {
-                    customer = new Customer();
+                dbManager = new DBManager(getApplicationContext());
+                dbManager.open();
+                itemList = dbManager.getAllREcentCust();
 
-                    customer.cust_num = "2012462260";
-                    customer.cust_name_en = "Load No. 800302051";
-                    customer.cust_address = "Delivery Date: 2017.02.10";
-
-                    itemList.add(customer);
-                }
+                recentCustomer = new RecentCustomer();
+                itemList.add(recentCustomer);
 
 
             } catch (Exception e) {

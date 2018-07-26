@@ -2,7 +2,9 @@ package com.ae.benchmark.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +20,9 @@ import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
+import com.ae.benchmark.model.RecentCustomer;
 import com.github.ivbaranov.mli.MaterialLetterIcon;
 
 import java.util.ArrayList;
@@ -37,7 +41,8 @@ public class RecyclerAdapterCustomerRecent extends RecyclerView.Adapter<Recycler
     boolean isLoading = false, isMoreDataAvailable = true;
     Random rand = new Random();
     private static final Random RANDOM = new Random();
-    private List<Customer> mItemList;
+    private List<RecentCustomer> mItemList;
+    DBManager db;
     private static final String[] desuNoto = {
             "Alane Avey", "Belen Brewster", "Brandon Brochu", "Carli Carrol", "Della Delrio",
             "Esther Echavarria", "Etha Edinger", "Felipe Flecha", "Ilse Island", "Kecia Keltz",
@@ -47,7 +52,7 @@ public class RecyclerAdapterCustomerRecent extends RecyclerView.Adapter<Recycler
     };
     private int[] mMaterialColors;
 
-    public RecyclerAdapterCustomerRecent(List<Customer> itemList, Context context) {
+    public RecyclerAdapterCustomerRecent(List<RecentCustomer> itemList, Context context) {
         this.mItemList = itemList;
         mContext = context;
     }
@@ -65,16 +70,54 @@ public class RecyclerAdapterCustomerRecent extends RecyclerView.Adapter<Recycler
 //        if (!isPositionHeader(position)) {
         final RecyclerItemViewHolderCustomer holder = (RecyclerItemViewHolderCustomer) viewHolder;
 
-        final Customer item = mItemList.get(position);
+        final RecentCustomer item = mItemList.get(position);
 
-        holder.txt_name.setText("CUST 1");
+        holder.txt_name.setText(item.getCustomer_id());
 //        holder.txt_address.setText(item.address);
 //        holder.txt_cust_id.setText(item.cust_id);
 //
         holder.ll_mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, CustomerDetailOperationActivity.class));
+
+                db = new DBManager(mContext);
+                final Customer customer = db.getCustomerByNum(item.getCustomer_id());
+
+                LayoutInflater factory = LayoutInflater.from(mContext);
+                final View deleteDialogView = factory.inflate(R.layout.dialog_shop_open_close, null);
+//        Spinner spinner2 = (Spinner) deleteDialogView.findViewById(R.id.sp_reason);
+//        spinner2.setAdapter(dataAdapter);
+                final AlertDialog deleteDialog = new AlertDialog.Builder(mContext).create();
+                deleteDialog.setView(deleteDialogView);
+                deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                deleteDialogView.findViewById(R.id.rl_open).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //your business logic
+                        deleteDialog.dismiss();
+
+                        Intent i = new Intent(mContext, CustomerDetailOperationActivity.class);
+
+                        i.putExtra("tag", "old");
+                        i.putExtra("cust", customer);
+
+
+                        mContext.startActivity(i);
+
+                    }
+                });
+
+                deleteDialogView.findViewById(R.id.rl_close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //your business logic
+                        deleteDialog.dismiss();
+                    }
+                });
+
+
+                deleteDialog.show();
+
 //                mContext.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
             }
         });

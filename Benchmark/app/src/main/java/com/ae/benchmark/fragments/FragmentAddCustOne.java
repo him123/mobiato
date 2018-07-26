@@ -1,22 +1,17 @@
 package com.ae.benchmark.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.activities.CollectionPaymentActivity;
-import com.ae.benchmark.adapters.CollectionAdapter;
-import com.ae.benchmark.model.Item;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ae.benchmark.util.Constant;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +22,21 @@ import butterknife.InjectView;
 
 public class FragmentAddCustOne extends Fragment {
 
+
+    @InjectView(R.id.edtTradeName)
+    EditText edtTradeName;
+    @InjectView(R.id.edtArea)
+    EditText edtArea;
+    @InjectView(R.id.edtStreet)
+    EditText edtStreet;
+    @InjectView(R.id.edtEmail)
+    EditText edtEmail;
+    @InjectView(R.id.edtMobile)
+    EditText edtMobile;
+    @InjectView(R.id.btn_next)
+    Button btnNext;
+    @InjectView(R.id.btn_skip)
+    Button btnSkip;
 
     public FragmentAddCustOne() {
         // Required empty public constructor
@@ -44,9 +54,111 @@ public class FragmentAddCustOne extends Fragment {
         View v = inflater.inflate(R.layout.fragment_add_customer_one, container, false);
         ButterKnife.inject(this, v);
 
+        edtTradeName.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void afterTextChanged(Editable s) {}
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edtTradeName.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtTradeName = edtTradeName.getText().toString();
+                } else {
+                    Constant.NEW_CUSTOMER.edtTradeName = "";
+                }
+            }
+        });
+
+        edtArea.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edtArea.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtArea = edtArea.getText().toString();
+                } else {
+                    Constant.NEW_CUSTOMER.edtArea = "";
+                }
+            }
+        });
+
+        edtStreet.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edtStreet.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtStreet = edtStreet.getText().toString();
+                } else {
+                    Constant.NEW_CUSTOMER.edtStreet = "";
+                }
+            }
+        });
+
+        edtEmail.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edtEmail.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtEmail = edtEmail.getText().toString();
+                } else {
+                    Constant.NEW_CUSTOMER.edtEmail = "";
+                }
+            }
+        });
+
+        edtMobile.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edtMobile.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtMobile = edtMobile.getText().toString();
+                } else {
+                    Constant.NEW_CUSTOMER.edtMobile = "";
+                }
+            }
+        });
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
 }

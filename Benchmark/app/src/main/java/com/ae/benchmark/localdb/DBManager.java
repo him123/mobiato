@@ -10,12 +10,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ae.benchmark.model.Collection;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Load;
 import com.ae.benchmark.model.Payment;
+import com.ae.benchmark.model.RecentCustomer;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
 import com.google.gson.JsonArray;
@@ -44,6 +46,15 @@ public class DBManager {
         dbHelper = new DatabaseHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
+    }
+
+    private void openDatabsse() {
+        String dbName = "5GALLON.DB";
+        String dbpath = context.getDatabasePath(dbName).getPath();
+        if (database != null && database.isOpen()) {
+            return;
+        }
+        database = SQLiteDatabase.openDatabase(dbpath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     public void close() {
@@ -132,6 +143,31 @@ public class DBManager {
         }
     }
 
+    public int getAllInvoiceHeadCollection() {
+
+        ArrayList<SalesInvoice> list = new ArrayList<>();
+        openDatabsse();
+
+        double totColl = 0.0;
+        try {
+            Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                Double val = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.COL_DUE_AMOUNT));
+
+                totColl += val;
+                cursor.moveToNext();
+            }
+            cursor.close();
+            close();
+        } catch (Exception e){
+            Log.e("dbError" , e.toString());
+        }
+
+        return (int) totColl;
+    }
+
     //INSERT SALESMAN
     public void insertSalesInvoiceHeader(SalesInvoice salesInvoice) {
 
@@ -163,6 +199,44 @@ public class DBManager {
         }
     }
 
+    public ArrayList<SalesInvoice> getAllInvoiceHead() {
+
+        ArrayList<SalesInvoice> list = new ArrayList<>();
+        openDatabsse();
+
+        try {
+            Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_INVOICE_HEADER, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                SalesInvoice salesInvoice = new SalesInvoice();
+
+                salesInvoice.setInv_no(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CODE)));
+                salesInvoice.setInv_type(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_INVOICE_TYPE)));
+                salesInvoice.setInv_type_code(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_INVOICE_TYPE_CODE)));
+                salesInvoice.setCust_code(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CUST_CODE)));
+                salesInvoice.setCust_sales_org(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CUST_SALES_ORG)));
+                salesInvoice.setCust_dist_channel(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CUST_DIST_CHANNEL)));
+                salesInvoice.setCust_division(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CUST_DIVISION)));
+                salesInvoice.setInv_date(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_INVOICE_DATE)));
+                salesInvoice.setDel_date(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_DELVERY_DATE)));
+                salesInvoice.setCust_name_en(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CUST_NAME)));
+                salesInvoice.setTot_amnt_sales(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_TOT_AMT_SALES)));
+                salesInvoice.setInv_header_dis_val(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_INVOICE_HEADER_DISC_IN_VAL)));
+                salesInvoice.setInv_header_dis_per(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_INVOICE_HEADER_DISC_IN_PER)));
+                salesInvoice.setInv_header_vat_val(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_VAT_VAL)));
+                salesInvoice.setInv_header_vat_per(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_VAT_PER)));
+                list.add(salesInvoice);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            close();
+        } catch (Exception e){
+            Log.e("dbError" , e.toString());
+        }
+
+        return list;
+    }
 
     public void insertSalesInvoiceItem(Item salesInvoiceItem) {
 
@@ -351,9 +425,11 @@ public class DBManager {
                                String cust_possessed_empty_bottle,
                                String cust_possessed_filled_bottle,
                                String cust_latitude,
-                               String cust_longitude
-    ) {
+                               String cust_longitude) {
 
+        open();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
         ContentValues contentValue = new ContentValues();
 
         contentValue.put(DatabaseHelper.CUST_NUM, cust_num);
@@ -370,9 +446,16 @@ public class DBManager {
         contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, cust_possessed_empty_bottle);
         contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, cust_possessed_filled_bottle);
         contentValue.put(DatabaseHelper.CUST_LATITUDE, cust_latitude);
-        contentValue.put(DatabaseHelper.CUST_LONGITUDE, cust_longitude);
+        contentValue.put(DatabaseHelper.CUST_LONGITUDE, "0");
+        contentValue.put(DatabaseHelper.CUST_LATITUDE, "0");
+        contentValue.put(DatabaseHelper.CUST_SALE, "0");
+        contentValue.put(DatabaseHelper.CUST_ORDER, "0");
+        contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
+        contentValue.put(DatabaseHelper.IS_STOCK_CAPTURED, "0");
 
         database.insert(DatabaseHelper.TABLE_CUSTOMER, null, contentValue);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
 
@@ -421,6 +504,59 @@ public class DBManager {
         }
     }
 
+    public Customer getCustomerByNum(String num) {
+
+
+        // Select All Query
+        open();
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_CUSTOMER + " WHERE " + DatabaseHelper.CUST_NUM + " = " + num;
+        Customer item = new Customer();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        //only one column
+                        item.setCust_num(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM)));
+                        item.setCust_name_en(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NAME_EN)));
+                        item.setCust_name_ar(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NAME_AR)));
+                        item.setCust_dist_channel(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_DIST_CHANNEL)));
+                        item.setCust_division(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_DIVISION)));
+                        item.setCust_sales_org(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_SALES_ORG)));
+                        item.setCust_credit_limit(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_CREDIT_LIMIT)));
+                        item.setCust_avail_bal(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_AVAIL_BAL)));
+                        item.setCust_payment_term(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_PAYMENT_TERM)));
+                        item.setCust_address(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ADDRESS)));
+                        item.setCust_type(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_TYPE)));
+                        item.setCust_possessed_empty_bottle(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE)));
+                        item.setCust_possessed_filled_bottle(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE)));
+                        item.setCust_latitude(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LATITUDE)));
+
+                        //you could add additional columns here..
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return item;
+    }
 
     //INSERT ITEMS SINGLE
     public void insertItems(String item_code,
@@ -435,6 +571,9 @@ public class DBManager {
     ) {
 
 //            db.beginTransaction();
+        open();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
         ContentValues contentValue = new ContentValues();
 
         contentValue.put(DatabaseHelper.ITEM_CODE, item_code);
@@ -447,6 +586,8 @@ public class DBManager {
         contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, item_con_fector);
 
         database.insert(DatabaseHelper.TABLE_ITEM, null, contentValue);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
 
@@ -520,6 +661,68 @@ public class DBManager {
         contentValue.put(DatabaseHelper.PAYMENT_CUSTOMER_ID, payment.getCust_id());
 
         database.insert(DatabaseHelper.TABLE_PAYMENT, null, contentValue);
+    }
+
+    public void insertRecentCustomer(RecentCustomer recentCustomer) {
+        open();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues contentValue = new ContentValues();
+
+        //contentValue.put(DatabaseHelper.RECENT_CUSTOMER_ID, payment.getInvoice_id());
+        contentValue.put(DatabaseHelper.CUSTOMER_ID, recentCustomer.getCustomer_id());
+        contentValue.put(DatabaseHelper.CUSTOMER_NAME, recentCustomer.getCustomer_name());
+        contentValue.put(DatabaseHelper.DATE_TIME, recentCustomer.getDate_time());
+
+        database.insert(DatabaseHelper.TABLE_RECENT_CUSTOMER, null, contentValue);
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public ArrayList<RecentCustomer> getAllREcentCust() {
+        ArrayList<RecentCustomer> list = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_RECENT_CUSTOMER;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        RecentCustomer item = new RecentCustomer();
+                        //only one column
+                        item.setRecent_customer_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.RECENT_CUSTOMER_ID)));
+                        item.setCustomer_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_ID)));
+                        item.setCustomer_name(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_NAME)));
+                        item.setDate_time(cursor.getString(cursor.getColumnIndex(DatabaseHelper.DATE_TIME)));
+
+                        //you could add additional columns here..
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
     }
 //    //INSERT TRANSACTION FOR CUSTOMER TIMELINE
 //    public void insertFromLoadToVanStock() {
@@ -1041,7 +1244,6 @@ public class DBManager {
     }
 
 
-
     public ArrayList<Transaction> getAllTransactions() {
 
         ArrayList<Transaction> list = new ArrayList<Transaction>();
@@ -1066,7 +1268,7 @@ public class DBManager {
                         transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
                         transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
                         transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
-                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
 
@@ -1098,7 +1300,7 @@ public class DBManager {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION  +
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION +
                 " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = " + cust_num;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -1118,7 +1320,7 @@ public class DBManager {
                         transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
                         transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
                         transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
-                        transaction.tr_order_id= cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
 
