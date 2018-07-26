@@ -85,7 +85,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <LinearLayout
                 android:id="@+id/ll_tot"
@@ -105,17 +105,33 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_tot_val"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="right"
+                    android:text="1"
+                    android:visibility="invisible"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_tot_val"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
                     android:id="@+id/txt_sub_tot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="left"
                     android:gravity="right"
                     android:text="56523"
                     android:textStyle="bold" />
@@ -131,9 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -145,13 +160,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:text="VAT"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="right"
+                    android:text="1"
+                    android:visibility="invisible"
+                    android:textStyle="bold" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_vat"
                 android:layout_width="0dp"
@@ -163,8 +192,8 @@
                     android:id="@+id/txt_vat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
+                    android:layout_gravity="left"
+                    android:gravity="left"
                     android:text="5 %"
                     android:textStyle="bold" />
 
@@ -183,9 +212,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -198,7 +225,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="left"
                     android:gravity="center"
                     android:text="Total"
                     android:textStyle="bold" />

@@ -18,8 +18,12 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.RecyclerItemsAdapter;
 import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.localdb.DatabaseHelper;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.model.Transaction;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseMessagingService;
+import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,8 @@ public class ItemsListActivity extends AppCompatActivity {
 
     String load_no;
     String isBack;
+
+    Transaction transaction = new Transaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +106,25 @@ public class ItemsListActivity extends AppCompatActivity {
 
                     finish();
                 } else {
-                    if (isBack.equals("No"))
+                    if (isBack.equals("No")) {
+
+
+                        transaction.tr_type = Constant.TRANSACTION_TYPES.TT_LOAD_CONF;
+                        transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                        transaction.tr_customer_num = "";
+                        transaction.tr_customer_name = "";
+                        transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
+                        transaction.tr_invoice_id = "";
+                        transaction.tr_order_id = "";
+                        transaction.tr_collection_id = "";
+                        transaction.tr_pyament_id = "";
+
+                        dbManager.insertTransaction(transaction);
+
                         startActivity(new Intent(ItemsListActivity.this, SelectCustomerListMainActivity.class));
 
 
-                    else
+                    } else
                         finish();
                 }
 

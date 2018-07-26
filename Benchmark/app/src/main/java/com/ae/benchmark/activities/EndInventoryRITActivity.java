@@ -51,15 +51,18 @@ public class EndInventoryRITActivity extends AppCompatActivity {
     Item item;
     LinearLayoutManager mLayoutManager;
     DBManager dbManager;
-
+    public static final String BROADCAST_ACTION_END_INVENTORY = "com.benchmark.CHECKIN_END_INVENTORY";
 //    String load_no;
 //    String isBack;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_list);
         ButterKnife.inject(this);
+
+        intent = new Intent(BROADCAST_ACTION_END_INVENTORY);
 
 //        Bundle extras = getIntent().getExtras();
 //        if (extras != null) {
@@ -68,6 +71,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
 //        }
 
         registerReceiver(broadcastReceiver2, new IntentFilter(RecyclerItemsAdapter.BROADCAST_ACTION));
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +131,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(SweetAlertDialog sDialog) {
                                         sDialog.dismissWithAnimation();
+                                        sendBroadcast(intent);
                                         finish();
                                     }
                                 })

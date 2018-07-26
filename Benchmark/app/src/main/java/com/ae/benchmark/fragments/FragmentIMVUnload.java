@@ -1,8 +1,10 @@
 package com.ae.benchmark.fragments;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -20,6 +22,8 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.FreshUnloadActivity;
 import com.ae.benchmark.activities.LoginActivity;
+import com.ae.benchmark.adapters.RecyclerItemsAdapter;
+import com.ae.benchmark.model.Item;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 import com.github.clans.fab.FloatingActionButton;
@@ -71,6 +75,9 @@ public class FragmentIMVUnload extends Fragment {
         View v = inflater.inflate(R.layout.fragment_im_unload, container, false);
         ButterKnife.inject(this, v);
 
+        getActivity().registerReceiver(broadcastReceiver2, new IntentFilter(EndInventoryRITActivity.BROADCAST_ACTION_END_INVENTORY));
+        getActivity().registerReceiver(broadcastReceiver3, new IntentFilter(FreshUnloadActivity.BROADCAST_ACTION_UNLOAD));
+
         fab1 = (FloatingActionButton) v.findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) v.findViewById(R.id.fab2);
         fab3 = (FloatingActionButton) v.findViewById(R.id.fab3);
@@ -109,11 +116,11 @@ public class FragmentIMVUnload extends Fragment {
         if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
             btn_checkin.setEnabled(true);
             btn_checkin.setClickable(true);
-            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green) );
-        }else{
+            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+        } else {
             btn_checkin.setEnabled(false);
             btn_checkin.setClickable(false);
-            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray) );
+            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
         }
 
         btn_checkin.setOnClickListener(new View.OnClickListener() {
@@ -157,11 +164,11 @@ public class FragmentIMVUnload extends Fragment {
             if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
                 btn_checkin.setEnabled(true);
                 btn_checkin.setClickable(true);
-                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green) );
-            }else{
+                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+            } else {
                 btn_checkin.setEnabled(false);
                 btn_checkin.setClickable(false);
-                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray) );
+                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
             }
 
         }
@@ -169,5 +176,31 @@ public class FragmentIMVUnload extends Fragment {
 
     private void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private BroadcastReceiver broadcastReceiver2 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            btn_checkin.setEnabled(true);
+            btn_checkin.setClickable(true);
+            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+        }
+    };
+
+    private BroadcastReceiver broadcastReceiver3 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            btn_checkin.setEnabled(false);
+            btn_checkin.setClickable(false);
+            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getActivity().unregisterReceiver(broadcastReceiver2);
+        getActivity().unregisterReceiver(broadcastReceiver3);
     }
 }

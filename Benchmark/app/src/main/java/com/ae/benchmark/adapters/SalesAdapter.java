@@ -58,6 +58,7 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         holder.txt_name.setText(item.item_name_en);
         holder.txt_item_code.setText(item.item_code);
+        holder.txt_qty.setText("Qty: "+item.item_qty);
 //        holder.txt_desc.setText(item.desc);
 
         final boolean flag;
@@ -137,7 +138,7 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 txt_sub_dept,
                 txt_price,
                 txt_cash,
-                txt_item_code, txt_tag;
+                txt_item_code, txt_tag, txt_qty;
 
         public RelativeLayout rl_tag;
         public ImageView imgVerified;
@@ -154,6 +155,7 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             txt_item_code = (TextView) parent.findViewById(R.id.txt_item_code);
             txt_tag = (TextView) parent.findViewById(R.id.txt_tag);
             rl_tag = (RelativeLayout) parent.findViewById(R.id.rl_tag);
+            txt_qty = (TextView) parent.findViewById(R.id.txt_qty);
         }
     }
 }

@@ -32,12 +32,15 @@ import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.OrderAdapter;
+import com.ae.benchmark.adapters.RecyclerItemsUnloadAdapter;
 import com.ae.benchmark.adapters.SalesAdapter;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.SalesInvoice;
+import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.rest.RestClient;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseMessagingService;
 import com.ae.benchmark.util.UtilApp;
 
@@ -116,6 +119,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             oldOrNew = extras.getString("tag");
             customer = extras.getParcelable("cust");
         }
+
+
 
         registerReceiver(broadcastReceiver, new IntentFilter(InputDailogActivity.BROADCAST_ACTION));
         registerReceiver(broadcastReceiver2, new IntentFilter(MyFirebaseMessagingService.BROADCAST_ACTION));
@@ -277,8 +282,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 String date = UtilApp.getCurrentDate();
                 String time = UtilApp.getCurrentTime();
 
-                if (type.equals("cash")) {
-                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
+//                if (type.equals("cash")) {
+
 
 //                    dbManager.getBottleQty(arrItem.get(i).item_code, arrItem.get(i).item_qty);
 
@@ -307,11 +312,28 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                     dbManager.insertSalesInvoiceHeader(salesInvoice);
 
+
+
                     double dueAmt = price + 50;
                     dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
                             customer.cust_name_en, customer.cust_type, "0",
                             "" + price, salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date);
 
+
+                    //INSERT TRANSACTION
+                    Transaction transaction = new Transaction();
+
+                    transaction.tr_type = Constant.TRANSACTION_TYPES.TT_SALES_CREATED;
+                    transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                    transaction.tr_customer_num = customer.cust_num;
+                    transaction.tr_customer_name = customer.cust_name_en;
+                    transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(PreOrderRequestActivity.this, Constant.SHRED_PR.SALESMANID);
+                    transaction.tr_invoice_id = invNum+"";
+                    transaction.tr_order_id = "";
+                    transaction.tr_collection_id = "";
+                    transaction.tr_pyament_id = "";
+
+                    dbManager.insertTransaction(transaction);
 
                     for (int i = 0; i < arrItem.size(); i++) {
                         String current = dbManager.getBottleQty(arrItem.get(i).item_code);
@@ -346,13 +368,13 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     }
 
 
-                } else if (type.equals("norm")) {
-                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-                } else if (type.equals("custody")) {
-                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-                } else if (type.equals("Order")) {
-                    dbManager.insertTransaction("Order Created", date, time);
-                }
+//                } else if (type.equals("norm")) {
+//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
+//                } else if (type.equals("custody")) {
+//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
+//                } else if (type.equals("Order")) {
+//                    dbManager.insertTransaction("Order Created", date, time);
+//                }
 
                 if (isCoupon.equals("yes")) {
                     deleteDialog.dismiss();
@@ -413,12 +435,23 @@ public class PreOrderRequestActivity extends AppCompatActivity {
     ArrayList<Item> arrItem = new ArrayList<>();
     double price;
     ArrayList<String> barCodeArr;
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
 
-            Log.d("", "=========== broadcat receiver : " + intent.getStringExtra("message"));
             Item item = intent.getParcelableExtra("item");
+
+            for (int i = 0; i < itemList.size(); i++) {
+                if (itemList.get(i).item_code.equals(item.item_code)) {
+                    itemList.get(i).item_qty = item.item_qty;
+                }
+            }
+
+
+
+            Log.d("", "=========== broadcat receiver : " + intent.getStringExtra("message"));
+//            Item item = intent.getParcelableExtra("item");
             barCodeArr = intent.getStringArrayListExtra("barcodeArr");
             arrItem.add(item);
 
@@ -488,8 +521,23 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             }
 
         }
+
+
+
+
+
     };
 
+
+
+    protected void onResume()// Enter from Bottom to Top
+    {
+        super.onResume();
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+
+        recyclerAdapter.notifyDataChanged();
+
+    }
 
     private BroadcastReceiver broadcastReceiver2 = new BroadcastReceiver() {
         @Override

@@ -110,7 +110,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
 
         mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        mTitle.setText(getCurrentDate());
+//        mTitle.setText(getCurrentDate());
+        mTitle.setText("Customers");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

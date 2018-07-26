@@ -89,7 +89,6 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         }
 
 
-
         txt_credit_days.setText(customer.cust_payment_term);
         txt_credit_days.setText(customer.cust_credit_limit);
 
@@ -293,7 +292,6 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         isStockCaptured = dbManager.getCustStockCaptured(customer.cust_num);
 
 
-
         if (isStockCaptured.equals("1")) {
 
 //            fam.setSelected(true);
@@ -313,7 +311,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         itemList.clear();
 
 
-        itemListTransaction = dbManager.getAllTransactions();
+        itemListTransaction = dbManager.getAllTransactionsForCustomer(customer.cust_num);
 
         boolean flag1 = false, flag2 = false;
 
@@ -322,16 +320,50 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 
                 feed = new Feed();
 
-                if (itemListTransaction.get(i).date.equals(UtilApp.getCurrentDate())) {
+                if (itemListTransaction.get(i).tr_date_time.equals(UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime())) {
                     if (!flag1) {
                         feed.type = 1;
                         feed.date = "Today";
                         flag1 = true;
                         i--;
                     } else {
-                        feed.name = itemListTransaction.get(i).act;
-                        feed.desc = itemListTransaction.get(i).date + " " + itemListTransaction.get(i).time;
                         feed.type = 2;
+                        feed.desc = itemListTransaction.get(i).tr_date_time;
+
+
+                        switch (itemListTransaction.get(i).tr_type) {
+                            case Constant.TRANSACTION_TYPES.TT_CASH_COLLECTION:
+                                feed.name = "Cash collection created";
+                                feed.inv_no = "Collection id: "+itemListTransaction.get(i).tr_collection_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_CREDIT_COLLECTION:
+                                feed.name = "Credit collection created";
+                                feed.inv_no ="Collection id: "+ itemListTransaction.get(i).tr_collection_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CASH:
+                                feed.name = "Payment done by cash.";
+                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CHEQUE:
+                                feed.name = "Payment done by cheque.";
+                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_STOCK_CAP:
+                                feed.name = "Stock captured.";
+                                feed.inv_no = "";
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED :
+                                feed.name = "Sales created.";
+                                feed.inv_no = "Invoice id: "+itemListTransaction.get(i).tr_invoice_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
+                                feed.name = "Order created.";
+                                feed.inv_no = "Order id: "+itemListTransaction.get(i).tr_order_id;
+                                break;
+
+                            default:
+                        }
+
                     }
 
                     itemList.add(feed);
@@ -344,7 +376,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 
                 feed = new Feed();
 
-                if (itemListTransaction.get(i).date.equals(UtilApp.getCurrentDate())) {
+                if (itemListTransaction.get(i).tr_date_time.equals(UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime())) {
 
                 } else {
                     if (!flag2) {
@@ -353,14 +385,46 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                         flag2 = true;
                         i--;
                     } else {
-                        feed.name = itemListTransaction.get(i).act;
-                        feed.desc = itemListTransaction.get(i).date + " " + itemListTransaction.get(i).time;
                         feed.type = 2;
+                        feed.desc = itemListTransaction.get(i).tr_date_time;
+//                        feed.inv_no = itemListTransaction.get(i).tr_collection_id;
+
+                        switch (itemListTransaction.get(i).tr_type) {
+                            case Constant.TRANSACTION_TYPES.TT_CASH_COLLECTION:
+                                feed.name = "Cash collection created";
+                                feed.inv_no = "Collection id: "+itemListTransaction.get(i).tr_collection_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_CREDIT_COLLECTION:
+                                feed.name = "Credit collection created";
+                                feed.inv_no ="Collection id: "+ itemListTransaction.get(i).tr_collection_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CASH:
+                                feed.name = "Payment done by cash.";
+                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_PAYMENT_BY_CHEQUE:
+                                feed.name = "Payment done by cheque.";
+                                feed.inv_no = "Payment id: "+itemListTransaction.get(i).tr_pyament_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_STOCK_CAP:
+                                feed.name = "Stock captured.";
+                                feed.inv_no = "";
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED :
+                                feed.name = "Sales created.";
+                                feed.inv_no = "Invoice id: "+itemListTransaction.get(i).tr_invoice_id;
+                                break;
+                            case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
+                                feed.name = "Order created.";
+                                feed.inv_no = "Order id: "+itemListTransaction.get(i).tr_order_id;
+                                break;
+
+                            default:
+                        }
                     }
                     itemList.add(feed);
                 }
             }
-
         }
 
 

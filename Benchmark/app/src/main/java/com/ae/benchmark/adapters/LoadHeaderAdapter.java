@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
 import com.ae.benchmark.activities.ItemsListActivity;
+import com.ae.benchmark.activities.SelectCustomerListMainActivity;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Load;
 
@@ -21,8 +23,8 @@ import java.util.List;
 import java.util.Random;
 
 /*
-* RecyclerView Adapter that allows to add a header view.
-* */
+ * RecyclerView Adapter that allows to add a header view.
+ * */
 public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 2;
@@ -32,10 +34,12 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     boolean isLoading = false, isMoreDataAvailable = true;
     Random rand = new Random();
     private List<Load> mItemList;
+    DBManager dbManager;
 
     public LoadHeaderAdapter(List<Load> itemList, Context context) {
         this.mItemList = itemList;
         mContext = context;
+        dbManager = new DBManager(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -65,10 +69,18 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, ItemsListActivity.class);
-                i.putExtra("load_no", load.load_no);
-                i.putExtra("isBack", "No");
-                mContext.startActivity(i);
+                dbManager.open();
+                if (dbManager.checkIsNotVerified()) {
+                    Intent i = new Intent(mContext, ItemsListActivity.class);
+                    i.putExtra("load_no", load.load_no);
+                    i.putExtra("isBack", "No");
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, SelectCustomerListMainActivity.class);
+//                    i.putExtra("load_no", load.load_no);
+//                    i.putExtra("isBack", "No");
+                    mContext.startActivity(i);
+                }
             }
         });
 
@@ -119,7 +131,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash= (TextView) parent.findViewById(R.id.txt_cash);
+            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }
