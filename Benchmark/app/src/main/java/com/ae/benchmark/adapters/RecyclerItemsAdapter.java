@@ -138,7 +138,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                 } catch (Exception e) {
                     edt_act_qty.removeTextChangedListener(this);
-                    edt_act_qty.setText("0");
+                    edt_act_qty.setText("");
                     edt_act_qty.addTextChangedListener(this);
                     edt_qty.setText(item.item_qty);
                 }
@@ -153,20 +153,25 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) {
                 //your business logic
 
-                if (!item.item_qty.equals(edt_qty.getText().toString())) {
-                    Toast.makeText(context, "Update load this load item", Toast.LENGTH_SHORT).show();
+                if (edt_act_qty.getText().toString().equals("")) {
+                    edt_act_qty.setError("Please enter actual qty");
+                    edt_act_qty.requestFocus();
+                } else {
+                    if (!item.item_qty.equals(edt_qty.getText().toString())) {
+                        Toast.makeText(context, "Update load this load item", Toast.LENGTH_SHORT).show();
 
-                    db.open();
-                    db.updateLoadItemQty(item.load_no, item.item_code, edt_qty.getText().toString());
+                        db.open();
+                        db.updateLoadItemQty(item.load_no, item.item_code, edt_act_qty.getText().toString());
 //                    db.updateUnLoadItemQty(item.load_no, item.item_code, edt_qty.getText().toString());
 
-                    intent.putExtra("load_no", item.load_no);
-                    context.sendBroadcast(intent);
+                        intent.putExtra("load_no", item.load_no);
+                        context.sendBroadcast(intent);
 
+                    }
+
+                    deleteDialog.dismiss();
                 }
 
-
-                deleteDialog.dismiss();
             }
         });
 
