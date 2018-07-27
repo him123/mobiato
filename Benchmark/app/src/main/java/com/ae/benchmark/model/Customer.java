@@ -29,6 +29,7 @@ public class Customer implements Parcelable {
     public String cust_sale;
     public String cust_order;
     public String cust_collection;
+    public String cust_created_date;
 
     public Customer() {
     }
@@ -177,6 +178,14 @@ public class Customer implements Parcelable {
         this.cust_collection = cust_collection;
     }
 
+    public String getCust_created_date() {
+        return cust_created_date;
+    }
+
+    public void setCust_created_date(String cust_created_date) {
+        this.cust_created_date = cust_created_date;
+    }
+
     protected Customer(Parcel in) {
         cust_num = in.readString();
         cust_name_en = in.readString();
@@ -197,6 +206,7 @@ public class Customer implements Parcelable {
         cust_sale = in.readString();
         cust_order = in.readString();
         cust_collection = in.readString();
+        cust_created_date = in.readString();
     }
 
     @Override
@@ -225,6 +235,7 @@ public class Customer implements Parcelable {
         dest.writeString(cust_sale);
         dest.writeString(cust_order);
         dest.writeString(cust_collection);
+        dest.writeString(cust_created_date);
     }
 
     @SuppressWarnings("unused")

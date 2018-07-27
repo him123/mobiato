@@ -27,7 +27,9 @@ import com.ae.benchmark.activities.FragmentContainActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.RecentCustomer;
+import com.ae.benchmark.util.UtilApp;
 import com.github.ivbaranov.mli.MaterialLetterIcon;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +93,7 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
         holder.txt_tel.setText("tel: " + customer.cust_address);
         holder.txt_cust_id.setText(customer.cust_num);
 
-        if (position == 2 || position == 5) {
+        if (customer.getCust_created_date().equals(UtilApp.getCurrentDate())){
             holder.iv_color.setImageResource(R.drawable.ic_mark_yellow);
             holder.rl_new.setVisibility(View.VISIBLE);
         } else {
@@ -310,7 +312,7 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
 
                 recentCustomer.setCustomer_id(customer.cust_num);
                 recentCustomer.setCustomer_name(customer.cust_name_en);
-                recentCustomer.setDate_time("");
+                recentCustomer.setDate_time(UtilApp.getCurrentDate());
                 db.insertRecentCustomer(recentCustomer);
                 mContext.startActivity(i);
 

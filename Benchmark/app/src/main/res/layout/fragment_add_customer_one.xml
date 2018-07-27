@@ -16,15 +16,15 @@
 
 
         <EditText
-            android:id="@+id/edtTradeName"
+            android:id="@+id/edtCustomerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="Customer Name"
             android:inputType="text"/>
 
 
         <EditText
-            android:id="@+id/edtArea"
+            android:id="@+id/edtDistCh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -33,7 +33,7 @@
 
 
         <EditText
-            android:id="@+id/edtStreet"
+            android:id="@+id/edtDiv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -42,7 +42,7 @@
 
 
         <EditText
-            android:id="@+id/edtEmail"
+            android:id="@+id/edtSalesOrg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -51,12 +51,12 @@
 
 
         <EditText
-            android:id="@+id/edtMobile"
+            android:id="@+id/edtCreditLim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Address"
-            android:inputType="text"/>
+            android:hint="Credit Limit"
+            android:inputType="number"/>
 
 
     </LinearLayout>

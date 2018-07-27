@@ -22,14 +22,10 @@ import butterknife.InjectView;
 public class FragmentAddCustTwo extends Fragment {
 
 
-    @InjectView(R.id.edtCrNum)
-    EditText edtCrNum;
-    @InjectView(R.id.edtCrExpDate)
-    EditText edtCrExpDate;
-    @InjectView(R.id.edtIqmaNo)
-    EditText edtIqmaNo;
-    @InjectView(R.id.edtIqamExpDate)
-    EditText edtIqamExpDate;
+    public static EditText edtAvailBal;
+    public static EditText edtPayTerm;
+    public static EditText edtAddress;
+    public static EditText edtCustType;
 
     public FragmentAddCustTwo() {
         // Required empty public constructor
@@ -47,7 +43,12 @@ public class FragmentAddCustTwo extends Fragment {
         View v = inflater.inflate(R.layout.fragment_add_customer_two, container, false);
         ButterKnife.inject(this, v);
 
-        edtCrNum.addTextChangedListener(new TextWatcher() {
+        edtAvailBal = v.findViewById(R.id.edtAvailBal);
+        edtPayTerm = v.findViewById(R.id.edtPayTerm);
+        edtAddress = v.findViewById(R.id.edtAddress);
+        edtCustType = v.findViewById(R.id.edtCustType);
+
+        edtAvailBal.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -59,15 +60,15 @@ public class FragmentAddCustTwo extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtCrNum.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtCrNum = edtCrNum.getText().toString();
+                if (!edtAvailBal.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtAvailBal = edtAvailBal.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtCrNum = "";
+                    Constant.NEW_CUSTOMER.edtAvailBal = "";
                 }
             }
         });
 
-        edtCrExpDate.addTextChangedListener(new TextWatcher() {
+        edtPayTerm.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -79,15 +80,15 @@ public class FragmentAddCustTwo extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtCrExpDate.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtCrExpDate = edtCrExpDate.getText().toString();
+                if (!edtPayTerm.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtPayTerm = edtPayTerm.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtCrExpDate = "";
+                    Constant.NEW_CUSTOMER.edtPayTerm = "";
                 }
             }
         });
 
-        edtIqmaNo.addTextChangedListener(new TextWatcher() {
+        edtAddress.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -99,15 +100,15 @@ public class FragmentAddCustTwo extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtIqmaNo.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtIqmaNo = edtIqmaNo.getText().toString();
+                if (!edtAddress.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtAddress = edtAddress.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtIqmaNo = "";
+                    Constant.NEW_CUSTOMER.edtAddress = "";
                 }
             }
         });
 
-        edtIqamExpDate.addTextChangedListener(new TextWatcher() {
+        edtCustType.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -119,10 +120,10 @@ public class FragmentAddCustTwo extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtIqamExpDate.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtIqamExpDate = edtIqamExpDate.getText().toString();
+                if (!edtCustType.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtCustType = edtCustType.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtIqamExpDate = "";
+                    Constant.NEW_CUSTOMER.edtCustType = "";
                 }
             }
         });

@@ -11,6 +11,8 @@ public class Constant {
     // Newly Final created production
     public static String URL = "http://192.254.133.11/~staging/newproject/";
 
+    public static String checkBoxValue = "";
+    public static String checkBoxFalse = "no";
     public static class SHRED_PR {
         public static final String SHARE_PREF = AppNameSuper + "_preferences";
 
@@ -47,14 +49,14 @@ public class Constant {
     }
 
     public static class NEW_CUSTOMER {
-        public static  String edtTradeName = "edtTradeName";
-        public static  String edtArea = "edtArea";
-        public static  String edtStreet = "edtStreet";
-        public static  String edtEmail = "edtEmail";
-        public static  String edtMobile = "edtMobile";
-        public static  String edtCrNum = "edtCrNum";
-        public static  String edtCrExpDate = "edtCrExpDate";
-        public static  String edtIqmaNo = "edtIqmaNo";
-        public static  String edtIqamExpDate = "edtIqamExpDate";
+        public static  String edtCustomerName = "edtCustomerName";
+        public static  String edtDistCh = "edtDistCh";
+        public static  String edtDiv = "edtDiv";
+        public static  String edtSalesOrg = "edtSalesOrg";
+        public static  String edtCreditLim = "edtCreditLim";
+        public static  String edtAvailBal = "edtAvailBal";
+        public static  String edtPayTerm = "edtPayTerm";
+        public static  String edtAddress = "edtAddress";
+        public static  String edtCustType = "edtCustType";
     }
 }

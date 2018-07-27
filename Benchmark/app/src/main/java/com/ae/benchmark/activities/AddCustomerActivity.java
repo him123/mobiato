@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +21,7 @@ import com.ae.benchmark.fragments.FragmentAddCustOne;
 import com.ae.benchmark.fragments.FragmentAddCustTwo;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.util.UtilApp;
 
 import java.util.Timer;
 
@@ -64,6 +64,7 @@ public class AddCustomerActivity extends AppCompatActivity {
 
     int current = 0;
     DBManager db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,15 +137,53 @@ public class AddCustomerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (current < 1) {
-                    current++;
-                    viewPager.setCurrentItem(current);
+
+                    if (FragmentAddCustOne.edtCustomerName.getText().toString().equals("")) {
+                        FragmentAddCustOne.edtCustomerName.setError("Can not be blank");
+                        FragmentAddCustOne.edtCustomerName.requestFocus();
+                    } else if (FragmentAddCustOne.edtDistCh.getText().toString().equals("")) {
+                        FragmentAddCustOne.edtDistCh.setError("Can not be blank");
+                        FragmentAddCustOne.edtDistCh.requestFocus();
+                    } else if (FragmentAddCustOne.edtDiv.getText().toString().equals("")) {
+                        FragmentAddCustOne.edtDiv.setError("Can not be blank");
+                        FragmentAddCustOne.edtDiv.requestFocus();
+                    } else if (FragmentAddCustOne.edtSalesOrg.getText().toString().equals("")) {
+                        FragmentAddCustOne.edtSalesOrg.setError("Can not be blank");
+                        FragmentAddCustOne.edtSalesOrg.requestFocus();
+                    } else if (FragmentAddCustOne.edtCreditLim.getText().toString().equals("")) {
+                        FragmentAddCustOne.edtCreditLim.setError("Can not be blank");
+                        FragmentAddCustOne.edtCreditLim.requestFocus();
+                    } else {
+                        current++;
+                        viewPager.setCurrentItem(current);
+                    }
+
                 } else {
-                    db = new DBManager(getApplicationContext());
-                    db.insertCustomer("49" , Constant.NEW_CUSTOMER.edtTradeName , "" ,
-                            Constant.NEW_CUSTOMER.edtArea , Constant.NEW_CUSTOMER.edtStreet , Constant.NEW_CUSTOMER.edtEmail ,
-                            "5000" , "300" , "35" , Constant.NEW_CUSTOMER.edtMobile ,
-                            "credit" , "8" , "15" , "43.104137" , "43.104137");
-                    onBackPressed();
+
+                    if (FragmentAddCustTwo.edtAvailBal.getText().toString().equals("")) {
+                        FragmentAddCustTwo.edtAvailBal.setError("Can not be blank");
+                        FragmentAddCustTwo.edtAvailBal.requestFocus();
+                    } else if (FragmentAddCustTwo.edtPayTerm.getText().toString().equals("")) {
+                        FragmentAddCustTwo.edtPayTerm.setError("Can not be blank");
+                        FragmentAddCustTwo.edtPayTerm.requestFocus();
+                    } else if (FragmentAddCustTwo.edtAddress.getText().toString().equals("")) {
+                        FragmentAddCustTwo.edtAddress.setError("Can not be blank");
+                        FragmentAddCustTwo.edtAddress.requestFocus();
+                    } else if (FragmentAddCustTwo.edtCustType.getText().toString().equals("")) {
+                        FragmentAddCustTwo.edtCustType.setError("Can not be blank");
+                        FragmentAddCustTwo.edtCustType.requestFocus();
+                    } else {
+                        db = new DBManager(getApplicationContext());
+                        db.insertCustomer("", Constant.NEW_CUSTOMER.edtCustomerName, "",
+                                Constant.NEW_CUSTOMER.edtDistCh, Constant.NEW_CUSTOMER.edtDiv, Constant.NEW_CUSTOMER.edtSalesOrg,
+                                Constant.NEW_CUSTOMER.edtCreditLim, Constant.NEW_CUSTOMER.edtAvailBal, Constant.NEW_CUSTOMER.edtPayTerm, Constant.NEW_CUSTOMER.edtAddress,
+                                Constant.NEW_CUSTOMER.edtCustType, "0"
+                                , "0", "43.104137", "43.104137",
+                                UtilApp.getCurrentDate());
+
+                        onBackPressed();
+                    }
+
                 }
             }
         });

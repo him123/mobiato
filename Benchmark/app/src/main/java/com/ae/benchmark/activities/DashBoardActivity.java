@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.fragments.DashboardFragment;
+import com.ae.benchmark.fragments.FragmentAudit;
 import com.ae.benchmark.fragments.FragmentCustomerSelection;
 import com.ae.benchmark.fragments.FragmentDashboardOne;
 import com.ae.benchmark.fragments.FragmentManageInventory;
@@ -64,6 +65,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_SUGGESTIONS = "suggestions";
     private static final String TAG_RATE_APP = "RATE_APP";
+    private static final String TAG_DATAPOSTING_AUDIT = "Datapostiong Audit";
     //new
     private static final String TAG_SHARE_APP = "SHARE_APP";
     // index to identify current nav menu item
@@ -184,10 +186,11 @@ public class DashBoardActivity extends AppCompatActivity {
         else
             nav_itemSa.setEnabled(false);
 
-        if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
+        nav_itemDa.setEnabled(true);
+        /*if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
             nav_itemDa.setEnabled(true);
         else
-            nav_itemDa.setEnabled(false);
+            nav_itemDa.setEnabled(false);*/
     }
 
     /***
@@ -332,7 +335,7 @@ public class DashBoardActivity extends AppCompatActivity {
 //                return dailyActivityFragment;
             case 4:
                 // DATA POSTING AUDIT
-                FragmentSales employeeCodeSearchFragment = new FragmentSales();
+                FragmentAudit employeeCodeSearchFragment = new FragmentAudit();
                 return employeeCodeSearchFragment;
             case 7:
 //                // CATALOGUE
@@ -512,10 +515,11 @@ public class DashBoardActivity extends AppCompatActivity {
                 else
                     nav_itemSa.setEnabled(false);
 
-                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
+                nav_itemDa.setEnabled(true);
+                /*if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
                     nav_itemDa.setEnabled(true);
                 else
-                    nav_itemDa.setEnabled(false);
+                    nav_itemDa.setEnabled(false);*/
             }
         };
 

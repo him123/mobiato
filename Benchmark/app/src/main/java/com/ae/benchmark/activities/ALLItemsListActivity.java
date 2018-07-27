@@ -146,6 +146,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+//<<<<<<< HEAD
 
                 if (with_laod.equals("yes")) {
 
@@ -268,6 +269,68 @@ public class ALLItemsListActivity extends AppCompatActivity {
 
                 }
 
+//=======
+//                dbManager.insertOrderItems(
+//                        newItemArr,
+//                        ordId + "",
+//                        UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID),
+//                        customer.cust_num, tot+"", UtilApp.getCurrentDate());
+//
+//                //INSERT TRANSACTION
+//                Transaction transaction = new Transaction();
+//
+//                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_OREDER_CREATED;
+//                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+//                transaction.tr_customer_num = customer.cust_num;
+//                transaction.tr_customer_name = customer.cust_name_en;
+//                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
+//                transaction.tr_invoice_id = ordId+"";
+//                transaction.tr_order_id = "";
+//                transaction.tr_collection_id = "";
+//                transaction.tr_pyament_id = "";
+//                transaction.tr_is_posted = "No";
+//
+//                dbManager.insertTransaction(transaction);
+//
+//                //CREATING INVOICE FOR ORDER
+//                SalesInvoice salesInvoice = new SalesInvoice();
+//
+//                long lastInvId = dbManager.getLastInvoiceID();
+////                long lastCollId = dbManager.getLastCollectionID();
+//                int invNum = (int) lastInvId + 1;
+////                int CollNum = (int) lastCollId + 1;
+//                salesInvoice.inv_no = "" + invNum;
+//                salesInvoice.inv_type = "Order";
+//                salesInvoice.inv_type_code = "02";
+//                salesInvoice.cust_code = customer.cust_num;
+//                salesInvoice.cust_sales_org = customer.cust_sales_org;
+//                salesInvoice.cust_dist_channel = customer.cust_dist_channel;
+//                salesInvoice.cust_division = customer.cust_division;
+//                salesInvoice.inv_date = UtilApp.getCurrentDate();
+//                salesInvoice.del_date = UtilApp.getCurrentDate();
+//                salesInvoice.cust_name_en = customer.cust_name_en;
+//                salesInvoice.tot_amnt_sales = "" + tot;
+//                salesInvoice.inv_header_dis_val = "0";
+//                salesInvoice.inv_header_dis_per = "0";
+//                salesInvoice.inv_header_vat_val = "0";
+//                salesInvoice.inv_header_vat_per = "0";
+//
+//                dbManager.insertSalesInvoiceHeader(salesInvoice);
+//
+//
+//                new SweetAlertDialog(ALLItemsListActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+//                        .setTitleText("Done!")
+//                        .setContentText("Your order created successfully!")
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                                dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
+//                                finish();
+//                            }
+//                        })
+//                        .show();
+//>>>>>>> 3ed8b975f5cd6631c08cc7c31d0f2649c029422b
 
             }
         });

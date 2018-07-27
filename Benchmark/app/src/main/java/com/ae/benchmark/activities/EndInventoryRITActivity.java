@@ -11,8 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,8 @@ public class EndInventoryRITActivity extends AppCompatActivity {
     @InjectView(R.id.fab)
     FloatingActionButton fab;
 
+    public static CheckBox checkbox;
+
     RecyclerItemsUnloadAdapter recyclerAdapter;
 
     List<Item> itemList;
@@ -52,7 +55,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
     LinearLayoutManager mLayoutManager;
     DBManager dbManager;
     public static final String BROADCAST_ACTION_END_INVENTORY = "com.benchmark.CHECKIN_END_INVENTORY";
-//    String load_no;
+    //    String load_no;
 //    String isBack;
     Intent intent;
 
@@ -62,6 +65,8 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         setContentView(R.layout.activity_items_list);
         ButterKnife.inject(this);
 
+        checkbox = findViewById(R.id.checkbox);
+        checkbox.setVisibility(View.VISIBLE);
         intent = new Intent(BROADCAST_ACTION_END_INVENTORY);
 
 //        Bundle extras = getIntent().getExtras();
@@ -140,6 +145,22 @@ public class EndInventoryRITActivity extends AppCompatActivity {
                 }
             }
         });
+
+        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (Constant.checkBoxFalse.equals("no")){
+                    if (isChecked){
+                        Constant.checkBoxValue = "true";
+                        recyclerAdapter.notifyDataChanged();
+                    } else {
+                        Constant.checkBoxValue = "false";
+                        recyclerAdapter.notifyDataChanged();
+                    }
+                }
+
+            }
+        });
     }
 
 
@@ -147,7 +168,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
     {
         super.onResume();
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-
+        Constant.checkBoxValue = "";
         itemList.clear();
         dbManager.open();
         itemList = dbManager.getVanStock();
@@ -198,6 +219,8 @@ public class EndInventoryRITActivity extends AppCompatActivity {
 //            arrCheckedQty.add(item.item_qty);
 
             recyclerAdapter.notifyDataChanged();
+
+            Constant.checkBoxValue = "";
         }
     };
 
@@ -215,7 +238,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
 //                        "test: " + intent.getStringExtra("item_code") + " added", Toast.LENGTH_SHORT).show();
             } else {
                 arrCheckedItems.remove(intent.getStringExtra("item_code"));
-                arrCheckedQty.add(intent.getStringExtra("item_qty"));
+                arrCheckedQty.remove(intent.getStringExtra("item_qty"));
 //                Toast.makeText(EndInventoryRITActivity.this,
 //                        "test: " + intent.getStringExtra("item_code") + " removed", Toast.LENGTH_SHORT).show();
             }

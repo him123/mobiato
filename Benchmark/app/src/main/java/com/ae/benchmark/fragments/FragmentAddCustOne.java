@@ -23,16 +23,11 @@ import butterknife.InjectView;
 public class FragmentAddCustOne extends Fragment {
 
 
-    @InjectView(R.id.edtTradeName)
-    EditText edtTradeName;
-    @InjectView(R.id.edtArea)
-    EditText edtArea;
-    @InjectView(R.id.edtStreet)
-    EditText edtStreet;
-    @InjectView(R.id.edtEmail)
-    EditText edtEmail;
-    @InjectView(R.id.edtMobile)
-    EditText edtMobile;
+    public static EditText edtCustomerName;
+    public static EditText edtDistCh;
+    public static EditText edtDiv;
+    public static EditText edtSalesOrg;
+    public static EditText edtCreditLim;
     @InjectView(R.id.btn_next)
     Button btnNext;
     @InjectView(R.id.btn_skip)
@@ -54,7 +49,13 @@ public class FragmentAddCustOne extends Fragment {
         View v = inflater.inflate(R.layout.fragment_add_customer_one, container, false);
         ButterKnife.inject(this, v);
 
-        edtTradeName.addTextChangedListener(new TextWatcher() {
+        edtCustomerName = v.findViewById(R.id.edtCustomerName);
+        edtDistCh = v.findViewById(R.id.edtDistCh);
+        edtDiv = v.findViewById(R.id.edtDiv);
+        edtSalesOrg = v.findViewById(R.id.edtSalesOrg);
+        edtCreditLim = v.findViewById(R.id.edtCreditLim);
+
+        edtCustomerName.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -66,15 +67,15 @@ public class FragmentAddCustOne extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtTradeName.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtTradeName = edtTradeName.getText().toString();
+                if (!edtCustomerName.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtCustomerName = edtCustomerName.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtTradeName = "";
+                    Constant.NEW_CUSTOMER.edtCustomerName = "";
                 }
             }
         });
 
-        edtArea.addTextChangedListener(new TextWatcher() {
+        edtDistCh.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -86,15 +87,15 @@ public class FragmentAddCustOne extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtArea.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtArea = edtArea.getText().toString();
+                if (!edtDistCh.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtDistCh = edtDistCh.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtArea = "";
+                    Constant.NEW_CUSTOMER.edtDistCh = "";
                 }
             }
         });
 
-        edtStreet.addTextChangedListener(new TextWatcher() {
+        edtDiv.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -106,15 +107,15 @@ public class FragmentAddCustOne extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtStreet.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtStreet = edtStreet.getText().toString();
+                if (!edtDiv.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtDiv = edtDiv.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtStreet = "";
+                    Constant.NEW_CUSTOMER.edtDiv = "";
                 }
             }
         });
 
-        edtEmail.addTextChangedListener(new TextWatcher() {
+        edtSalesOrg.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -126,15 +127,15 @@ public class FragmentAddCustOne extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtEmail.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtEmail = edtEmail.getText().toString();
+                if (!edtSalesOrg.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtSalesOrg = edtSalesOrg.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtEmail = "";
+                    Constant.NEW_CUSTOMER.edtSalesOrg = "";
                 }
             }
         });
 
-        edtMobile.addTextChangedListener(new TextWatcher() {
+        edtCreditLim.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -146,10 +147,10 @@ public class FragmentAddCustOne extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!edtMobile.getText().toString().equals("")){
-                    Constant.NEW_CUSTOMER.edtMobile = edtMobile.getText().toString();
+                if (!edtCreditLim.getText().toString().equals("")){
+                    Constant.NEW_CUSTOMER.edtCreditLim = edtCreditLim.getText().toString();
                 } else {
-                    Constant.NEW_CUSTOMER.edtMobile = "";
+                    Constant.NEW_CUSTOMER.edtCreditLim = "";
                 }
             }
         });

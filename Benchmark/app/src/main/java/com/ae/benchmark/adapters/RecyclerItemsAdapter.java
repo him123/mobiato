@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,10 +104,46 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
         spinner2.setAdapter(dataAdapter);
         TextView txt_name = (TextView) deleteDialogView.findViewById(R.id.txt_name);
         final EditText edt_qty = (EditText) deleteDialogView.findViewById(R.id.edt_qty);
+        final EditText edt_act_qty = (EditText) deleteDialogView.findViewById(R.id.edt_act_qty);
 
         txt_name.setText(item.item_name_en);
-        edt_qty.setText(item.item_qty);
+        edt_qty.setText("0");
+        edt_act_qty.setText(item.item_qty);
 
+        edt_act_qty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                try {
+                    int edtAct = Integer.parseInt(edt_act_qty.getText().toString());
+                    int total = Integer.parseInt(item.item_qty);
+
+                    if (edtAct > total) {
+                        edt_act_qty.removeTextChangedListener(this);
+                        edt_act_qty.setText(item.item_qty);
+                        edt_act_qty.addTextChangedListener(this);
+                        edt_qty.setText("0");
+                    } else {
+                        edt_qty.setText(String.valueOf(total - edtAct));
+                    }
+                } catch (Exception e) {
+                    edt_act_qty.removeTextChangedListener(this);
+                    edt_act_qty.setText("0");
+                    edt_act_qty.addTextChangedListener(this);
+                    edt_qty.setText(item.item_qty);
+                }
+            }
+        });
         final AlertDialog deleteDialog = new AlertDialog.Builder(context).create();
         deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deleteDialog.setView(deleteDialogView);
