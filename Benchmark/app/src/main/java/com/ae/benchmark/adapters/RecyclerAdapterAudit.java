@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.model.Transaction;
+import com.ae.benchmark.util.Constant;
 
 import java.util.List;
 
@@ -42,10 +44,33 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
 
         final Transaction item = mItemList.get(position);
 
-        holder.txtType.setText(item.tr_type);
-        holder.txtInvoiceNo.setText(item.tr_invoice_id);
-        holder.txtIsPosted.setText(item.tr_is_posted);
 
+        if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_STOCK_CAP)){
+            holder.txtType.setText("Stock Captured");
+            holder.llInvoice.setVisibility(View.GONE);
+            holder.txtIsPosted.setText(item.tr_is_posted);
+        } else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_SALES_CREATED)){
+            holder.txtType.setText("SALE");
+            holder.llInvoice.setVisibility(View.VISIBLE);
+            holder.txtInvoiceNo.setText("INV " + item.tr_invoice_id);
+            holder.txtIsPosted.setText(item.tr_is_posted);
+        } else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_OREDER_CREATED)){
+            holder.txtType.setText("ORDER");
+            holder.llInvoice.setVisibility(View.VISIBLE);
+            holder.txtInvoice.setText("Order No.:");
+            holder.txtInvoiceNo.setText("ORD " + item.tr_invoice_id);
+            holder.txtIsPosted.setText(item.tr_is_posted);
+        }  else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_LOAD_CONF)){
+            holder.txtType.setText("LOAD CONFIRMED");
+            holder.llInvoice.setVisibility(View.GONE);
+            holder.txtIsPosted.setText(item.tr_is_posted);
+        }  else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_LOAD_CREATE)){
+            holder.txtType.setText("LOAD CREATED");
+            holder.llInvoice.setVisibility(View.GONE);
+            holder.txtIsPosted.setText(item.tr_is_posted);
+        }
+
+        holder.txtIsPosted.setText("No");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +92,8 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtType , txtInvoiceNo , txtIsPosted;
+        public LinearLayout llInvoice;
+        public TextView txtInvoice;
 
         public ImageView imgVerified;
 
@@ -77,6 +104,8 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
             txtType = (TextView) parent.findViewById(R.id.txtType);
             txtInvoiceNo = (TextView) parent.findViewById(R.id.txtInvoiceNo);
             txtIsPosted = (TextView) parent.findViewById(R.id.txtIsPosted);
+            llInvoice = (LinearLayout) parent.findViewById(R.id.llInvoice);
+            txtInvoice = (TextView) parent.findViewById(R.id.txtInvoice);
 
         }
     }

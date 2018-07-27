@@ -103,11 +103,10 @@ public class ItemsListActivity extends AppCompatActivity {
                 dbManager.open();
                 dbManager.insertVanStockArr(itemList, load_no);
                 if (dbManager.checkIsNotVerified()) {
-
+//                    dbManager.updateLoadVerified(load_no);
                     finish();
                 } else {
                     if (isBack.equals("No")) {
-
 
                         transaction.tr_type = Constant.TRANSACTION_TYPES.TT_LOAD_CONF;
                         transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();

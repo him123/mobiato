@@ -129,7 +129,7 @@ public class FragmentIMVUnload extends Fragment {
         btn_checkin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "uload", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "uload", Toast.LENGTH_SHORT).show();
 
                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISJPLOADED, false);

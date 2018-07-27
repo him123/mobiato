@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,10 +101,15 @@ public class RecyclerItemsAdapterForALL extends RecyclerView.Adapter<RecyclerVie
         spinner2.setAdapter(dataAdapter);
         TextView txt_name = (TextView) deleteDialogView.findViewById(R.id.txt_name);
         final EditText edt_qty = (EditText) deleteDialogView.findViewById(R.id.edt_qty);
+        final LinearLayout llVarient = (LinearLayout) deleteDialogView.findViewById(R.id.llVarient);
+        final TextView txtQty = (TextView) deleteDialogView.findViewById(R.id.txtQty);
+        final EditText edt_act_qty = (EditText) deleteDialogView.findViewById(R.id.edt_act_qty);
 
         txt_name.setText(item.item_name_en);
         edt_qty.setText(item.item_qty);
 
+        llVarient.setVisibility(View.GONE);
+        txtQty.setText("Qty");
         final AlertDialog deleteDialog = new AlertDialog.Builder(context).create();
         deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deleteDialog.setView(deleteDialogView);
@@ -120,14 +126,21 @@ public class RecyclerItemsAdapterForALL extends RecyclerView.Adapter<RecyclerVie
 //                    db.updateLoadItemQty(item.load_no, item.item_code, edt_qty.getText().toString());
 ////                    db.updateUnLoadItemQty(item.load_no, item.item_code, edt_qty.getText().toString());
 //
-                intent.putExtra("item_qty", edt_qty.getText().toString());
-                intent.putExtra("item_code", item.item_code);
-                context.sendBroadcast(intent);
+                if (edt_act_qty.getText().toString().equals("")){
+                    edt_act_qty.setError("Please enter qty");
+                    edt_act_qty.requestFocus();
+                } else {
+                    intent.putExtra("item_qty", edt_act_qty.getText().toString());
+                    intent.putExtra("item_code", item.item_code);
+                    context.sendBroadcast(intent);
+                    deleteDialog.dismiss();
+                }
+
 //
 //                }
 
 
-                deleteDialog.dismiss();
+
             }
         });
 
