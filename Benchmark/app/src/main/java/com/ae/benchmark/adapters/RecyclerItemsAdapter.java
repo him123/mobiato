@@ -138,7 +138,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                 } catch (Exception e) {
                     edt_act_qty.removeTextChangedListener(this);
-                    edt_act_qty.setText("0");
+//                    edt_act_qty.setText("0");
                     edt_act_qty.addTextChangedListener(this);
                     edt_qty.setText(item.item_qty);
                 }
