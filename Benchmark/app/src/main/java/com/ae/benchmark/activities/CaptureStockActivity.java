@@ -119,30 +119,30 @@ public class CaptureStockActivity extends AppCompatActivity {
                 transaction.tr_order_id = "";
                 transaction.tr_collection_id = "";
                 transaction.tr_pyament_id = "";
+                transaction.tr_is_posted = "No";
 
                 dbManager.insertTransaction(transaction);
 
-                finish();
+                new SweetAlertDialog(CaptureStockActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Stock Captured!")
+                        .setContentText("Do you want to go to sales?")
+                        .setCancelText("Back")
+                        .setConfirmText("Yes")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                finish();
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
 
-//                new SweetAlertDialog(CaptureStockActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-//                        .setTitleText("Stock Captured!")
-//                        .setContentText("Do you want to go to sales?")
-//                        .setCancelText("Back")
-//                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                            @Override
-//                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                finish();
-//                            }
-//                        })
-//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                            @Override
-//                            public void onClick(SweetAlertDialog sDialog) {
-////                                sDialog.dismissWithAnimation();
-//
-//                                makeDilog(CaptureStockActivity.this, customer.cust_name_en, oldNew);
-//                            }
-//                        })
-//                        .show();
+                                makeDilog(CaptureStockActivity.this, customer.cust_name_en, oldNew);
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -177,6 +177,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);
                 startActivity(i);
+                finish();
             }
 //                });
 
@@ -226,6 +227,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);
                 startActivity(i);
+                finish();
             }
         });
 

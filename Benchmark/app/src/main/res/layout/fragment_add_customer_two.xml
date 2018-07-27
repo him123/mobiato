@@ -17,15 +17,15 @@
 
 
         <EditText
-            android:id="@+id/edtCrNum"
+            android:id="@+id/edtAvailBal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Available Balance"
-            android:inputType="text"/>
+            android:inputType="number"/>
 
 
         <EditText
-            android:id="@+id/edtCrExpDate"
+            android:id="@+id/edtPayTerm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -34,7 +34,7 @@
 
 
         <EditText
-            android:id="@+id/edtIqmaNo"
+            android:id="@+id/edtAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -43,11 +43,11 @@
 
 
         <EditText
-            android:id="@+id/edtIqamExpDate"
+            android:id="@+id/edtCustType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:hint="Type"
+            android:hint="Customer Type"
             android:inputType="text"/>
 
 

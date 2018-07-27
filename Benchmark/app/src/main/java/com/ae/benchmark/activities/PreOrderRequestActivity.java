@@ -219,7 +219,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
         TextView txt_sub_tot = deleteDialogView.findViewById(R.id.txt_sub_tot);
         TextView txt_vat = deleteDialogView.findViewById(R.id.txt_vat);
+        TextView txt_vat_value = deleteDialogView.findViewById(R.id.txt_vat_value);
         TextView txt_grand_tot = deleteDialogView.findViewById(R.id.txt_grand_tot);
+        TextView txtBack = deleteDialogView.findViewById(R.id.txtBack);
+        TextView txtProceed = deleteDialogView.findViewById(R.id.txtProceed);
 
         double subTot = 0;
         for (int i = 0; i < arrItem.size(); i++) {
@@ -248,8 +251,9 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         }
 
         txt_sub_tot.setText(subTot + "");
-        double vatVal = subTot * 100 / 5;
+        double vatVal = subTot * 5 / 100;
 
+        txt_vat_value.setText(vatVal + "");
         double grandTot = subTot + vatVal;
         txt_grand_tot.setText(grandTot + "");
 
@@ -262,6 +266,147 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             }
         });
 
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog.dismiss();
+            }
+        });
+
+        txtProceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO your background code
+                    }
+                });
+
+                dbManager = new DBManager(PreOrderRequestActivity.this);
+                dbManager.open();
+
+                String date = UtilApp.getCurrentDate();
+                String time = UtilApp.getCurrentTime();
+
+//                if (type.equals("cash")) {
+
+
+//                    dbManager.getBottleQty(arrItem.get(i).item_code, arrItem.get(i).item_qty);
+
+
+                //CREATING INVOICE FOR SALE
+                SalesInvoice salesInvoice = new SalesInvoice();
+
+                long lastInvId = dbManager.getLastInvoiceID();
+                long lastCollId = dbManager.getLastCollectionID();
+                int invNum = (int) lastInvId + 1;
+                int CollNum = (int) lastCollId + 1;
+                salesInvoice.inv_no = "" + invNum;
+                salesInvoice.inv_type = "Sale";
+                salesInvoice.inv_type_code = "01";
+                salesInvoice.cust_code = customer.cust_num;
+                salesInvoice.cust_sales_org = customer.cust_sales_org;
+                salesInvoice.cust_dist_channel = customer.cust_dist_channel;
+                salesInvoice.cust_division = customer.cust_division;
+                salesInvoice.inv_date = UtilApp.getCurrentDate();
+                salesInvoice.del_date = "21-02-2018";
+                salesInvoice.cust_name_en = customer.cust_name_en;
+                salesInvoice.tot_amnt_sales = "" + price;
+                salesInvoice.inv_header_dis_val = "0";
+                salesInvoice.inv_header_dis_per = "0";
+                salesInvoice.inv_header_vat_val = "0";
+                salesInvoice.inv_header_vat_per = "0";
+
+                dbManager.insertSalesInvoiceHeader(salesInvoice);
+
+
+                double dueAmt = price + 50;
+                dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
+                        customer.cust_name_en, customer.cust_type, "0",
+                        "" + price, salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date);
+
+
+                //INSERT TRANSACTION
+                Transaction transaction = new Transaction();
+
+                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_SALES_CREATED;
+                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                transaction.tr_customer_num = customer.cust_num;
+                transaction.tr_customer_name = customer.cust_name_en;
+                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(PreOrderRequestActivity.this, Constant.SHRED_PR.SALESMANID);
+                transaction.tr_invoice_id = invNum + "";
+                transaction.tr_order_id = "";
+                transaction.tr_collection_id = "";
+                transaction.tr_pyament_id = "";
+                transaction.tr_is_posted = "No";
+
+                dbManager.insertTransaction(transaction);
+
+                for (int i = 0; i < arrItem.size(); i++) {
+                    String current = dbManager.getBottleQty(arrItem.get(i).item_code);
+                    int remaining_qty = Integer.parseInt(current) - Integer.parseInt(arrItem.get(i).item_qty);
+
+                    Item item = new Item();
+                    item.sales_inv_nun = salesInvoice.inv_no;
+                    item.item_code = arrItem.get(i).item_code;
+                    item.item_name_en = arrItem.get(i).item_name_en;
+                    item.item_price = arrItem.get(i).item_price;
+                    item.item_qty = arrItem.get(i).item_qty;
+                    if (arrItem.get(i).is_empty.equals("0"))
+                        item.item_barcode = barCodeArr.get(i);
+                    else
+                        item.item_barcode = "0";
+
+                    item.item_disc_val = "0";
+                    item.item_disc_per = "0";
+                    item.item_vat_val = "0";
+                    item.item_vat_per = "0";
+
+                    dbManager.insertSalesInvoiceItem(item);
+
+                    dbManager.updateVanStock(arrItem.get(i).item_code, "" + remaining_qty);
+
+                    dbManager.updateCustomerTransactionType(customer.cust_num, "sale", "1");
+                    if (customer.cust_type.equals("credit"))
+                        dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
+
+//                        dbManager.updateUnloadVanStock(arrItem.get(i).item_code, "" + remaining_qty);
+
+                }
+
+
+//                } else if (type.equals("norm")) {
+//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
+//                } else if (type.equals("custody")) {
+//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
+//                } else if (type.equals("Order")) {
+//                    dbManager.insertTransaction("Order Created", date, time);
+//                }
+
+                if (isCoupon.equals("yes")) {
+                    deleteDialog.dismiss();
+                    finish();
+                } else {
+                    deleteDialog.dismiss();
+
+                    if (customer.cust_type.equals("cash")) {
+                        Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
+                        i.putExtra("name", custName);
+                        startActivity(i);
+
+                        finish();
+                    } else {
+                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
+                        i.putExtra("name", custName);
+                        startActivity(i);
+                        finish();
+                    }
+
+                }
+            }
+        });
         deleteDialogView.findViewById(R.id.btn_proceed).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -331,6 +476,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 transaction.tr_order_id = "";
                 transaction.tr_collection_id = "";
                 transaction.tr_pyament_id = "";
+                transaction.tr_is_posted = "No";
 
                 dbManager.insertTransaction(transaction);
 
@@ -515,7 +661,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 for (int i = 0; i < arrQty.size(); i++)
                     price += arrQty.get(i);
 
-                txt_tot.setText(price + " AED");
+                txt_tot.setText(price + " SAR");
             }
 
         }

@@ -19,6 +19,7 @@ public class Transaction implements Parcelable {
     public String tr_order_id;
     public String tr_collection_id;
     public String tr_pyament_id;
+    public String tr_is_posted;
 
 
     public Transaction() {
@@ -35,6 +36,7 @@ public class Transaction implements Parcelable {
         tr_order_id = in.readString();
         tr_collection_id = in.readString();
         tr_pyament_id = in.readString();
+        tr_is_posted = in.readString();
     }
 
     @Override
@@ -54,6 +56,7 @@ public class Transaction implements Parcelable {
         dest.writeString(tr_order_id);
         dest.writeString(tr_collection_id);
         dest.writeString(tr_pyament_id);
+        dest.writeString(tr_is_posted);
     }
 
     @SuppressWarnings("unused")

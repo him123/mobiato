@@ -26,6 +26,46 @@
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:maxEms="12"
+                android:text="Actual Qty"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/edt_act_qty"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:background="@drawable/rounded_row_cust"
+                    android:ems="3"
+                    android:hint="Cases"
+                    android:lines="1"
+                    android:inputType="number"
+                    android:padding="@dimen/_6sdp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +75,7 @@
             android:weightSum="3">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="left"
@@ -53,15 +93,17 @@
 
                 <EditText
                     android:id="@+id/edt_qty"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_6sdp"
-                    android:layout_weight="1"
                     android:background="@drawable/rounded_row_cust"
                     android:ems="3"
                     android:hint="Cases"
                     android:lines="1"
-                    android:padding="@dimen/_6sdp" />
+                    android:padding="@dimen/_6sdp"
+                    android:clickable="false"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"/>
 
 
             </LinearLayout>
@@ -78,7 +120,7 @@
             android:weightSum="3">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="left"
@@ -88,9 +130,9 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/_120sdp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_18sdp"
+                android:layout_margin="@dimen/_6sdp"
                 android:background="@drawable/rounded_row_cust"
                 android:orientation="horizontal">
 
@@ -176,7 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@color/blue"
+                android:background="@drawable/rounded_corner_green"
                 android:text="Confirm"
                 android:textColor="@color/white" />
         </RelativeLayout>

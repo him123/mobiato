@@ -113,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUST_ORDER = "cust_order";
     public static final String CUST_COLLECTION = "cust_collection";
     public static final String IS_STOCK_CAPTURED = "is_stock_captured";
+    public static final String CUST_CREATED_DATE = "cust_created_date";
 
 
     //SALES INVOICE HEADER COLUMNS
@@ -159,6 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TR_ORDER_ID = "tr_order_id";
     public static final String TR_COLLECTION_ID = "tr_collection_id";
     public static final String TR_PYAMENT_ID = "tr_pyament_id";
+    public static final String TR_IS_POSTED = "tr_is_posted";
 
     // PAYMENT Table columns
     public static final String PAYMENT_ID = "payment_id";
@@ -198,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + SALESMAN_ROUTE + " TEXT NOT NULL," + SALESMAN_VEHICLE_NO + " TEXT NOT NULL," +
             "" + SALESMAN_LOGIN_STATUS + " TEXT NOT NULL);";
 
-
+    //CREATE LOAD HEADER
     private static final String CREATE_TABLE_LOAD_HEADER = "create table " + TABLE_LOAD_HEADER + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "" + LOAD_NO + " TEXT NOT NULL, " +
@@ -231,15 +233,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //CREATE CUSTOMER MASTER
     private static final String CREATE_CUSTOMER = "create table " + TABLE_CUSTOMER + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CUST_NAME_AR + " TEXT NOT NULL, " + CUST_NAME_EN + " TEXT NOT NULL," +
-            "" + CUST_NUM + " TEXT NOT NULL, " + CUST_DIST_CHANNEL + " TEXT NOT NULL, " +
+            "" + CUST_NUM + "  TEXT NOT NULL, " + CUST_DIST_CHANNEL + " TEXT NOT NULL, " +
             "" + CUST_DIVISION + " TEXT NOT NULL, " + CUST_SALES_ORG + " TEXT NOT NULL, " +
             "" + CUST_CREDIT_LIMIT + " TEXT NOT NULL, " + CUST_AVAIL_BAL + " TEXT NOT NULL, " +
             "" + CUST_PAYMENT_TERM + " TEXT NOT NULL, " + CUST_ADDRESS + " TEXT NOT NULL, " +
             "" + CUST_TYPE + " TEXT NOT NULL, " + CUST_POSSESSED_EMPTY_BOTTLE + " TEXT NOT NULL, " +
             "" + CUST_POSSESSED_FILLED_BOTTLE + " TEXT NOT NULL, " +
             "" + CUST_SALE + " TEXT NOT NULL, " + CUST_ORDER + " TEXT NOT NULL, " +
-            "" + CUST_COLLECTION + " TEXT NOT NULL, " + "" + CUST_LATITUDE + " TEXT NOT NULL, " +
-            "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " +
+            "" + CUST_COLLECTION + " TEXT NOT NULL, "  + CUST_LATITUDE + " TEXT NOT NULL, " +
+            "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " + CUST_CREATED_DATE + " TEXT , " +
             "" + CUST_LONGITUDE + " TEXT NOT NULL);";
 
     // CREATE ITEM MASTER
@@ -316,7 +318,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             TR_CUSTOMER_NUM + " TEXT, " + "" + TR_CUSTOMER_NAME + " TEXT , " +
             TR_SALESMAN_ID + " TEXT , " + "" + TR_INVOICE_ID + " TEXT , " +
             TR_ORDER_ID + " TEXT , " + "" + TR_COLLECTION_ID + " TEXT , " +
-            "" + TR_PYAMENT_ID + " TEXT );";
+            "" + TR_PYAMENT_ID + " TEXT ," + "" + TR_IS_POSTED + " TEXT );";
 
     private static final String CREATE_RECENT_CUSTOMER = "create table " + TABLE_RECENT_CUSTOMER + "(" + RECENT_CUSTOMER_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOMER_ID + " TEXT NOT NULL, "

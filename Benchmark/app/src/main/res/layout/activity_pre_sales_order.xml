@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Total AED : 3000"
+                    android:text="Total SAR : 3000"
                     android:textColor="@color/white_200"
                     android:textSize="@dimen/_16sdp"
                     android:textStyle="bold" />

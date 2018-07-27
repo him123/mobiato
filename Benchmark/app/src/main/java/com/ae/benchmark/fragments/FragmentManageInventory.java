@@ -1,5 +1,6 @@
 package com.ae.benchmark.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -67,6 +68,7 @@ public class FragmentManageInventory extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initViewPagerAndTabs(View rootView) {
 
         final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
@@ -127,6 +129,16 @@ public class FragmentManageInventory extends Fragment {
             });
         }
 
+       /* viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (viewPager.getCurrentItem() == 0) {
+                    viewPager.setCurrentItem(0, false);
+                    return  true;
+                }
+                return false;
+            }
+        });*/
     }
 
     public static class PagerAdapter extends FragmentPagerAdapter {

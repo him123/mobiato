@@ -466,7 +466,8 @@ public class DBManager {
                                String cust_possessed_empty_bottle,
                                String cust_possessed_filled_bottle,
                                String cust_latitude,
-                               String cust_longitude) {
+                               String cust_longitude,
+                               String cust_created_date) {
 
         open();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -486,9 +487,9 @@ public class DBManager {
         contentValue.put(DatabaseHelper.CUST_TYPE, cust_type);
         contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, cust_possessed_empty_bottle);
         contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, cust_possessed_filled_bottle);
+        contentValue.put(DatabaseHelper.CUST_CREATED_DATE, cust_created_date);
+        contentValue.put(DatabaseHelper.CUST_LONGITUDE, cust_longitude);
         contentValue.put(DatabaseHelper.CUST_LATITUDE, cust_latitude);
-        contentValue.put(DatabaseHelper.CUST_LONGITUDE, "0");
-        contentValue.put(DatabaseHelper.CUST_LATITUDE, "0");
         contentValue.put(DatabaseHelper.CUST_SALE, "0");
         contentValue.put(DatabaseHelper.CUST_ORDER, "0");
         contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
@@ -526,6 +527,7 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("cust_possessed_filled_bottle"));
                 contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("cust_lat"));
                 contentValue.put(DatabaseHelper.CUST_LONGITUDE, singleObj.getString("cust_long"));
+                contentValue.put(DatabaseHelper.CUST_CREATED_DATE, singleObj.getString("cust_created_date"));
                 contentValue.put(DatabaseHelper.CUST_SALE, "0");
                 contentValue.put(DatabaseHelper.CUST_ORDER, "0");
                 contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
@@ -576,6 +578,7 @@ public class DBManager {
                         item.setCust_possessed_empty_bottle(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE)));
                         item.setCust_possessed_filled_bottle(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE)));
                         item.setCust_latitude(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LATITUDE)));
+                        item.setCust_created_date(cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_CREATED_DATE)));
 
                         //you could add additional columns here..
 
@@ -683,6 +686,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.TR_ORDER_ID, transaction.tr_order_id);
         contentValue.put(DatabaseHelper.TR_COLLECTION_ID, transaction.tr_collection_id);
         contentValue.put(DatabaseHelper.TR_PYAMENT_ID, transaction.tr_pyament_id);
+        contentValue.put(DatabaseHelper.TR_IS_POSTED, transaction.tr_is_posted);
 
         db.insert(DatabaseHelper.TABLE_TRANSACTION, null, contentValue);
     }
@@ -1306,9 +1310,11 @@ public class DBManager {
                         customer.cust_possessed_filled_bottle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE));
                         customer.cust_latitude = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LATITUDE));
                         customer.cust_longitude = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_LONGITUDE));
+                        customer.cust_created_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_CREATED_DATE));
 
                         customer.cust_sale = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ORDER));
                         customer.cust_order = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ORDER));
+                        customer.cust_collection = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_COLLECTION));
                         customer.cust_collection = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_COLLECTION));
 
                         //you could add additional columns here..
@@ -1341,6 +1347,7 @@ public class DBManager {
 
     public ArrayList<Transaction> getAllTransactions() {
 
+        open();
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
         // Select All Query
@@ -1366,6 +1373,7 @@ public class DBManager {
                         transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
 
                         //you could add additional columns here..
                         list.add(transaction);
@@ -1418,6 +1426,7 @@ public class DBManager {
                         transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
                         transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
                         transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
 
                         //you could add additional columns here..
                         list.add(transaction);

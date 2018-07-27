@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_possessed_empty_bottle\":\"7\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"9\",\n" +
             "                    \"cust_long\":\"43.104137\",\n" +
+            "                    \"cust_created_date\":\"26\",\n" +
             "                    \"cust_lat\":\"43.104137\"\n" +
             "\n" +
             "                    },\n" +
@@ -172,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_possessed_empty_bottle\":\"3\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"2\",\n" +
             "                      \"cust_long\":\"43.104137\",\n" +
+            "                    \"cust_created_date\":\"26\",\n" +
             "                    \"cust_lat\":\"43.104137\"\n" +
             "                    }\n" +
             "                    ,\n" +
@@ -191,6 +193,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_possessed_empty_bottle\":\"5\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"5\",\n" +
             "                     \"cust_long\":\"43.104137\",\n" +
+            "                    \"cust_created_date\":\"26\",\n" +
             "                    \"cust_lat\":\"43.104137\"\n" +
             "                    }\n" +
             "\n" +
@@ -224,7 +227,6 @@ public class LoginActivity extends AppCompatActivity {
             "                    }\n" +
             "\n" +
             "                    ]";
-
 
     String salesman = "{\n" +
             "                    \"unique_id\":\"2\",\n" +

@@ -190,6 +190,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
                 transaction.tr_order_id = "";
                 transaction.tr_collection_id = "";
                 transaction.tr_pyament_id = "";
+                transaction.tr_is_posted = "No";
 
                 dbManager.insertTransaction(transaction);
 

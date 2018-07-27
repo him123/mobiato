@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +92,32 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
                 intete2.putExtra("isChecked", isChecked);
 
                 mContext.sendBroadcast(intete2);
-            }
+                if (!isChecked){
+                    Constant.checkBoxFalse = "yes";
+                    EndInventoryRITActivity.checkbox.setChecked(false);
+                    Constant.checkBoxFalse = "no";
+                }
+
+        }
         });
+
+        if (Constant.checkBoxValue.equals("true")){
+            holder.chk.setChecked(true);
+
+            intete2.putExtra("item_code", item.item_code);
+            intete2.putExtra("item_qty", item.item_qty);
+            intete2.putExtra("isChecked", true);
+
+            mContext.sendBroadcast(intete2);
+        } else if (Constant.checkBoxValue.equals("false")){
+            holder.chk.setChecked(false);
+
+            intete2.putExtra("item_code", item.item_code);
+            intete2.putExtra("item_qty", item.item_qty);
+            intete2.putExtra("isChecked", false);
+
+            mContext.sendBroadcast(intete2);
+        }
     }
 
     private void makeDilog(final Context context, final Item item) {
@@ -170,7 +196,7 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
         void onLoadMore();
     }
 
-    class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView
                 txt_name,
@@ -178,7 +204,7 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
                 txt_price,
                 txt_uom;
 
-        CheckBox chk;
+        public CheckBox chk;
 
         public ImageView imgVerified;
 
@@ -195,5 +221,9 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
             chk.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    public static void checkBoxChange(){
+
     }
 }
