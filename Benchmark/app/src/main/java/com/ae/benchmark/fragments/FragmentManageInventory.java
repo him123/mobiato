@@ -119,26 +119,30 @@ public class FragmentManageInventory extends Fragment {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-        for(int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+        /*dbManager.open();
+        if (dbManager.checkIsNotVerified()){
+            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+            }
+
+            viewPager.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    return true;
+                    if (viewPager.getCurrentItem() == 0) {
+                        viewPager.setCurrentItem(0, false);
+                        return  true;
+                    }
+                    return false;
                 }
             });
-        }
+        }*/
 
-       /* viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (viewPager.getCurrentItem() == 0) {
-                    viewPager.setCurrentItem(0, false);
-                    return  true;
-                }
-                return false;
-            }
-        });*/
     }
 
     public static class PagerAdapter extends FragmentPagerAdapter {
