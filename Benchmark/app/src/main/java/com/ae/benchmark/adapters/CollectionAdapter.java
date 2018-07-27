@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
+import com.ae.benchmark.activities.PaymentActivity;
 import com.ae.benchmark.model.Collection;
+import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 
 import java.util.List;
@@ -32,10 +35,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     boolean isLoading = false, isMoreDataAvailable = true;
     Random rand = new Random();
     private List<Collection> mItemList;
+    Customer customer;
 
-    public CollectionAdapter(List<Collection> itemList, Context context) {
+    public CollectionAdapter(List<Collection> itemList, Context context, Customer customer) {
         this.mItemList = itemList;
         mContext = context;
+        this.customer = customer;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -51,13 +56,29 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if (!isPositionHeader(position)) {
         final RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
 
-        Collection collection = mItemList.get(position);
+        final Collection collection = mItemList.get(position);
 
         holder.txt_inv_no.setText(collection.coll_inv_no);
         holder.edt_col_amout.setText(collection.coll_amount);
         holder.txt_due_date.setText(collection.coll_due_date);
         holder.txt_due_amt.setText(collection.coll_due_amt);
         holder.txt_inv_date.setText(collection.coll_inv_date);
+
+        holder.rl_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (collection
+                        .coll_cust_pay_method.equals("credit")) {
+
+                    Intent i = new Intent(mContext, PaymentActivity.class);
+                    i.putExtra("amount", collection.coll_amount);
+                    i.putExtra("cust", customer);
+                    mContext.startActivity(i);
+
+                }
+            }
+        });
+
 
     }
 
@@ -97,6 +118,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 txt_due_amt,
                 edt_col_amout;
 
+        public RelativeLayout rl_main;
+
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolder(View parent, final Context context) {
@@ -108,6 +131,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txt_due_amt = (TextView) parent.findViewById(R.id.txt_due_amt);
 
             edt_col_amout = (EditText) parent.findViewById(R.id.edt_col_amout);
+            rl_main = (RelativeLayout) parent.findViewById(R.id.rl_main);
 
         }
     }

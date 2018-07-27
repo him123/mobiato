@@ -124,6 +124,7 @@ public class FragmentCOOrder extends Fragment {
                 intent.putExtra("name", custName);
                 intent.putExtra("tag", tag);
                 intent.putExtra("cust", customer);
+                intent.putExtra("with_load", "no");
                 startActivity(intent);
             }
         });

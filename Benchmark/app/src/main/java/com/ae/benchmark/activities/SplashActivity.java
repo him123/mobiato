@@ -54,6 +54,7 @@ public class SplashActivity extends AppCompatActivity {
                             intent = new Intent(SplashActivity.this, SuperVisorApproveActivity.class);
                         } else {
                             intent = new Intent(SplashActivity.this, DashBoardActivity.class);
+                            intent.putExtra("end", "0");
                         }
 
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

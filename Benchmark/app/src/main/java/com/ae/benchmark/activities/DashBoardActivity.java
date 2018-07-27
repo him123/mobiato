@@ -60,7 +60,7 @@ public class DashBoardActivity extends AppCompatActivity {
     //    private static final String TAG_ROUTE_RECONE = "Route_Recone";
 //    private static final String TAG_SALE_SNAP = "Sales_Snap";
     private static final String TAG_DATA_POSTING = "Data_Posting_Audit";
-//    private static final String TAG_CATALOGUE = "Catalogue";
+    //    private static final String TAG_CATALOGUE = "Catalogue";
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_SUGGESTIONS = "suggestions";
     private static final String TAG_RATE_APP = "RATE_APP";
@@ -92,6 +92,8 @@ public class DashBoardActivity extends AppCompatActivity {
     DBManager db;
 //    MaterialShowcaseSequence sequence;
 
+    String isEnd = "0";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +107,7 @@ public class DashBoardActivity extends AppCompatActivity {
         db.open();
         mHandler = new Handler();
 
-        Log.v("","Check items: "+db.getAllItems().get(1).item_name_en.toString());
+        Log.v("", "Check items: " + db.getAllItems().get(1).item_name_en.toString());
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -144,10 +146,15 @@ public class DashBoardActivity extends AppCompatActivity {
             loadHomeFragment();
         }
 
-//        Bundle extras = getIntent().getExtras();
-//        if(extras!=null){
-//
-//        }
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isEnd= extras.getString("end");
+
+        }
+
+        if(isEnd.equals("1")){
+            navigationView.getMenu().getItem(3).setChecked(true);
+        }
     }
 
     @Override

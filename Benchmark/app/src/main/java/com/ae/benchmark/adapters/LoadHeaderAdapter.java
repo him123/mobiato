@@ -35,11 +35,13 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Random rand = new Random();
     private List<Load> mItemList;
     DBManager dbManager;
+    boolean isReq;
 
-    public LoadHeaderAdapter(List<Load> itemList, Context context) {
+    public LoadHeaderAdapter(List<Load> itemList, Context context, boolean isReq) {
         this.mItemList = itemList;
         mContext = context;
         dbManager = new DBManager(context);
+        this.isReq = isReq;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -63,24 +65,25 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.imgVerified.setImageResource(R.drawable.ic_icon_verified_sel);
         }
 
-        holder.txt_name.setText(load.load_no);
+        holder.txt_load_no.setText(load.load_no);
 //        holder.txt_desc.setText(item.desc);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dbManager.open();
-                if (dbManager.checkIsNotVerified()) {
-                    Intent i = new Intent(mContext, ItemsListActivity.class);
-                    i.putExtra("load_no", load.load_no);
-                    i.putExtra("isBack", "No");
-                    mContext.startActivity(i);
-                } else {
-                    Intent i = new Intent(mContext, SelectCustomerListMainActivity.class);
+                if (!isReq)
+                    if (dbManager.checkIsNotVerified()) {
+                        Intent i = new Intent(mContext, ItemsListActivity.class);
+                        i.putExtra("load_no", load.load_no);
+                        i.putExtra("isBack", "No");
+                        mContext.startActivity(i);
+                    } else {
+                        Intent i = new Intent(mContext, SelectCustomerListMainActivity.class);
 //                    i.putExtra("load_no", load.load_no);
 //                    i.putExtra("isBack", "No");
-                    mContext.startActivity(i);
-                }
+                        mContext.startActivity(i);
+                    }
             }
         });
 
@@ -116,7 +119,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView
-                txt_name,
+                txt_load_no,
                 txt_desc,
                 txt_sub_dept,
                 txt_price,
@@ -128,7 +131,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public RecyclerItemViewHolder(View parent, final Context context) {
             super(parent);
 
-            txt_name = (TextView) parent.findViewById(R.id.txt_name);
+            txt_load_no = (TextView) parent.findViewById(R.id.txt_load_no);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
             txt_cash = (TextView) parent.findViewById(R.id.txt_cash);

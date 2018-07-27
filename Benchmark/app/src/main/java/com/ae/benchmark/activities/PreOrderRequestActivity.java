@@ -384,6 +384,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     if (customer.cust_type.equals("cash")) {
                         Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("name", custName);
+                        i.putExtra("cust", customer);
+                        i.putExtra("amount", "" + price);
                         startActivity(i);
 
                         finish();

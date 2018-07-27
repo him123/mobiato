@@ -227,13 +227,14 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_row_cust"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edt_amount"
                             android:layout_width="match_parent"
+                            android:paddingLeft="5dp"
                             android:layout_height="38sp"
+                            android:background="@drawable/rounded_row_cust"
                             android:maxLength="5" />
 
 
@@ -266,12 +267,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_row_cust"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edt_cheque_amount"
                             android:layout_width="match_parent"
+                            android:paddingLeft="5dp"
+                            android:background="@drawable/rounded_row_cust"
                             android:layout_height="38sp"
                             android:maxLength="5" />
 
@@ -298,12 +300,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_row_cust"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edt_cheque_number"
                             android:layout_width="match_parent"
+                            android:paddingLeft="5dp"
+                            android:background="@drawable/rounded_row_cust"
                             android:layout_height="38sp" />
 
                     </LinearLayout>
@@ -359,13 +362,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_row_cust"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/edt_date"
                             android:layout_width="match_parent"
                             android:layout_height="38sp"
+                            android:background="@drawable/rounded_row_cust"
                             android:focusable="false"
                             android:focusableInTouchMode="false"/>
 

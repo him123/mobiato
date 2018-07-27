@@ -43,6 +43,7 @@ public class Constant {
         public static final String TT_UNLOAD= "tt_unload";
         public static final String TT_OREDER_CREATED= "tt_order_created";
         public static final String TT_END_DAY= "tt_end_day";
+        public static final String TT_LOAD_CREATE= "tt_load_create";
     }
 
     public static class NEW_CUSTOMER {

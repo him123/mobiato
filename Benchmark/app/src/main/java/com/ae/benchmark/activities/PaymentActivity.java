@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Payment;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +33,7 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Himm on 3/13/2018.
@@ -68,9 +70,12 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     @InjectView(R.id.btnPayment)
     Button btnPayment;
 
-    String name;
+    //    String name;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener date;
+    String amount;
+
+    Customer customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +88,13 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            name = extras.getString("name");
-            txt_cust_name.setText(name);
+//            name = extras.getString("name");
+            customer = extras.getParcelable("cust");
+//            txt_cust_name.setText(name);
+            amount = extras.getString("amount");
         }
+
+        txt_amount.setText(amount);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -169,8 +178,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Payment payment  = new Payment();
-                if (swcPayment.isChecked()){
+                Payment payment = new Payment();
+                if (swcPayment.isChecked()) {
                     payment.setInvoice_id("");
                     payment.setCollection_id("");
                     payment.setPayment_type("Cash");
@@ -205,7 +214,34 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         @Override
         public void afterTextChanged(Editable s) {
-            txt_amount.setText(s.toString());
+
+            try {
+
+                double enterted_amount = Double.parseDouble(s.toString());
+                double dblAmount = Double.parseDouble(amount);
+                if (enterted_amount > dblAmount) {
+
+                    new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Wait!")
+                            .setContentText("Your have entered more amount!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    edt_amount.setText("0");
+                                    sDialog.dismissWithAnimation();
+
+                                }
+                            })
+                            .show();
+                } else {
+                    double byForcate = dblAmount - enterted_amount;
+                    txt_amount.setText(byForcate + "");
+                }
+            } catch (Exception e) {
+                edt_amount.setText("0");
+                txt_amount.setText(amount);
+                e.printStackTrace();
+            }
         }
     };
 

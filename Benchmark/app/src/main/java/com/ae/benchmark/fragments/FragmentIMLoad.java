@@ -34,7 +34,7 @@ public class FragmentIMLoad extends Fragment {
     LoadHeaderAdapter recyclerAdapter;
 
     List<Load> itemList;
-//    Item item;
+    //    Item item;
     LinearLayoutManager mLayoutManager;
 
     DBManager dbManager;
@@ -82,12 +82,12 @@ public class FragmentIMLoad extends Fragment {
         dbManager = new DBManager(getActivity());
         dbManager.open();
 
-        itemList = dbManager.getAllLoad();
+        itemList = dbManager.getAllLoad("0");
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerview_load.setLayoutManager(mLayoutManager);
 
-        recyclerAdapter = new LoadHeaderAdapter(itemList, getActivity());
+        recyclerAdapter = new LoadHeaderAdapter(itemList, getActivity(), false);
         recyclerview_load.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataChanged();
 

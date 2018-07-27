@@ -90,6 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String LOAD_IS_VERIFIED = "is_verified";
     public static final String LOAD_DATE = "load_date";
     public static final String LOAD_TOT_PRICE = "tot_price";
+    public static final String IS_REQ = "is_req";
 
 
     // CUSTOMER Table columns
@@ -203,6 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "" + LOAD_NO + " TEXT NOT NULL, " +
             "" + LOAD_DEL_DATE + " TEXT NOT NULL," + "" +
+            "" + IS_REQ + " TEXT NOT NULL," + "" +
             "" + LOAD_IS_VERIFIED + " TEXT NOT NULL);";
 
     // CREATE LOAD ITEM
@@ -211,6 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
             LOAD_NO + " TEXT NOT NULL, " + "" + LOAD_DATE + " TEXT NOT NULL, " +
             ITEM_UOM + " TEXT NOT NULL, " +
+            "" + IS_REQ + " TEXT NOT NULL," + "" +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
 
