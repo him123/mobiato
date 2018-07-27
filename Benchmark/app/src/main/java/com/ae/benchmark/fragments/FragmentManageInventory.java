@@ -93,25 +93,25 @@ public class FragmentManageInventory extends Fragment {
             public void onPageSelected(int position) {
                 // Check if this is the page you want.
 
-                if (position == 0) {
-
-                } else if (position == 1) {
-                    dbManager.open();
-                    if (dbManager.checkIsNotVerified())
-                        viewPager.setCurrentItem(0);
-                    dbManager.close();
-
-                } else if (position == 2) {
-                    dbManager.open();
-                    if (dbManager.checkIsNotVerified())
-                        viewPager.setCurrentItem(0);
-                    dbManager.close();
-                } else if (position == 3) {
-                    dbManager.open();
-                    if (dbManager.checkIsNotVerified())
-                        viewPager.setCurrentItem(0);
-                    dbManager.close();
-                }
+//                if (position == 0) {
+//
+//                } else if (position == 1) {
+//                    dbManager.open();
+//                    if (dbManager.checkIsNotVerified())
+//                        viewPager.setCurrentItem(0);
+//                    dbManager.close();
+//
+//                } else if (position == 2) {
+//                    dbManager.open();
+//                    if (dbManager.checkIsNotVerified())
+//                        viewPager.setCurrentItem(0);
+//                    dbManager.close();
+//                } else if (position == 3) {
+//                    dbManager.open();
+//                    if (dbManager.checkIsNotVerified())
+                        viewPager.setCurrentItem(position);
+//                    dbManager.close();
+//                }
             }
         });
 

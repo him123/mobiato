@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.ALLItemsListActivity;
 import com.ae.benchmark.activities.DashBoardActivity;
 import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.FreshUnloadActivity;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Himm on 3/13/2018.
@@ -137,6 +139,20 @@ public class FragmentIMVUnload extends Fragment {
 //                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
 //                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
 //                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
+
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Your unload is ready!")
+                        .setContentText("Please go to payment screen!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                Intent i = new Intent(getActivity(), DashBoardActivity.class);
+                                i.putExtra("end", "1");
+                                startActivity(i);
+                            }
+                        })
+                        .show();
             }
         });
 

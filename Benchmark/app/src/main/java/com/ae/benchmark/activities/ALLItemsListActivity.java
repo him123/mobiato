@@ -62,11 +62,11 @@ public class ALLItemsListActivity extends AppCompatActivity {
     DBManager dbManager;
 
     String load_no;
-    String isBack;
+    String with_laod;
 
     Transaction transaction = new Transaction();
     List<Item> newItemArr = new ArrayList<>();
-    int ordId = 0;
+    int ordId = 0, loadId = 0;
     Customer customer;
     int tot = 0;
 
@@ -79,8 +79,9 @@ public class ALLItemsListActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             load_no = extras.getString("load_no");
-            isBack = extras.getString("isBack");
-            customer = extras.getParcelable("cust");
+            with_laod = extras.getString("with_load");
+            if (with_laod.equals("no"))
+                customer = extras.getParcelable("cust");
         }
 
         registerReceiver(broadcastReceiver2, new IntentFilter(RecyclerItemsAdapterForALL.BROADCAST_ACTION));
@@ -112,40 +113,10 @@ public class ALLItemsListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                dbManager.open();
-//                dbManager.insertVanStockArr(itemList, load_no);
-//                if (dbManager.checkIsNotVerified()) {
-//
-//                    finish();
-//                } else {
-//                    if (isBack.equals("No")) {
-//
-//
-//                        transaction.tr_type = Constant.TRANSACTION_TYPES.TT_LOAD_CONF;
-//                        transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
-//                        transaction.tr_customer_num = "";
-//                        transaction.tr_customer_name = "";
-//                        transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
-//                        transaction.tr_invoice_id = "";
-//                        transaction.tr_order_id = "";
-//                        transaction.tr_collection_id = "";
-//                        transaction.tr_pyament_id = "";
-//
-//                        dbManager.insertTransaction(transaction);
-//
-//                        startActivity(new Intent(ALLItemsListActivity.this, SelectCustomerListMainActivity.class));
-
-
-//                    } else
-//                        finish();
-//                }
-
-//                finish();
 
 
                 for (int i = 0; i < itemList.size(); i++) {
                     if (!itemList.get(i).item_qty.equals("0")) {
-//                        itemList.remove(i);
                         Item item = itemList.get(i);
                         newItemArr.add(item);
                         tot += Integer.parseInt(itemList.get(i).item_price);
@@ -154,6 +125,9 @@ public class ALLItemsListActivity extends AppCompatActivity {
 
                 long lastIOrdId = dbManager.getLastOrderID();
                 ordId = (int) lastIOrdId + 1;
+
+                long lastLoadId = dbManager.getLastLoadHeaderNo();
+                loadId = (int) lastLoadId + 1;
 
                 itemList.clear();
                 recyclerAdapter = new RecyclerItemsAdapterForALL(newItemArr, ALLItemsListActivity.this, false);
@@ -172,66 +146,191 @@ public class ALLItemsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                dbManager.insertOrderItems(
-                        newItemArr,
-                        ordId + "",
-                        UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID),
-                        customer.cust_num, tot+"", UtilApp.getCurrentDate());
+//<<<<<<< HEAD
 
-                //INSERT TRANSACTION
-                Transaction transaction = new Transaction();
+                if (with_laod.equals("yes")) {
 
-                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_OREDER_CREATED;
-                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
-                transaction.tr_customer_num = customer.cust_num;
-                transaction.tr_customer_name = customer.cust_name_en;
-                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
-                transaction.tr_invoice_id = ordId+"";
-                transaction.tr_order_id = "";
-                transaction.tr_collection_id = "";
-                transaction.tr_pyament_id = "";
-                transaction.tr_is_posted = "No";
+                    long lastInvId = dbManager.getLastInvoiceID();
+                    int invNum = (int) lastInvId + 1;
 
-                dbManager.insertTransaction(transaction);
+                    //CREATE LOAD WITH LOAD ITEMS
+                    dbManager.insertLoad(newItemArr, loadId+"", UtilApp.getCurrentDate(), "0", "1", "1");
 
-                //CREATING INVOICE FOR ORDER
-                SalesInvoice salesInvoice = new SalesInvoice();
+                    //INSERT TRANSACTION
+                    Transaction transaction = new Transaction();
 
-                long lastInvId = dbManager.getLastInvoiceID();
-//                long lastCollId = dbManager.getLastCollectionID();
-                int invNum = (int) lastInvId + 1;
-//                int CollNum = (int) lastCollId + 1;
-                salesInvoice.inv_no = "" + invNum;
-                salesInvoice.inv_type = "Order";
-                salesInvoice.inv_type_code = "02";
-                salesInvoice.cust_code = customer.cust_num;
-                salesInvoice.cust_sales_org = customer.cust_sales_org;
-                salesInvoice.cust_dist_channel = customer.cust_dist_channel;
-                salesInvoice.cust_division = customer.cust_division;
-                salesInvoice.inv_date = UtilApp.getCurrentDate();
-                salesInvoice.del_date = UtilApp.getCurrentDate();
-                salesInvoice.cust_name_en = customer.cust_name_en;
-                salesInvoice.tot_amnt_sales = "" + tot;
-                salesInvoice.inv_header_dis_val = "0";
-                salesInvoice.inv_header_dis_per = "0";
-                salesInvoice.inv_header_vat_val = "0";
-                salesInvoice.inv_header_vat_per = "0";
+                    transaction.tr_type = Constant.TRANSACTION_TYPES.TT_LOAD_CREATE;
+                    transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                    transaction.tr_customer_num ="";
+                    transaction.tr_customer_name = "";
+                    transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
+                    transaction.tr_invoice_id = invNum + "";
+                    transaction.tr_order_id = ordId+"";
+                    transaction.tr_collection_id = "";
+                    transaction.tr_pyament_id = "";
 
-                dbManager.insertSalesInvoiceHeader(salesInvoice);
+                    dbManager.insertTransaction(transaction);
+
+                    //CREATING INVOICE FOR ORDER
+                    SalesInvoice salesInvoice = new SalesInvoice();
+
+                    salesInvoice.inv_no = "" + invNum;
+                    salesInvoice.inv_type = "Order";
+                    salesInvoice.inv_type_code = "02";
+                    salesInvoice.cust_code = "";
+                    salesInvoice.cust_sales_org = "";
+                    salesInvoice.cust_dist_channel = "";
+                    salesInvoice.cust_division = "";
+                    salesInvoice.inv_date = UtilApp.getCurrentDate();
+                    salesInvoice.del_date = UtilApp.getCurrentDate();
+                    salesInvoice.cust_name_en = "";
+                    salesInvoice.tot_amnt_sales = "" + tot;
+                    salesInvoice.inv_header_dis_val = "0";
+                    salesInvoice.inv_header_dis_per = "0";
+                    salesInvoice.inv_header_vat_val = "0";
+                    salesInvoice.inv_header_vat_per = "0";
+
+                    dbManager.insertSalesInvoiceHeader(salesInvoice);
 
 
-                new SweetAlertDialog(ALLItemsListActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Done!")
-                        .setContentText("Your order created successfully!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
-                                finish();
-                            }
-                        })
-                        .show();
+                    new SweetAlertDialog(ALLItemsListActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Load created successfully!")
+                            .setContentText("Your Load request sent successfully!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+//                                    dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
+                                    finish();
+                                }
+                            })
+                            .show();
+
+//                    dbManager.insertLoadItems(item, "1");
+                } else {
+
+                    long lastInvId = dbManager.getLastInvoiceID();
+                    int invNum = (int) lastInvId + 1;
+
+                    dbManager.insertOrderItems(
+                            newItemArr,
+                            ordId + "",
+                            UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID),
+                            customer.cust_num, tot + "", UtilApp.getCurrentDate());
+
+                    //INSERT TRANSACTION
+                    Transaction transaction = new Transaction();
+
+                    transaction.tr_type = Constant.TRANSACTION_TYPES.TT_OREDER_CREATED;
+                    transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                    transaction.tr_customer_num = customer.cust_num;
+                    transaction.tr_customer_name = customer.cust_name_en;
+                    transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
+                    transaction.tr_invoice_id = invNum + "";
+                    transaction.tr_order_id = "";
+                    transaction.tr_collection_id = "";
+                    transaction.tr_pyament_id = "";
+
+                    dbManager.insertTransaction(transaction);
+
+                    //CREATING INVOICE FOR ORDER
+                    SalesInvoice salesInvoice = new SalesInvoice();
+
+                    salesInvoice.inv_no = "" + invNum;
+                    salesInvoice.inv_type = "Order";
+                    salesInvoice.inv_type_code = "02";
+                    salesInvoice.cust_code = customer.cust_num;
+                    salesInvoice.cust_sales_org = customer.cust_sales_org;
+                    salesInvoice.cust_dist_channel = customer.cust_dist_channel;
+                    salesInvoice.cust_division = customer.cust_division;
+                    salesInvoice.inv_date = UtilApp.getCurrentDate();
+                    salesInvoice.del_date = UtilApp.getCurrentDate();
+                    salesInvoice.cust_name_en = customer.cust_name_en;
+                    salesInvoice.tot_amnt_sales = "" + tot;
+                    salesInvoice.inv_header_dis_val = "0";
+                    salesInvoice.inv_header_dis_per = "0";
+                    salesInvoice.inv_header_vat_val = "0";
+                    salesInvoice.inv_header_vat_per = "0";
+
+                    dbManager.insertSalesInvoiceHeader(salesInvoice);
+
+                    new SweetAlertDialog(ALLItemsListActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Done!")
+                            .setContentText("Your order created successfully!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
+                                    finish();
+                                }
+                            })
+                            .show();
+
+                }
+
+//=======
+//                dbManager.insertOrderItems(
+//                        newItemArr,
+//                        ordId + "",
+//                        UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID),
+//                        customer.cust_num, tot+"", UtilApp.getCurrentDate());
+//
+//                //INSERT TRANSACTION
+//                Transaction transaction = new Transaction();
+//
+//                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_OREDER_CREATED;
+//                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+//                transaction.tr_customer_num = customer.cust_num;
+//                transaction.tr_customer_name = customer.cust_name_en;
+//                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
+//                transaction.tr_invoice_id = ordId+"";
+//                transaction.tr_order_id = "";
+//                transaction.tr_collection_id = "";
+//                transaction.tr_pyament_id = "";
+//                transaction.tr_is_posted = "No";
+//
+//                dbManager.insertTransaction(transaction);
+//
+//                //CREATING INVOICE FOR ORDER
+//                SalesInvoice salesInvoice = new SalesInvoice();
+//
+//                long lastInvId = dbManager.getLastInvoiceID();
+////                long lastCollId = dbManager.getLastCollectionID();
+//                int invNum = (int) lastInvId + 1;
+////                int CollNum = (int) lastCollId + 1;
+//                salesInvoice.inv_no = "" + invNum;
+//                salesInvoice.inv_type = "Order";
+//                salesInvoice.inv_type_code = "02";
+//                salesInvoice.cust_code = customer.cust_num;
+//                salesInvoice.cust_sales_org = customer.cust_sales_org;
+//                salesInvoice.cust_dist_channel = customer.cust_dist_channel;
+//                salesInvoice.cust_division = customer.cust_division;
+//                salesInvoice.inv_date = UtilApp.getCurrentDate();
+//                salesInvoice.del_date = UtilApp.getCurrentDate();
+//                salesInvoice.cust_name_en = customer.cust_name_en;
+//                salesInvoice.tot_amnt_sales = "" + tot;
+//                salesInvoice.inv_header_dis_val = "0";
+//                salesInvoice.inv_header_dis_per = "0";
+//                salesInvoice.inv_header_vat_val = "0";
+//                salesInvoice.inv_header_vat_per = "0";
+//
+//                dbManager.insertSalesInvoiceHeader(salesInvoice);
+//
+//
+//                new SweetAlertDialog(ALLItemsListActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+//                        .setTitleText("Done!")
+//                        .setContentText("Your order created successfully!")
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                                dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
+//                                finish();
+//                            }
+//                        })
+//                        .show();
+//>>>>>>> 3ed8b975f5cd6631c08cc7c31d0f2649c029422b
 
             }
         });

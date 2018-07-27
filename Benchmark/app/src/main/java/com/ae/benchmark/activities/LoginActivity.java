@@ -375,6 +375,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (id.equalsIgnoreCase("sm1")) {
 
                         intent = new Intent(LoginActivity.this, DashBoardActivity.class);
+                        intent.putExtra("end", "0");
                     } else {
                         intent = new Intent(LoginActivity.this, SuperVisorApproveActivity.class);
                     }
@@ -382,6 +383,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("type", "login");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
             });

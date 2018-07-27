@@ -82,7 +82,7 @@ public class FragmentCOCollection extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerview_collection.setLayoutManager(mLayoutManager);
 
-        recyclerAdapter = new CollectionAdapter(itemList, getActivity());
+        recyclerAdapter = new CollectionAdapter(itemList, getActivity(), customer);
         recyclerview_collection.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataChanged();
 

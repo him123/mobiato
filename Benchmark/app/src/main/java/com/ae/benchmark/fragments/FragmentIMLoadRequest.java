@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.ALLItemsListActivity;
 import com.ae.benchmark.activities.ItemsListActivity;
 import com.ae.benchmark.adapters.LoadHeaderAdapter;
 import com.ae.benchmark.localdb.DBManager;
@@ -45,6 +46,8 @@ public class FragmentIMLoadRequest extends Fragment {
 
     DBManager dbManager;
 
+    long lastLoadHeaderNo = 0;
+
     public FragmentIMLoadRequest() {
         // Required empty public constructor
     }
@@ -77,40 +80,36 @@ public class FragmentIMLoadRequest extends Fragment {
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText("Verify Load");
-
+        itemList = new ArrayList<>();
         dbManager = new DBManager(getActivity());
         dbManager.open();
 
-//        itemList = dbManager.getAllLoad();
-
-//        for (int i = 0; i < 2; i++) {
-//            item = new Item();
-//
-//            item.name = "2012462260";
-//            item.desc = "Load No. 800302051";
-//
-//            itemList.add(item);
-//        }
-
-
-//        mLayoutManager = new LinearLayoutManager(getActivity());
-//        recyclerview_load.setLayoutManager(mLayoutManager);
-//
-//        recyclerAdapter = new LoadHeaderAdapter(itemList, getActivity());
-//        recyclerview_load.setAdapter(recyclerAdapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ItemsListActivity.class);
+                Intent i = new Intent(getActivity(), ALLItemsListActivity.class);
 //                i.putExtra("load_no", load.load_no);
-                i.putExtra("isBack", "Yes");
+                i.putExtra("with_load", "yes");
+                i.putExtra("load_no", lastLoadHeaderNo + "");
                 getActivity().startActivity(i);
-//                getActivity().startActivity(new Intent(getActivity(), ItemsListActivity.class));
-//                getActivity().overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
             }
         });
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        itemList.clear();
+        itemList = dbManager.getAllLoad("1");
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerview_load.setLayoutManager(mLayoutManager);
+
+        recyclerAdapter = new LoadHeaderAdapter(itemList, getActivity(), true);
+        recyclerview_load.setAdapter(recyclerAdapter);
     }
 }

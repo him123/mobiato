@@ -80,42 +80,55 @@ public class DBManager {
 
 
     //INSERT LOAD HEADER ONLY SINGLE
-    public void insertLoad(String load_no, String load_del_date, String is_verified) {
+    public void insertLoad(List<Item> items,
+                           String load_no,
+                           String load_del_date, String is_verified, String is_eq, String is_req) {
 
-        ContentValues contentValue = new ContentValues();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        contentValue.put(DatabaseHelper.LOAD_NO, load_no);
-        contentValue.put(DatabaseHelper.LOAD_DEL_DATE, load_del_date);
-        contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, is_verified);
+        try {
+            db.beginTransaction();
+            ContentValues contentValue = new ContentValues();
 
-        database.insert(DatabaseHelper.TABLE_LOAD_HEADER, null, contentValue);
+            contentValue.put(DatabaseHelper.LOAD_NO, load_no);
+            contentValue.put(DatabaseHelper.LOAD_DEL_DATE, load_del_date);
+            contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, is_verified);
+            contentValue.put(DatabaseHelper.IS_REQ, is_eq);
+
+            for (int i = 0; i < items.size(); i++) {
+
+                Item singleObjItem = items.get(i);
+
+                ContentValues contentValueItem = new ContentValues();
+
+                contentValueItem.put(DatabaseHelper.ITEM_CODE, singleObjItem.item_code);
+                contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, singleObjItem.item_name_en);
+                contentValueItem.put(DatabaseHelper.ITEM_QTY, singleObjItem.item_qty);
+                contentValueItem.put(DatabaseHelper.ITEM_UOM, singleObjItem.item_uom);
+                contentValueItem.put(DatabaseHelper.LOAD_DATE, load_del_date);
+                contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, singleObjItem.item_price);
+                contentValueItem.put(DatabaseHelper.LOAD_NO, load_no);
+                contentValueItem.put(DatabaseHelper.IS_REQ, is_req);
+
+                db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);
+
+            }
+
+            db.insert(DatabaseHelper.TABLE_LOAD_HEADER, null, contentValue);
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    //INSERT LOAD ITEMS ONKY SINGLE
-    public void insertLoadItems(String item_code,
-                                String item_name_en,
-                                String item_name_ar,
-                                String item_type,
-                                String item_price,
-                                String item_barcode,
-                                String item_division,
-                                String item_con_fector,
-                                String load_no) {
-        ContentValues contentValue = new ContentValues();
-
-        contentValue.put(DatabaseHelper.ITEM_CODE, item_code);
-        contentValue.put(DatabaseHelper.ITEM_NAME_EN, item_name_en);
-        contentValue.put(DatabaseHelper.ITEM_NAME_AR, item_name_ar);
-        contentValue.put(DatabaseHelper.ITEM_TYPE, item_type);
-        contentValue.put(DatabaseHelper.ITEM_PRICE, item_price);
-        contentValue.put(DatabaseHelper.ITEM_BARCODE, item_barcode);
-        contentValue.put(DatabaseHelper.ITEM_DIVISION, item_division);
-        contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, item_con_fector);
-        contentValue.put(DatabaseHelper.LOAD_NO, load_no);
-
-
-        database.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValue);
-    }
+//    //INSERT LOAD ITEMS ONKY SINGLE
+//    public void insertLoadItems(Item item, String is_req) {
+//
+//
+//        database.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValue);
+//    }
 
 
     //INSERT LOAD ITEMS ONKY SINGLE
@@ -202,8 +215,8 @@ public class DBManager {
             }
             cursor.close();
             close();
-        } catch (Exception e){
-            Log.e("dbError" , e.toString());
+        } catch (Exception e) {
+            Log.e("dbError", e.toString());
         }
 
         return (int) totColl;
@@ -272,8 +285,8 @@ public class DBManager {
             }
             cursor.close();
             close();
-        } catch (Exception e){
-            Log.e("dbError" , e.toString());
+        } catch (Exception e) {
+            Log.e("dbError", e.toString());
         }
 
         return list;
@@ -319,6 +332,7 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
                 contentValue.put(DatabaseHelper.LOAD_DEL_DATE, singleObj.getString("delivery_date"));
                 contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, "0");
+                contentValue.put(DatabaseHelper.IS_REQ, "0");
 
                 JSONArray jLoadItemArr = singleObj.getJSONArray("load_items");
 
@@ -333,14 +347,11 @@ public class DBManager {
                     contentValueItem.put(DatabaseHelper.LOAD_DATE, singleObjItem.getString("load_date"));
                     contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, singleObjItem.getString("total_price"));
                     contentValueItem.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
+                    contentValueItem.put(DatabaseHelper.IS_REQ, "0");
 
                     db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);
-
                 }
-
-
                 db.insert(DatabaseHelper.TABLE_LOAD_HEADER, null, contentValue);
-
             }
 
             db.setTransactionSuccessful();
@@ -1234,7 +1245,7 @@ public class DBManager {
         ArrayList<Item> list = new ArrayList<Item>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_HEADER+
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_HEADER +
                 " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -1813,6 +1824,34 @@ public class DBManager {
         return index;
     }
 
+    //GET LAST INVOICE GENERETED NUMBER
+    public long getLastLoadHeaderNo() { // type = 0 empty, 1 = filled
+        long index = 0;
+        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_LOAD_HEADER;
+//                " WHERE " + DatabaseHelper.CUST_NUM + " = " + custNum;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+                index = Integer.parseInt(count);
+            } else {
+                index = 0;
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return index;
+    }
+
 
     //GET LAST INVOICE GENERETED NUMBER
     public long getLastOrderID() { // type = 0 empty, 1 = filled
@@ -2024,12 +2063,12 @@ public class DBManager {
     }
 
 
-    public ArrayList<Load> getAllLoad() {
+    public ArrayList<Load> getAllLoad(String is_req) {
 
         ArrayList<Load> list = new ArrayList<Load>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_LOAD_HEADER;
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_LOAD_HEADER + " WHERE " + DatabaseHelper.IS_REQ + "=" + is_req;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransaction();

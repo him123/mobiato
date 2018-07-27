@@ -101,7 +101,14 @@
                     "salesman_route":"546",
                     "salesman_vehicle_no":"546",
                     "status":"1",
-                    "message":"546"
+                    "message":"546",
+                    "INV_LAST":"546",
+                    "ORD_LAST":"546",
+                    "LOAD_LAST":"546",
+                    "COLLECTION_LAST":"546",
+                    "CUSTOMER_LAST":"546"
+
+
                     }</string>
 
     <string name="load_resp">[

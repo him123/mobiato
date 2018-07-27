@@ -123,6 +123,7 @@ public class ItemsListActivity extends AppCompatActivity {
                         dbManager.insertTransaction(transaction);
 
                         startActivity(new Intent(ItemsListActivity.this, SelectCustomerListMainActivity.class));
+                        finish();
 
 
                     } else
