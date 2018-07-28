@@ -291,7 +291,6 @@ public class LoginActivity extends AppCompatActivity {
 //                    Toast.makeText(LoginActivity.this, "Username and password doesn't match.", Toast.LENGTH_SHORT).show();
                     login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
                 }
-
             }
         });
     }

@@ -41,7 +41,7 @@ public class FragmentIMVanStock extends Fragment {
     Item item;
     LinearLayoutManager mLayoutManager;
     private Toolbar toolbar;
-    DBManager dbManager;
+//    DBManager dbManager;
 
     public FragmentIMVanStock() {
         // Required empty public constructor
@@ -74,10 +74,9 @@ public class FragmentIMVanStock extends Fragment {
         toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         toolbar.setVisibility(View.GONE);
 
-        dbManager = new DBManager(getActivity());
-
-        dbManager.open();
-
+//        dbManager = new DBManager(getActivity());
+//
+//        dbManager.open();
 
 
         return v;
@@ -87,17 +86,45 @@ public class FragmentIMVanStock extends Fragment {
     public void setMenuVisibility(final boolean visible) {
         super.setMenuVisibility(visible);
         if (visible) {
-            itemList = new ArrayList<>();
 
-            itemList.clear();
-            itemList = dbManager.getVanStock();
+            try {
+                DBManager dbManager = new DBManager(getActivity());
+                dbManager.open();
+                itemList = new ArrayList<>();
 
-            mLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerview_items.setLayoutManager(mLayoutManager);
+                itemList.clear();
+                itemList = dbManager.getVanStock();
 
-            recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
-            recyclerview_items.setAdapter(recyclerAdapter);
-            recyclerAdapter.notifyDataChanged();
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerview_items.setLayoutManager(mLayoutManager);
+
+                recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
+                recyclerview_items.setAdapter(recyclerAdapter);
+
+                recyclerAdapter.notifyDataChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        dbManager = new DBManager(getContext());
+//        dbManager.open();
+//        itemList = new ArrayList<>();
+//
+//        itemList.clear();
+//        itemList = dbManager.getVanStock();
+//
+//        mLayoutManager = new LinearLayoutManager(getActivity());
+//        recyclerview_items.setLayoutManager(mLayoutManager);
+//
+//        recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
+//        recyclerview_items.setAdapter(recyclerAdapter);
+//
+//        recyclerAdapter.notifyDataChanged();
     }
 }

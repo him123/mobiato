@@ -176,6 +176,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 i.putExtra("type", "cash");
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);
+                i.putExtra("cust", customer);
                 startActivity(i);
                 finish();
             }
@@ -226,6 +227,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 i.putExtra("type", "norm");
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);
+                i.putExtra("cust", customer);
                 startActivity(i);
                 finish();
             }

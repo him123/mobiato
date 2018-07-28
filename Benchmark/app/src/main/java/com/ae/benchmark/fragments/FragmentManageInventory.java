@@ -109,7 +109,7 @@ public class FragmentManageInventory extends Fragment {
 //                } else if (position == 3) {
 //                    dbManager.open();
 //                    if (dbManager.checkIsNotVerified())
-                        viewPager.setCurrentItem(position);
+//                        viewPager.setCurrentItem(position);
 //                    dbManager.close();
 //                }
             }
