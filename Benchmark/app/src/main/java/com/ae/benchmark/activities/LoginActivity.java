@@ -17,10 +17,12 @@ import android.widget.Toast;
 import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -228,19 +230,29 @@ public class LoginActivity extends AppCompatActivity {
             "\n" +
             "                    ]";
 
-    String salesman = "{\n" +
-            "                    \"unique_id\":\"2\",\n" +
-            "                    \"salesman_id\":\"52\",\n" +
-            "                    \"salesman_name_en\":\"Nasir\",\n" +
-            "                    \"salesman_name_ar\":\"Nasir\",\n" +
-            "                    \"salesman_dis_channel\":\"channel1\",\n" +
-            "                    \"salesman_org\":\"org\",\n" +
-            "                    \"salesman_division\":\"division1\",\n" +
-            "                    \"salesman_route\":\"23rout\",\n" +
-            "                    \"salesman_vehicle_no\":\"DB25365\",\n" +
+    String salesman = "{\"data\":{\n" +
+            "                    \"trip_id\":\"546\",\n" +
+            "                    \"salesman_id\":\"546\",\n" +
+            "                    \"salesman_name_en\":\"546\",\n" +
+            "                    \"salesman_name_ar\":\"546\",\n" +
+            "                    \"salesman_dis_channel\":\"546\",\n" +
+            "                    \"salesman_org\":\"546\",\n" +
+            "                    \"salesman_division\":\"546\",\n" +
+            "                    \"salesman_route\":\"546\",\n" +
+            "                    \"salesman_vehicle_no\":\"546\",\n" +
+            "                    \"supervisor_id\":\"24\",\n" +
+            "                    \"INV_LAST\":\"10\",\n" +
+            "                    \"ORD_LAST\":\"10\",\n" +
+            "                    \"LOAD_LAST\":\"10\",\n" +
+            "                    \"COLLECTION_LAST\":\"10\",\n" +
+            "                    \"CUSTOMER_LAST\":\"10\",\n" +
+            "                    \"PAYMENT_LAST\":\"10\",\n" +
+            "                    \"LOAD_REQUEST_LAST\":\"10\",\n" +
             "                    \"status\":\"1\",\n" +
-            "                    \"message\":\"Successfully logged in.\"\n" +
-            "                    }";
+            "                    \"message\":\"You are successfully login.\"\n" +
+            "\n" +
+            "                    }\n" +
+            "}\n";
 
 
     String fcm_id;
@@ -321,8 +333,19 @@ public class LoginActivity extends AppCompatActivity {
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISPAYMET, false);
 
                 // SALESMAN
-//                JSONObject SalesmanObj = new JSONObject(String.valueOf(salesman));
-////                JSONArray itemJArr = itemObj.getJSONArray("data");
+                JSONObject SalesmanObj = new JSONObject(String.valueOf(salesman));
+
+                Gson gson = new Gson();
+
+                Sales sales = gson.fromJson(SalesmanObj.toString(), Sales.class);
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.INV_LAST, sales.getData().getINVLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.ORD_LAST, sales.getData().getORDLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.LOAD_LAST, sales.getData().getLOADLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.COLLECTION_LAST, sales.getData().getCOLLECTIONLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.CUSTOMER_LAST, sales.getData().getCUSTOMERLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.PAYMENT_LAST, sales.getData().getPAYMENTLAST());
+                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.LOAD_REQUEST_LAST, sales.getData().getLOADREQUESTLAST());
+//                JSONArray itemJArr = itemObj.getJSONArray("data");
 //                dbManager.insertSalesman(SalesmanObj);
 
 

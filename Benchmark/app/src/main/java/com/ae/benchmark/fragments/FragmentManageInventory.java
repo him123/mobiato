@@ -119,7 +119,8 @@ public class FragmentManageInventory extends Fragment {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        /*dbManager.open();
+        dbManager  = new DBManager(getActivity());
+        dbManager.open();
         if (dbManager.checkIsNotVerified()){
             LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
             for(int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -141,7 +142,7 @@ public class FragmentManageInventory extends Fragment {
                     return false;
                 }
             });
-        }*/
+        }
 
     }
 

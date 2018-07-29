@@ -262,9 +262,6 @@ public class FragmentCustomerSelection extends Fragment {
                 dbManager.open();
                 itemList = dbManager.getAllREcentCust();
 
-                recentCustomer = new RecentCustomer();
-                itemList.add(recentCustomer);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

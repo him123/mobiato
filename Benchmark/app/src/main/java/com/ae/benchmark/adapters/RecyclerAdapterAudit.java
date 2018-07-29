@@ -71,12 +71,6 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
         }
 
         holder.txtIsPosted.setText("No");
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, PreOrderRequestActivity.class));
-            }
-        });
 
     }
 

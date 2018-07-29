@@ -13,6 +13,16 @@ public class Constant {
 
     public static String checkBoxValue = "";
     public static String checkBoxFalse = "no";
+
+    public static String INV_LAST = "INV_LAST";
+    public static String ORD_LAST = "ORD_LAST";
+    public static String LOAD_LAST = "LOAD_LAST";
+    public static String COLLECTION_LAST = "COLLECTION_LAST";
+    public static String CUSTOMER_LAST = "CUSTOMER_LAST";
+    public static String PAYMENT_LAST = "PAYMENT_LAST";
+    public static String LOAD_REQUEST_LAST = "LOAD_REQUEST_LAST";
+
+
     public static class SHRED_PR {
         public static final String SHARE_PREF = AppNameSuper + "_preferences";
 

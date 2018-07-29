@@ -98,11 +98,7 @@ public class CaptureStockActivity extends AppCompatActivity {
 //
 //                UtilApp.WriteSharePrefrence(CaptureStockActivity.this, Constant.SHRED_PR.EMPTYES, "" + tot);
 
-                Toast.makeText(CaptureStockActivity.this, "Stock captured!", Toast.LENGTH_SHORT).show();
-
-
-                String date = UtilApp.getCurrentDate();
-                String time = UtilApp.getCurrentTime();
+                //Toast.makeText(CaptureStockActivity.this, "Stock captured!", Toast.LENGTH_SHORT).show();
 
                 dbManager.updateEmptyBottles("" + tot, customer.cust_num);
 
