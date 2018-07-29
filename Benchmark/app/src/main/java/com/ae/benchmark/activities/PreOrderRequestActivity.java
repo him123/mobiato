@@ -301,8 +301,20 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
-                int invNum = (int) lastInvId + 1;
-                int CollNum = (int) lastCollId + 1;
+
+                int invNum , CollNum;
+                if (lastInvId == 0){
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                } else {
+                    invNum = (int) lastInvId + 1;
+                }
+
+                if (lastCollId == 0){
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
+                } else {
+                    CollNum = (int) lastCollId + 1;
+                }
+
                 salesInvoice.inv_no = "" + invNum;
                 salesInvoice.inv_type = "Sale";
                 salesInvoice.inv_type_code = "01";
@@ -437,8 +449,19 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
-                int invNum = (int) lastInvId + 1;
-                int CollNum = (int) lastCollId + 1;
+                int invNum;
+                if (lastInvId == 0){
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                } else {
+                    invNum = (int) lastInvId + 1;
+                }
+                int CollNum;
+                if (lastCollId == 0){
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
+                } else {
+                    CollNum = (int) lastCollId + 1;
+                }
+
                 salesInvoice.inv_no = "" + invNum;
                 salesInvoice.inv_type = "Sale";
                 salesInvoice.inv_type_code = "01";

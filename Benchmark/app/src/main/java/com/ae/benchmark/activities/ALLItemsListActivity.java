@@ -124,11 +124,18 @@ public class ALLItemsListActivity extends AppCompatActivity {
                 }
 
                 long lastIOrdId = dbManager.getLastOrderID();
-                ordId = (int) lastIOrdId + 1;
+                if (lastIOrdId == 0){
+                    ordId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.ORD_LAST));
+                } else {
+                    ordId = (int) lastIOrdId + 1;
+                }
 
                 long lastLoadId = dbManager.getLastLoadHeaderNo();
-                loadId = (int) lastLoadId + 1;
-
+                if (lastLoadId == 0){
+                    loadId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.LOAD_LAST));
+                } else {
+                    loadId = (int) lastLoadId + 1;
+                }
                 itemList.clear();
                 recyclerAdapter = new RecyclerItemsAdapterForALL(newItemArr, ALLItemsListActivity.this, false);
                 recyclerview_items.setAdapter(recyclerAdapter);
@@ -151,7 +158,13 @@ public class ALLItemsListActivity extends AppCompatActivity {
                 if (with_laod.equals("yes")) {
 
                     long lastInvId = dbManager.getLastInvoiceID();
-                    int invNum = (int) lastInvId + 1;
+
+                    int invNum;
+                    if (lastInvId == 0){
+                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                    } else {
+                        invNum = (int) lastInvId + 1;
+                    }
 
                     //CREATE LOAD WITH LOAD ITEMS
                     dbManager.insertLoad(newItemArr, loadId+"", UtilApp.getCurrentDate(), "0", "1", "1");
@@ -210,7 +223,12 @@ public class ALLItemsListActivity extends AppCompatActivity {
                 } else {
 
                     long lastInvId = dbManager.getLastInvoiceID();
-                    int invNum = (int) lastInvId + 1;
+                    int invNum;
+                    if (lastInvId == 0){
+                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                    } else {
+                        invNum = (int) lastInvId + 1;
+                    }
 
                     dbManager.insertOrderItems(
                             newItemArr,

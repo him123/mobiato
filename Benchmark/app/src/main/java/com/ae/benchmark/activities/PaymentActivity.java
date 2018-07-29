@@ -22,8 +22,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Payment;
+import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.util.UtilApp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +79,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     String amount;
 
     Customer customer;
+    DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        dbManager = new DBManager(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 //            name = extras.getString("name");
@@ -179,9 +184,27 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View v) {
                 Payment payment = new Payment();
+                dbManager.open();
+
+                long lastInvId = dbManager.getLastInvoiceID();
+                long lastCollId = dbManager.getLastCollectionID();
+
+                int invNum , CollNum;
+                if (lastInvId == 0){
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                } else {
+                    invNum = (int) lastInvId + 1;
+                }
+
+                if (lastCollId == 0){
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
+                } else {
+                    CollNum = (int) lastCollId + 1;
+                }
+
                 if (swcPayment.isChecked()) {
-                    payment.setInvoice_id("");
-                    payment.setCollection_id("");
+                    payment.setInvoice_id(String.valueOf(invNum));
+                    payment.setCollection_id(String.valueOf(CollNum));
                     payment.setPayment_type("Cash");
                     payment.setPayment_date("");
                     payment.setCheque_no("");
@@ -189,8 +212,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                     payment.setPayment_amount(edt_amount.getText().toString());
                     payment.setCust_id("");
                 } else {
-                    payment.setInvoice_id("");
-                    payment.setCollection_id("");
+                    payment.setInvoice_id(String.valueOf(invNum));
+                    payment.setCollection_id(String.valueOf(CollNum));
                     payment.setPayment_type("Cheque");
                     payment.setPayment_date(edtDate.getText().toString());
                     payment.setCheque_no(edtChequeNumber.getText().toString());
