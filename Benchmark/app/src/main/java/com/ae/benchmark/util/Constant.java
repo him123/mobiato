@@ -14,6 +14,9 @@ public class Constant {
     public static String checkBoxValue = "";
     public static String checkBoxFalse = "no";
 
+    public static String NAV_AUDIT = "no";
+    public static String VAN_STOCK = "no";
+
     public static String INV_LAST = "INV_LAST";
     public static String ORD_LAST = "ORD_LAST";
     public static String LOAD_LAST = "LOAD_LAST";

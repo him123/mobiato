@@ -142,7 +142,16 @@ public class DashBoardActivity extends AppCompatActivity {
 //
 //        sequence.start();
 
-        if (savedInstanceState == null) {
+        if (Constant.NAV_AUDIT.equals("yes")){
+            navItemIndex = 4;
+            CURRENT_TAG = TAG_DATA_POSTING;
+            loadHomeFragment();
+            Constant.NAV_AUDIT = "no";
+        } else if (Constant.VAN_STOCK.equals("yes")){
+            navItemIndex = 1;
+            CURRENT_TAG = TAG_MANAGE_LOAD;
+            loadHomeFragment();
+        } else if (savedInstanceState == null) {
             navItemIndex = 0;
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();

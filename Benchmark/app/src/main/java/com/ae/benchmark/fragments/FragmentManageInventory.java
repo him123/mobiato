@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ItemsListActivity;
 import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.util.Constant;
 
 import org.json.JSONObject;
 
@@ -81,6 +82,10 @@ public class FragmentManageInventory extends Fragment {
 
         viewPager.setAdapter(pagerAdapter);
 
+        if (Constant.VAN_STOCK.equals("yes")){
+            viewPager.setCurrentItem(2);
+            Constant.VAN_STOCK = "no";
+        }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             public void onPageScrollStateChanged(int state) {
