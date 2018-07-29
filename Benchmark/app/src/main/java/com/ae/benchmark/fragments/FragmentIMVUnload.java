@@ -25,7 +25,9 @@ import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.FreshUnloadActivity;
 import com.ae.benchmark.activities.LoginActivity;
 import com.ae.benchmark.adapters.RecyclerItemsAdapter;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 import com.github.clans.fab.FloatingActionButton;
@@ -50,6 +52,7 @@ public class FragmentIMVUnload extends Fragment {
     @InjectView(R.id.btn_checkin)
     Button btn_checkin;
 
+    DBManager dbManager;
     public FragmentIMVUnload() {
         // Required empty public constructor
     }
@@ -143,10 +146,35 @@ public class FragmentIMVUnload extends Fragment {
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Your unload is ready!")
                         .setContentText("Please go to payment screen!")
+                        .setCancelText("Back")
+                        .setConfirmText("Yes")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
+
+                                Transaction transaction = new Transaction();
+                                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_UNLOAD;
+                                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
+                                transaction.tr_customer_num = "";
+                                transaction.tr_customer_name = "";
+                                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(getContext(), Constant.SHRED_PR.SALESMANID);
+                                transaction.tr_invoice_id = "";
+                                transaction.tr_order_id = "";
+                                transaction.tr_collection_id = "";
+                                transaction.tr_pyament_id = "";
+                                transaction.tr_is_posted = "No";
+
+                                dbManager = new DBManager(getActivity());
+                                dbManager.open();
+                                dbManager.insertTransaction(transaction);
+
                                 Intent i = new Intent(getActivity(), DashBoardActivity.class);
                                 i.putExtra("end", "1");
                                 startActivity(i);

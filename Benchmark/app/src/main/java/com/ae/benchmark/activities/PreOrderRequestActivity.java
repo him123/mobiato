@@ -201,7 +201,17 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Log.v("", "Array of qty: " + arrQty.toString());
-                makeDilog(arrItem);
+                double subTot = 0;
+                for (int i=0 ; i<arrItem.size();i++){
+                    subTot += Double.parseDouble(arrItem.get(i).item_price);
+                }
+
+                if (subTot>0){
+                    makeDilog(arrItem);
+                } else {
+                    Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

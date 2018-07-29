@@ -277,10 +277,6 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 dbManager.open();
                 itemList = dbManager.getAllREcentCust();
 
-                recentCustomer = new RecentCustomer();
-                itemList.add(recentCustomer);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -369,17 +365,28 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.nav_stock:
-                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
+            case R.id.nav_stock:{
+                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Constant.VAN_STOCK = "yes";
+                startActivity(intent);
                 break;
+            }
 
-            case R.id.nav_dashboard:
-                Toast.makeText(getBaseContext(), "You selected Dashboard", Toast.LENGTH_SHORT).show();
+            case R.id.nav_dashboard: {
+                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 break;
+            }
 
-            case R.id.nav_sales:
-                Toast.makeText(getBaseContext(), "You selected Sales", Toast.LENGTH_SHORT).show();
+            case R.id.nav_sales: {
+                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Constant.NAV_AUDIT = "yes";
+                startActivity(intent);
                 break;
+            }
 
             case R.id.nav_Print:
                 Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
