@@ -208,9 +208,10 @@ public class LoginActivity extends AppCompatActivity {
             "\n" +
             "                    \"load_items\":[\n" +
             "                    {\n" +
-            "                    \"load_no\":\"1\",\n" +
+            "                    \"load_no\":\"546\",\n" +
             "                    \"item_code\":\"1\",\n" +
             "                    \"item_name\":\"GBC Bottle with Water\",\n" +
+            "                    \"item_type\":\"Bottle\",\n" +
             "                    \"item_qty\":\"12\",\n" +
             "                    \"item_uom\":\"Bottle\",\n" +
             "                    \"load_date\":\"19-07-2018\",\n" +
@@ -218,11 +219,20 @@ public class LoginActivity extends AppCompatActivity {
             "                    },\n" +
             "\n" +
             "\n" +
-            "                    {\"load_no\":\"2\",\n" +
+            "                    {\"load_no\":\"546\",\n" +
             "                    \"item_code\":\"2\",\n" +
             "                    \"item_name\":\"GBC Empty Bottle\",\n" +
+            "                    \"item_type\":\"Empty\",\n" +
             "                    \"item_qty\":\"14\",\n" +
             "                    \"item_uom\":\"Bottle\",\n" +
+            "                    \"load_date\":\"19-07-2018\",\n" +
+            "                    \"total_price\":\"685\"},\n" +
+            "{\"load_no\":\"546\",\n" +
+            "                    \"item_code\":\"3\",\n" +
+            "                    \"item_name\":\"GBC Coupon Book 50’s\",\n" +
+            " \"item_type\":\"Coupon\",\n" +
+            "                    \"item_qty\":\"14\",\n" +
+            "                    \"item_uom\":\"Coupon\",\n" +
             "                    \"load_date\":\"19-07-2018\",\n" +
             "                    \"total_price\":\"685\"}\n" +
             "                    ]\n" +

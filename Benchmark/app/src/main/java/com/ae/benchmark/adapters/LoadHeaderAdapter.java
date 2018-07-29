@@ -123,7 +123,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 txt_desc,
                 txt_sub_dept,
                 txt_price,
-                txt_cash;
+                txt_up;
 
         public ImageView imgVerified;
 
@@ -134,7 +134,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txt_load_no = (TextView) parent.findViewById(R.id.txt_load_no);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+            txt_up = (TextView) parent.findViewById(R.id.txt_up);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }

@@ -71,9 +71,7 @@
                     android:layout_margin="@dimen/_6sdp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_row_cust"
-                    android:clickable="false"
                     android:ems="3"
-                    android:focusable="false"
                     android:hint="Bottles"
                     android:lines="1"
                     android:padding="@dimen/_6sdp" />

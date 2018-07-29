@@ -158,7 +158,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+//            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
             txt_item_code = (TextView) parent.findViewById(R.id.txt_item_code);
             txt_tag = (TextView) parent.findViewById(R.id.txt_tag);

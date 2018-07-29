@@ -343,6 +343,7 @@ public class DBManager {
                     contentValueItem.put(DatabaseHelper.ITEM_CODE, singleObjItem.getString("item_code"));
                     contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, singleObjItem.getString("item_name"));
                     contentValueItem.put(DatabaseHelper.ITEM_QTY, singleObjItem.getString("item_qty"));
+                    contentValueItem.put(DatabaseHelper.ITEM_TYPE, singleObjItem.getString("item_type"));
                     contentValueItem.put(DatabaseHelper.ITEM_UOM, singleObjItem.getString("item_uom"));
                     contentValueItem.put(DatabaseHelper.LOAD_DATE, singleObjItem.getString("load_date"));
                     contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, singleObjItem.getString("total_price"));
@@ -439,6 +440,7 @@ public class DBManager {
                 contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, jArr.get(j).item_name_en);
 //                contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, jArr.get(j).item_name_ar);
                 contentValueItem.put(DatabaseHelper.ITEM_QTY, jArr.get(j).item_qty);
+                contentValueItem.put(DatabaseHelper.ITEM_TYPE, jArr.get(j).item_type);
                 contentValueItem.put(DatabaseHelper.ITEM_UOM, jArr.get(j).item_uom);
                 contentValueItem.put(DatabaseHelper.LOAD_DATE, "22/07/2018");
                 contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, jArr.get(j).item_price);
@@ -1541,6 +1543,7 @@ public class DBManager {
                         item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
                         item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE));
                         item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+                        item.item_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_TYPE));
                         item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
                         item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
 //
@@ -1590,6 +1593,7 @@ public class DBManager {
                         item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
                         item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
                         item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE));
+                        item.item_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_TYPE));
                         item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
                         item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
                         item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));

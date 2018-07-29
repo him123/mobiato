@@ -96,8 +96,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 txt_name,
                 txt_desc,
                 txt_sub_dept,
-                txt_price,
-                txt_cash;
+                txt_price;
+//                txt_cash;
 
         public ImageView imgVerified;
 
@@ -108,7 +108,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+//            txt_cash = (TextView) parent.findViewById(R.id.txt_up);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }

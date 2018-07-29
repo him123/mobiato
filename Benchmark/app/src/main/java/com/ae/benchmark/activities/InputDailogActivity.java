@@ -81,7 +81,7 @@ public class InputDailogActivity extends Activity {
 
     Item item;
 
-    String newOrOld, var;
+    String newOrOld, item_type;
     Intent intent;
     public static final String BROADCAST_ACTION = "com.benchmark.DIALOG";
     String qty;
@@ -100,11 +100,11 @@ public class InputDailogActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            isCoupon = extras.getString("isScan");
-            flag = extras.getBoolean("isCoupon");
+            isCoupon = extras.getString("isCoupon");
+            flag = extras.getBoolean("isScan");
             item = extras.getParcelable("item");
             newOrOld = extras.getString("tag");
-            var = extras.getString("var");
+            item_type = extras.getString("item_type");
         }
 
         db.open();
@@ -113,23 +113,16 @@ public class InputDailogActivity extends Activity {
         txt_qty.setText("Available Qty: " + qty);
         db.close();
 
-        if (flag) {
-            ll_empty.setVisibility(View.GONE);
-            ll_reason.setVisibility(View.GONE);
-            edt_sale.setHint("Pcs");
-        } else {
-            ll_empty.setVisibility(View.VISIBLE);
-            ll_reason.setVisibility(View.VISIBLE);
-            edt_sale.setHint("Bottles");
-        }
 
-        if (var.equals("empty")) {
-            ll_selling.setVisibility(View.GONE);
-            ll_reason.setVisibility(View.GONE);
-            ll_scan_code.setVisibility(View.GONE);
-        } else if (var.equals("bottle")) {
-            ll_empty.setVisibility(View.VISIBLE);
-        }
+//
+//        if (item_type.equals("coupon")) {
+//            ll_selling.setVisibility(View.GONE);
+//            ll_reason.setVisibility(View.GONE);
+//            ll_scan_code.setVisibility(View.GONE);
+//        } else if (item_type.equals("bottle")) {
+//            edt_sale.setClickable(true);
+//            ll_empty.setVisibility(View.VISIBLE);
+//        }
 
         List<String> list = new ArrayList<String>();
 
@@ -159,15 +152,57 @@ public class InputDailogActivity extends Activity {
 //
 //        sequence.start();
 
-        TextView txt_cpn_title = (TextView) findViewById(R.id.txt_cpn_title);
-        LinearLayout ll_qrcode = (LinearLayout) findViewById(R.id.ll_qrcode);
 
         if (isCoupon.equals("no")) {
-            ll_qrcode.setVisibility(View.GONE);
-            txt_cpn_title.setVisibility(View.GONE);
+            ll_scan_code.setVisibility(View.GONE);
+
+//            if (item_type.equalsIgnoreCase("bottle")) {
+            ll_empty.setVisibility(View.GONE);
+            ll_reason.setVisibility(View.GONE);
+            ll_selling.setVisibility(View.VISIBLE);
+
+            edt_sale.setEnabled(true);
+            edt_sale.setClickable(true);
+            edt_sale.setFocusable(true);
+            edt_sale.setHint("Bottle");
+//            } else if (item_type.equalsIgnoreCase("coupon")) {
+//                ll_empty.setVisibility(View.GONE);
+//                ll_reason.setVisibility(View.VISIBLE);
+//                ll_selling.setVisibility(View.VISIBLE);
+//                edt_sale.setHint("Pcs");
+//            }
+
         } else {
-            ll_qrcode.setVisibility(View.VISIBLE);
-            txt_cpn_title.setVisibility(View.VISIBLE);
+            ll_scan_code.setVisibility(View.VISIBLE);
+
+            if (item_type.equalsIgnoreCase("bottle")) {
+                ll_empty.setVisibility(View.VISIBLE);
+                ll_reason.setVisibility(View.VISIBLE);
+                ll_selling.setVisibility(View.VISIBLE);
+                ll_scan_code.setVisibility(View.VISIBLE);
+                edt_sale.setHint("Bottle");
+                edt_sale.setEnabled(false);
+            } else if (item_type.equalsIgnoreCase("coupon")) {
+                ll_empty.setVisibility(View.GONE);
+                ll_reason.setVisibility(View.GONE);
+                ll_selling.setVisibility(View.VISIBLE);
+                ll_scan_code.setVisibility(View.GONE);
+
+                edt_sale.setEnabled(true);
+                edt_sale.setClickable(true);
+                edt_sale.requestFocus();
+                edt_sale.setFocusable(true);
+                edt_sale.setHint("Pcs");
+            } else if (item_type.equalsIgnoreCase("empty")) {
+                ll_scan_code.setVisibility(View.GONE);
+                ll_reason.setVisibility(View.GONE);
+                ll_empty.setVisibility(View.GONE);
+                edt_sale.setEnabled(true);
+                edt_sale.setClickable(true);
+                edt_sale.setFocusable(true);
+                edt_sale.requestFocus();
+            }
+
         }
 
         img_qr.setOnClickListener(new View.OnClickListener() {
@@ -192,13 +227,13 @@ public class InputDailogActivity extends Activity {
             public void onClick(View v) {
 
 
-                if (var.equals("empty")) {
+                if (item_type.equals("empty")) {
 
                     double final_price = Double.parseDouble(edt_emp.getText().toString()) * price;
 
 
                     if (!edt_emp.getText().toString().equals("")) {
-                        if (Integer.parseInt(edt_emp.getText().toString()) <= Integer.parseInt(qty)-1) {
+                        if (Integer.parseInt(edt_emp.getText().toString()) <= Integer.parseInt(qty) - 1) {
                             intent.putExtra("tag", "show");
                             intent.putExtra("bottle", edt_emp.getText().toString());
                             intent.putExtra("price", final_price);
@@ -211,7 +246,7 @@ public class InputDailogActivity extends Activity {
                             intent.putStringArrayListExtra("barcodeArr", arr);
                             sendBroadcast(intent);
                             finish();
-                        }else{
+                        } else {
                             new SweetAlertDialog(InputDailogActivity.this, SweetAlertDialog.WARNING_TYPE)
                                     .setTitleText("Oops...")
                                     .setContentText("Entered quantity exceed to van stock limit!")
@@ -224,19 +259,23 @@ public class InputDailogActivity extends Activity {
 
                 } else {
 
-                    double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
+                    if (edt_sale.equals("")) {
+                        Toast.makeText(InputDailogActivity.this, "Please scan", Toast.LENGTH_SHORT).show();
+                    } else {
+                        double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
 
-                    intent.putExtra("tag", newOrOld);
-                    intent.putExtra("bottle", edt_sale.getText().toString());
-                    intent.putExtra("price", final_price);
-                    item.item_qty = edt_sale.getText().toString();
-                    item.is_empty = "0";
-                    item.item_price = "" + final_price;
-                    intent.putExtra("item", item);
-                    intent.putExtra("barcodeArr", arr);
+                        intent.putExtra("tag", newOrOld);
+                        intent.putExtra("bottle", edt_sale.getText().toString());
+                        intent.putExtra("price", final_price);
+                        item.item_qty = edt_sale.getText().toString();
+                        item.is_empty = "0";
+                        item.item_price = "" + final_price;
+                        intent.putExtra("item", item);
+                        intent.putExtra("barcodeArr", arr);
 
-                    sendBroadcast(intent);
-                    finish();
+                        sendBroadcast(intent);
+                        finish();
+                    }
                 }
             }
         });
@@ -301,13 +340,13 @@ public class InputDailogActivity extends Activity {
 
                 int current = Integer.parseInt(edt_sale.getText().toString());
 
-                if (Integer.parseInt(edt_sale.getText().toString()) <= Integer.parseInt(qty)-1) {
+                if (Integer.parseInt(edt_sale.getText().toString()) <= Integer.parseInt(qty) - 1) {
                     current++;
                     edt_sale.setText("" + current);
                     arr.add(message);
                     edt_coupon_code.setText(arr.toString());
                     edt_emp.setText("" + current);
-                }else{
+                } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")
                             .setContentText("Entered quantity exceed to van stock limit!")

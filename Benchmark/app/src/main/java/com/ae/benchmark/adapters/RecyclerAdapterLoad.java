@@ -107,7 +107,7 @@ public class RecyclerAdapterLoad extends RecyclerView.Adapter<RecyclerView.ViewH
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+//            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }

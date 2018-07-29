@@ -113,7 +113,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            isCoupon = extras.getString("isScan");
+            isCoupon = extras.getString("isCoupon");
             type = extras.getString("type");
             custName = extras.getString("name");
             oldOrNew = extras.getString("tag");

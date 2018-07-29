@@ -3,83 +3,116 @@ package com.ae.benchmark.util;
  * Created by Rakshit on 03-Feb-17.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog.Builder;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build.VERSION;
+import android.os.Message;
+import android.support.v4.widget.ExploreByTouchHelper;
+import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+//import com.ae.benchmark.App;
+//import com.ae.benchmark.activities.DriverPaymentDetails;
+//import com.ae.benchmark.activities.LoadRequestActivity;
+//import com.ae.benchmark.activities.LoadVerifyActivity;
+//import com.ae.benchmark.activities.PaymentDetails;
+//import com.ae.benchmark.activities.PreSaleOrderProceedActivity;
+//import com.ae.benchmark.activities.PrintCustomerActivity;
+//import com.ae.benchmark.activities.PrintDocumentActivity;
+//import com.ae.benchmark.activities.PromotioninfoActivity;
+//import com.ae.benchmark.activities.UnloadActivity;
+//import com.ae.benchmark.data.Const;
 import com.ae.benchmark.model.DevicesData;
+//import com.ae.benchmark.models.DevicesData;
+import com.ae.benchmark.printer.Arabic6822;
+import com.ae.benchmark.printer.JsonRpcUtil;
+import com.ae.benchmark.printer.LinePrinterException;
+//import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
 
 public class PrinterHelper {
-    //    private static final UUID MY_UUID;
-    byte[] BoldOff;
-    byte[] BoldOn;
-    byte[] CarriageReturn;
-    byte[] CompressOff;
-    byte[] CompressOn;
-    byte[] DoubleHighOff;
-    byte[] DoubleHighOn;
-    byte[] DoubleWideOff;
-    byte[] DoubleWideOn;
-    byte[] NewLine;
-    byte[] wakeUp;
-    private android.app.ProgressDialog ProgressDialog;
-    byte[] UnderlineOff;
-    byte[] UnderlineOn;
-    ArrayAdapter<String> adapter;
-    private ArrayList<DevicesData> arrData = new ArrayList<>();
-    ArrayList<BluetoothDevice> arrayListBluetoothDevices;
-    BluetoothSocket btSocket;
-    private String callbackId;
-    int cnln;
-    private int count;
-    ArrayAdapter<String> detectedAdapter;
-    String devicename;
-    int endln;
-    private HashMap<String, String> hashArabVales;
-    private HashMap<String, Integer> hashArbPositions;
-    private HashMap<String, Integer> hashPositions;
-    private HashMap<String, Integer> hashValues;
-    private boolean isEnglish;
-    private boolean isExceptionThrown;
-    boolean isTwice;
-    private JSONArray jArr;
-    private BluetoothAdapter mBtAdapter;
-    //    private final BroadcastReceiver mPairReceiver;
+//    private static final UUID MY_UUID;
+//    byte[] BoldOff;
+//    byte[] BoldOn;
+//    byte[] CarriageReturn;
+//    byte[] CompressOff;
+//    byte[] CompressOn;
+//    byte[] DoubleHighOff;
+//    byte[] DoubleHighOn;
+//    byte[] DoubleWideOff;
+//    byte[] DoubleWideOn;
+//    byte[] NewLine;
+//    byte[] wakeUp;
+//    private android.app.ProgressDialog ProgressDialog;
+//    byte[] UnderlineOff;
+//    byte[] UnderlineOn;
+//    ArrayAdapter<String> adapter;
+//    private ArrayList<DevicesData> arrData = new ArrayList<>();
+//    ArrayList<BluetoothDevice> arrayListBluetoothDevices;
+//    BluetoothSocket btSocket;
+//    private String callbackId;
+//    int cnln;
+//    private int count;
+//    ArrayAdapter<String> detectedAdapter;
+//    String devicename;
+//    int endln;
+//    private HashMap<String, String> hashArabVales;
+//    private HashMap<String, Integer> hashArbPositions;
+//    private HashMap<String, Integer> hashPositions;
+//    private HashMap<String, Integer> hashValues;
+//    private boolean isEnglish;
+//    private boolean isExceptionThrown;
+//    boolean isTwice;
+//    private JSONArray jArr;
+//    private BluetoothAdapter mBtAdapter;
+//    private final BroadcastReceiver mPairReceiver;
 //    private final BroadcastReceiver mReceiverRequiresPin;
-    private BroadcastReceiver myReceiver;
-    private NotificationManager notificationManager;
-    OutputStream outStream;
-    private android.app.ProgressDialog progressDialog;
-    byte[] resetprinter;
-    String resolution;
-    private int retryCount;
-    private String sMacAddr;
-    int startln;
-    private JSONObject status;
-    String strFormat;
-    String strFormatBold;
-    String strFormatHeader;
-    String strFormatTitle;
-    String strPrintLeftBold;
-    String strUnderLine;
-    Context context;
-    private Activity activity;
-
-    boolean isFirstInvoice = true;
-
-    public PrinterHelper(Context context, Activity activity) {
+//    private BroadcastReceiver myReceiver;
+//    private NotificationManager notificationManager;
+//    OutputStream outStream;
+//    private android.app.ProgressDialog progressDialog;
+//    byte[] resetprinter;
+//    String resolution;
+//    private int retryCount;
+//    private String sMacAddr;
+//    int startln;
+//    private JSONObject status;
+//    String strFormat;
+//    String strFormatBold;
+//    String strFormatHeader;
+//    String strFormatTitle;
+//    String strPrintLeftBold;
+//    String strUnderLine;
+//    Context context;
+//    private Activity activity;
+//
+//    boolean isFirstInvoice = true;
+//
+//    public PrinterHelper(Context context, Activity activity) {
 //        this.isTwice = false;
 //        this.resolution = "";
 //        this.callbackId = "";
@@ -4517,5 +4550,4 @@ public class PrinterHelper {
 //            }
 //        }
 //    }
-    }
 }

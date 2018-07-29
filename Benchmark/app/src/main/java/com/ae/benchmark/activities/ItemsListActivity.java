@@ -18,11 +18,9 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.RecyclerItemsAdapter;
 import com.ae.benchmark.localdb.DBManager;
-import com.ae.benchmark.localdb.DatabaseHelper;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.Constant;
-import com.ae.benchmark.util.MyFirebaseMessagingService;
 import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Himm on 3/13/2018.
@@ -101,8 +98,9 @@ public class ItemsListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dbManager.open();
                 dbManager.insertVanStockArr(itemList, load_no);
+                dbManager.updateLoadVerified(load_no);
                 if (dbManager.checkIsNotVerified()) {
-                    dbManager.updateLoadVerified(load_no);
+
                     finish();
                 } else {
                     if (isBack.equals("No")) {
@@ -190,4 +188,10 @@ public class ItemsListActivity extends AppCompatActivity {
         }
 
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver2);
+    }
 }

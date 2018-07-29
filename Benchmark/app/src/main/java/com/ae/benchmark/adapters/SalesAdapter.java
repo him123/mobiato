@@ -62,25 +62,18 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //        holder.txt_desc.setText(item.desc);
 
         final boolean flag;
-        final String var;
-        if (item.item_name_en.contains("Coupon")) {
-            holder.txt_cash.setText("Pcs");
+        if (item.item_type.equalsIgnoreCase("Coupon")) {
+            holder.txt_uom.setText("Pcs");
             flag = true;
-            holder.txt_tag.setText("SALE");
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new_green);
-            var = "coupon";
-        } else if (item.item_name_en.contains("Empty")) {
-            holder.txt_cash.setText("Bottles");
+        } else if (item.item_type.equalsIgnoreCase("Empty")) {
+            holder.txt_uom.setText("Bottles");
             flag = false;
-            holder.txt_tag.setText("SALE");
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new);
-            var = "empty";
         } else {
-            holder.txt_cash.setText("Bottles");
-            flag = false;
+            holder.txt_uom.setText("Bottles");
+            flag = true;
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new_green);
-            holder.txt_tag.setText("SALE");
-            var = "bottle";
         }
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +82,11 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 Intent i = new Intent(mContext, InputDailogActivity.class);
 
-                i.putExtra("isScan", isCoupon);
-                i.putExtra("isCoupon", flag);
+                i.putExtra("isScan", flag);
+                i.putExtra("isCoupon", isCoupon);
                 i.putExtra("item", item);
                 i.putExtra("tag", isNewCust);
-                i.putExtra("var", var);
+                i.putExtra("item_type", item.item_type);
 
                 mContext.startActivity(i);
 //                makeDilog(mContext);
@@ -137,7 +130,7 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 txt_desc,
                 txt_sub_dept,
                 txt_price,
-                txt_cash,
+                txt_uom,
                 txt_item_code, txt_tag, txt_qty;
 
         public RelativeLayout rl_tag;
@@ -150,7 +143,7 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+            txt_uom = (TextView) parent.findViewById(R.id.txt_uom);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
             txt_item_code = (TextView) parent.findViewById(R.id.txt_item_code);
             txt_tag = (TextView) parent.findViewById(R.id.txt_tag);

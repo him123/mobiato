@@ -227,7 +227,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                 deleteDialog.dismiss();
 
                 Intent i = new Intent(CustomerDetailOperationActivity.this, PreOrderRequestActivity.class);
-                i.putExtra("isScan", "yes");
+                i.putExtra("isCoupon", "yes");
                 i.putExtra("type", "cash");
                 i.putExtra("name", customer.cust_name_en);
                 i.putExtra("cust", customer);
@@ -277,7 +277,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                 deleteDialog.dismiss();
 
                 Intent i = new Intent(CustomerDetailOperationActivity.this, PreOrderRequestActivity.class);
-                i.putExtra("isScan", "no");
+                i.putExtra("isCoupon", "no");
                 i.putExtra("type", "norm");
                 i.putExtra("name", customer.cust_name_en);
                 i.putExtra("cust", customer);

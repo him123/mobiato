@@ -92,7 +92,7 @@ public class CouponHistroyAdapter extends RecyclerView.Adapter<RecyclerView.View
                 txt_desc,
                 txt_sub_dept,
                 txt_price,
-                txt_cash,
+                txt_up,
                 txt_item_code, txt_tag;
 
         public RelativeLayout rl_tag;
@@ -105,7 +105,7 @@ public class CouponHistroyAdapter extends RecyclerView.Adapter<RecyclerView.View
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_cash = (TextView) parent.findViewById(R.id.txt_cash);
+            txt_up = (TextView) parent.findViewById(R.id.txt_up);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
             txt_item_code = (TextView) parent.findViewById(R.id.txt_item_code);
             txt_tag = (TextView) parent.findViewById(R.id.txt_tag);

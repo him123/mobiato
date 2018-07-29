@@ -187,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Database Information
-        static final String DB_NAME = "5GALLON.DB";
+    static final String DB_NAME = "5GALLON.DB";
 
     // database version
     static final int DB_VERSION = 1;
@@ -214,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
             ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
             LOAD_NO + " TEXT NOT NULL, " + "" + LOAD_DATE + " TEXT NOT NULL, " +
-            ITEM_UOM + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " + ITEM_TYPE + " TEXT NOT NULL, " +
             "" + IS_REQ + " TEXT NOT NULL," + "" +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
@@ -230,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
             ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
             LOAD_NO + " TEXT NOT NULL, " + "" + LOAD_DATE + " TEXT NOT NULL, " +
-            ITEM_UOM + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " + ITEM_TYPE + " TEXT NOT NULL, " +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
     //CREATE CUSTOMER MASTER
@@ -243,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + CUST_TYPE + " TEXT NOT NULL, " + CUST_POSSESSED_EMPTY_BOTTLE + " TEXT NOT NULL, " +
             "" + CUST_POSSESSED_FILLED_BOTTLE + " TEXT NOT NULL, " +
             "" + CUST_SALE + " TEXT NOT NULL, " + CUST_ORDER + " TEXT NOT NULL, " +
-            "" + CUST_COLLECTION + " TEXT NOT NULL, "  + CUST_LATITUDE + " TEXT NOT NULL, " +
+            "" + CUST_COLLECTION + " TEXT NOT NULL, " + CUST_LATITUDE + " TEXT NOT NULL, " +
             "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " + CUST_CREATED_DATE + " TEXT , " +
             "" + CUST_LONGITUDE + " TEXT NOT NULL);";
 
@@ -326,7 +326,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_RECENT_CUSTOMER = "create table " + TABLE_RECENT_CUSTOMER + "(" + RECENT_CUSTOMER_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOMER_ID + " TEXT NOT NULL, "
             + CUSTOMER_NAME + " TEXT NOT NULL," +
-             DATE_TIME + " TEXT );";
+            DATE_TIME + " TEXT );";
 
     // ORDER HEADER
     private static final String CREATE_TABLE_ORDER_HEADER = "create table " + TABLE_ORDER_HEADER + "(" + _ID
