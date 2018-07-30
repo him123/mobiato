@@ -161,18 +161,18 @@ public class InputDailogActivity extends Activity {
                 ll_reason.setVisibility(View.GONE);
                 ll_selling.setVisibility(View.VISIBLE);
 
-                edt_sale.setEnabled(true);
-                edt_sale.setClickable(true);
-                edt_sale.setFocusable(true);
+//                edt_sale.setEnabled(true);
+//                edt_sale.setClickable(true);
+//                edt_sale.setFocusable(true);
                 edt_sale.setHint("Bottle");
 
             } else if (item_type.equalsIgnoreCase("empty")) {
                 ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN
                 ll_reason.setVisibility(View.GONE);
                 ll_empty.setVisibility(View.GONE);
-                edt_sale.setEnabled(true);
-                edt_sale.setClickable(true);
-                edt_sale.setFocusable(true);
+//                edt_sale.setEnabled(true);
+//                edt_sale.setClickable(true);
+//                edt_sale.setFocusable(true);
                 edt_sale.setHint("Bottle");
                 edt_sale.requestFocus();
 
@@ -182,9 +182,9 @@ public class InputDailogActivity extends Activity {
                 ll_selling.setVisibility(View.VISIBLE);// ABLE TO SCAN
                 ll_scan_code.setVisibility(View.VISIBLE);
 
-                edt_sale.setEnabled(false);
-                edt_sale.setClickable(false);
-                edt_sale.setFocusable(false);
+//                edt_sale.setEnabled(false);
+//                edt_sale.setClickable(false);
+//                edt_sale.setFocusable(false);
                 edt_sale.setHint("Pcs");
             }
 
@@ -197,32 +197,32 @@ public class InputDailogActivity extends Activity {
                 ll_selling.setVisibility(View.VISIBLE); // ABLE TO SCAN
                 ll_scan_code.setVisibility(View.VISIBLE);
                 edt_sale.setHint("Bottle");
-                edt_sale.setEnabled(false);
+//                edt_sale.setEnabled(false);
             } else if (item_type.equalsIgnoreCase("coupon")) {
                 ll_empty.setVisibility(View.GONE);
                 ll_reason.setVisibility(View.GONE);
                 ll_selling.setVisibility(View.VISIBLE);// ABLE TO SCAN
                 ll_scan_code.setVisibility(View.VISIBLE);
 
-                edt_sale.setEnabled(false);
-                edt_sale.setClickable(false);
-                edt_sale.setFocusable(false);
+//                edt_sale.setEnabled(false);
+//                edt_sale.setClickable(false);
+//                edt_sale.setFocusable(false);
                 edt_sale.setHint("Pcs");
             } else if (item_type.equalsIgnoreCase("empty")) {
                 ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN
                 ll_reason.setVisibility(View.GONE);
                 ll_empty.setVisibility(View.GONE);
-                edt_sale.setEnabled(true);
-                edt_sale.setClickable(true);
-                edt_sale.setFocusable(true);
+//                edt_sale.setEnabled(true);
+//                edt_sale.setClickable(true);
+//                edt_sale.setFocusable(true);
                 edt_sale.setHint("Bottle");
                 edt_sale.requestFocus();
             }
         }
 
-        edt_sale.setEnabled(false);
-        edt_sale.setClickable(false);
-        edt_sale.setFocusable(false);
+//        edt_sale.setEnabled(false);
+//        edt_sale.setClickable(false);
+//        edt_sale.setFocusable(false);
 
         img_qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,8 +277,8 @@ public class InputDailogActivity extends Activity {
 
                 } else if (item_type.equalsIgnoreCase("bottle")) {
 
-                    if (edt_sale.getText().toString().equals("") || edt_emp.getText().toString().equals("")) {
-                        if (isCoupon.equalsIgnoreCase("yes") && edt_sale.getText().toString().equals(""))
+                    if (edt_sale.getText().toString().equals("")) {
+                        if (isCoupon.equalsIgnoreCase("yes") && edt_coupon_code.getText().toString().equals(""))
                             Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
@@ -388,9 +388,9 @@ public class InputDailogActivity extends Activity {
                     edt_coupon_code.setText(arr.toString());
                     edt_emp.setText("" + current);
 
-                    edt_sale.setEnabled(true);
-                    edt_sale.setClickable(true);
-                    edt_sale.setFocusable(true);
+//                    edt_sale.setEnabled(true);
+//                    edt_sale.setClickable(true);
+//                    edt_sale.setFocusable(true);
 
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

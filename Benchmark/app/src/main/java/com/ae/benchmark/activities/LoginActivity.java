@@ -319,8 +319,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     pDialog.show();
 //                    Toast.makeText(LoginActivity.this, "Username and password doesn't match.", Toast.LENGTH_SHORT).show();
-                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
+//                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
 //                    new HttpGetRequest().execute();
+                    new AsyncTaskRunner("5").execute();
                 }
             }
         });
@@ -332,12 +333,10 @@ public class LoginActivity extends AppCompatActivity {
         private String resp;
 //        ProgressDialog progressDialog;
 
-
         String id;
 
-        public AsyncTaskRunner() {
-//            this.id = id;
-
+        public AsyncTaskRunner(String id) {
+            this.id = id;
 
         }
 
@@ -429,6 +428,8 @@ public class LoginActivity extends AppCompatActivity {
 
             pDialog.dismissWithAnimation();
 
+            UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.IS_DAY_END, false);
+
             pDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -442,10 +443,13 @@ public class LoginActivity extends AppCompatActivity {
                         intent = new Intent(LoginActivity.this, DashBoardActivity.class);
                         intent.putExtra("end", "0");
                     } else {
-                        intent = new Intent(LoginActivity.this, SuperVisorApproveActivity.class);
+
+                        intent = new Intent(LoginActivity.this, DashBoardActivity.class);
+                        intent.putExtra("end", "0");
                     }
 
                     intent.putExtra("type", "login");
+
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
@@ -523,7 +527,7 @@ public class LoginActivity extends AppCompatActivity {
                 request.setURI(new URI("https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json"));
                 HttpResponse httpResponse = client.execute(request);
 
-                Log.v(""," ================== Reponse: "+httpResponse.getStatusLine().toString());
+                Log.v("", " ================== Reponse: " + httpResponse.getStatusLine().toString());
             } catch (IOException e) {
                 e.printStackTrace();
                 result = null;
@@ -542,9 +546,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void login(final String id, String pass, String fcm) {
-        RestClient.getMutualTransfer().loginOData(id,
+        RestClient.getMutualTransfer().login(id,
                 pass,
-                "json", new Callback<Response>() {
+                fcm, new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
                         Log.v("", "Response: " + response);
@@ -555,7 +559,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.v("", "==== Json: " + jsonObject.toString());
 
                             if (jsonObject.getString("STATUS").equals("1")) {
-                                new AsyncTaskRunner().execute();
+                                new AsyncTaskRunner("2").execute();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Error in Login", Toast.LENGTH_SHORT).show();
                             }

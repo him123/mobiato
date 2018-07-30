@@ -136,6 +136,7 @@ public class FragmentIMVUnload extends Fragment {
             public void onClick(View v) {
                 //Toast.makeText(getActivity(), "uload", Toast.LENGTH_SHORT).show();
 
+//                UtilApp.WriteSharePrefrence(getActivity(), Constant.END_DATE, UtilApp.getCurrentDate());
                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISSALES, false);
                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISJPLOADED, false);
                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, true);
@@ -161,6 +162,7 @@ public class FragmentIMVUnload extends Fragment {
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
 
+                                UtilApp.clearSharedPreferences(getContext());
                                 Transaction transaction = new Transaction();
                                 transaction.tr_type = Constant.TRANSACTION_TYPES.TT_UNLOAD;
                                 transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();

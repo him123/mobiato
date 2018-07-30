@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
                         Intent intent;
 
                         if (UtilApp.ReadSharePrefrenceString(SplashActivity.this, Constant.SHRED_PR.USERNAME).equalsIgnoreCase("SV1")) {
-                            intent = new Intent(SplashActivity.this, SuperVisorApproveActivity.class);
+                            intent = new Intent(SplashActivity.this, DashBoardActivity.class);
                         } else {
                             intent = new Intent(SplashActivity.this, DashBoardActivity.class);
                             intent.putExtra("end", "0");

@@ -10,15 +10,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.DashBoardActivity;
+import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.LoginActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Payment;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Himm on 3/13/2018.
@@ -62,11 +66,11 @@ public class FragmentPayments extends Fragment {
         for (int i = 0; i < payments.size(); i++) {
             due_amt += Double.parseDouble(payments.get(i).getPayment_amount());
 
-            if (payments.get(i).getPayment_type().equals("Cash")){
+            if (payments.get(i).getPayment_type().equals("Cash")) {
                 cash += Double.parseDouble(payments.get(i).getPayment_amount());
             }
 
-            if (payments.get(i).getPayment_type().equals("Cheque")){
+            if (payments.get(i).getPayment_type().equals("Cheque")) {
                 cheque += Double.parseDouble(payments.get(i).getPayment_amount());
             }
         }
@@ -78,12 +82,29 @@ public class FragmentPayments extends Fragment {
         btn_day_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UtilApp.clearSharedPreferences(getActivity());
-//                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISLOGIN, false);
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                getActivity().finish(); // call this to finish the current activity
+
+
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Done")
+                        .setContentText("Your day ended, See you Tomorrow!")
+                        .setConfirmText("Ok!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+
+                                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.END_DATE, UtilApp.getCurrentDate());
+                                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.IS_DAY_END, true);
+                                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, false);
+
+                                Intent intent = new Intent(getActivity(), DashBoardActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                getActivity().finish(); // call this to finish the current activity
+                            }
+                        })
+                        .show();
+
 
 
             }

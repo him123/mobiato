@@ -13,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.adapters.FragmentPrint;
 import com.ae.benchmark.fragments.DashboardFragment;
 import com.ae.benchmark.fragments.FragmentAudit;
 import com.ae.benchmark.fragments.FragmentCustomerSelection;
@@ -61,6 +63,7 @@ public class DashBoardActivity extends AppCompatActivity {
     //    private static final String TAG_ROUTE_RECONE = "Route_Recone";
 //    private static final String TAG_SALE_SNAP = "Sales_Snap";
     private static final String TAG_DATA_POSTING = "Data_Posting_Audit";
+    private static final String TAG_PRINT = "Print";
     //    private static final String TAG_CATALOGUE = "Catalogue";
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_SUGGESTIONS = "suggestions";
@@ -142,12 +145,12 @@ public class DashBoardActivity extends AppCompatActivity {
 //
 //        sequence.start();
 
-        if (Constant.NAV_AUDIT.equals("yes")){
+        if (Constant.NAV_AUDIT.equals("yes")) {
             navItemIndex = 4;
             CURRENT_TAG = TAG_DATA_POSTING;
             loadHomeFragment();
             Constant.NAV_AUDIT = "no";
-        } else if (Constant.VAN_STOCK.equals("yes")){
+        } else if (Constant.VAN_STOCK.equals("yes")) {
             navItemIndex = 1;
             CURRENT_TAG = TAG_MANAGE_LOAD;
             loadHomeFragment();
@@ -159,47 +162,20 @@ public class DashBoardActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            isEnd= extras.getString("end");
+            isEnd = extras.getString("end");
 
         }
 
-        if(isEnd.equals("1")){
+        if (isEnd.equals("1")) {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Menu menuNav = navigationView.getMenu();
-
-        MenuItem nav_itemMI = menuNav.findItem(R.id.nav_inventory);
-        MenuItem nav_itemJP = menuNav.findItem(R.id.nav_journey);
-        MenuItem nav_itemMIPy = menuNav.findItem(R.id.nav_payment);
-        MenuItem nav_itemSa = menuNav.findItem(R.id.nav_inventory);
-        MenuItem nav_itemDa = menuNav.findItem(R.id.nav_data);
-
-        if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
-            nav_itemJP.setEnabled(true);
-        else
-            nav_itemJP.setEnabled(false);
-
-        if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISPAYMET))
-            nav_itemMIPy.setEnabled(true);
-        else
-            nav_itemMIPy.setEnabled(false);
-
-        if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISSALES))
-            nav_itemSa.setEnabled(true);
-        else
-            nav_itemSa.setEnabled(false);
-
-        nav_itemDa.setEnabled(true);
-        /*if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
-            nav_itemDa.setEnabled(true);
-        else
-            nav_itemDa.setEnabled(false);*/
     }
 
     /***
@@ -353,6 +329,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
             case 5:
                 // SETTINGS
+                FragmentPrint printFragment = new FragmentPrint();
+                return printFragment;
+
+            case 6:
+                // SETTINGS
                 FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
 //            case 6:
@@ -429,8 +410,13 @@ public class DashBoardActivity extends AppCompatActivity {
 //                        CURRENT_TAG = TAG_CATALOGUE;
 //                        break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_print:
                         navItemIndex = 5;
+                        CURRENT_TAG = TAG_PRINT;
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
 
@@ -501,36 +487,63 @@ public class DashBoardActivity extends AppCompatActivity {
                 super.onDrawerOpened(drawerView);
 
 
-                Menu menuNav = navigationView.getMenu();
+                Menu menuNav1 = navigationView.getMenu();
+                MenuItem nav_home = menuNav1.findItem(R.id.nav_home);
+                MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
+                MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
+                MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
+                MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+                MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
+                MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
 
-                MenuItem nav_itemMI = menuNav.findItem(R.id.nav_inventory);
-                MenuItem nav_itemJP = menuNav.findItem(R.id.nav_journey);
-                MenuItem nav_itemMIPy = menuNav.findItem(R.id.nav_payment);
-                MenuItem nav_itemSa = menuNav.findItem(R.id.nav_inventory);
-                MenuItem nav_itemDa = menuNav.findItem(R.id.nav_data);
 
-                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
-                    nav_itemJP.setEnabled(true);
-                else
-                    nav_itemJP.setEnabled(false);
+                boolean isEndDay = UtilApp.ReadSharePrefrence(getApplicationContext(),
+                        Constant.SHRED_PR.IS_DAY_END);
 
-                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISPAYMET))
-                    nav_itemMIPy.setEnabled(true);
-                else
-                    nav_itemMIPy.setEnabled(false);
+                String endDate = UtilApp.ReadSharePrefrenceString(getApplicationContext(),
+                        Constant.SHRED_PR.END_DATE);
 
-                if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISSALES))
-                    nav_itemSa.setEnabled(true);
-                else
-                    nav_itemSa.setEnabled(false);
+                if (isEndDay) {
+                    if (endDate.equals(UtilApp.getCurrentDate())) {
+                        nav_home.setEnabled(true);
+                        nav_inventory.setEnabled(false);
+                        nav_journey.setEnabled(false);
+                        nav_payment.setEnabled(false);
+                        nav_data.setEnabled(true);
+                        nav_print.setEnabled(true);
+                    } else {
 
-                nav_itemDa.setEnabled(true);
-                /*if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISDATA))
-                    nav_itemDa.setEnabled(true);
-                else
-                    nav_itemDa.setEnabled(false);*/
+                        UtilApp.WriteSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.IS_DAY_END, false);
+
+                        nav_home.setEnabled(true);
+                        nav_inventory.setEnabled(true);
+                        nav_journey.setEnabled(false);
+                        nav_payment.setEnabled(false);
+                        nav_data.setEnabled(true);
+                        nav_print.setEnabled(true);
+                    }
+
+                } else {
+
+                    if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
+                        nav_journey.setEnabled(true);
+                    else
+                        nav_journey.setEnabled(false);
+
+                    if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISPAYMET))
+                        nav_payment.setEnabled(true);
+                    else
+                        nav_payment.setEnabled(false);
+
+                    nav_data.setEnabled(true);
+                    nav_inventory.setEnabled(true);
+
+
+                }
+
             }
         };
+
 
         //Setting the actionbarToggle to drawer layout
         drawer.setDrawerListener(actionBarDrawerToggle);

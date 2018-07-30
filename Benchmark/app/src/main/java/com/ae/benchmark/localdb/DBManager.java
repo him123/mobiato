@@ -21,8 +21,6 @@ import com.ae.benchmark.model.RecentCustomer;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.UtilApp;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -205,7 +203,7 @@ public class DBManager {
 
         double totColl = 0.0;
         try {
-            Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER  + " WHERE " + DatabaseHelper.COL_INVOICE_DATE + " = '" + UtilApp.getCurrentDate() + "'", null);
+            Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER + " WHERE " + DatabaseHelper.COL_INVOICE_DATE + " = '" + UtilApp.getCurrentDate() + "'", null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
@@ -247,6 +245,7 @@ public class DBManager {
 
         return (int) totColl;
     }
+
     //INSERT SALESMAN
     public void insertSalesInvoiceHeader(SalesInvoice salesInvoice) {
 
@@ -394,7 +393,7 @@ public class DBManager {
                 ContentValues contentValue = new ContentValues();
 
                 contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
-                contentValue.put(DatabaseHelper.LOAD_DEL_DATE, singleObj.getString("delivery_date"));
+                contentValue.put(DatabaseHelper.LOAD_DEL_DATE, UtilApp.getCurrentDate());
                 contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, "0");
                 contentValue.put(DatabaseHelper.IS_REQ, "0");
 
@@ -778,7 +777,7 @@ public class DBManager {
 //        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER;
 
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_PAYMENT +
-                " WHERE " + DatabaseHelper.PAYMENT_DATE + " = '" + UtilApp.getCurrentDate() + "'" ;
+                " WHERE " + DatabaseHelper.PAYMENT_DATE + " = '" + UtilApp.getCurrentDate() + "'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -1245,7 +1244,6 @@ public class DBManager {
     }
 
 
-
     public static boolean CheckIsItemAlreadyExist(String item_code, SQLiteDatabase db, String tableName) {
 //        SQLiteDatabase sqldb = EGLifeStyleApplication.sqLiteDatabase;
         String Query = "Select * from " + tableName + " where " +
@@ -1631,7 +1629,7 @@ public class DBManager {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE " + DatabaseHelper.TR_DATE + " = '" + UtilApp.getCurrentDate() +"'";
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE " + DatabaseHelper.TR_DATE + " = '" + UtilApp.getCurrentDate() + "'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -2339,13 +2337,24 @@ public class DBManager {
         ArrayList<Load> list = new ArrayList<Load>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_LOAD_HEADER + " WHERE " + DatabaseHelper.IS_REQ + "=" + is_req;
+//        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_LOAD_HEADER + " WHERE "
+//                + DatabaseHelper.IS_REQ + "=" + is_req +
+//                " AND " + DatabaseHelper.LOAD_DEL_DATE + "=" + UtilApp.getCurrentDate();
+
+        String selectQuery = "SELECT  * FROM " +
+                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ? AND "
+                + DatabaseHelper.LOAD_DEL_DATE + " = ?";
+
+//        "select docid as _id, recipeID from " +
+//                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ? AND "
+//                + DatabaseHelper.LOAD_DEL_DATE +" = ?",
+//                new String[] { is_req,  UtilApp.getCurrentDate()}
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransaction();
         try {
 
-            Cursor cursor = db.rawQuery(selectQuery, null);
+            Cursor cursor = db.rawQuery(selectQuery, new String[]{is_req, UtilApp.getCurrentDate()});
             try {
 
                 // looping through all rows and adding to list

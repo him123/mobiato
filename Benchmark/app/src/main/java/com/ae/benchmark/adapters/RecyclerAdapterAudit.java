@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,10 +24,12 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
 
     private List<Transaction> mItemList;
     Context mContext;
+    String type;
 
-    public RecyclerAdapterAudit(List<Transaction> itemList, Context context) {
+    public RecyclerAdapterAudit(List<Transaction> itemList, Context context , String type) {
         this.mItemList = itemList;
         mContext = context;
+        this.type = type;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -45,33 +48,40 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
         final Transaction item = mItemList.get(position);
 
 
-        if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_STOCK_CAP)){
-            holder.txtType.setText("Stock Captured");
-            holder.llInvoice.setVisibility(View.GONE);
-            holder.txtIsPosted.setText(item.tr_is_posted);
-        } else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_SALES_CREATED)){
-            holder.txtType.setText("SALE");
-            holder.llInvoice.setVisibility(View.VISIBLE);
-            holder.txtInvoiceNo.setText("INV " + item.tr_invoice_id);
-            holder.txtIsPosted.setText(item.tr_is_posted);
-        } else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_OREDER_CREATED)){
-            holder.txtType.setText("ORDER");
-            holder.llInvoice.setVisibility(View.VISIBLE);
-            holder.txtInvoice.setText("Order No.:");
-            holder.txtInvoiceNo.setText("ORD " + item.tr_invoice_id);
-            holder.txtIsPosted.setText(item.tr_is_posted);
-        }  else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_LOAD_CONF)){
-            holder.txtType.setText("LOAD CONFIRMED");
-            holder.llInvoice.setVisibility(View.GONE);
-            holder.txtIsPosted.setText(item.tr_is_posted);
-        }  else if (item.tr_type.equals(Constant.TRANSACTION_TYPES.TT_LOAD_CREATE)){
-            holder.txtType.setText("LOAD CREATED");
-            holder.llInvoice.setVisibility(View.GONE);
-            holder.txtIsPosted.setText(item.tr_is_posted);
+        item.setTr_is_posted("No");
+        switch (item.tr_type) {
+            case Constant.TRANSACTION_TYPES.TT_STOCK_CAP:
+                holder.txtType.setText("Stock Captured");
+                break;
+            case Constant.TRANSACTION_TYPES.TT_SALES_CREATED:
+                holder.txtType.setText("SALE");
+                holder.txtInvoiceNo.setText("INV " + item.tr_invoice_id);
+                break;
+            case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
+                holder.txtType.setText("ORDER");
+                holder.txtInvoiceNo.setText("ORD " + item.tr_invoice_id);
+                break;
+            case Constant.TRANSACTION_TYPES.TT_LOAD_CONF:
+                holder.txtType.setText("LOAD CONFIRMED");
+                break;
+            case Constant.TRANSACTION_TYPES.TT_LOAD_CREATE:
+                holder.txtType.setText("LOAD CREATED");
+                break;
         }
 
-        holder.txtIsPosted.setText("No");
+        if (item.getTr_is_posted().equals("No")){
+            holder.chbIsPosted.setVisibility(View.VISIBLE);
+            holder.imgIsPosted.setVisibility(View.GONE);
+        }  else {
+            holder.chbIsPosted.setVisibility(View.GONE);
+            holder.imgIsPosted.setVisibility(View.VISIBLE);
+        }
 
+        if (type.equals("print")){
+            holder.chbIsPosted.setVisibility(View.GONE);
+            holder.imgIsPosted.setVisibility(View.VISIBLE);
+            holder.imgIsPosted.setBackgroundResource(R.drawable.ic_action_print);
+        }
     }
 
     @Override
@@ -85,11 +95,10 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
 
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtType , txtInvoiceNo , txtIsPosted;
-        public LinearLayout llInvoice;
-        public TextView txtInvoice;
+        public TextView txtType , txtInvoiceNo ;
 
-        public ImageView imgVerified;
+        public ImageView imgIsPosted;
+        public CheckBox chbIsPosted;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolder(View parent, final Context context) {
@@ -97,9 +106,8 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
 
             txtType = (TextView) parent.findViewById(R.id.txtType);
             txtInvoiceNo = (TextView) parent.findViewById(R.id.txtInvoiceNo);
-            txtIsPosted = (TextView) parent.findViewById(R.id.txtIsPosted);
-            llInvoice = (LinearLayout) parent.findViewById(R.id.llInvoice);
-            txtInvoice = (TextView) parent.findViewById(R.id.txtInvoice);
+            imgIsPosted = (ImageView) parent.findViewById(R.id.imgIsPosted);
+            chbIsPosted = (CheckBox) parent.findViewById(R.id.chbIsPosted);
 
         }
     }

@@ -1,83 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp">
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="@dimen/_5sdp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txtType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Type"
+                android:textColor="@color/black"/>
 
-                <TextView
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="wrap_content"
-                    android:text="Type:"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/gray"/>
-
-                <TextView
-                    android:id="@+id/txtType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txtInvoiceNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-"
+                android:textColor="@color/black"/>
 
             <LinearLayout
-                android:id="@+id/llInvoice"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtInvoice"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="wrap_content"
-                    android:text="Invoice No.:"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/gray"/>
+                <ImageView
+                    android:id="@+id/imgIsPosted"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/ic_icon_verified_sel"
+                    android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/txtInvoiceNo"
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:id="@+id/chbIsPosted"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:visibility="gone"
+                    android:button="@drawable/abc_btn_check_material"
+                    android:buttonTint="@android:color/holo_red_dark"/>
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="wrap_content"
-                    android:text="Is Posted:"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/gray"/>
-
-                <TextView
-                    android:id="@+id/txtIsPosted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"/>
-            </LinearLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

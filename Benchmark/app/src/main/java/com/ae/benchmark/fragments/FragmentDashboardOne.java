@@ -116,107 +116,112 @@ public class FragmentDashboardOne extends Fragment {
     }
 
     public void setDtd() {
-        ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
+        try {
+            ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
 
-        double totSale = 0;
-        for (int i = 0; i < salesInvoices.size(); i++) {
-            if (salesInvoices.get(i).getInv_type().equals("Sale")) {
-                totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
-            }
-        }
-        if (totSale> Constant.TARGET_DTD_MTD/30){
-            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
-        } else {
-            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
-        }
-
-        txtMainSell.setText(String.valueOf((int) totSale));
-        txtSell.setText(String.valueOf((int) totSale));
-
-        int totColl = db.getAllInvoiceHeadCollectionToday();
-        if (totColl> Constant.TARGET_DTD_MTD/30){
-            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
-        } else {
-            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
-        }
-        txtCollection.setText(String.valueOf(totColl));
-        final int totalProgressTime = 100;
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
-
-                try {
-                    while (jumpTime < totalProgressTime) {
-                        try {
-                            sleep(50);
-                            jumpTime += 2;
-                            progressMain.setProgressValue(jumpTime);
-                            progressSell.setProgressValue(jumpTime);
-                            progressCollection.setProgressValue(jumpTime);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+            double totSale = 0;
+            for (int i = 0; i < salesInvoices.size(); i++) {
+                if (salesInvoices.get(i).getInv_type().equals("Sale")) {
+                    totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
                 }
             }
-        };
-        t.start();
+            if (totSale > Constant.TARGET_DTD_MTD / 30) {
+                imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+            } else {
+                imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+            }
 
-        if (totSale > 100) {
+            txtMainSell.setText(String.valueOf((int) totSale));
+            txtSell.setText(String.valueOf((int) totSale));
 
-            int val = (int) totSale;
-
-            totalSell = (int) totSale;
-            totalCollection = (int) totColl;
-            counterSell = (int) totSale - 100;
-            counterCollection = (int) totColl - 100;
-            new Thread(new Runnable() {
-
+            int totColl = db.getAllInvoiceHeadCollectionToday();
+            if (totColl > Constant.TARGET_DTD_MTD / 30) {
+                imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+            } else {
+                imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+            }
+            txtCollection.setText(String.valueOf(totColl));
+            final int totalProgressTime = 100;
+            final Thread t = new Thread() {
+                @Override
                 public void run() {
-                    while (counterSell < totalSell) {
-                        try {
-                            Thread.sleep(25);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                    int jumpTime = 0;
+
+                    try {
+                        while (jumpTime < totalProgressTime) {
+                            try {
+                                sleep(50);
+                                jumpTime += 2;
+                                progressMain.setProgressValue(jumpTime);
+                                progressSell.setProgressValue(jumpTime);
+                                progressCollection.setProgressValue(jumpTime);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
-                        txtMainSell.post(new Runnable() {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            t.start();
 
-                            public void run() {
-                                txtMainSell.setText("" + counterSell);
+            if (totSale > 100) {
 
+                int val = (int) totSale;
+
+                totalSell = (int) totSale;
+                totalCollection = (int) totColl;
+                counterSell = (int) totSale - 100;
+                counterCollection = (int) totColl - 100;
+                new Thread(new Runnable() {
+
+                    public void run() {
+                        while (counterSell < totalSell) {
+                            try {
+                                Thread.sleep(25);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
                             }
+                            txtMainSell.post(new Runnable() {
 
-                        });
-                        txtSell.post(new Runnable() {
+                                public void run() {
+                                    txtMainSell.setText("" + counterSell);
 
-                            public void run() {
-                                txtSell.setText("" + counterSell);
+                                }
 
-                            }
+                            });
+                            txtSell.post(new Runnable() {
 
-                        });
-                        counterSell++;
+                                public void run() {
+                                    txtSell.setText("" + counterSell);
 
-                        txtCollection.post(new Runnable() {
+                                }
 
-                            public void run() {
-                                txtCollection.setText("" + counterCollection);
+                            });
+                            counterSell++;
 
-                            }
+                            txtCollection.post(new Runnable() {
 
-                        });
-                        counterCollection++;
+                                public void run() {
+                                    txtCollection.setText("" + counterCollection);
+
+                                }
+
+                            });
+                            counterCollection++;
+                        }
+
                     }
 
-                }
+                }).start();
 
-            }).start();
+            }
 
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

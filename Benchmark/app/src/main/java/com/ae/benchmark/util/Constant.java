@@ -29,7 +29,10 @@ public class Constant {
     public static String LOAD_REQUEST_LAST = "LOAD_REQUEST_LAST";
 
 
+
     public static class SHRED_PR {
+        public static String END_DATE = "end_date";
+        public static String IS_DAY_END = "is_day_end";
         public static final String SHARE_PREF = AppNameSuper + "_preferences";
 
         public static final String SALESMANID = "salesman_id";
