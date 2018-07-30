@@ -7,11 +7,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.SalesInvoice;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.views.TwoLevelCircularProgressBar;
 
 import java.util.ArrayList;
@@ -42,8 +46,16 @@ public class FragmentDashboardOne extends Fragment {
 
     DBManager db;
 
-    int counterSell , counterCollection ;
-    int totalSell , totalCollection;
+    int counterSell, counterCollection;
+    int totalSell, totalCollection;
+    @InjectView(R.id.txt_middle_small)
+    TextView txtMiddleSmall;
+    @InjectView(R.id.swcDtdMtd)
+    Switch swcDtdMtd;
+    @InjectView(R.id.imgSale)
+    ImageView imgSale;
+    @InjectView(R.id.imgCollection)
+    ImageView imgCollection;
 
     public FragmentDashboardOne() {
         // Required empty public constructor
@@ -77,20 +89,56 @@ public class FragmentDashboardOne extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dashboard_one, container, false);
         ButterKnife.inject(this, v);
 
+        txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
         db = new DBManager(getActivity());
-        ArrayList<SalesInvoice> salesInvoices= db.getAllInvoiceHead();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        setDtd();
+        swcDtdMtd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
+                    setDtd();
+                } else {
+                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD));
+                    setMtd();
+                }
+            }
+        });
+        return v;
+    }
+
+    public void setDtd() {
+        ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
 
         double totSale = 0;
-        for (int i=0; i<salesInvoices.size(); i++){
-            if (salesInvoices.get(i).getInv_type().equals("Sale")){
+        for (int i = 0; i < salesInvoices.size(); i++) {
+            if (salesInvoices.get(i).getInv_type().equals("Sale")) {
                 totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
             }
         }
+        if (totSale> Constant.TARGET_DTD_MTD/30){
+            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+        } else {
+            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+        }
 
-        txtMainSell.setText(String.valueOf((int)totSale));
-        txtSell.setText(String.valueOf((int)totSale));
+        txtMainSell.setText(String.valueOf((int) totSale));
+        txtSell.setText(String.valueOf((int) totSale));
 
-        int totColl = db.getAllInvoiceHeadCollection();
+        int totColl = db.getAllInvoiceHeadCollectionToday();
+        if (totColl> Constant.TARGET_DTD_MTD/30){
+            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+        } else {
+            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+        }
         txtCollection.setText(String.valueOf(totColl));
         final int totalProgressTime = 100;
         final Thread t = new Thread() {
@@ -111,20 +159,14 @@ public class FragmentDashboardOne extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
         t.start();
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
-        if (totSale>100){
+        if (totSale > 100) {
 
             int val = (int) totSale;
 
@@ -176,7 +218,113 @@ public class FragmentDashboardOne extends Fragment {
             }).start();
 
         }
-        return v;
+    }
+
+    public void setMtd() {
+        ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHead();
+
+        double totSale = 0;
+        for (int i = 0; i < salesInvoices.size(); i++) {
+            if (salesInvoices.get(i).getInv_type().equals("Sale")) {
+                totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
+            }
+        }
+
+        if (totSale> Constant.TARGET_DTD_MTD){
+            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+        } else {
+            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+        }
+        txtMainSell.setText(String.valueOf((int) totSale));
+        txtSell.setText(String.valueOf((int) totSale));
+
+        int totColl = db.getAllInvoiceHeadCollection();
+
+        if (totColl> Constant.TARGET_DTD_MTD){
+            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+        } else {
+            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+        }
+
+        txtCollection.setText(String.valueOf(totColl));
+        final int totalProgressTime = 100;
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                int jumpTime = 0;
+
+                try {
+                    while (jumpTime < totalProgressTime) {
+                        try {
+                            sleep(50);
+                            jumpTime += 2;
+                            progressMain.setProgressValue(jumpTime);
+                            progressSell.setProgressValue(jumpTime);
+                            progressCollection.setProgressValue(jumpTime);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+
+        if (totSale > 100) {
+
+            int val = (int) totSale;
+
+            totalSell = (int) totSale;
+            totalCollection = (int) totColl;
+            counterSell = (int) totSale - 100;
+            counterCollection = (int) totColl - 100;
+            new Thread(new Runnable() {
+
+                public void run() {
+                    while (counterSell < totalSell) {
+                        try {
+                            Thread.sleep(25);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        txtMainSell.post(new Runnable() {
+
+                            public void run() {
+                                txtMainSell.setText("" + counterSell);
+
+                            }
+
+                        });
+                        txtSell.post(new Runnable() {
+
+                            public void run() {
+                                txtSell.setText("" + counterSell);
+
+                            }
+
+                        });
+                        counterSell++;
+
+                        txtCollection.post(new Runnable() {
+
+                            public void run() {
+                                txtCollection.setText("" + counterCollection);
+
+                            }
+
+                        });
+                        counterCollection++;
+                    }
+
+                }
+
+            }).start();
+
+        }
     }
 
     @Override

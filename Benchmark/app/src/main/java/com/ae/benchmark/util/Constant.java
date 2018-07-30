@@ -17,6 +17,8 @@ public class Constant {
     public static String NAV_AUDIT = "no";
     public static String VAN_STOCK = "no";
 
+    public static int TARGET_DTD_MTD = 10000;
+
     public static String INV_LAST = "INV_LAST";
     public static String ORD_LAST = "ORD_LAST";
     public static String LOAD_LAST = "LOAD_LAST";

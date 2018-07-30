@@ -108,11 +108,12 @@
                                     android:textSize="@dimen/_12sdp" />
 
                                 <TextView
+                                    android:id="@+id/txtAmtDue"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/_32sdp" />
+                                    android:textSize="@dimen/_22sdp" />
                             </LinearLayout>
                         </RelativeLayout>
                     </LinearLayout>
@@ -176,12 +177,13 @@
                             android:textSize="@dimen/_17sdp" />
 
                         <TextView
+                            android:id="@+id/txtCheque"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:text="60"
-                            android:textSize="@dimen/_42sdp"
+                            android:textSize="@dimen/_32sdp"
                             android:textStyle="bold" />
 
 
@@ -210,12 +212,13 @@
                             android:textSize="@dimen/_17sdp" />
 
                         <TextView
+                            android:id="@+id/txtCash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:text="38"
-                            android:textSize="@dimen/_42sdp"
+                            android:textSize="@dimen/_32sdp"
                             android:textStyle="bold" />
 
 

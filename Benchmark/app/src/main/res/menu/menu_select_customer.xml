@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_import"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="Import" />
-    <item
         android:id="@+id/nav_stock"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Van Stock" />
@@ -22,10 +18,6 @@
         android:id="@+id/nav_Print"
         android:icon="@drawable/ic_menu_manage"
         android:title="Print" />
-    <item
-        android:id="@+id/nav_cat"
-        android:icon="@drawable/ic_menu_manage"
-        android:title="Catalogue" />
 
     <item
         android:id="@+id/nav_map"

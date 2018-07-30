@@ -361,9 +361,6 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.nav_import:
-                Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
-                break;
 
             case R.id.nav_stock:{
                 Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
@@ -392,9 +389,6 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.nav_cat:
-                Toast.makeText(getBaseContext(), "You selected Catalogue", Toast.LENGTH_SHORT).show();
-                break;
 
             case R.id.nav_map:
                 Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
