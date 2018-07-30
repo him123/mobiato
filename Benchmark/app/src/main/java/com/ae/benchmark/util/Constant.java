@@ -16,6 +16,7 @@ public class Constant {
 
     public static String NAV_AUDIT = "no";
     public static String VAN_STOCK = "no";
+    public static String PRINT = "no";
 
     public static int TARGET_DTD_MTD = 10000;
 

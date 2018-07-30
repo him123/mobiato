@@ -97,7 +97,8 @@ public class DashBoardActivity extends AppCompatActivity {
 //    MaterialShowcaseSequence sequence;
 
     String isEnd = "0";
-
+    public boolean isMenu = false;
+    public Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +153,10 @@ public class DashBoardActivity extends AppCompatActivity {
         } else if (Constant.VAN_STOCK.equals("yes")){
             navItemIndex = 1;
             CURRENT_TAG = TAG_MANAGE_LOAD;
+            loadHomeFragment();
+        }  else if (Constant.PRINT.equals("yes")){
+            navItemIndex = 5;
+            CURRENT_TAG = TAG_PRINT;
             loadHomeFragment();
         } else if (savedInstanceState == null) {
             navItemIndex = 0;
@@ -427,18 +432,26 @@ public class DashBoardActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
                     case R.id.nav_inventory:
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_MANAGE_LOAD;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
                     case R.id.nav_journey:
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_JOURNEY_PLAN;
+                        isMenu = true;
+                        onPrepareOptionsMenu(menu);
                         break;
                     case R.id.nav_payment:
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_PAYMENTS;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
 //                    case R.id.nav_route:
 //                        navItemIndex = 4;
@@ -451,6 +464,8 @@ public class DashBoardActivity extends AppCompatActivity {
                     case R.id.nav_data:
                         navItemIndex = 4;
                         CURRENT_TAG = TAG_DATA_POSTING;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
 //                    case R.id.nav_catalogue:
 //                        navItemIndex = 6;
@@ -460,11 +475,15 @@ public class DashBoardActivity extends AppCompatActivity {
                     case R.id.nav_print:
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_PRINT;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
 
                     case R.id.nav_settings:
                         navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
+                        isMenu = false;
+                        onPrepareOptionsMenu(menu);
                         break;
 
 //                    case R.id.nav_share:
@@ -615,5 +634,92 @@ public class DashBoardActivity extends AppCompatActivity {
 
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_select_customer, menu);
+
+        this.menu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+
+            case R.id.nav_stock:{
+                navItemIndex = 1;
+                CURRENT_TAG = TAG_MANAGE_LOAD;
+                Constant.VAN_STOCK = "yes";
+                loadHomeFragment();
+                Constant.VAN_STOCK = "no";
+                isMenu = false;
+                onPrepareOptionsMenu(menu);
+                break;
+            }
+
+            case R.id.nav_dashboard: {
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                loadHomeFragment();
+                isMenu = false;
+                onPrepareOptionsMenu(menu);
+                break;
+            }
+
+            case R.id.nav_sales: {
+                navItemIndex = 4;
+                CURRENT_TAG = TAG_DATA_POSTING;
+                Constant.NAV_AUDIT = "yes";
+                loadHomeFragment();
+                Constant.NAV_AUDIT = "no";
+                isMenu = false;
+                onPrepareOptionsMenu(menu);
+                break;
+            }
+
+            case R.id.nav_Print:
+                navItemIndex = 5;
+                CURRENT_TAG = TAG_PRINT;
+                Constant.PRINT= "yes";
+                loadHomeFragment();
+                Constant.PRINT = "no";
+                isMenu = false;
+                onPrepareOptionsMenu(menu);
+                break;
+
+
+            case R.id.nav_map:
+                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+                startActivity(intent);
+                Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+        return true;
+
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem nav_stock = menu.findItem(R.id.nav_stock);
+        nav_stock.setVisible(isMenu);
+
+        MenuItem nav_dashboard = menu.findItem(R.id.nav_dashboard);
+        nav_dashboard.setVisible(isMenu);
+
+        MenuItem nav_sales = menu.findItem(R.id.nav_sales);
+        nav_sales.setVisible(isMenu);
+
+        MenuItem nav_Print = menu.findItem(R.id.nav_Print);
+        nav_Print.setVisible(isMenu);
+
+        MenuItem nav_map = menu.findItem(R.id.nav_map);
+        nav_map.setVisible(isMenu);
+
+        return true;
     }
 }

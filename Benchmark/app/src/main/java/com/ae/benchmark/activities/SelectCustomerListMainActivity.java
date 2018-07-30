@@ -385,10 +385,13 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.nav_Print:
-                Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
+            case R.id.nav_Print:{
+                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Constant.PRINT = "yes";
+                startActivity(intent);
                 break;
-
+            }
 
             case R.id.nav_map:
                 Intent intent = new Intent(getApplicationContext() , MapsActivity.class);

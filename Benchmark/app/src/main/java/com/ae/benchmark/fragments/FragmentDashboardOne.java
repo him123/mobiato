@@ -3,6 +3,7 @@ package com.ae.benchmark.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.views.TwoLevelCircularProgressBar;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -56,6 +58,10 @@ public class FragmentDashboardOne extends Fragment {
     ImageView imgSale;
     @InjectView(R.id.imgCollection)
     ImageView imgCollection;
+    @InjectView(R.id.txt_left)
+    TextView txtLeft;
+    @InjectView(R.id.txt_right)
+    TextView txtRight;
 
     public FragmentDashboardOne() {
         // Required empty public constructor
@@ -124,22 +130,28 @@ public class FragmentDashboardOne extends Fragment {
                 totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
             }
         }
-        if (totSale> Constant.TARGET_DTD_MTD/30){
-            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+        if (totSale > Constant.TARGET_DTD_MTD / 30) {
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
         txtMainSell.setText(String.valueOf((int) totSale));
         txtSell.setText(String.valueOf((int) totSale));
+        txtLeft.setText(new DecimalFormat("##.#k").format(totSale/1000));
 
-        int totColl = db.getAllInvoiceHeadCollectionToday();
-        if (totColl> Constant.TARGET_DTD_MTD/30){
-            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+        double totColl = db.getAllInvoiceHeadCollectionToday();
+        if (totColl > Constant.TARGET_DTD_MTD / 30) {
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
-        txtCollection.setText(String.valueOf(totColl));
+        txtCollection.setText(String.valueOf((int)totColl));
+        txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
         final int totalProgressTime = 100;
         final Thread t = new Thread() {
             @Override
@@ -230,23 +242,30 @@ public class FragmentDashboardOne extends Fragment {
             }
         }
 
-        if (totSale> Constant.TARGET_DTD_MTD){
-            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+        if (totSale > Constant.TARGET_DTD_MTD) {
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
         txtMainSell.setText(String.valueOf((int) totSale));
         txtSell.setText(String.valueOf((int) totSale));
 
-        int totColl = db.getAllInvoiceHeadCollection();
+        txtLeft.setText(new DecimalFormat("##.#k").format(totSale/1000));
 
-        if (totColl> Constant.TARGET_DTD_MTD){
-            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+        double totColl = db.getAllInvoiceHeadCollection();
+
+        if (totColl > Constant.TARGET_DTD_MTD) {
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
-        txtCollection.setText(String.valueOf(totColl));
+        txtCollection.setText(String.valueOf((int) totColl));
+        txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
         final int totalProgressTime = 100;
         final Thread t = new Thread() {
             @Override

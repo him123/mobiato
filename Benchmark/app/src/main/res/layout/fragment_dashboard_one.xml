@@ -355,8 +355,7 @@
                                                 android:id="@+id/imgSale"
                                                 android:layout_width="20dp"
                                                 android:layout_height="25dp"
-                                                android:layout_gravity="center"
-                                                android:rotation="180" />
+                                                android:layout_gravity="center"/>
 
                                             <TextView
                                                 android:id="@+id/txt_left"
