@@ -196,7 +196,7 @@ public class DBManager {
         }
     }
 
-    public int getAllInvoiceHeadCollectionToday() {
+    public double getAllInvoiceHeadCollectionToday() {
 
         ArrayList<SalesInvoice> list = new ArrayList<>();
         openDatabsse();
@@ -218,10 +218,10 @@ public class DBManager {
             Log.e("dbError", e.toString());
         }
 
-        return (int) totColl;
+        return totColl;
     }
 
-    public int getAllInvoiceHeadCollection() {
+    public double getAllInvoiceHeadCollection() {
 
         ArrayList<SalesInvoice> list = new ArrayList<>();
         openDatabsse();
@@ -243,7 +243,7 @@ public class DBManager {
             Log.e("dbError", e.toString());
         }
 
-        return (int) totColl;
+        return totColl;
     }
 
     //INSERT SALESMAN

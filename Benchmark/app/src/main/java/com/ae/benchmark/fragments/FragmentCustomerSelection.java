@@ -135,7 +135,7 @@ public class FragmentCustomerSelection extends Fragment {
         toolbar.setTitle("");
 
         mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        mTitle.setText("DATE");
+        mTitle.setText("Journey Plans");
 
         mTitle.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -249,7 +249,8 @@ public class InputDailogActivity extends Activity {
                 if (item_type.equalsIgnoreCase("empty")) {
                     if (!edt_sale.getText().toString().equals("")) {
                         double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
-                        if (Integer.parseInt(edt_sale.getText().toString()) < Integer.parseInt(qty)) {
+                        if (Integer.parseInt(edt_sale.getText().toString()) <= Integer.parseInt(qty)) {
+
                             intent.putExtra("tag", "show");
                             intent.putExtra("bottle", edt_sale.getText().toString());
                             intent.putExtra("price", final_price);
@@ -278,29 +279,36 @@ public class InputDailogActivity extends Activity {
                 } else if (item_type.equalsIgnoreCase("bottle")) {
 
                     if (edt_sale.getText().toString().equals("")) {
-                        if (isCoupon.equalsIgnoreCase("yes") && edt_coupon_code.getText().toString().equals(""))
-                            Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
+//                        if (isCoupon.equalsIgnoreCase("yes"))
+//                            Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
+//                        else
+                        Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     } else {
-                        double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
 
-                        intent.putExtra("tag", newOrOld);
-                        intent.putExtra("bottle", edt_sale.getText().toString());
-                        intent.putExtra("price", final_price);
-                        item.item_qty = edt_sale.getText().toString();
-                        item.is_empty = "0";
-                        item.item_emp_qty = edt_emp.getText().toString();
-                        item.item_price = "" + final_price;
-                        intent.putExtra("item", item);
-                        intent.putExtra("barcodeArr", arr);
+                        if (isCoupon.equalsIgnoreCase("yes") && edt_coupon_code.getText().toString().equals("")) {
+                            Toast.makeText(InputDailogActivity.this, "Please scan coupon", Toast.LENGTH_SHORT).show();
+                        } else {
 
-                        sendBroadcast(intent);
-                        finish();
+                            double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
+
+                            intent.putExtra("tag", newOrOld);
+                            intent.putExtra("bottle", edt_sale.getText().toString());
+                            intent.putExtra("price", final_price);
+                            item.item_qty = edt_sale.getText().toString();
+                            item.is_empty = "0";
+                            item.item_emp_qty = edt_emp.getText().toString();
+                            item.item_price = "" + final_price;
+                            intent.putExtra("item", item);
+                            intent.putExtra("barcodeArr", arr);
+
+                            sendBroadcast(intent);
+                            finish();
+                        }
                     }
                 } else if (item_type.equalsIgnoreCase("coupon")) {
-                    if (edt_sale.getText().toString().equals("")) {
-                        Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
+                    if (edt_sale.getText().toString().equals("") ||
+                            edt_coupon_code.getText().toString().equals("")) {
+                        Toast.makeText(InputDailogActivity.this, "Please Scan Coupon and enter quantity", Toast.LENGTH_SHORT).show();
                     } else {
                         double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
 

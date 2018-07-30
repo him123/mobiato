@@ -96,6 +96,8 @@ public class FragmentPayments extends Fragment {
                                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.END_DATE, UtilApp.getCurrentDate());
                                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.IS_DAY_END, true);
                                 UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISPAYMET, false);
+                                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISJPLOADED, false);
+
 
                                 Intent intent = new Intent(getActivity(), DashBoardActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

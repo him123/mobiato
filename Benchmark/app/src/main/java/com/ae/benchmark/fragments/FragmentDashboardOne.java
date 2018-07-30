@@ -3,6 +3,7 @@ package com.ae.benchmark.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.views.TwoLevelCircularProgressBar;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -56,6 +58,10 @@ public class FragmentDashboardOne extends Fragment {
     ImageView imgSale;
     @InjectView(R.id.imgCollection)
     ImageView imgCollection;
+    @InjectView(R.id.txt_left)
+    TextView txtLeft;
+    @InjectView(R.id.txt_right)
+    TextView txtRight;
 
     public FragmentDashboardOne() {
         // Required empty public constructor
@@ -115,115 +121,158 @@ public class FragmentDashboardOne extends Fragment {
         return v;
     }
 
-    public void setDtd() {
-        try {
-            ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
-
-            double totSale = 0;
-            for (int i = 0; i < salesInvoices.size(); i++) {
-                if (salesInvoices.get(i).getInv_type().equals("Sale")) {
-                    totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
-                }
-            }
-            if (totSale > Constant.TARGET_DTD_MTD / 30) {
-                imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
-            } else {
-                imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
-            }
-
-            txtMainSell.setText(String.valueOf((int) totSale));
-            txtSell.setText(String.valueOf((int) totSale));
-
-            int totColl = db.getAllInvoiceHeadCollectionToday();
-            if (totColl > Constant.TARGET_DTD_MTD / 30) {
-                imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
-            } else {
-                imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
-            }
-            txtCollection.setText(String.valueOf(totColl));
-            final int totalProgressTime = 100;
-            final Thread t = new Thread() {
-                @Override
-                public void run() {
-                    int jumpTime = 0;
-
-                    try {
-                        while (jumpTime < totalProgressTime) {
-                            try {
-                                sleep(50);
-                                jumpTime += 2;
-                                progressMain.setProgressValue(jumpTime);
-                                progressSell.setProgressValue(jumpTime);
-                                progressCollection.setProgressValue(jumpTime);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            t.start();
-
-            if (totSale > 100) {
-
-                int val = (int) totSale;
-
-                totalSell = (int) totSale;
-                totalCollection = (int) totColl;
-                counterSell = (int) totSale - 100;
-                counterCollection = (int) totColl - 100;
-                new Thread(new Runnable() {
-
-                    public void run() {
-                        while (counterSell < totalSell) {
-                            try {
-                                Thread.sleep(25);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            txtMainSell.post(new Runnable() {
-
-                                public void run() {
-                                    txtMainSell.setText("" + counterSell);
-
-                                }
-
-                            });
-                            txtSell.post(new Runnable() {
-
-                                public void run() {
-                                    txtSell.setText("" + counterSell);
-
-                                }
-
-                            });
-                            counterSell++;
-
-                            txtCollection.post(new Runnable() {
-
-                                public void run() {
-                                    txtCollection.setText("" + counterCollection);
-
-                                }
-
-                            });
-                            counterCollection++;
-                        }
-
-                    }
-
-                }).start();
-
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public void setDtd() {
+//        try {
+//            ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
+//
+//            double totSale = 0;
+//            for (int i = 0; i < salesInvoices.size(); i++) {
+//                if (salesInvoices.get(i).getInv_type().equals("Sale")) {
+//                    totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
+//                }
+//            }
+//            if (totSale > Constant.TARGET_DTD_MTD / 30) {
+//                imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+//            } else {
+//                imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+//            }
+//<<<<<<< HEAD
+//
+//            txtMainSell.setText(String.valueOf((int) totSale));
+//            txtSell.setText(String.valueOf((int) totSale));
+//
+//            int totColl = db.getAllInvoiceHeadCollectionToday();
+//            if (totColl > Constant.TARGET_DTD_MTD / 30) {
+//                imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+//            } else {
+//                imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+//            }
+//            txtCollection.setText(String.valueOf(totColl));
+//            final int totalProgressTime = 100;
+//            final Thread t = new Thread() {
+//                @Override
+//                public void run() {
+//                    int jumpTime = 0;
+//
+//                    try {
+//                        while (jumpTime < totalProgressTime) {
+//                            try {
+//                                sleep(50);
+//                                jumpTime += 2;
+//                                progressMain.setProgressValue(jumpTime);
+//                                progressSell.setProgressValue(jumpTime);
+//                                progressCollection.setProgressValue(jumpTime);
+//                            } catch (InterruptedException e) {
+//                                // TODO Auto-generated catch block
+//                                e.printStackTrace();
+//                            }
+//=======
+//        }
+//        if (totSale > Constant.TARGET_DTD_MTD / 30) {
+//            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+//            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
+//        } else {
+//            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+//            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
+//        }
+//
+//        txtMainSell.setText(String.valueOf((int) totSale));
+//        txtSell.setText(String.valueOf((int) totSale));
+//        txtLeft.setText(new DecimalFormat("##.#k").format(totSale/1000));
+//
+//        double totColl = db.getAllInvoiceHeadCollectionToday();
+//        if (totColl > Constant.TARGET_DTD_MTD / 30) {
+//            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+//            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
+//        } else {
+//            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+//            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
+//        }
+//        txtCollection.setText(String.valueOf((int)totColl));
+//        txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
+//        final int totalProgressTime = 100;
+//        final Thread t = new Thread() {
+//            @Override
+//            public void run() {
+//                int jumpTime = 0;
+//
+//                try {
+//                    while (jumpTime < totalProgressTime) {
+//                        try {
+//                            sleep(50);
+//                            jumpTime += 2;
+//                            progressMain.setProgressValue(jumpTime);
+//                            progressSell.setProgressValue(jumpTime);
+//                            progressCollection.setProgressValue(jumpTime);
+//                        } catch (InterruptedException e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//>>>>>>> 5e34b104ce2ee846d6d3dc2161a68bc8dd83cabb
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            t.start();
+//
+//            if (totSale > 100) {
+//
+//                int val = (int) totSale;
+//
+//                totalSell = (int) totSale;
+//                totalCollection = (int) totColl;
+//                counterSell = (int) totSale - 100;
+//                counterCollection = (int) totColl - 100;
+//                new Thread(new Runnable() {
+//
+//                    public void run() {
+//                        while (counterSell < totalSell) {
+//                            try {
+//                                Thread.sleep(25);
+//                            } catch (InterruptedException e) {
+//                                // TODO Auto-generated catch block
+//                                e.printStackTrace();
+//                            }
+//                            txtMainSell.post(new Runnable() {
+//
+//                                public void run() {
+//                                    txtMainSell.setText("" + counterSell);
+//
+//                                }
+//
+//                            });
+//                            txtSell.post(new Runnable() {
+//
+//                                public void run() {
+//                                    txtSell.setText("" + counterSell);
+//
+//                                }
+//
+//                            });
+//                            counterSell++;
+//
+//                            txtCollection.post(new Runnable() {
+//
+//                                public void run() {
+//                                    txtCollection.setText("" + counterCollection);
+//
+//                                }
+//
+//                            });
+//                            counterCollection++;
+//                        }
+//
+//                    }
+//
+//                }).start();
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public void setMtd() {
         ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHead();
@@ -235,23 +284,30 @@ public class FragmentDashboardOne extends Fragment {
             }
         }
 
-        if (totSale> Constant.TARGET_DTD_MTD){
-            imgSale.setBackgroundResource(R.drawable.ic_action_up_green);
+        if (totSale > Constant.TARGET_DTD_MTD) {
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.soft_green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgSale.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.red_btn_bg_color), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
         txtMainSell.setText(String.valueOf((int) totSale));
         txtSell.setText(String.valueOf((int) totSale));
 
-        int totColl = db.getAllInvoiceHeadCollection();
+        txtLeft.setText(new DecimalFormat("##.#k").format(totSale/1000));
 
-        if (totColl> Constant.TARGET_DTD_MTD){
-            imgCollection.setBackgroundResource(R.drawable.ic_action_up_green);
+        double totColl = db.getAllInvoiceHeadCollection();
+
+        if (totColl > Constant.TARGET_DTD_MTD) {
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.soft_green), android.graphics.PorterDuff.Mode.MULTIPLY);
         } else {
-            imgCollection.setBackgroundResource(R.drawable.ic_action_down_red);
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.red_btn_bg_color), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
-        txtCollection.setText(String.valueOf(totColl));
+        txtCollection.setText(String.valueOf((int) totColl));
+        txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
         final int totalProgressTime = 100;
         final Thread t = new Thread() {
             @Override
@@ -339,6 +395,117 @@ public class FragmentDashboardOne extends Fragment {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setDtd() {
+        ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHeadToday();
+
+        double totSale = 0;
+        for (int i = 0; i < salesInvoices.size(); i++) {
+            if (salesInvoices.get(i).getInv_type().equals("Sale")) {
+                totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
+            }
+        }
+        if (totSale > Constant.TARGET_DTD_MTD / 30) {
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.soft_green), android.graphics.PorterDuff.Mode.MULTIPLY);
+        } else {
+            imgSale.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgSale.setColorFilter(ContextCompat.getColor(getContext(), R.color.red_btn_bg_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+
+        txtMainSell.setText(String.valueOf((int) totSale));
+        txtSell.setText(String.valueOf((int) totSale));
+        txtLeft.setText(new DecimalFormat("##.#k").format(totSale/1000));
+
+        double totColl = db.getAllInvoiceHeadCollectionToday();
+        if (totColl > Constant.TARGET_DTD_MTD / 30) {
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_up_green));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.soft_green), android.graphics.PorterDuff.Mode.MULTIPLY);
+        } else {
+            imgCollection.setBackground(getResources().getDrawable(R.drawable.ic_action_down_red));
+            imgCollection.setColorFilter(ContextCompat.getColor(getContext(), R.color.red_btn_bg_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+        txtCollection.setText(String.valueOf((int)totColl));
+        txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
+        final int totalProgressTime = 100;
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                int jumpTime = 0;
+
+                try {
+                    while (jumpTime < totalProgressTime) {
+                        try {
+                            sleep(50);
+                            jumpTime += 2;
+                            progressMain.setProgressValue(jumpTime);
+                            progressSell.setProgressValue(jumpTime);
+                            progressCollection.setProgressValue(jumpTime);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+
+        if (totSale > 100) {
+
+            int val = (int) totSale;
+
+            totalSell = (int) totSale;
+            totalCollection = (int) totColl;
+            counterSell = (int) totSale - 100;
+            counterCollection = (int) totColl - 100;
+            new Thread(new Runnable() {
+
+                public void run() {
+                    while (counterSell < totalSell) {
+                        try {
+                            Thread.sleep(25);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        txtMainSell.post(new Runnable() {
+
+                            public void run() {
+                                txtMainSell.setText("" + counterSell);
+
+                            }
+
+                        });
+                        txtSell.post(new Runnable() {
+
+                            public void run() {
+                                txtSell.setText("" + counterSell);
+
+                            }
+
+                        });
+                        counterSell++;
+
+                        txtCollection.post(new Runnable() {
+
+                            public void run() {
+                                txtCollection.setText("" + counterCollection);
+
+                            }
+
+                        });
+                        counterCollection++;
+                    }
+
+                }
+
+            }).start();
+
         }
     }
 

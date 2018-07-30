@@ -84,8 +84,8 @@ public class FragmentDashboardTwo extends Fragment {
 
         txtTotalSale.setText(String.valueOf((int) totSale));
 
-        int totColl = db.getAllInvoiceHeadCollectionToday();
-        txtTotalCollection.setText(String.valueOf(totColl));
+        double totColl = db.getAllInvoiceHeadCollectionToday();
+        txtTotalCollection.setText(String.valueOf((int)totColl));
 
         ArrayList<RecentCustomer> recentCustomers = db.getAllREcentCustToday();
         if (recentCustomers.size()>0){

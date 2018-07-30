@@ -154,13 +154,29 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            public void onClick(final View v) {
 
-                new DatePickerDialog(PaymentActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Done")
+                        .setContentText("Your payment successfully done!")
+                        .setConfirmText("Ok!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                                new DatePickerDialog(PaymentActivity.this, date, myCalendar
+                                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                                finish(); // call this to finish the current activity
+                            }
+                        })
+                        .show();
+
             }
         });
 

@@ -64,6 +64,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.txt_due_amt.setText(collection.coll_due_amt);
         holder.txt_inv_date.setText(collection.coll_inv_date);
 
+
+        holder.txt_due_amt.setEnabled(false);
+
         holder.rl_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
