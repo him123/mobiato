@@ -235,7 +235,7 @@
                             android:paddingLeft="5dp"
                             android:layout_height="38sp"
                             android:background="@drawable/rounded_row_cust"
-                            android:maxLength="5" />
+                            android:inputType="number"/>
 
 
                     </LinearLayout>
@@ -275,7 +275,8 @@
                             android:paddingLeft="5dp"
                             android:background="@drawable/rounded_row_cust"
                             android:layout_height="38sp"
-                            android:maxLength="5" />
+                            android:maxLength="5"
+                            android:inputType="number"/>
 
 
                     </LinearLayout>
@@ -307,7 +308,8 @@
                             android:layout_width="match_parent"
                             android:paddingLeft="5dp"
                             android:background="@drawable/rounded_row_cust"
-                            android:layout_height="38sp" />
+                            android:layout_height="38sp"
+                            android:inputType="text"/>
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>

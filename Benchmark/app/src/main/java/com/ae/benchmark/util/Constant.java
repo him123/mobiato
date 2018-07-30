@@ -9,13 +9,16 @@ public class Constant {
     public static String AppNameSuper = "Benchmark";
 
     // Newly Final created production
-    public static String URL = "http://192.254.133.11/~staging/newproject/";
-//    public static String URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
+//    public static String URL = "http://192.254.133.11/~staging/newproject/";
+    public static String URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV";
+
     public static String checkBoxValue = "";
     public static String checkBoxFalse = "no";
 
     public static String NAV_AUDIT = "no";
     public static String VAN_STOCK = "no";
+
+    public static int TARGET_DTD_MTD = 10000;
 
     public static String INV_LAST = "INV_LAST";
     public static String ORD_LAST = "ORD_LAST";

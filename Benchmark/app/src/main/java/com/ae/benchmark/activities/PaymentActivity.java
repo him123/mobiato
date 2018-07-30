@@ -118,7 +118,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             }
         });
 
-        edt_amount.addTextChangedListener(textWatcher);
+        //edt_amount.addTextChangedListener(textWatcher);
 
         swcPayment.setChecked(true);
         swcPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -145,7 +145,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String myFormat = " d" + " MMM" + "," + " yyyy"; //In which you need put here
+                String myFormat = "dd/" + "MM/" + "yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 edtDate.setText(sdf.format(myCalendar.getTime()));
@@ -202,11 +202,11 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                     CollNum = (int) lastCollId + 1;
                 }
 
-                if (swcPayment.isChecked()) {
+                if (!swcPayment.isChecked()) {
                     payment.setInvoice_id(String.valueOf(invNum));
                     payment.setCollection_id(String.valueOf(CollNum));
                     payment.setPayment_type("Cash");
-                    payment.setPayment_date("");
+                    payment.setPayment_date(UtilApp.getCurrentDate());
                     payment.setCheque_no("");
                     payment.setBank_name("");
                     payment.setPayment_amount(edt_amount.getText().toString());
@@ -221,12 +221,16 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                     payment.setPayment_amount(edtChequeAmount.getText().toString());
                     payment.setCust_id("");
                 }
+
+                dbManager.insertPayment(payment);
+
+                onBackPressed();
             }
         });
     }
 
 
-    TextWatcher textWatcher = new TextWatcher() {
+    /*TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -266,7 +270,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                 e.printStackTrace();
             }
         }
-    };
+    };*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

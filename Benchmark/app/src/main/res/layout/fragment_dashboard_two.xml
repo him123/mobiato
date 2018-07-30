@@ -73,6 +73,7 @@
                                         android:textSize="@dimen/_10sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtTotalSale"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="25"
@@ -109,6 +110,7 @@
                                         android:textSize="@dimen/_9sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtTotalCollection"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="38"
@@ -158,6 +160,7 @@
                                         android:textSize="@dimen/_10sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtNoOfEmpties"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="25"
@@ -193,6 +196,7 @@
                                         android:textSize="@dimen/_9sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtValueOfEmpties"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="19"
@@ -243,6 +247,7 @@
                                         android:textSize="@dimen/_10sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtDropCustomer"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="07"
@@ -279,6 +284,7 @@
                                         android:textSize="@dimen/_10sdp" />
 
                                     <TextView
+                                        android:id="@+id/txtDropInvoice"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="45"

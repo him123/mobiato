@@ -1,6 +1,5 @@
 package com.ae.benchmark.activities;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,18 +15,27 @@ import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
-import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -300,7 +308,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (edt_id.getText().toString().equals("admin") &&
                         edt_pwd.getText().toString().equals("admin")) {
 //                    new AsyncTaskRunner().execute();
-                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
+//                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
                 } else if (edt_id.getText().toString().equals("")) {
 //                    edt_id.setError("Please enter username");
                     Toast.makeText(LoginActivity.this, "Please enter username.", Toast.LENGTH_SHORT).show();
@@ -312,11 +320,11 @@ public class LoginActivity extends AppCompatActivity {
                     pDialog.show();
 //                    Toast.makeText(LoginActivity.this, "Username and password doesn't match.", Toast.LENGTH_SHORT).show();
                     login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
+//                    new HttpGetRequest().execute();
                 }
             }
         });
     }
-
 
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
@@ -327,8 +335,8 @@ public class LoginActivity extends AppCompatActivity {
 
         String id;
 
-        public AsyncTaskRunner(String id) {
-            this.id = id;
+        public AsyncTaskRunner() {
+//            this.id = id;
 
 
         }
@@ -337,6 +345,31 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
+//                HttpURLConnection urlConnection = null;
+
+//                try {
+//
+//                    URL url = new URL("https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json");
+//                    urlConnection = (HttpURLConnection) url.openConnection();
+//                    try {
+//                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+//                        StringBuilder stringBuilder = new StringBuilder();
+//                        String line;
+//                        while ((line = bufferedReader.readLine()) != null) {
+//                            stringBuilder.append(line).append("\n");
+//                        }
+//                        bufferedReader.close();
+//                        Log.v("", " Response: " + stringBuilder.toString());
+//                        resp = stringBuilder.toString();
+////                        return respstringBuilder.toString();
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                } finally {
+//                    urlConnection.disconnect();
+//                }
+
 
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISSALES, true);
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISJPLOADED, false);
@@ -446,10 +479,72 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public class HttpGetRequest extends AsyncTask<String, Void, String> {
+        public static final String REQUEST_METHOD = "GET";
+        public static final int READ_TIMEOUT = 15000;
+        public static final int CONNECTION_TIMEOUT = 15000;
+
+        @Override
+        protected String doInBackground(String... params) {
+            String stringUrl = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json";
+            String result;
+            String inputLine;
+            try {
+                //Create a URL object holding our url
+//                URL myUrl = new URL(stringUrl);
+//                //Create a connection
+//                HttpURLConnection connection = (HttpURLConnection)
+//                        myUrl.openConnection();
+//                //Set methods and timeouts
+//                connection.setRequestMethod(REQUEST_METHOD);
+//                connection.setReadTimeout(READ_TIMEOUT);
+//                connection.setConnectTimeout(CONNECTION_TIMEOUT);
+//
+//                //Connect to our url
+//                connection.connect();
+//                //Create a new InputStreamReader
+//                InputStreamReader streamReader = new
+//                        InputStreamReader(connection.getInputStream());
+//                //Create a new buffered reader and String Builder
+//                BufferedReader reader = new BufferedReader(streamReader);
+//                StringBuilder stringBuilder = new StringBuilder();
+//                //Check if the line we are reading is not null
+//                while ((inputLine = reader.readLine()) != null) {
+//                    stringBuilder.append(inputLine);
+//                }
+//                //Close our InputStream and Buffered reader
+//                reader.close();
+//                streamReader.close();
+//                //Set our result equal to our stringBuilder
+//                result = stringBuilder.toString();
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI("https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json"));
+                HttpResponse httpResponse = client.execute(request);
+
+                Log.v(""," ================== Reponse: "+httpResponse.getStatusLine().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                result = null;
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            Log.v("", "Check this response: " + result);
+        }
+    }
+
+
     private void login(final String id, String pass, String fcm) {
-        RestClient.getMutualTransfer().login(id,
+        RestClient.getMutualTransfer().loginOData(id,
                 pass,
-                fcm, new Callback<Response>() {
+                "json", new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
                         Log.v("", "Response: " + response);
@@ -460,7 +555,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.v("", "==== Json: " + jsonObject.toString());
 
                             if (jsonObject.getString("STATUS").equals("1")) {
-                                new AsyncTaskRunner(id).execute();
+                                new AsyncTaskRunner().execute();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Error in Login", Toast.LENGTH_SHORT).show();
                             }
@@ -468,7 +563,6 @@ public class LoginActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override

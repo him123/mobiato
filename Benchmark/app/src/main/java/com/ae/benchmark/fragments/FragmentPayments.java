@@ -3,22 +3,19 @@ package com.ae.benchmark.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.LoginActivity;
-import com.ae.benchmark.adapters.RecyclerAdapterCustomer;
-import com.ae.benchmark.model.Item;
-import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.model.Payment;
 import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,6 +29,14 @@ public class FragmentPayments extends Fragment {
 
     @InjectView(R.id.btn_day_end)
     Button btn_day_end;
+    @InjectView(R.id.txtAmtDue)
+    TextView txtAmtDue;
+    @InjectView(R.id.txtCheque)
+    TextView txtCheque;
+    @InjectView(R.id.txtCash)
+    TextView txtCash;
+
+    DBManager db;
 
     public FragmentPayments() {
         // Required empty public constructor
@@ -48,6 +53,27 @@ public class FragmentPayments extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_end_trip, container, false);
         ButterKnife.inject(this, v);
+        db = new DBManager(getActivity());
+
+        ArrayList<Payment> payments = db.getAllPaymentToday();
+
+        double due_amt = 0.0, cheque = 0.0, cash = 0.0;
+
+        for (int i = 0; i < payments.size(); i++) {
+            due_amt += Double.parseDouble(payments.get(i).getPayment_amount());
+
+            if (payments.get(i).getPayment_type().equals("Cash")){
+                cash += Double.parseDouble(payments.get(i).getPayment_amount());
+            }
+
+            if (payments.get(i).getPayment_type().equals("Cheque")){
+                cheque += Double.parseDouble(payments.get(i).getPayment_amount());
+            }
+        }
+
+        txtAmtDue.setText(String.valueOf(due_amt));
+        txtCash.setText(String.valueOf(cash));
+        txtCheque.setText(String.valueOf(cheque));
 
         btn_day_end.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,4 +92,9 @@ public class FragmentPayments extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
 }

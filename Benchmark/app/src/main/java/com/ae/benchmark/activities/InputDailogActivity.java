@@ -220,9 +220,9 @@ public class InputDailogActivity extends Activity {
             }
         }
 
-        edt_sale.setEnabled(true);
-        edt_sale.setClickable(true);
-        edt_sale.setFocusable(true);
+        edt_sale.setEnabled(false);
+        edt_sale.setClickable(false);
+        edt_sale.setFocusable(false);
 
         img_qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,6 +387,11 @@ public class InputDailogActivity extends Activity {
                     arr.add(message);
                     edt_coupon_code.setText(arr.toString());
                     edt_emp.setText("" + current);
+
+                    edt_sale.setEnabled(true);
+                    edt_sale.setClickable(true);
+                    edt_sale.setFocusable(true);
+
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")

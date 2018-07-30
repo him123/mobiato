@@ -16,15 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.activities.ALLItemsListActivity;
 import com.ae.benchmark.activities.DashBoardActivity;
 import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.FreshUnloadActivity;
-import com.ae.benchmark.activities.LoginActivity;
-import com.ae.benchmark.adapters.RecyclerItemsAdapter;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Transaction;
@@ -46,6 +44,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class FragmentIMVUnload extends Fragment {
 
+    @InjectView(R.id.txtFreshUnload)
+    TextView txtFreshUnload;
+    @InjectView(R.id.txtRto)
+    TextView txtRto;
     private FloatingActionMenu fam;
     private FloatingActionButton fab1, fab2, fab3, fab4;
 
@@ -53,6 +55,7 @@ public class FragmentIMVUnload extends Fragment {
     Button btn_checkin;
 
     DBManager dbManager;
+
     public FragmentIMVUnload() {
         // Required empty public constructor
     }
@@ -81,11 +84,10 @@ public class FragmentIMVUnload extends Fragment {
         View v = inflater.inflate(R.layout.fragment_im_unload, container, false);
         ButterKnife.inject(this, v);
 
+        dbManager = new DBManager(getActivity());
         getActivity().registerReceiver(broadcastReceiver2, new IntentFilter(EndInventoryRITActivity.BROADCAST_ACTION_END_INVENTORY));
         getActivity().registerReceiver(broadcastReceiver3, new IntentFilter(FreshUnloadActivity.BROADCAST_ACTION_UNLOAD));
 
-        fab1 = (FloatingActionButton) v.findViewById(R.id.fab1);
-        fab2 = (FloatingActionButton) v.findViewById(R.id.fab2);
         fab3 = (FloatingActionButton) v.findViewById(R.id.fab3);
         fab4 = (FloatingActionButton) v.findViewById(R.id.fab4);
 
@@ -183,7 +185,6 @@ public class FragmentIMVUnload extends Fragment {
                         .show();
             }
         });
-
         return v;
     }
 
@@ -256,5 +257,29 @@ public class FragmentIMVUnload extends Fragment {
 
         getActivity().unregisterReceiver(broadcastReceiver2);
         getActivity().unregisterReceiver(broadcastReceiver3);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dbManager = new DBManager(getActivity());
+        dbManager.open();
+        List<Item> itemList = dbManager.getVanStock();
+
+        int countRto = 0;
+        for (int i=0;i<itemList.size();i++){
+            countRto += Integer.parseInt(itemList.get(i).item_qty);
+        }
+        txtRto.setText(String.valueOf(countRto));
+
+
+        int countFresh = dbManager.getUnloaded();
+        txtFreshUnload.setText(String.valueOf(countFresh));
     }
 }

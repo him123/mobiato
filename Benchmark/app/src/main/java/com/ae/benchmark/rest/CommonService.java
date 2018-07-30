@@ -4,7 +4,9 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 /**
  * Created by dgohil on 6/17/15.
@@ -17,6 +19,15 @@ public interface CommonService {
             @Field("user") String username,
             @Field("pass") String pass,
             @Field(value = "token", encodeValue = false) String token,
+
+            Callback<Response> user);
+
+
+    @GET("/UserauthSet")
+    void loginOData(
+            @Query("$filter=USERID") String USERID,
+            @Query("$filter=PASSWORD") String PASSWORD,
+            @Query("$filter=format") String format,
 
             Callback<Response> user);
 
