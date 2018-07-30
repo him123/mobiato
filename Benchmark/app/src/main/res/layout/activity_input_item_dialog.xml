@@ -73,6 +73,7 @@
                     android:background="@drawable/rounded_row_cust"
                     android:ems="3"
                     android:hint="Bottles"
+                    android:inputType="number"
                     android:lines="1"
                     android:padding="@dimen/_6sdp" />
 
@@ -126,6 +127,7 @@
                     android:ems="3"
                     android:inputType="number"
                     android:hint="Bottles"
+
                     android:lines="1"
                     android:padding="@dimen/_6sdp" />
 

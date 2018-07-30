@@ -156,21 +156,37 @@ public class InputDailogActivity extends Activity {
         if (isCoupon.equals("no")) {
             ll_scan_code.setVisibility(View.GONE);
 
-//            if (item_type.equalsIgnoreCase("bottle")) {
-            ll_empty.setVisibility(View.GONE);
-            ll_reason.setVisibility(View.GONE);
-            ll_selling.setVisibility(View.VISIBLE);
+            if (item_type.equalsIgnoreCase("bottle")) {
+                ll_empty.setVisibility(View.GONE);
+                ll_reason.setVisibility(View.GONE);
+                ll_selling.setVisibility(View.VISIBLE);
 
-            edt_sale.setEnabled(true);
-            edt_sale.setClickable(true);
-            edt_sale.setFocusable(true);
-            edt_sale.setHint("Bottle");
-//            } else if (item_type.equalsIgnoreCase("coupon")) {
-//                ll_empty.setVisibility(View.GONE);
-//                ll_reason.setVisibility(View.VISIBLE);
-//                ll_selling.setVisibility(View.VISIBLE);
-//                edt_sale.setHint("Pcs");
-//            }
+                edt_sale.setEnabled(true);
+                edt_sale.setClickable(true);
+                edt_sale.setFocusable(true);
+                edt_sale.setHint("Bottle");
+
+            } else if (item_type.equalsIgnoreCase("empty")) {
+                ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN
+                ll_reason.setVisibility(View.GONE);
+                ll_empty.setVisibility(View.GONE);
+                edt_sale.setEnabled(true);
+                edt_sale.setClickable(true);
+                edt_sale.setFocusable(true);
+                edt_sale.setHint("Bottle");
+                edt_sale.requestFocus();
+
+            } else if (item_type.equalsIgnoreCase("coupon")) {
+                ll_empty.setVisibility(View.GONE);
+                ll_reason.setVisibility(View.GONE);
+                ll_selling.setVisibility(View.VISIBLE);// ABLE TO SCAN
+                ll_scan_code.setVisibility(View.VISIBLE);
+
+                edt_sale.setEnabled(false);
+                edt_sale.setClickable(false);
+                edt_sale.setFocusable(false);
+                edt_sale.setHint("Pcs");
+            }
 
         } else {
             ll_scan_code.setVisibility(View.VISIBLE);
@@ -178,32 +194,35 @@ public class InputDailogActivity extends Activity {
             if (item_type.equalsIgnoreCase("bottle")) {
                 ll_empty.setVisibility(View.VISIBLE);
                 ll_reason.setVisibility(View.VISIBLE);
-                ll_selling.setVisibility(View.VISIBLE);
+                ll_selling.setVisibility(View.VISIBLE); // ABLE TO SCAN
                 ll_scan_code.setVisibility(View.VISIBLE);
                 edt_sale.setHint("Bottle");
                 edt_sale.setEnabled(false);
             } else if (item_type.equalsIgnoreCase("coupon")) {
                 ll_empty.setVisibility(View.GONE);
                 ll_reason.setVisibility(View.GONE);
-                ll_selling.setVisibility(View.VISIBLE);
-                ll_scan_code.setVisibility(View.GONE);
+                ll_selling.setVisibility(View.VISIBLE);// ABLE TO SCAN
+                ll_scan_code.setVisibility(View.VISIBLE);
 
-                edt_sale.setEnabled(true);
-                edt_sale.setClickable(true);
-                edt_sale.requestFocus();
-                edt_sale.setFocusable(true);
+                edt_sale.setEnabled(false);
+                edt_sale.setClickable(false);
+                edt_sale.setFocusable(false);
                 edt_sale.setHint("Pcs");
             } else if (item_type.equalsIgnoreCase("empty")) {
-                ll_scan_code.setVisibility(View.GONE);
+                ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN
                 ll_reason.setVisibility(View.GONE);
                 ll_empty.setVisibility(View.GONE);
                 edt_sale.setEnabled(true);
                 edt_sale.setClickable(true);
                 edt_sale.setFocusable(true);
+                edt_sale.setHint("Bottle");
                 edt_sale.requestFocus();
             }
-
         }
+
+        edt_sale.setEnabled(true);
+        edt_sale.setClickable(true);
+        edt_sale.setFocusable(true);
 
         img_qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,21 +246,20 @@ public class InputDailogActivity extends Activity {
             public void onClick(View v) {
 
 
-                if (item_type.equals("empty")) {
-
-                    double final_price = Double.parseDouble(edt_emp.getText().toString()) * price;
-
-
-                    if (!edt_emp.getText().toString().equals("")) {
-                        if (Integer.parseInt(edt_emp.getText().toString()) <= Integer.parseInt(qty) - 1) {
+                if (item_type.equalsIgnoreCase("empty")) {
+                    if (!edt_sale.getText().toString().equals("")) {
+                        double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
+                        if (Integer.parseInt(edt_sale.getText().toString()) < Integer.parseInt(qty)) {
                             intent.putExtra("tag", "show");
-                            intent.putExtra("bottle", edt_emp.getText().toString());
+                            intent.putExtra("bottle", edt_sale.getText().toString());
                             intent.putExtra("price", final_price);
                             intent.putExtra("empty", "1");
-                            item.item_qty = edt_emp.getText().toString();
+                            item.item_qty = edt_sale.getText().toString();
                             item.is_empty = "1";
+                            item.item_emp_qty = "0";
                             item.item_price = "" + final_price;
                             intent.putExtra("item", item);
+                            intent.putExtra("isCoupon", isCoupon);
 
                             intent.putStringArrayListExtra("barcodeArr", arr);
                             sendBroadcast(intent);
@@ -253,14 +271,17 @@ public class InputDailogActivity extends Activity {
                                     .show();
                         }
                     } else {
-                        Toast.makeText(InputDailogActivity.this, "Please input!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     }
 
 
-                } else {
+                } else if (item_type.equalsIgnoreCase("bottle")) {
 
-                    if (edt_sale.equals("")) {
-                        Toast.makeText(InputDailogActivity.this, "Please scan", Toast.LENGTH_SHORT).show();
+                    if (edt_sale.getText().toString().equals("") || edt_emp.getText().toString().equals("")) {
+                        if (isCoupon.equalsIgnoreCase("yes") && edt_sale.getText().toString().equals(""))
+                            Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     } else {
                         double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
 
@@ -269,6 +290,26 @@ public class InputDailogActivity extends Activity {
                         intent.putExtra("price", final_price);
                         item.item_qty = edt_sale.getText().toString();
                         item.is_empty = "0";
+                        item.item_emp_qty = edt_emp.getText().toString();
+                        item.item_price = "" + final_price;
+                        intent.putExtra("item", item);
+                        intent.putExtra("barcodeArr", arr);
+
+                        sendBroadcast(intent);
+                        finish();
+                    }
+                } else if (item_type.equalsIgnoreCase("coupon")) {
+                    if (edt_sale.getText().toString().equals("")) {
+                        Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
+                    } else {
+                        double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
+
+                        intent.putExtra("tag", newOrOld);
+                        intent.putExtra("bottle", edt_sale.getText().toString());
+                        intent.putExtra("price", final_price);
+                        item.item_qty = edt_sale.getText().toString();
+                        item.is_empty = "0";
+                        item.item_emp_qty = "0";
                         item.item_price = "" + final_price;
                         intent.putExtra("item", item);
                         intent.putExtra("barcodeArr", arr);

@@ -168,7 +168,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 deleteDialog.dismiss();
 
                 Intent i = new Intent(CaptureStockActivity.this, PreOrderRequestActivity.class);
-                i.putExtra("isScan", "yes");
+                i.putExtra("isCoupon", "yes");
                 i.putExtra("type", "cash");
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);
@@ -219,7 +219,7 @@ public class CaptureStockActivity extends AppCompatActivity {
                 deleteDialog.dismiss();
 
                 Intent i = new Intent(CaptureStockActivity.this, PreOrderRequestActivity.class);
-                i.putExtra("isScan", "no");
+                i.putExtra("isCoupon", "no");
                 i.putExtra("type", "norm");
                 i.putExtra("name", custName);
                 i.putExtra("tag", oldOrNew);

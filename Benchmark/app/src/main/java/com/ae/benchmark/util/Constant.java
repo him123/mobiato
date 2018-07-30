@@ -10,7 +10,7 @@ public class Constant {
 
     // Newly Final created production
     public static String URL = "http://192.254.133.11/~staging/newproject/";
-
+//    public static String URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
     public static String checkBoxValue = "";
     public static String checkBoxFalse = "no";
 
@@ -55,21 +55,21 @@ public class Constant {
         public static final String TT_PAYMENT_BY_CASH = "tt_payment_by_cash";
         public static final String TT_PAYMENT_BY_CHEQUE = "tt_payment_by_cheque";
         public static final String TT_CUST_CREATED = "tt_cust_created";
-        public static final String TT_UNLOAD= "tt_unload";
-        public static final String TT_OREDER_CREATED= "tt_order_created";
-        public static final String TT_END_DAY= "tt_end_day";
-        public static final String TT_LOAD_CREATE= "tt_load_create";
+        public static final String TT_UNLOAD = "tt_unload";
+        public static final String TT_OREDER_CREATED = "tt_order_created";
+        public static final String TT_END_DAY = "tt_end_day";
+        public static final String TT_LOAD_CREATE = "tt_load_create";
     }
 
     public static class NEW_CUSTOMER {
-        public static  String edtCustomerName = "edtCustomerName";
-        public static  String edtDistCh = "edtDistCh";
-        public static  String edtDiv = "edtDiv";
-        public static  String edtSalesOrg = "edtSalesOrg";
-        public static  String edtCreditLim = "edtCreditLim";
-        public static  String edtAvailBal = "edtAvailBal";
-        public static  String edtPayTerm = "edtPayTerm";
-        public static  String edtAddress = "edtAddress";
-        public static  String edtCustType = "edtCustType";
+        public static String edtCustomerName = "edtCustomerName";
+        public static String edtDistCh = "edtDistCh";
+        public static String edtDiv = "edtDiv";
+        public static String edtSalesOrg = "edtSalesOrg";
+        public static String edtCreditLim = "edtCreditLim";
+        public static String edtAvailBal = "edtAvailBal";
+        public static String edtPayTerm = "edtPayTerm";
+        public static String edtAddress = "edtAddress";
+        public static String edtCustType = "edtCustType";
     }
 }

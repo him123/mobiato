@@ -103,6 +103,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
     DBManager dbManager;
     TextView mTitle;
     Customer customer;
+//    String isCoupon=;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,11 +203,11 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 Log.v("", "Array of qty: " + arrQty.toString());
                 double subTot = 0;
-                for (int i=0 ; i<arrItem.size();i++){
+                for (int i = 0; i < arrItem.size(); i++) {
                     subTot += Double.parseDouble(arrItem.get(i).item_price);
                 }
 
-                if (subTot>0){
+                if (subTot > 0) {
                     makeDilog(arrItem);
                 } else {
                     Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
@@ -312,15 +313,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
 
-                int invNum , CollNum;
-                if (lastInvId == 0){
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                int invNum, CollNum;
+                if (lastInvId == 0) {
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                 } else {
                     invNum = (int) lastInvId + 1;
                 }
 
-                if (lastCollId == 0){
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
+                if (lastCollId == 0) {
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
                 } else {
                     CollNum = (int) lastCollId + 1;
                 }
@@ -376,7 +377,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     item.item_name_en = arrItem.get(i).item_name_en;
                     item.item_price = arrItem.get(i).item_price;
                     item.item_qty = arrItem.get(i).item_qty;
-                    if (arrItem.get(i).is_empty.equals("0"))
+                    if (arrItem.get(i).item_barcode != null && isCoupon.equalsIgnoreCase("yes"))
                         item.item_barcode = barCodeArr.get(i);
                     else
                         item.item_barcode = "0";
@@ -420,8 +421,14 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                         finish();
                     } else {
-                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
-                        i.putExtra("name", custName);
+//                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
+//                        i.putExtra("name", custName);
+//                        startActivity(i);
+//                        finish();
+
+                        Intent i = new Intent(PreOrderRequestActivity.this, FragmentContainActivity.class);
+                        i.putExtra("flag", "COL");
+                        i.putExtra("cust", customer);
                         startActivity(i);
                         finish();
                     }
@@ -460,14 +467,14 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
                 int invNum;
-                if (lastInvId == 0){
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                if (lastInvId == 0) {
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                 } else {
                     invNum = (int) lastInvId + 1;
                 }
                 int CollNum;
-                if (lastCollId == 0){
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
+                if (lastCollId == 0) {
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
                 } else {
                     CollNum = (int) lastCollId + 1;
                 }
@@ -721,6 +728,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             Log.d("", "=========== broadcat receiver : " + intent.getStringExtra("message"));
 
 
+            isCoupon = intent.getStringExtra("isCoupon");
             if (intent.getStringExtra("status").equals("yes")) {
 
                 main_layout.setVisibility(View.VISIBLE);

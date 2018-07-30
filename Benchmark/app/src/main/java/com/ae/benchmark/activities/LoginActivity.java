@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
             "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"232\",\n" +
+            "                    \"item_price\":\"2000\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
             "                    \"conversion_factor\":\"5\"\n" +
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
             "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"543\",\n" +
+            "                    \"item_price\":\"5000\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
             "                    \"conversion_factor\":\"5\"\n" +
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
             "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"543\",\n" +
+            "                    \"item_price\":\"10000\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
             "                    \"conversion_factor\":\"5\"\n" +
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_name_ar\":\"\",\n" +
             "                    \"item_type\":\"coupon\",\n" +
             "                    \"item_uom\":\"bottle\",\n" +
-            "                    \"item_price\":\"65\",\n" +
+            "                    \"item_price\":\"85\",\n" +
             "                    \"item_barcode\":\"52365926\",\n" +
             "                    \"division\":\"division1\",\n" +
             "                    \"conversion_factor\":\"5\"\n" +
@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_qty\":\"12\",\n" +
             "                    \"item_uom\":\"Bottle\",\n" +
             "                    \"load_date\":\"19-07-2018\",\n" +
-            "                    \"total_price\":\"546\"\n" +
+            "                    \"total_price\":\"58\"\n" +
             "                    },\n" +
             "\n" +
             "\n" +
@@ -234,7 +234,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"item_qty\":\"14\",\n" +
             "                    \"item_uom\":\"Coupon\",\n" +
             "                    \"load_date\":\"19-07-2018\",\n" +
-            "                    \"total_price\":\"685\"}\n" +
+            "                    \"total_price\":\"5000\"}\n" +
             "                    ]\n" +
             "                    }\n" +
             "\n" +

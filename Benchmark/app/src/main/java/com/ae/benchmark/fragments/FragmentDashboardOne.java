@@ -42,8 +42,8 @@ public class FragmentDashboardOne extends Fragment {
 
     DBManager db;
 
-    int counterSell , counterCollection ;
-    int totalSell , totalCollection;
+    int counterSell, counterCollection;
+    int totalSell, totalCollection;
 
     public FragmentDashboardOne() {
         // Required empty public constructor
@@ -78,17 +78,17 @@ public class FragmentDashboardOne extends Fragment {
         ButterKnife.inject(this, v);
 
         db = new DBManager(getActivity());
-        ArrayList<SalesInvoice> salesInvoices= db.getAllInvoiceHead();
+        ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHead();
 
         double totSale = 0;
-        for (int i=0; i<salesInvoices.size(); i++){
-            if (salesInvoices.get(i).getInv_type().equals("Sale")){
+        for (int i = 0; i < salesInvoices.size(); i++) {
+            if (salesInvoices.get(i).getInv_type().equals("Sale")) {
                 totSale += Double.parseDouble(salesInvoices.get(i).getTot_amnt_sales());
             }
         }
 
-        txtMainSell.setText(String.valueOf((int)totSale));
-        txtSell.setText(String.valueOf((int)totSale));
+        txtMainSell.setText(String.valueOf((int) totSale));
+        txtSell.setText(String.valueOf((int) totSale));
 
         int totColl = db.getAllInvoiceHeadCollection();
         txtCollection.setText(String.valueOf(totColl));
@@ -111,7 +111,7 @@ public class FragmentDashboardOne extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -124,57 +124,63 @@ public class FragmentDashboardOne extends Fragment {
             }
         });
 
-        if (totSale>100){
 
-            int val = (int) totSale;
+        try {
+            if (totSale > 100) {
 
-            totalSell = (int) totSale;
-            totalCollection = (int) totColl;
-            counterSell = (int) totSale - 100;
-            counterCollection = (int) totColl - 100;
-            new Thread(new Runnable() {
+                int val = (int) totSale;
 
-                public void run() {
-                    while (counterSell < totalSell) {
-                        try {
-                            Thread.sleep(25);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                totalSell = (int) totSale;
+                totalCollection = (int) totColl;
+                counterSell = (int) totSale - 100;
+                counterCollection = (int) totColl - 100;
+                new Thread(new Runnable() {
+
+                    public void run() {
+                        while (counterSell < totalSell) {
+                            try {
+                                Thread.sleep(25);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            txtMainSell.post(new Runnable() {
+
+                                public void run() {
+                                    txtMainSell.setText("" + counterSell);
+
+                                }
+
+                            });
+                            txtSell.post(new Runnable() {
+
+                                public void run() {
+                                    txtSell.setText("" + counterSell);
+
+                                }
+
+                            });
+                            counterSell++;
+
+                            txtCollection.post(new Runnable() {
+
+                                public void run() {
+                                    txtCollection.setText("" + counterCollection);
+
+                                }
+
+                            });
+                            counterCollection++;
                         }
-                        txtMainSell.post(new Runnable() {
 
-                            public void run() {
-                                txtMainSell.setText("" + counterSell);
-
-                            }
-
-                        });
-                        txtSell.post(new Runnable() {
-
-                            public void run() {
-                                txtSell.setText("" + counterSell);
-
-                            }
-
-                        });
-                        counterSell++;
-
-                        txtCollection.post(new Runnable() {
-
-                            public void run() {
-                                txtCollection.setText("" + counterCollection);
-
-                            }
-
-                        });
-                        counterCollection++;
                     }
 
-                }
+                }).start();
 
-            }).start();
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return v;
     }

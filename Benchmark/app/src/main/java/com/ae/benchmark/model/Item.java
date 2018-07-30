@@ -21,6 +21,7 @@ public class Item implements Parcelable {
     public String item_con_fector;
     public String load_no;
     public String item_qty;
+    public String item_emp_qty;
     public String item_uom;
     public String load_date;
     public String sales_inv_nun;
@@ -56,6 +57,7 @@ public class Item implements Parcelable {
         item_vat_val = in.readString();
         is_empty = in.readString();
         order_id = in.readString();
+        item_emp_qty = in.readString();
     }
 
     @Override
@@ -85,6 +87,7 @@ public class Item implements Parcelable {
         dest.writeString(item_vat_val);
         dest.writeString(is_empty);
         dest.writeString(order_id);
+        dest.writeString(item_emp_qty);
     }
 
     @SuppressWarnings("unused")
