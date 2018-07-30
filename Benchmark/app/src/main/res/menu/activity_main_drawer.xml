@@ -39,10 +39,10 @@
             android:icon="@drawable/ic_icon_collection"
             android:title="@string/nav_data" />
 
-        <!--<item-->
-            <!--android:id="@+id/nav_catalogue"-->
-            <!--android:icon="@drawable/ic_icon_collection"-->
-            <!--android:title="@string/nav_catalogue" />-->
+        <item
+            android:id="@+id/nav_print"
+            android:icon="@drawable/ic_icon_collection"
+            android:title="@string/nav_print" />
 
         <item
             android:id="@+id/nav_settings"

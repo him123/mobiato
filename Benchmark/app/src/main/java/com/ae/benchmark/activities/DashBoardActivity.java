@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.adapters.FragmentPrint;
 import com.ae.benchmark.fragments.DashboardFragment;
 import com.ae.benchmark.fragments.FragmentAudit;
 import com.ae.benchmark.fragments.FragmentCustomerSelection;
@@ -61,6 +62,7 @@ public class DashBoardActivity extends AppCompatActivity {
     //    private static final String TAG_ROUTE_RECONE = "Route_Recone";
 //    private static final String TAG_SALE_SNAP = "Sales_Snap";
     private static final String TAG_DATA_POSTING = "Data_Posting_Audit";
+    private static final String TAG_PRINT = "Print";
     //    private static final String TAG_CATALOGUE = "Catalogue";
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_SUGGESTIONS = "suggestions";
@@ -166,6 +168,7 @@ public class DashBoardActivity extends AppCompatActivity {
         if(isEnd.equals("1")){
             navigationView.getMenu().getItem(3).setChecked(true);
         }
+
     }
 
     @Override
@@ -179,6 +182,7 @@ public class DashBoardActivity extends AppCompatActivity {
         MenuItem nav_itemMIPy = menuNav.findItem(R.id.nav_payment);
         MenuItem nav_itemSa = menuNav.findItem(R.id.nav_inventory);
         MenuItem nav_itemDa = menuNav.findItem(R.id.nav_data);
+        MenuItem nav_print = menuNav.findItem(R.id.nav_print);
 
         if (UtilApp.ReadSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISJPLOADED))
             nav_itemJP.setEnabled(true);
@@ -200,6 +204,25 @@ public class DashBoardActivity extends AppCompatActivity {
             nav_itemDa.setEnabled(true);
         else
             nav_itemDa.setEnabled(false);*/
+
+        if (UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.END_DATE).equals(UtilApp.getCurrentDate())){
+            Menu menuNav1 = navigationView.getMenu();
+            MenuItem nav_home = menuNav1.findItem(R.id.nav_home);
+            MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
+            MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
+            MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
+            MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+            MenuItem nav_print1 = menuNav1.findItem(R.id.nav_print);
+            MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
+
+            nav_home.setEnabled(true);
+            nav_inventory.setEnabled(false);
+            nav_journey.setEnabled(false);
+            nav_payment.setEnabled(false);
+            nav_data.setEnabled(false);
+            nav_print1.setEnabled(true);
+            nav_settings.setEnabled(true);
+        }
     }
 
     /***
@@ -353,6 +376,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
             case 5:
                 // SETTINGS
+                FragmentPrint printFragment = new FragmentPrint();
+                return printFragment;
+
+            case 6:
+                // SETTINGS
                 FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
 //            case 6:
@@ -429,8 +457,13 @@ public class DashBoardActivity extends AppCompatActivity {
 //                        CURRENT_TAG = TAG_CATALOGUE;
 //                        break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_print:
                         navItemIndex = 5;
+                        CURRENT_TAG = TAG_PRINT;
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
 
@@ -529,8 +562,29 @@ public class DashBoardActivity extends AppCompatActivity {
                     nav_itemDa.setEnabled(true);
                 else
                     nav_itemDa.setEnabled(false);*/
+
+                if (UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.END_DATE).equals(UtilApp.getCurrentDate())){
+                    Menu menuNav1 = navigationView.getMenu();
+                    MenuItem nav_home = menuNav1.findItem(R.id.nav_home);
+                    MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
+                    MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
+                    MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
+                    MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+                    MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
+                    MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
+
+                    nav_home.setEnabled(true);
+                    nav_inventory.setEnabled(false);
+                    nav_journey.setEnabled(false);
+                    nav_payment.setEnabled(false);
+                    nav_data.setEnabled(false);
+                    nav_print.setEnabled(true);
+                    nav_settings.setEnabled(true);
+                }
             }
         };
+
+
 
         //Setting the actionbarToggle to drawer layout
         drawer.setDrawerListener(actionBarDrawerToggle);

@@ -10,9 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.DashBoardActivity;
 import com.ae.benchmark.activities.LoginActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Payment;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
@@ -78,13 +80,12 @@ public class FragmentPayments extends Fragment {
         btn_day_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UtilApp.clearSharedPreferences(getActivity());
+                UtilApp.WriteSharePrefrence(getActivity(), Constant.END_DATE, UtilApp.getCurrentDate());
 //                UtilApp.WriteSharePrefrence(getActivity(), Constant.SHRED_PR.ISLOGIN, false);
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), DashBoardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 getActivity().finish(); // call this to finish the current activity
-
 
             }
         });

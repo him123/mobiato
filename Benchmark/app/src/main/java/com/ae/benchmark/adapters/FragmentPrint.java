@@ -1,4 +1,4 @@
-package com.ae.benchmark.fragments;
+package com.ae.benchmark.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.adapters.RecyclerAdapterAudit;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Transaction;
 
@@ -19,7 +18,16 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class FragmentAudit extends Fragment {
+public class FragmentPrint extends Fragment {
+
+    public FragmentPrint() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @InjectView(R.id.recyclerAudit)
     RecyclerView recyclerAudit;
@@ -29,15 +37,10 @@ public class FragmentAudit extends Fragment {
     RecyclerAdapterAudit adapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_audit, container, false);
+        View v = inflater.inflate(R.layout.fragment_print, container, false);
         ButterKnife.inject(this, v);
         context = getContext();
 
@@ -47,8 +50,9 @@ public class FragmentAudit extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerAudit.setLayoutManager(mLayoutManager);
 
-        adapter = new RecyclerAdapterAudit(transactions , context , "");
+        adapter = new RecyclerAdapterAudit(transactions , context, "print");
         recyclerAudit.setAdapter(adapter);
+
         return v;
     }
 

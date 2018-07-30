@@ -27,6 +27,7 @@ public class Constant {
     public static String PAYMENT_LAST = "PAYMENT_LAST";
     public static String LOAD_REQUEST_LAST = "LOAD_REQUEST_LAST";
 
+    public static String END_DATE = "END_DATE";
 
     public static class SHRED_PR {
         public static final String SHARE_PREF = AppNameSuper + "_preferences";
