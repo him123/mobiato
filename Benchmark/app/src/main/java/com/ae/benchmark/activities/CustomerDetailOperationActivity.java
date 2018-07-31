@@ -435,7 +435,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
                                 feed.name = "Order created.";
-                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_order_id;
+                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_invoice_id;
                                 break;
 
                             default:
@@ -467,16 +467,17 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.nav_details:
-                Toast.makeText(getBaseContext(), "You selected Details", Toast.LENGTH_SHORT).show();
+            case R.id.nav_details:{
+
+                Intent intent = new Intent(getApplicationContext() , CustomerDetailActivity.class);
+                intent.putExtra("cust" , customer);
+                startActivity(intent);
                 break;
+            }
+
 
             case R.id.nav_stock:
                 Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_message:
-                Toast.makeText(getBaseContext(), "You selected Message", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_sales:
@@ -487,13 +488,6 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.nav_bal:
-                Toast.makeText(getBaseContext(), "You selected Balance", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_promo:
-                Toast.makeText(getBaseContext(), "You selected Promotion", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.coupon_history:
                 startActivity(new Intent(CustomerDetailOperationActivity.this, CouponHistoryActivity.class));
 //                Toast.makeText(getBaseContext(), "You selected Promotion", Toast.LENGTH_SHORT).show();

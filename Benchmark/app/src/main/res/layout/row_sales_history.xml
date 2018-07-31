@@ -19,51 +19,36 @@
             android:padding="@dimen/_5sdp">
 
             <TextView
-                android:id="@+id/txtType"
+                android:id="@+id/txtCustNo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="Type"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="1"
+                android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txtInvoiceNo"
+                android:id="@+id/txtCustName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="-"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtInvNo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:text="1"
+                android:textColor="@color/black" />
 
-                <ImageView
-                    android:id="@+id/imgPrint"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:background="@drawable/ic_action_print"/>
-
-            </LinearLayout>
-
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imgIsPosted"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:background="@drawable/ic_icon_verified_sel"/>
-
-            </LinearLayout>
+                android:text="-"
+                android:textColor="@color/black" />
 
 
         </LinearLayout>

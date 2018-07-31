@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +41,26 @@ import com.ae.benchmark.fragments.InvoiceSummury;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import butterknife.ButterKnife;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -174,7 +196,6 @@ public class DashBoardActivity extends AppCompatActivity {
         if (isEnd.equals("1")) {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
-
     }
 
     @Override
@@ -188,7 +209,7 @@ public class DashBoardActivity extends AppCompatActivity {
         MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
         MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
         MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
-        MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+        //MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
         MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
         MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
 
@@ -205,7 +226,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 nav_inventory.setEnabled(false);
                 nav_journey.setEnabled(false);
                 nav_payment.setEnabled(false);
-                nav_data.setEnabled(true);
+                //nav_data.setEnabled(true);
                 nav_print.setEnabled(true);
             } else {
 
@@ -215,7 +236,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 nav_inventory.setEnabled(true);
                 nav_journey.setEnabled(false);
                 nav_payment.setEnabled(false);
-                nav_data.setEnabled(true);
+                //nav_data.setEnabled(true);
                 nav_print.setEnabled(true);
             }
 
@@ -231,7 +252,7 @@ public class DashBoardActivity extends AppCompatActivity {
             else
                 nav_payment.setEnabled(false);
 
-            nav_data.setEnabled(true);
+            //nav_data.setEnabled(true);
             nav_inventory.setEnabled(true);
 
 
@@ -387,12 +408,12 @@ public class DashBoardActivity extends AppCompatActivity {
                 FragmentSales settingsFragment = new FragmentSales();
                 return settingsFragment;
 
-            case 5:
-                // SETTINGS
-                FragmentPrint printFragment = new FragmentPrint();
-                return printFragment;
+//            case 5:
+//                // SETTINGS
+//                FragmentPrint printFragment = new FragmentPrint();
+//                return printFragment;
 
-            case 6:
+            case 5:
                 // SETTINGS
                 FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
@@ -469,23 +490,23 @@ public class DashBoardActivity extends AppCompatActivity {
 //                        navItemIndex = 4;
 //                        CURRENT_TAG = TAG_SALE_SNAP;
 //                        break;
-                    case R.id.nav_data:
-                        navItemIndex = 4;
-                        CURRENT_TAG = TAG_DATA_POSTING;
-                        isMenu = false;
-                        onPrepareOptionsMenu(menu);
-                        break;
+//                    case R.id.nav_data:
+//                        navItemIndex = 4;
+//                        CURRENT_TAG = TAG_DATA_POSTING;
+//                        isMenu = false;
+//                        onPrepareOptionsMenu(menu);
+//                        break;
 //                    case R.id.nav_catalogue:
 //                        navItemIndex = 6;
 //                        CURRENT_TAG = TAG_CATALOGUE;
 //                        break;
 
-                    case R.id.nav_print:
-                        navItemIndex = 5;
-                        CURRENT_TAG = TAG_PRINT;
-                        isMenu = false;
-                        onPrepareOptionsMenu(menu);
-                        break;
+//                    case R.id.nav_print:
+//                        navItemIndex = 5;
+//                        CURRENT_TAG = TAG_PRINT;
+//                        isMenu = false;
+//                        onPrepareOptionsMenu(menu);
+//                        break;
 
                     case R.id.nav_settings:
                         navItemIndex = 6;
@@ -566,7 +587,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
                 MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
                 MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
-                MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+                //MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
                 MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
                 MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
 
@@ -583,7 +604,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         nav_inventory.setEnabled(false);
                         nav_journey.setEnabled(false);
                         nav_payment.setEnabled(false);
-                        nav_data.setEnabled(true);
+                        //nav_data.setEnabled(true);
                         nav_print.setEnabled(true);
                     } else {
 
@@ -593,7 +614,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         nav_inventory.setEnabled(true);
                         nav_journey.setEnabled(false);
                         nav_payment.setEnabled(false);
-                        nav_data.setEnabled(true);
+                        //nav_data.setEnabled(true);
                         nav_print.setEnabled(true);
                     }
 
@@ -609,7 +630,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     else
                         nav_payment.setEnabled(false);
 
-                    nav_data.setEnabled(true);
+                    //nav_data.setEnabled(true);
                     nav_inventory.setEnabled(true);
 
 
@@ -686,25 +707,29 @@ public class DashBoardActivity extends AppCompatActivity {
             }
 
             case R.id.nav_sales: {
-                navItemIndex = 4;
+
+                Intent intent = new Intent(getApplicationContext() , SaleHistoyyActivity.class);
+                startActivity(intent);
+                isMenu = false;
+                /*navItemIndex = 4;
                 CURRENT_TAG = TAG_DATA_POSTING;
                 Constant.NAV_AUDIT = "yes";
                 loadHomeFragment();
                 Constant.NAV_AUDIT = "no";
                 isMenu = false;
-                onPrepareOptionsMenu(menu);
+                onPrepareOptionsMenu(menu);*/
                 break;
             }
 
-            case R.id.nav_Print:
-                navItemIndex = 5;
-                CURRENT_TAG = TAG_PRINT;
-                Constant.PRINT= "yes";
-                loadHomeFragment();
-                Constant.PRINT = "no";
-                isMenu = false;
-                onPrepareOptionsMenu(menu);
-                break;
+//            case R.id.nav_Print:
+//                navItemIndex = 4;
+//                CURRENT_TAG = TAG_DATA_POSTING;
+//                Constant.NAV_AUDIT= "yes";
+//                loadHomeFragment();
+//                Constant.NAV_AUDIT = "no";
+//                isMenu = false;
+//                onPrepareOptionsMenu(menu);
+//                break;
 
 
             case R.id.nav_map:

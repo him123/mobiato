@@ -56,7 +56,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
 
     RecyclerItemsAdapterForALL recyclerAdapter;
 
-    List<Item> itemList;
+    public static List<Item> itemList;
     Item item;
     LinearLayoutManager mLayoutManager;
     DBManager dbManager;

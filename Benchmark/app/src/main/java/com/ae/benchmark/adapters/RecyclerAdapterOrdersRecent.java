@@ -1,6 +1,7 @@
 package com.ae.benchmark.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.SelectedOrderItemActivity;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 
@@ -79,6 +82,13 @@ public class RecyclerAdapterOrdersRecent extends RecyclerView.Adapter<RecyclerVi
 
 //        binderHelper.bind(holder.swipeLayout, "");
 
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext , SelectedOrderItemActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -112,13 +122,14 @@ public class RecyclerAdapterOrdersRecent extends RecyclerView.Adapter<RecyclerVi
 
         public TextView txt_name;
         public ImageView img_profile;
-
+        public LinearLayout llMain;
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolderCustomer(View parent, final Context context) {
             super(parent);
 
             txt_name = (TextView) parent.findViewById(R.id.txt_name);
             img_profile = (ImageView) parent.findViewById(R.id.img_profile);
+            llMain = (LinearLayout) parent.findViewById(R.id.llMain);
 
         }
 

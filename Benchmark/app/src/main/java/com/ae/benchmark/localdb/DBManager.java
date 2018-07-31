@@ -20,6 +20,7 @@ import com.ae.benchmark.model.Payment;
 import com.ae.benchmark.model.RecentCustomer;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
+import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
 
 import org.json.JSONArray;
@@ -2422,5 +2423,131 @@ public class DBManager {
     }
     //========================================== DELETE PART OVER ========================================================
 
+    //INSERT CUSTOMER BULK
+    public void updateCustomerArr(String id, String avlBal) {
 
+        open();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.beginTransaction();
+
+            ContentValues contentValue = new ContentValues();
+            contentValue.put(DatabaseHelper.CUST_AVAIL_BAL, avlBal);
+
+            db.update(DatabaseHelper.TABLE_CUSTOMER, contentValue, DatabaseHelper.CUST_NUM + " = ?", new String[]{id});
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Transaction> getAllTransactionsCust(String id) {
+
+        open();
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE "  + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Transaction transaction = new Transaction();
+                        //only one column
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
+
+                        //you could add additional columns here..
+                        list.add(transaction);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    public ArrayList<Transaction> getAllTransactionsSales() {
+
+        open();
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE " + DatabaseHelper.TR_TYPE + " = '" + Constant.TRANSACTION_TYPES.TT_SALES_CREATED + "'";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Transaction transaction = new Transaction();
+                        //only one column
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
+
+                        //you could add additional columns here..
+                        list.add(transaction);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
 }

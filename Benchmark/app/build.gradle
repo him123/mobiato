@@ -20,7 +20,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled  true
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -68,7 +68,7 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.8.2'
 
-    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

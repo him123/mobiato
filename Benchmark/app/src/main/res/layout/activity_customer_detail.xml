@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_header"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Toolbar Title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +35,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
+            android:layout_weight="1.5"
             android:text="Type"
             android:textStyle="bold"
             android:textColor="@color/black"/>
@@ -30,16 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Print"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sync"
+            android:text="Is Pending"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:gravity="center"/>

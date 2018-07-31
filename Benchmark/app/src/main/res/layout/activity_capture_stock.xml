@@ -57,19 +57,21 @@
                 android:paddingBottom="@dimen/_11sdp"
                 android:paddingTop="@dimen/_11sdp">
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edt_empt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/_12sdp"
+                    android:inputType="number"
                     android:maxLength="3"
                     android:text="0"
-                    android:inputType="number"
                     android:textColor="@color/white"
+                    android:textCursorDrawable="@drawable/edittext_cursor"
                     android:textSize="@dimen/_22sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/white"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -97,18 +99,23 @@
                 android:paddingBottom="@dimen/_11sdp"
                 android:paddingTop="@dimen/_11sdp">
 
-                <EditText
+
+                <android.support.v7.widget.AppCompatEditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/_12sdp"
-                    android:maxLength="3"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:text="56"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_22sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/white"
+                    android:textCursorDrawable="@drawable/edittext_cursor"/>
+
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -119,10 +126,10 @@
         android:id="@+id/rl_checkout"
         android:layout_width="@dimen/_170sdp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/_21sdp"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/rounded_corner_green"
         android:gravity="center"
         android:padding="@dimen/_8sdp">

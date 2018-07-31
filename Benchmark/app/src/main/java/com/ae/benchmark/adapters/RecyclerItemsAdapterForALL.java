@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.ALLItemsListActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
 
@@ -114,6 +115,15 @@ public class RecyclerItemsAdapterForALL extends RecyclerView.Adapter<RecyclerVie
         deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deleteDialog.setView(deleteDialogView);
 
+        for (int i=0 ; i<ALLItemsListActivity.itemList.size() ; i++){
+            if (item.item_code.equals(ALLItemsListActivity.itemList.get(i).getItem_code())){
+                if (!ALLItemsListActivity.itemList.get(i).getItem_qty().equals("0")){
+                    edt_act_qty.setText(ALLItemsListActivity.itemList.get(i).getItem_qty());
+                    edt_act_qty.setSelection(edt_act_qty.getText().length());
+                }
+                break;
+            }
+        }
         deleteDialogView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

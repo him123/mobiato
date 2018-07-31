@@ -149,6 +149,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             if (oldOrNew.equals("new")) {
             }
 
+        } else if (type.equals("credit")) {
+            mTitle.setText("CREDIT SALE");
+
+            main_layout.setVisibility(View.VISIBLE);
+            waiting_layout.setVisibility(View.GONE);
+
+            if (oldOrNew.equals("new")) {
+            }
+
         } else if (type.equals("norm")) {
             mTitle.setText("SALE");
 
@@ -208,7 +217,11 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 }
 
                 if (subTot > 0) {
-                    makeDilog(arrItem);
+                    if (Double.parseDouble(customer.cust_avail_bal) < (subTot*5/100) ) {
+                        Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
+                    } else {
+                        makeDilog(arrItem);
+                    }
                 } else {
                     Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
                 }
@@ -265,7 +278,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         double vatVal = subTot * 5 / 100;
 
         txt_vat_value.setText(vatVal + "");
-        double grandTot = subTot + vatVal;
+        final double grandTot = subTot + vatVal;
         txt_grand_tot.setText(grandTot + "");
 
 
@@ -343,7 +356,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 salesInvoice.inv_header_vat_per = "0";
 
                 dbManager.insertSalesInvoiceHeader(salesInvoice);
-
+                dbManager.updateCustomerArr(customer.cust_num , String.valueOf(grandTot));
 
                 double dueAmt = price + 50;
                 dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
@@ -414,9 +427,11 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 } else {
                     deleteDialog.dismiss();
 
-                    if (customer.cust_type.equals("cash")) {
+                    if (customer.cust_type.equalsIgnoreCase("cash")) {
                         Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("name", custName);
+                        i.putExtra("cust", customer);
+                        i.putExtra("amt", String.valueOf(grandTot));
                         startActivity(i);
 
                         finish();
@@ -571,7 +586,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                         Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("name", custName);
                         i.putExtra("cust", customer);
-                        i.putExtra("amount", "" + price);
+                        i.putExtra("amt", "" + price);
                         startActivity(i);
 
                         finish();

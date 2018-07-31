@@ -74,7 +74,7 @@ public class FragmentCustAll extends Fragment {
 //        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, getActivity());
 //        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerview_cust);
 
-        new AsyncTaskRunner().execute();
+//        new AsyncTaskRunner().execute();
 
         return v;
     }
@@ -127,5 +127,11 @@ public class FragmentCustAll extends Fragment {
 //            finalResult.setText(text[0]);
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new AsyncTaskRunner().execute();
     }
 }

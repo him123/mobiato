@@ -17,6 +17,7 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.util.UtilApp;
 import com.ae.benchmark.views.TwoLevelCircularProgressBar;
 
 import java.text.DecimalFormat;
@@ -62,7 +63,8 @@ public class FragmentDashboardOne extends Fragment {
     TextView txtLeft;
     @InjectView(R.id.txt_right)
     TextView txtRight;
-
+    @InjectView(R.id.txtDate)
+    TextView txtDate;
     public FragmentDashboardOne() {
         // Required empty public constructor
     }
@@ -80,7 +82,6 @@ public class FragmentDashboardOne extends Fragment {
         fragmentManager = fragmentManager1;
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class FragmentDashboardOne extends Fragment {
             }
         });
 
+        txtDate.setText(UtilApp.getCurrentDate());
         setDtd();
         swcDtdMtd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -309,30 +311,36 @@ public class FragmentDashboardOne extends Fragment {
         txtCollection.setText(String.valueOf((int) totColl));
         txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
         final int totalProgressTime = 100;
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
+        try {
 
-                try {
-                    while (jumpTime < totalProgressTime) {
-                        try {
-                            sleep(50);
-                            jumpTime += 2;
-                            progressMain.setProgressValue(jumpTime);
-                            progressSell.setProgressValue(jumpTime);
-                            progressCollection.setProgressValue(jumpTime);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+            final Thread t = new Thread() {
+                @Override
+                public void run() {
+                    int jumpTime = 0;
+
+                    try {
+                        while (jumpTime < totalProgressTime) {
+                            try {
+                                sleep(50);
+                                jumpTime += 2;
+                                progressMain.setProgressValue(jumpTime);
+                                progressSell.setProgressValue(jumpTime);
+                                progressCollection.setProgressValue(jumpTime);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        };
-        t.start();
+            };
+            t.start();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
 //<<<<<<< HEAD
 //=======
@@ -348,48 +356,65 @@ public class FragmentDashboardOne extends Fragment {
                 totalCollection = (int) totColl;
                 counterSell = (int) totSale - 100;
                 counterCollection = (int) totColl - 100;
-                new Thread(new Runnable() {
+                try {
+                    new Thread(new Runnable() {
 
-                    public void run() {
-                        while (counterSell < totalSell) {
-                            try {
-                                Thread.sleep(25);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                        public void run() {
+                            while (counterSell < totalSell) {
+                                try {
+                                    Thread.sleep(25);
+                                } catch (InterruptedException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                txtMainSell.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtMainSell.setText("" + counterSell);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                });
+                                txtSell.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtSell.setText("" + counterSell);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                });
+                                counterSell++;
+
+                                txtCollection.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtCollection.setText("" + counterCollection);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                });
+                                counterCollection++;
                             }
-                            txtMainSell.post(new Runnable() {
 
-                                public void run() {
-                                    txtMainSell.setText("" + counterSell);
-
-                                }
-
-                            });
-                            txtSell.post(new Runnable() {
-
-                                public void run() {
-                                    txtSell.setText("" + counterSell);
-
-                                }
-
-                            });
-                            counterSell++;
-
-                            txtCollection.post(new Runnable() {
-
-                                public void run() {
-                                    txtCollection.setText("" + counterCollection);
-
-                                }
-
-                            });
-                            counterCollection++;
                         }
 
-                    }
+                    }).start();
 
-                }).start();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
 
@@ -430,30 +455,35 @@ public class FragmentDashboardOne extends Fragment {
         txtCollection.setText(String.valueOf((int)totColl));
         txtRight.setText(new DecimalFormat("##.#k").format(totColl/1000));
         final int totalProgressTime = 100;
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
+        try {
+            final Thread t = new Thread() {
+                @Override
+                public void run() {
+                    int jumpTime = 0;
 
-                try {
-                    while (jumpTime < totalProgressTime) {
-                        try {
-                            sleep(50);
-                            jumpTime += 2;
-                            progressMain.setProgressValue(jumpTime);
-                            progressSell.setProgressValue(jumpTime);
-                            progressCollection.setProgressValue(jumpTime);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                    try {
+                        while (jumpTime < totalProgressTime) {
+                            try {
+                                sleep(50);
+                                jumpTime += 2;
+                                progressMain.setProgressValue(jumpTime);
+                                progressSell.setProgressValue(jumpTime);
+                                progressCollection.setProgressValue(jumpTime);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        };
-        t.start();
+            };
+            t.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         if (totSale > 100) {
 
@@ -463,48 +493,75 @@ public class FragmentDashboardOne extends Fragment {
             totalCollection = (int) totColl;
             counterSell = (int) totSale - 100;
             counterCollection = (int) totColl - 100;
-            new Thread(new Runnable() {
+            try {
+                new Thread(new Runnable() {
 
-                public void run() {
-                    while (counterSell < totalSell) {
-                        try {
-                            Thread.sleep(25);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                    public void run() {
+                        while (counterSell < totalSell) {
+                            try {
+                                Thread.sleep(25);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+
+                            try {
+
+                                txtMainSell.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtMainSell.setText("" + counterSell);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+
+                                });
+
+                                txtSell.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtSell.setText("" + counterSell);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                });
+                                counterSell++;
+
+                                txtCollection.post(new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            txtCollection.setText("" + counterCollection);
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+
+                                });
+                                counterCollection++;
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
-                        txtMainSell.post(new Runnable() {
 
-                            public void run() {
-                                txtMainSell.setText("" + counterSell);
-
-                            }
-
-                        });
-                        txtSell.post(new Runnable() {
-
-                            public void run() {
-                                txtSell.setText("" + counterSell);
-
-                            }
-
-                        });
-                        counterSell++;
-
-                        txtCollection.post(new Runnable() {
-
-                            public void run() {
-                                txtCollection.setText("" + counterCollection);
-
-                            }
-
-                        });
-                        counterCollection++;
                     }
 
-                }
+                }).start();
 
-            }).start();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
     }

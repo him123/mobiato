@@ -61,6 +61,7 @@
             android:paddingTop="@dimen/_11sdp">
 
             <TextView
+                android:id="@+id/txtCash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -82,6 +83,7 @@
             android:paddingTop="@dimen/_20sdp">
 
             <TextView
+                android:id="@+id/txtCust"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

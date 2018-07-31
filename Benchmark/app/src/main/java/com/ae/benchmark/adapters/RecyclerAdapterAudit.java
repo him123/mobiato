@@ -70,18 +70,11 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
         }
 
         if (item.getTr_is_posted().equals("No")){
-            holder.chbIsPosted.setVisibility(View.VISIBLE);
-            holder.imgIsPosted.setVisibility(View.GONE);
+            holder.imgIsPosted.setBackgroundResource(R.drawable.ic_action_sync);
         }  else {
-            holder.chbIsPosted.setVisibility(View.GONE);
-            holder.imgIsPosted.setVisibility(View.VISIBLE);
+            holder.imgIsPosted.setBackgroundResource(R.drawable.ic_icon_verified_sel);
         }
 
-        if (type.equals("print")){
-            holder.chbIsPosted.setVisibility(View.GONE);
-            holder.imgIsPosted.setVisibility(View.VISIBLE);
-            holder.imgIsPosted.setBackgroundResource(R.drawable.ic_action_print);
-        }
     }
 
     @Override
@@ -97,8 +90,7 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
 
         public TextView txtType , txtInvoiceNo ;
 
-        public ImageView imgIsPosted;
-        public CheckBox chbIsPosted;
+        public ImageView imgIsPosted , imgPrint;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolder(View parent, final Context context) {
@@ -107,7 +99,7 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
             txtType = (TextView) parent.findViewById(R.id.txtType);
             txtInvoiceNo = (TextView) parent.findViewById(R.id.txtInvoiceNo);
             imgIsPosted = (ImageView) parent.findViewById(R.id.imgIsPosted);
-            chbIsPosted = (CheckBox) parent.findViewById(R.id.chbIsPosted);
+            imgPrint = (ImageView) parent.findViewById(R.id.imgPrint);
 
         }
     }
