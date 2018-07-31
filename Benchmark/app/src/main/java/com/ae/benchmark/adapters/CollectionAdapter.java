@@ -36,6 +36,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Random rand = new Random();
     private List<Collection> mItemList;
     Customer customer;
+    double remainingAmount = 0.0;
 
     public CollectionAdapter(List<Collection> itemList, Context context, Customer customer) {
         this.mItemList = itemList;
@@ -59,11 +60,22 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final Collection collection = mItemList.get(position);
 
         holder.txt_inv_no.setText(collection.coll_inv_no);
-        holder.edt_col_amout.setText(collection.coll_amount);
+        holder.edt_col_amout.setText(collection.coll_last_col_amt);
         holder.txt_due_date.setText(collection.coll_due_date);
-        holder.txt_due_amt.setText(collection.coll_due_amt);
+//        holder.txt_due_amt.setText(collection.coll_amount);
         holder.txt_inv_date.setText(collection.coll_inv_date);
 
+        if (collection.coll_last_col_amt == null)
+            collection.coll_last_col_amt = "0.0";
+
+        if (Double.parseDouble(collection.coll_amount) > Double.parseDouble(collection.coll_last_col_amt)) {
+            remainingAmount = Double.parseDouble(collection.coll_amount) -
+                    Double.parseDouble(collection.coll_last_col_amt);
+
+            holder.txt_due_amt.setText("" + remainingAmount);
+        } else {
+            holder.txt_due_amt.setText(collection.coll_amount);
+        }
 
         holder.txt_due_amt.setEnabled(false);
 
@@ -74,9 +86,15 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .coll_cust_pay_method.equals("credit")) {
 
                     Intent i = new Intent(mContext, PaymentActivity.class);
-                    i.putExtra("amount", collection.coll_amount);
+                    i.putExtra("amount", remainingAmount + "");
+                    i.putExtra("col_doc_no", collection.coll_doc_no);
                     i.putExtra("cust", customer);
-                    mContext.startActivity(i);
+                    i.putExtra("invDate", collection.coll_inv_date);
+
+                    if (!collection.coll_amount.equalsIgnoreCase("0")) {
+                        mContext.startActivity(i);
+                    }
+
 
                 }
             }

@@ -19,6 +19,7 @@ public class Collection implements Parcelable {
     public String coll_due_date;
     public String coll_due_amt;
     public String coll_type;
+    public String coll_last_col_amt;
 
     public Collection() {
     }
@@ -34,6 +35,7 @@ public class Collection implements Parcelable {
         coll_due_date = in.readString();
         coll_due_amt = in.readString();
         coll_type = in.readString();
+        coll_last_col_amt = in.readString();
     }
 
     @Override
@@ -53,6 +55,7 @@ public class Collection implements Parcelable {
         dest.writeString(coll_due_date);
         dest.writeString(coll_due_amt);
         dest.writeString(coll_type);
+        dest.writeString(coll_last_col_amt);
     }
 
     @SuppressWarnings("unused")

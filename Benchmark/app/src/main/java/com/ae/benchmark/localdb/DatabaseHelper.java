@@ -147,6 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_AMOUNT = "col_amount";
     public static final String COL_DUE_AMOUNT = "col_due_amt";
     public static final String COL_INVOICE_DATE = "col_inv_date";
+    public static final String COL_LAST_COLLECTED_AMT = "col_last_collected_amt";
     public static final String COL_DUE_DATE = "col_due_date";
 
 
@@ -290,7 +291,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + COL_CUST_NO + " TEXT NOT NULL, " + COL_CUST_NAME + " TEXT NOT NULL, " + COL_IS_COLLECTED + " TEXT NOT NULL, " + ""
             + COL_AMOUNT + " TEXT NOT NULL, " + COL_INVOICE_DATE + " TEXT NOT NULL, " +
             COL_DUE_AMOUNT + " TEXT NOT NULL, " + COL_DUE_DATE + " TEXT NOT NULL, " +
-
+            "" + COL_LAST_COLLECTED_AMT + " TEXT, " +
             "" + COL_PAY_METHOD + " TEXT NOT NULL);";
 
     //CREATE COLLECTION ITEMS

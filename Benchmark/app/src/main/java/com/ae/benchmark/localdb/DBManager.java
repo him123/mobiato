@@ -174,7 +174,10 @@ public class DBManager {
     public void insertCollectionHeader(String docNum, String invNum,
                                        String custNum, String custName,
                                        String payMethod, String isCollected,
-                                       String amount, String dueDate, String dueAmnt, String inv_date) {
+                                       String amount,
+                                       String dueDate,
+                                       String dueAmnt,
+                                       String inv_date) {
         try {
             ContentValues contentValue = new ContentValues();
 
@@ -188,6 +191,7 @@ public class DBManager {
             contentValue.put(DatabaseHelper.COL_AMOUNT, amount);
             contentValue.put(DatabaseHelper.COL_DUE_DATE, dueDate);
             contentValue.put(DatabaseHelper.COL_DUE_AMOUNT, dueAmnt);
+            contentValue.put(DatabaseHelper.COL_INVOICE_DATE, inv_date);
             contentValue.put(DatabaseHelper.COL_INVOICE_DATE, inv_date);
 
             database.insert(DatabaseHelper.TABLE_COLLECTION_HEADER, null, contentValue);
@@ -1015,6 +1019,15 @@ public class DBManager {
         return i;
     }
 
+    public int updateCollectionLastCollectionAmount(String col_doc_no, String last_collected_amt) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.COL_LAST_COLLECTED_AMT, last_collected_amt);
+        int i = database.update(DatabaseHelper.TABLE_COLLECTION_HEADER, contentValues,
+                DatabaseHelper.COL_DOC_CODE + " = " + col_doc_no, null);
+        return i;
+    }
+
 
     public int updateUnLoadItemQty(String load_num, String item_code, String item_qty) {
 
@@ -1248,6 +1261,19 @@ public class DBManager {
 //        SQLiteDatabase sqldb = EGLifeStyleApplication.sqLiteDatabase;
         String Query = "Select * from " + tableName + " where " +
                 DatabaseHelper.ITEM_CODE + " = " + item_code;
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public boolean checkIsCollectionAlreadyExist(String col_doc_no) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String Query = "Select * from " + DatabaseHelper.TABLE_COLLECTION_HEADER + " where " +
+                DatabaseHelper.COL_DOC_CODE + " = " + col_doc_no;
         Cursor cursor = db.rawQuery(Query, null);
         if (cursor.getCount() <= 0) {
             cursor.close();
@@ -1761,6 +1787,7 @@ public class DBManager {
                         collection.coll_inv_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_INVOICE_DATE));
                         collection.coll_due_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
                         collection.coll_due_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
+                        collection.coll_last_col_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_LAST_COLLECTED_AMT));
 
                         //you could add additional columns here..
                         list.add(collection);

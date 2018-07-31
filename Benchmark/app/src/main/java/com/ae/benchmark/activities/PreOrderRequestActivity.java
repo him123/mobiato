@@ -571,6 +571,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                         Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("name", custName);
                         i.putExtra("cust", customer);
+                        i.putExtra("invNum", invNum);
+                        i.putExtra("invDate", salesInvoice.inv_date);
                         i.putExtra("amount", "" + price);
                         startActivity(i);
 
@@ -578,6 +580,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     } else {
                         Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
                         i.putExtra("name", custName);
+
+
                         startActivity(i);
                         finish();
                     }

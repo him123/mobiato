@@ -10,16 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CollectionPaymentActivity;
-import com.ae.benchmark.activities.ItemsListActivity;
-import com.ae.benchmark.activities.LoadListActivity;
 import com.ae.benchmark.adapters.CollectionAdapter;
-import com.ae.benchmark.adapters.RecyclerAdapter;
-import com.ae.benchmark.adapters.RecyclerAdapterCustomer;
-import com.ae.benchmark.adapters.RecyclerItemsAdapter;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Collection;
 import com.ae.benchmark.model.Customer;
@@ -69,9 +63,22 @@ public class FragmentCOCollection extends Fragment {
         View v = inflater.inflate(R.layout.fragment_collection, container, false);
         ButterKnife.inject(this, v);
 
-//        recentCustomer = getActivity().getIntent().getExtras().getParcelable("cust");
-
         dbManager = new DBManager(getActivity());
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CollectionPaymentActivity.class));
+            }
+        });
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         dbManager.open();
 
@@ -86,14 +93,5 @@ public class FragmentCOCollection extends Fragment {
         recyclerview_collection.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataChanged();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CollectionPaymentActivity.class));
-            }
-        });
-
-        return v;
     }
-
 }

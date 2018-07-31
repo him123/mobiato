@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.localdb.DBManager;
@@ -76,7 +77,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     //    String name;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener date;
-    String amount;
+    String amount, col_doc_no, invDate;
 
     Customer customer;
     DBManager dbManager;
@@ -97,6 +98,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             customer = extras.getParcelable("cust");
 //            txt_cust_name.setText(name);
             amount = extras.getString("amount");
+            col_doc_no = extras.getString("col_doc_no");
+            invDate = extras.getString("invDate");
         }
 
         txt_amount.setText(amount);
@@ -152,30 +155,10 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             }
         };
 
+        //END BUTTON
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-
-                new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Done")
-                        .setContentText("Your payment successfully done!")
-                        .setConfirmText("Ok!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-
-
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                                new DatePickerDialog(PaymentActivity.this, date, myCalendar
-                                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                                finish(); // call this to finish the current activity
-                            }
-                        })
-                        .show();
 
             }
         });
@@ -199,49 +182,92 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Payment payment = new Payment();
-                dbManager.open();
 
-                long lastInvId = dbManager.getLastInvoiceID();
-                long lastCollId = dbManager.getLastCollectionID();
+                if (!edt_amount.getText().toString().equalsIgnoreCase("")) {
 
-                int invNum , CollNum;
-                if (lastInvId == 0){
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                    Payment payment = new Payment();
+                    dbManager.open();
+
+                    long lastInvId = dbManager.getLastInvoiceID();
+                    long lastCollId = dbManager.getLastCollectionID();
+
+                    int invNum, CollNum;
+                    if (lastInvId == 0) {
+                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
+                    } else {
+                        invNum = (int) lastInvId + 1;
+                    }
+
+                    if (lastCollId == 0) {
+                        CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
+                    } else {
+                        CollNum = (int) lastCollId + 1;
+                    }
+
+                    if (!swcPayment.isChecked()) {
+                        payment.setInvoice_id(String.valueOf(invNum));
+                        payment.setCollection_id(String.valueOf(CollNum));
+                        payment.setPayment_type("Cash");
+                        payment.setPayment_date(UtilApp.getCurrentDate());
+                        payment.setCheque_no("");
+                        payment.setBank_name("");
+                        payment.setPayment_amount(edt_amount.getText().toString());
+                        payment.setCust_id("");
+                    } else {
+                        payment.setInvoice_id(String.valueOf(invNum));
+                        payment.setCollection_id(String.valueOf(CollNum));
+                        payment.setPayment_type("Cheque");
+                        payment.setPayment_date(edtDate.getText().toString());
+                        payment.setCheque_no(edtChequeNumber.getText().toString());
+                        payment.setBank_name(spinner.getSelectedItem().toString());
+                        payment.setPayment_amount(edtChequeAmount.getText().toString());
+                        payment.setCust_id("");
+                    }
+
+                    if (dbManager.checkIsCollectionAlreadyExist(col_doc_no)) { // UPDATE COLLECTION
+                        dbManager.updateCollectionLastCollectionAmount(col_doc_no, edt_amount.getText().toString());
+                    } else { // INSERT COLLECTION
+//                        long lastCollId = dbManager.getLastCollectionID();
+//                        int CollNum = (int) lastCollId + 1;
+
+                        double dueAmt = Integer.parseInt(amount) + 50;
+                        dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
+                                customer.cust_name_en, customer.cust_type, "0",
+                                "" + amount, invDate, "" + dueAmt, invDate);
+                    }
+
+                    dbManager.insertPayment(payment);
+
+
+                    new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Done")
+                            .setContentText("Your payment successfully done!")
+                            .setConfirmText("Ok!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+
+//
+//                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//
+//                                    new DatePickerDialog(PaymentActivity.this, date, myCalendar
+//                                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//                                    finish(); // call this to finish the current activity
+
+                                    onBackPressed();
+                                }
+                            })
+                            .show();
+
+
                 } else {
-                    invNum = (int) lastInvId + 1;
+                    Toast.makeText(PaymentActivity.this, "Please enter amount", Toast.LENGTH_SHORT).show();
                 }
-
-                if (lastCollId == 0){
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.COLLECTION_LAST));
-                } else {
-                    CollNum = (int) lastCollId + 1;
-                }
-
-                if (!swcPayment.isChecked()) {
-                    payment.setInvoice_id(String.valueOf(invNum));
-                    payment.setCollection_id(String.valueOf(CollNum));
-                    payment.setPayment_type("Cash");
-                    payment.setPayment_date(UtilApp.getCurrentDate());
-                    payment.setCheque_no("");
-                    payment.setBank_name("");
-                    payment.setPayment_amount(edt_amount.getText().toString());
-                    payment.setCust_id("");
-                } else {
-                    payment.setInvoice_id(String.valueOf(invNum));
-                    payment.setCollection_id(String.valueOf(CollNum));
-                    payment.setPayment_type("Cheque");
-                    payment.setPayment_date(edtDate.getText().toString());
-                    payment.setCheque_no(edtChequeNumber.getText().toString());
-                    payment.setBank_name(spinner.getSelectedItem().toString());
-                    payment.setPayment_amount(edtChequeAmount.getText().toString());
-                    payment.setCust_id("");
-                }
-
-                dbManager.insertPayment(payment);
-
-                onBackPressed();
             }
+
         });
     }
 
