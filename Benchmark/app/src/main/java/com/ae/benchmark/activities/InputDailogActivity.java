@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -87,6 +89,7 @@ public class InputDailogActivity extends Activity {
     String qty;
     DBManager db;
     Double price;
+    Spinner sp_reason;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class InputDailogActivity extends Activity {
 
         List<String> list = new ArrayList<String>();
 
+        list.add("Select Reason");
         list.add("list 1");
         list.add("list 2");
         list.add("list 3");
@@ -137,8 +141,8 @@ public class InputDailogActivity extends Activity {
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner2 = (Spinner) findViewById(R.id.sp_reason);
-        spinner2.setAdapter(dataAdapter);
+        sp_reason = (Spinner) findViewById(R.id.sp_reason);
+        sp_reason.setAdapter(dataAdapter);
 
         ImageView img_qr = (ImageView) findViewById(R.id.img_qr);
 
@@ -283,6 +287,8 @@ public class InputDailogActivity extends Activity {
 //                            Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
 //                        else
                         Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
+                    } else if ((!edt_sale.getText().toString().equalsIgnoreCase(edt_emp.getText().toString())) && sp_reason.getSelectedItemPosition() == 0){
+                        Toast.makeText(InputDailogActivity.this, "Please select reason", Toast.LENGTH_SHORT).show();
                     } else {
 
                         if (isCoupon.equalsIgnoreCase("yes") && edt_coupon_code.getText().toString().equals("")) {
@@ -328,6 +334,28 @@ public class InputDailogActivity extends Activity {
                 }
             }
         });
+
+        edt_sale.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    edt_emp.setText(edt_sale.getText().toString());
+                } catch (Exception e){
+                    edt_sale.setText("");
+                    edt_emp.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -340,7 +368,7 @@ public class InputDailogActivity extends Activity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(InputDailogActivity.this, ScanActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 2);
                 } else {
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(InputDailogActivity.this);
                     alertDialogBuilder.setMessage("Kindly grant all permission, we respect your privacy and data!");

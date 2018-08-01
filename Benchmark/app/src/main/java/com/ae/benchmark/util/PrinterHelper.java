@@ -151,34 +151,33 @@ public class PrinterHelper {
         this.activity = activity;
     }
 
-    public void execute(String request, JSONObject jsonArray) {
+    public void execute(JSONObject jsonArray) {
         try {
 
             this.jArr = jsonArray;
             this.arrData = new ArrayList();
-//            print();
+            print();
 
 
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        try {
-
-                            File pdfFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                                    "MySampleImageFile.pdf");
-                            outStream = new FileOutputStream(pdfFile);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                        PrinterHelper.this.printReports(PrinterHelper.this.sMacAddr);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+//            AsyncTask.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        try {
+//
+//                            File file = new File(Environment.getExternalStorageDirectory() + File.separator + "test.txt");
+//                            outStream = new FileOutputStream(file);
+//                        } catch (FileNotFoundException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        PrinterHelper.this.printReports(PrinterHelper.this.sMacAddr);
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -431,7 +430,7 @@ public class PrinterHelper {
 //                    JSONObject jsnData = jDict.getJSONObject("mainArr");
 //                    this.count = 0;
 //                    if (request.equals(App.SALES_INVOICE)) {
-                        printSalesInvoice(jArr, address);
+            printSalesInvoice(jArr, address);
 //                    }
 //                }
 //            }
@@ -808,30 +807,30 @@ public class PrinterHelper {
                 printoultlet = 0;
             }*/
             this.hashValues = new HashMap();
-            this.hashValues.put("SI No", Integer.valueOf(6));
-            this.hashValues.put("Item Code", Integer.valueOf(15));
-            this.hashValues.put("Description", Integer.valueOf(32));
+            this.hashValues.put("نعم لا", Integer.valueOf(6));
+            this.hashValues.put("رمز الصنف", Integer.valueOf(15));
+            this.hashValues.put("وصف", Integer.valueOf(32));
             this.hashValues.put("UOM", Integer.valueOf(9));
             this.hashValues.put("QTY", Integer.valueOf(11));
-            this.hashValues.put("UNIT Price", Integer.valueOf(12));
-            this.hashValues.put("Total amount", Integer.valueOf(12));
-            this.hashValues.put("Total Disc", Integer.valueOf(12));
-            this.hashValues.put("Vat Amt", Integer.valueOf(7));
+            this.hashValues.put("سعر الوحدة", Integer.valueOf(12));
+            this.hashValues.put("المبلغ الإجمالي", Integer.valueOf(12));
+            this.hashValues.put("إجمالي القرص", Integer.valueOf(12));
+            this.hashValues.put("مقاطعة فات", Integer.valueOf(7));
             this.hashValues.put("Vat %", Integer.valueOf(7));
-            this.hashValues.put("Amount SAR", Integer.valueOf(13));
+            this.hashValues.put("كمية SAR", Integer.valueOf(13));
 
             this.hashPositions = new HashMap();
-            this.hashPositions.put("SI No", Integer.valueOf(0));
-            this.hashPositions.put("Item Code", Integer.valueOf(0));
-            this.hashPositions.put("Description", Integer.valueOf(0));
+            this.hashPositions.put("نعم لا", Integer.valueOf(0));
+            this.hashPositions.put("رمز الصنف", Integer.valueOf(0));
+            this.hashPositions.put("وصف", Integer.valueOf(0));
             this.hashPositions.put("UOM", Integer.valueOf(1));
             this.hashPositions.put("QTY", Integer.valueOf(1));
-            this.hashPositions.put("UNIT Price", Integer.valueOf(1));
-            this.hashPositions.put("Total amount", Integer.valueOf(1));
-            this.hashPositions.put("Total Disc", Integer.valueOf(1));
-            this.hashPositions.put("Vat Amt", Integer.valueOf(1));
+            this.hashPositions.put("سعر الوحدة", Integer.valueOf(1));
+            this.hashPositions.put("المبلغ الإجمالي", Integer.valueOf(1));
+            this.hashPositions.put("إجمالي القرص", Integer.valueOf(1));
+            this.hashPositions.put("مقاطعة فات",Integer.valueOf(1));
             this.hashPositions.put("Vat %", Integer.valueOf(1));
-            this.hashPositions.put("Amount SAR", Integer.valueOf(1));
+            this.hashPositions.put("كمية SAR", Integer.valueOf(1));
 
             this.outStream.write(this.wakeUp);
             line(this.startln);
@@ -926,43 +925,43 @@ public class PrinterHelper {
             this.outStream.write(this.NewLine);
             //printheaders(object.getString("invheadermsg"), false, 3);
 
-            JSONArray focData = object.getJSONArray("foc");
-            if (focData.length() > 0) {
-                isFirstInvoice = false;
-                printheaders(getAccurateText("FREE GOODS", 40, 1), false, 2);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-
-                this.outStream.write(this.CompressOn);
-                printlines1(strheader, 1, object, 1, args, 9);
-                printlines1(strHeaderBottom, 1, object, 1, args, 9);
-                printlines1(printSepratorcomp(), 1, object, 1, args, 9);
-                this.outStream.write(this.CompressOff);
-
-                for (i = 0; i < focData.length(); i++) {
-                    JSONArray jArr = focData.getJSONArray(i);
-                    String strData = "";
-                    for (int j = 0; j < jArr.length(); j++) {
-                        int i2;
-                        Object obj;
-                        String itemDescrion = jArr.getString(j);
-
-                        stringBuilder = new StringBuilder(String.valueOf(strData));
-                        i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
-
-                        HashMap hashMap = this.hashPositions;
-                        obj = headers.getString(j).toString();
-
-                        strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
-                    }
-                    this.outStream.write(this.CompressOn);
-                    this.count++;
-                    printlines1(strData, 1, object, 1, args, 9);
-                    this.outStream.write(this.CompressOff);
-                }
-            }
+//            JSONArray focData = object.getJSONArray("foc");
+//            if (focData.length() > 0) {
+//                isFirstInvoice = false;
+//                printheaders(getAccurateText("FREE GOODS", 40, 1), false, 2);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//
+//                this.outStream.write(this.CompressOn);
+//                printlines1(strheader, 1, object, 1, args, 9);
+//                printlines1(strHeaderBottom, 1, object, 1, args, 9);
+//                printlines1(printSepratorcomp(), 1, object, 1, args, 9);
+//                this.outStream.write(this.CompressOff);
+//
+//                for (i = 0; i < focData.length(); i++) {
+//                    JSONArray jArr = focData.getJSONArray(i);
+//                    String strData = "";
+//                    for (int j = 0; j < jArr.length(); j++) {
+//                        int i2;
+//                        Object obj;
+//                        String itemDescrion = jArr.getString(j);
+//
+//                        stringBuilder = new StringBuilder(String.valueOf(strData));
+//                        i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//
+//                        HashMap hashMap = this.hashPositions;
+//                        obj = headers.getString(j).toString();
+//
+//                        strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
+//                    }
+//                    this.outStream.write(this.CompressOn);
+//                    this.count++;
+//                    printlines1(strData, 1, object, 1, args, 9);
+//                    this.outStream.write(this.CompressOff);
+//                }
+//            }
 
 
             //Gagdadfdsafsd
@@ -1615,36 +1614,36 @@ public class PrinterHelper {
             this.outStream.write(this.BoldOn);
             this.outStream.write(this.DoubleWideOn);
 
-                if (!object.getString("LPONO").equals("")) {
-                    printheaders(getAccurateText("LPO NO: " + object.getString("LPONO"), 137, 2),
-                            false, 0);
+            if (!object.getString("LPONO").equals("")) {
+                printheaders(getAccurateText("LPO NO: " + object.getString("LPONO"), 137, 2),
+                        false, 0);
+            }
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.BoldOn);
+            try {
+
+                JSONArray headers = object.getJSONArray("HEADERS");
+                String strheader = "";
+                String strHeaderBottom = "";
+                String strTotal = "";
+
+                int MAXLEngth = 137;
+
+                for (int i = 0; i < headers.length(); i++) {
+                    MAXLEngth -= ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue();
                 }
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                try {
 
-                    JSONArray headers = object.getJSONArray("HEADERS");
-                    String strheader = "";
-                    String strHeaderBottom = "";
-                    String strTotal = "";
-
-                    int MAXLEngth = 137;
-
-                    for (int i = 0; i < headers.length(); i++) {
-                        MAXLEngth -= ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue();
-                    }
-
-                    if (MAXLEngth > 0) {
-                        MAXLEngth /= headers.length();
-                    }
+                if (MAXLEngth > 0) {
+                    MAXLEngth /= headers.length();
+                }
 
 
 //                    strTotalNoVat = getAccurateText("Total Before TAX(AED) : " + jTOBject.getString("Total Befor TAX(AED)"),
 //                            137 + MAXLEngth, 2);
 //                    printlines1(strTotalNoVat, 1, object, 1, args, 9);
 
-                    this.outStream.write(this.CompressOn);
+                this.outStream.write(this.CompressOn);
 //
 //
 //                    printlines1(getAccurateText("Invoice No : " + object.getString("ORDERNO"), 137 + MAXLEngth, 2), 1, object, 1, "", 9);
@@ -1654,28 +1653,28 @@ public class PrinterHelper {
 //                    printlines1(getAccurateText("Delivery Date : " + object.getString("TRIP START DATE"), 137 + MAXLEngth, 2), 1, object, 1, "", 9);
 
 
-                    String strPhn = "Phone: " + object.getString("CONTACTNO");
-                    String strEmi = "Emirate: " + "N/A";
-                    String strCou = "Country: " + "Dubai";
-                    String strTrn = "TRN: " + object.getString("TRN");
-                    String strCus = "Place of Supply: " + "Abu Dhabi";
+                String strPhn = "Phone: " + object.getString("CONTACTNO");
+                String strEmi = "Emirate: " + "N/A";
+                String strCou = "Country: " + "Dubai";
+                String strTrn = "TRN: " + object.getString("TRN");
+                String strCus = "Place of Supply: " + "Abu Dhabi";
 
-                    printlines1(strPhn + getAccurateText("Invoice No : " + object.getString("ORDERNO"), 137 + MAXLEngth - strPhn.length(), 2), 1, object, 1, "", 9);
-                    printlines1(strEmi + getAccurateText("Invoice Date : " + object.getString("DOC DATE"), 137 + MAXLEngth - strEmi.length(), 2), 1, object, 1, "", 9);
-                    printlines1(strCou + getAccurateText("Order No : " + object.getString("ORDERNO"), 137 + MAXLEngth - strCou.length(), 2), 1, object, 1, "", 9);
-                    printlines1(strTrn + getAccurateText("Order Date : " + object.getString("DOC DATE"), 137 + MAXLEngth - strTrn.length(), 2), 1, object, 1, "", 9);
-                    printlines1(strCus + getAccurateText("Delivery Date : " + object.getString("TRIP START DATE"), 137 + MAXLEngth - strCus.length(), 2), 1, object, 1, "", 9);
+                printlines1(strPhn + getAccurateText("رقم الفاتورة : " + object.getString("ORDERNO"), 137 + MAXLEngth - strPhn.length(), 2), 1, object, 1, "", 9);
+                printlines1(strEmi + getAccurateText("تاريخ الفاتورة : " + object.getString("DOC DATE"), 137 + MAXLEngth - strEmi.length(), 2), 1, object, 1, "", 9);
+                printlines1(strCou + getAccurateText("رقم الطلب : " + object.getString("ORDERNO"), 137 + MAXLEngth - strCou.length(), 2), 1, object, 1, "", 9);
+                printlines1(strTrn + getAccurateText("تاريخ الطلب : " + object.getString("DOC DATE"), 137 + MAXLEngth - strTrn.length(), 2), 1, object, 1, "", 9);
+                printlines1(strCus + getAccurateText("تاريخ التسليم او الوصول : " + object.getString("TRIP START DATE"), 137 + MAXLEngth - strCus.length(), 2), 1, object, 1, "", 9);
 
 
-                    this.outStream.write(this.CompressOff);
+                this.outStream.write(this.CompressOff);
 
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.BoldOff);
+                this.outStream.write(this.NewLine);
+                this.outStream.write(this.BoldOff);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                this.count++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.count++;
 
         } catch (Exception e2) {
             e2.printStackTrace();

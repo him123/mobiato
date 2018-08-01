@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_division\":\"org1\",\n" +
             "                    \"cust_sales_org\":\"2563\",\n" +
             "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30\",\n" +
+            "                    \"cust_avail_bal\":\"30000\",\n" +
             "                    \"cust_payment_term\":\"30\",\n" +
             "                    \"cust_address\":\"Credit\",\n" +
             "                    \"cust_type\":\"credit\",\n" +
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_division\":\"org1\",\n" +
             "                    \"cust_sales_org\":\"2563\",\n" +
             "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30\",\n" +
+            "                    \"cust_avail_bal\":\"30000\",\n" +
             "                    \"cust_payment_term\":\"30\",\n" +
             "                    \"cust_address\":\"Credit\",\n" +
             "                    \"cust_type\":\"cash\",\n" +
@@ -196,10 +196,10 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_division\":\"org1\",\n" +
             "                    \"cust_sales_org\":\"2563\",\n" +
             "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30\",\n" +
+            "                    \"cust_avail_bal\":\"30000\",\n" +
             "                    \"cust_payment_term\":\"30\",\n" +
             "                    \"cust_address\":\"Credit\",\n" +
-            "                    \"cust_type\":\"tc\",\n" +
+            "                    \"cust_type\":\"credit\",\n" +
             "                    \"cust_possessed_empty_bottle\":\"5\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"5\",\n" +
             "                     \"cust_long\":\"43.104137\",\n" +

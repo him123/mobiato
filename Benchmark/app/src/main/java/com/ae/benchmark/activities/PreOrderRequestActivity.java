@@ -149,6 +149,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             if (oldOrNew.equals("new")) {
             }
 
+        } else if (type.equals("credit")) {
+            mTitle.setText("CREDIT SALE");
+
+            main_layout.setVisibility(View.VISIBLE);
+            waiting_layout.setVisibility(View.GONE);
+
+            if (oldOrNew.equals("new")) {
+            }
+
         } else if (type.equals("norm")) {
             mTitle.setText("SALE");
 
@@ -208,7 +217,11 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 }
 
                 if (subTot > 0) {
-                    makeDilog(arrItem);
+                    if (Double.parseDouble(customer.cust_avail_bal) < (subTot * 5 / 100)) {
+                        Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
+                    } else {
+                        makeDilog(arrItem);
+                    }
                 } else {
                     Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
                 }
@@ -265,7 +278,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         double vatVal = subTot * 5 / 100;
 
         txt_vat_value.setText(vatVal + "");
-        double grandTot = subTot + vatVal;
+        final double grandTot = subTot + vatVal;
         txt_grand_tot.setText(grandTot + "");
 
 
@@ -288,24 +301,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO your background code
-                    }
-                });
-
                 dbManager = new DBManager(PreOrderRequestActivity.this);
                 dbManager.open();
-
-                String date = UtilApp.getCurrentDate();
-                String time = UtilApp.getCurrentTime();
-
-//                if (type.equals("cash")) {
-
-
-//                    dbManager.getBottleQty(arrItem.get(i).item_code, arrItem.get(i).item_qty);
-
 
                 //CREATING INVOICE FOR SALE
                 SalesInvoice salesInvoice = new SalesInvoice();
@@ -343,7 +340,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 salesInvoice.inv_header_vat_per = "0";
 
                 dbManager.insertSalesInvoiceHeader(salesInvoice);
-
+                dbManager.updateCustomerArr(customer.cust_num, String.valueOf(grandTot));
 
                 double dueAmt = price + 50;
                 dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
@@ -395,31 +392,29 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     if (customer.cust_type.equals("credit"))
                         dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
 
-//                        dbManager.updateUnloadVanStock(arrItem.get(i).item_code, "" + remaining_qty);
-
                 }
 
 
-//                } else if (type.equals("norm")) {
-//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-//                } else if (type.equals("custody")) {
-//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-//                } else if (type.equals("Order")) {
-//                    dbManager.insertTransaction("Order Created", date, time);
-//                }
-
                 if (isCoupon.equals("yes")) {
                     deleteDialog.dismiss();
-                    finish();
+
+                    UtilApp.askForPrint(PreOrderRequestActivity.this,
+                            PreOrderRequestActivity.this);
+//                    finish();
                 } else {
                     deleteDialog.dismiss();
 
-                    if (customer.cust_type.equals("cash")) {
+                    if (customer.cust_type.equalsIgnoreCase("cash")) {
                         Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("name", custName);
-                        startActivity(i);
+                        i.putExtra("cust", customer);
+                        i.putExtra("amt", String.valueOf(grandTot));
+//                        startActivity(i);
 
-                        finish();
+                        UtilApp.askForPrint(PreOrderRequestActivity.this,
+                                PreOrderRequestActivity.this, i);
+
+//                        finish();
                     } else {
 //                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
 //                        i.putExtra("name", custName);
@@ -429,163 +424,12 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                         Intent i = new Intent(PreOrderRequestActivity.this, FragmentContainActivity.class);
                         i.putExtra("flag", "COL");
                         i.putExtra("cust", customer);
-                        startActivity(i);
-                        finish();
+//                        startActivity(i);
+
+                        UtilApp.askForPrint(PreOrderRequestActivity.this,
+                                PreOrderRequestActivity.this, i);
+//                        finish();
                     }
-
-                }
-            }
-        });
-        deleteDialogView.findViewById(R.id.btn_proceed).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                deleteDialog.dismiss();
-
-
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO your background code
-                    }
-                });
-
-                dbManager = new DBManager(PreOrderRequestActivity.this);
-                dbManager.open();
-
-                String date = UtilApp.getCurrentDate();
-                String time = UtilApp.getCurrentTime();
-
-//                if (type.equals("cash")) {
-
-
-//                    dbManager.getBottleQty(arrItem.get(i).item_code, arrItem.get(i).item_qty);
-
-
-                //CREATING INVOICE FOR SALE
-                SalesInvoice salesInvoice = new SalesInvoice();
-
-                long lastInvId = dbManager.getLastInvoiceID();
-                long lastCollId = dbManager.getLastCollectionID();
-                int invNum;
-                if (lastInvId == 0) {
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
-                } else {
-                    invNum = (int) lastInvId + 1;
-                }
-                int CollNum;
-                if (lastCollId == 0) {
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
-                } else {
-                    CollNum = (int) lastCollId + 1;
-                }
-
-                salesInvoice.inv_no = "" + invNum;
-                salesInvoice.inv_type = "Sale";
-                salesInvoice.inv_type_code = "01";
-                salesInvoice.cust_code = customer.cust_num;
-                salesInvoice.cust_sales_org = customer.cust_sales_org;
-                salesInvoice.cust_dist_channel = customer.cust_dist_channel;
-                salesInvoice.cust_division = customer.cust_division;
-                salesInvoice.inv_date = UtilApp.getCurrentDate();
-                salesInvoice.del_date = "21-02-2018";
-                salesInvoice.cust_name_en = customer.cust_name_en;
-                salesInvoice.tot_amnt_sales = "" + price;
-                salesInvoice.inv_header_dis_val = "0";
-                salesInvoice.inv_header_dis_per = "0";
-                salesInvoice.inv_header_vat_val = "0";
-                salesInvoice.inv_header_vat_per = "0";
-
-                dbManager.insertSalesInvoiceHeader(salesInvoice);
-
-
-                double dueAmt = price + 50;
-                dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
-                        customer.cust_name_en, customer.cust_type, "0",
-                        "" + price, salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date);
-
-
-                //INSERT TRANSACTION
-                Transaction transaction = new Transaction();
-
-                transaction.tr_type = Constant.TRANSACTION_TYPES.TT_SALES_CREATED;
-                transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
-                transaction.tr_customer_num = customer.cust_num;
-                transaction.tr_customer_name = customer.cust_name_en;
-                transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(PreOrderRequestActivity.this, Constant.SHRED_PR.SALESMANID);
-                transaction.tr_invoice_id = invNum + "";
-                transaction.tr_order_id = "";
-                transaction.tr_collection_id = "";
-                transaction.tr_pyament_id = "";
-                transaction.tr_is_posted = "No";
-
-                dbManager.insertTransaction(transaction);
-
-                for (int i = 0; i < arrItem.size(); i++) {
-                    String current = dbManager.getBottleQty(arrItem.get(i).item_code);
-                    int remaining_qty = Integer.parseInt(current) - Integer.parseInt(arrItem.get(i).item_qty);
-
-                    Item item = new Item();
-                    item.sales_inv_nun = salesInvoice.inv_no;
-                    item.item_code = arrItem.get(i).item_code;
-                    item.item_name_en = arrItem.get(i).item_name_en;
-                    item.item_price = arrItem.get(i).item_price;
-                    item.item_qty = arrItem.get(i).item_qty;
-                    if (arrItem.get(i).is_empty.equals("0"))
-                        item.item_barcode = barCodeArr.get(i);
-                    else
-                        item.item_barcode = "0";
-
-                    item.item_disc_val = "0";
-                    item.item_disc_per = "0";
-                    item.item_vat_val = "0";
-                    item.item_vat_per = "0";
-
-                    dbManager.insertSalesInvoiceItem(item);
-
-                    dbManager.updateVanStock(arrItem.get(i).item_code, "" + remaining_qty);
-
-                    dbManager.updateCustomerTransactionType(customer.cust_num, "sale", "1");
-                    if (customer.cust_type.equals("credit"))
-                        dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
-
-//                        dbManager.updateUnloadVanStock(arrItem.get(i).item_code, "" + remaining_qty);
-
-                }
-
-
-//                } else if (type.equals("norm")) {
-//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-//                } else if (type.equals("custody")) {
-//                    dbManager.insertTransaction("Invoice Created (Cash Sale)", date, time);
-//                } else if (type.equals("Order")) {
-//                    dbManager.insertTransaction("Order Created", date, time);
-//                }
-
-                if (isCoupon.equals("yes")) {
-                    deleteDialog.dismiss();
-                    finish();
-                } else {
-                    deleteDialog.dismiss();
-
-                    if (customer.cust_type.equals("cash")) {
-                        Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
-                        i.putExtra("name", custName);
-                        i.putExtra("cust", customer);
-                        i.putExtra("invNum", invNum);
-                        i.putExtra("invDate", salesInvoice.inv_date);
-                        i.putExtra("amount", "" + price);
-                        startActivity(i);
-
-                        finish();
-                    } else {
-                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
-                        i.putExtra("name", custName);
-
-
-                        startActivity(i);
-                        finish();
-                    }
-
                 }
             }
         });
@@ -765,4 +609,37 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
         unregisterReceiver(broadcastReceiver2);
     }
+
+//    private void askForPrint(final Intent intent){
+//
+//        final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
+//        alertDialog.setCancelable(false);
+//        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//
+//
+//        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //your business logic
+//
+//                alertDialog.dismiss();
+//                startActivity(intent);
+//
+//            }
+//        });
+//
+//        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //your business logic
+//                alertDialog.dismiss();
+//                startActivity(intent);
+//
+//            }
+//        });
+//
+//        alertDialog.show();
+//    }
 }

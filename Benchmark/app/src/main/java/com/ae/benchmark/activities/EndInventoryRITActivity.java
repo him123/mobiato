@@ -137,7 +137,11 @@ public class EndInventoryRITActivity extends AppCompatActivity {
                                     public void onClick(SweetAlertDialog sDialog) {
                                         sDialog.dismissWithAnimation();
                                         sendBroadcast(intent);
-                                        finish();
+
+                                        UtilApp.askForPrint(EndInventoryRITActivity.this, EndInventoryRITActivity.this);
+//                                        finish();
+
+
                                     }
                                 })
                                 .show();
@@ -149,8 +153,8 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (Constant.checkBoxFalse.equals("no")){
-                    if (isChecked){
+                if (Constant.checkBoxFalse.equals("no")) {
+                    if (isChecked) {
                         Constant.checkBoxValue = "true";
                         recyclerAdapter.notifyDataChanged();
                     } else {

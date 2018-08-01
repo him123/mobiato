@@ -86,8 +86,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .coll_cust_pay_method.equals("credit")) {
 
                     Intent i = new Intent(mContext, PaymentActivity.class);
+//<<<<<<< HEAD
                     i.putExtra("amount", remainingAmount + "");
                     i.putExtra("col_doc_no", collection.coll_doc_no);
+//=======
+                    i.putExtra("amt", collection.coll_amount);
+//>>>>>>> 21c334a48f6a85e7ca04640c5fd56ed69100b27d
                     i.putExtra("cust", customer);
                     i.putExtra("invDate", collection.coll_inv_date);
 

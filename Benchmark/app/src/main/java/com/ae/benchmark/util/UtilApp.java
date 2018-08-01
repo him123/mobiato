@@ -1,10 +1,18 @@
 package com.ae.benchmark.util;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
+import com.ae.benchmark.R;
+import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.activities.SplashActivity;
 
 import java.io.BufferedReader;
@@ -132,5 +140,75 @@ public class UtilApp {
 //        UtilApp.ReadSharePrefrence(SplashActivity.this, Constant.SHRED_PR.ISINTRO
         UtilApp.WriteSharePrefrence(context, Constant.SHRED_PR.ISINTRO, true);
 
+    }
+
+    public static void askForPrint(final Activity contextIntent, final Context context, final Intent redirectIntent){
+
+        final Dialog alertDialog = new Dialog(context);
+        alertDialog.setCancelable(false);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+
+                alertDialog.dismiss();
+                context.startActivity(redirectIntent);
+                contextIntent.finish();
+
+            }
+        });
+
+        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertDialog.dismiss();
+                context.startActivity(redirectIntent);
+                contextIntent.finish();
+
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    public static void askForPrint(final Activity contextIntent, final Context context){
+
+        final Dialog alertDialog = new Dialog(context);
+        alertDialog.setCancelable(false);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+
+                alertDialog.dismiss();
+//                context.startActivity(redirectIntentirectIntent);
+                contextIntent.finish();
+
+            }
+        });
+
+        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertDialog.dismiss();
+//                context.startActivity(redirectIntent);
+                contextIntent.finish();
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

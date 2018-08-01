@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="#00000000"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -52,11 +51,11 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_cash"
+            android:id="@+id/rl_print"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
             android:layout_centerVertical="true"
-            android:background="@drawable/rounded_orange"
+            android:background="@drawable/rounded_white"
             android:paddingBottom="@dimen/_11sdp"
             android:paddingTop="@dimen/_11sdp">
 
@@ -66,19 +65,19 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="CASH  "
-                android:textColor="@color/white"
+                android:text="PRINT  "
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_custody"
+            android:id="@+id/rl_donot_print"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/rounded_orange"
+            android:background="@drawable/rounded_white"
             android:paddingBottom="@dimen/_11sdp"
             android:paddingTop="@dimen/_20sdp">
 
@@ -88,8 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="CUSTODY"
-                android:textColor="@color/white"
+                android:text="DO NOT\n PRINT"
+                android:gravity="center"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold" />
         </RelativeLayout>

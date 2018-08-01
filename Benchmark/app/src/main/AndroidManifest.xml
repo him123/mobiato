@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -143,9 +145,7 @@
             android:name=".activities.EndInventoryRITActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.ScanActivity" />
-
         <activity
             android:name=".activities.ALLItemsListActivity"
             android:screenOrientation="portrait"
@@ -181,7 +181,10 @@
 
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".activities.CustomerDetailActivity" />
+        <activity android:name=".activities.SaleHistoyyActivity" />
+        <activity android:name=".activities.SelectedOrderItemActivity"></activity>
     </application>
 
 </manifest>

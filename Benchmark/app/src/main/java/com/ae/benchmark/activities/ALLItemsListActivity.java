@@ -56,7 +56,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
 
     RecyclerItemsAdapterForALL recyclerAdapter;
 
-    List<Item> itemList;
+    public static List<Item> itemList;
     Item item;
     LinearLayoutManager mLayoutManager;
     DBManager dbManager;
@@ -214,12 +214,16 @@ public class ALLItemsListActivity extends AppCompatActivity {
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
 //                                    dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
-                                    finish();
+//                                    finish();
+
+                                    UtilApp.askForPrint(ALLItemsListActivity.this, ALLItemsListActivity.this);
                                 }
                             })
                             .show();
 
 //                    dbManager.insertLoadItems(item, "1");
+
+
                 } else {
 
                     long lastInvId = dbManager.getLastInvoiceID();
@@ -280,7 +284,9 @@ public class ALLItemsListActivity extends AppCompatActivity {
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
                                     dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
-                                    finish();
+//                                    finish();
+
+                                    UtilApp.askForPrint(ALLItemsListActivity.this, ALLItemsListActivity.this);
                                 }
                             })
                             .show();

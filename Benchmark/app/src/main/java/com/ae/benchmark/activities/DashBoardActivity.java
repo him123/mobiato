@@ -1,12 +1,21 @@
 package com.ae.benchmark.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +24,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +48,34 @@ import com.ae.benchmark.fragments.FragmentSettings;
 import com.ae.benchmark.fragments.InvoiceSummury;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.util.PrinterHelper;
 import com.ae.benchmark.util.UtilApp;
+import com.google.android.gms.maps.model.Dash;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import butterknife.ButterKnife;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -100,6 +137,8 @@ public class DashBoardActivity extends AppCompatActivity {
     String isEnd = "0";
     public boolean isMenu = false;
     public Menu menu;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +185,7 @@ public class DashBoardActivity extends AppCompatActivity {
 //
 //        sequence.start();
 
+
         if (Constant.NAV_AUDIT.equals("yes")) {
             navItemIndex = 4;
             CURRENT_TAG = TAG_DATA_POSTING;
@@ -155,7 +195,7 @@ public class DashBoardActivity extends AppCompatActivity {
             navItemIndex = 1;
             CURRENT_TAG = TAG_MANAGE_LOAD;
             loadHomeFragment();
-        }  else if (Constant.PRINT.equals("yes")){
+        } else if (Constant.PRINT.equals("yes")) {
             navItemIndex = 5;
             CURRENT_TAG = TAG_PRINT;
             loadHomeFragment();
@@ -175,6 +215,37 @@ public class DashBoardActivity extends AppCompatActivity {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
 
+        if (UtilApp.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, DashBoardActivity.this)) {
+            createFile();
+        } else {
+            ActivityCompat.requestPermissions(DashBoardActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
+
+
+    }
+
+    public void createFile() {
+
+        try {
+            File file = new File(Environment.getExternalStorageDirectory() + File.separator + "test.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+                byte[] data1 = {1, 1, 0, 0};
+                //write the bytes in file
+                if (file.exists()) {
+                    OutputStream fo = new FileOutputStream(file);
+                    fo.write(data1);
+                    fo.close();
+                    System.out.println("========== file created: ==========" + file);
+//            url = upload.upload(file);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -182,13 +253,12 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onResume();
 
 
-
         Menu menuNav1 = navigationView.getMenu();
         MenuItem nav_home = menuNav1.findItem(R.id.nav_home);
         MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
         MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
         MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
-        MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+        //MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
         MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
         MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
 
@@ -205,7 +275,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 nav_inventory.setEnabled(false);
                 nav_journey.setEnabled(false);
                 nav_payment.setEnabled(false);
-                nav_data.setEnabled(true);
+                //nav_data.setEnabled(true);
                 nav_print.setEnabled(true);
             } else {
 
@@ -215,7 +285,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 nav_inventory.setEnabled(true);
                 nav_journey.setEnabled(false);
                 nav_payment.setEnabled(false);
-                nav_data.setEnabled(true);
+                //nav_data.setEnabled(true);
                 nav_print.setEnabled(true);
             }
 
@@ -231,7 +301,7 @@ public class DashBoardActivity extends AppCompatActivity {
             else
                 nav_payment.setEnabled(false);
 
-            nav_data.setEnabled(true);
+            //nav_data.setEnabled(true);
             nav_inventory.setEnabled(true);
 
 
@@ -382,17 +452,17 @@ public class DashBoardActivity extends AppCompatActivity {
                 // DATA POSTING AUDIT
                 FragmentAudit employeeCodeSearchFragment = new FragmentAudit();
                 return employeeCodeSearchFragment;
-            case 7:
-//                // CATALOGUE
-                FragmentSales settingsFragment = new FragmentSales();
-                return settingsFragment;
+//            case 5:
+////                // CATALOGUE
+//                FragmentSales settingsFragment = new FragmentSales();
+//                return settingsFragment;
+
+//            case 5:
+//                // SETTINGS
+//                FragmentPrint printFragment = new FragmentPrint();
+//                return printFragment;
 
             case 5:
-                // SETTINGS
-                FragmentPrint printFragment = new FragmentPrint();
-                return printFragment;
-
-            case 6:
                 // SETTINGS
                 FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
@@ -461,34 +531,34 @@ public class DashBoardActivity extends AppCompatActivity {
                         isMenu = false;
                         onPrepareOptionsMenu(menu);
                         break;
-//                    case R.id.nav_route:
-//                        navItemIndex = 4;
-//                        CURRENT_TAG = TAG_ROUTE_RECONE;
-//                        break;
+                    case R.id.nav_print:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_PRINT;
+                        break;
 //                    case R.id.nav_sales:
 //                        navItemIndex = 4;
 //                        CURRENT_TAG = TAG_SALE_SNAP;
 //                        break;
-                    case R.id.nav_data:
-                        navItemIndex = 4;
-                        CURRENT_TAG = TAG_DATA_POSTING;
-                        isMenu = false;
-                        onPrepareOptionsMenu(menu);
-                        break;
+//                    case R.id.nav_data:
+//                        navItemIndex = 4;
+//                        CURRENT_TAG = TAG_DATA_POSTING;
+//                        isMenu = false;
+//                        onPrepareOptionsMenu(menu);
+//                        break;
 //                    case R.id.nav_catalogue:
 //                        navItemIndex = 6;
 //                        CURRENT_TAG = TAG_CATALOGUE;
 //                        break;
 
-                    case R.id.nav_print:
-                        navItemIndex = 5;
-                        CURRENT_TAG = TAG_PRINT;
-                        isMenu = false;
-                        onPrepareOptionsMenu(menu);
-                        break;
+//                    case R.id.nav_print:
+//                        navItemIndex = 5;
+//                        CURRENT_TAG = TAG_PRINT;
+//                        isMenu = false;
+//                        onPrepareOptionsMenu(menu);
+//                        break;
 
                     case R.id.nav_settings:
-                        navItemIndex = 6;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
                         isMenu = false;
                         onPrepareOptionsMenu(menu);
@@ -566,7 +636,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 MenuItem nav_inventory = menuNav1.findItem(R.id.nav_inventory);
                 MenuItem nav_journey = menuNav1.findItem(R.id.nav_journey);
                 MenuItem nav_payment = menuNav1.findItem(R.id.nav_payment);
-                MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
+                //MenuItem nav_data = menuNav1.findItem(R.id.nav_data);
                 MenuItem nav_print = menuNav1.findItem(R.id.nav_print);
                 MenuItem nav_settings = menuNav1.findItem(R.id.nav_settings);
 
@@ -583,7 +653,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         nav_inventory.setEnabled(false);
                         nav_journey.setEnabled(false);
                         nav_payment.setEnabled(false);
-                        nav_data.setEnabled(true);
+                        //nav_data.setEnabled(true);
                         nav_print.setEnabled(true);
                     } else {
 
@@ -593,7 +663,7 @@ public class DashBoardActivity extends AppCompatActivity {
                         nav_inventory.setEnabled(true);
                         nav_journey.setEnabled(false);
                         nav_payment.setEnabled(false);
-                        nav_data.setEnabled(true);
+                        //nav_data.setEnabled(true);
                         nav_print.setEnabled(true);
                     }
 
@@ -609,7 +679,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     else
                         nav_payment.setEnabled(false);
 
-                    nav_data.setEnabled(true);
+                    //nav_data.setEnabled(true);
                     nav_inventory.setEnabled(true);
 
 
@@ -665,7 +735,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.nav_stock:{
+            case R.id.nav_stock: {
                 navItemIndex = 1;
                 CURRENT_TAG = TAG_MANAGE_LOAD;
                 Constant.VAN_STOCK = "yes";
@@ -686,29 +756,33 @@ public class DashBoardActivity extends AppCompatActivity {
             }
 
             case R.id.nav_sales: {
-                navItemIndex = 4;
+
+                Intent intent = new Intent(getApplicationContext(), SaleHistoyyActivity.class);
+                startActivity(intent);
+                isMenu = false;
+                /*navItemIndex = 4;
                 CURRENT_TAG = TAG_DATA_POSTING;
                 Constant.NAV_AUDIT = "yes";
                 loadHomeFragment();
                 Constant.NAV_AUDIT = "no";
                 isMenu = false;
-                onPrepareOptionsMenu(menu);
+                onPrepareOptionsMenu(menu);*/
                 break;
             }
 
-            case R.id.nav_Print:
-                navItemIndex = 5;
-                CURRENT_TAG = TAG_PRINT;
-                Constant.PRINT= "yes";
-                loadHomeFragment();
-                Constant.PRINT = "no";
-                isMenu = false;
-                onPrepareOptionsMenu(menu);
-                break;
+//            case R.id.nav_Print:
+//                navItemIndex = 4;
+//                CURRENT_TAG = TAG_DATA_POSTING;
+//                Constant.NAV_AUDIT= "yes";
+//                loadHomeFragment();
+//                Constant.NAV_AUDIT = "no";
+//                isMenu = false;
+//                onPrepareOptionsMenu(menu);
+//                break;
 
 
             case R.id.nav_map:
-                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
                 Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
                 break;
@@ -736,4 +810,47 @@ public class DashBoardActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    createFile();
+                } else {
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DashBoardActivity.this);
+                    alertDialogBuilder.setMessage("Kindly grant all permission, we respect your privacy and data!");
+                    alertDialogBuilder.setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+
+                                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                                Uri.fromParts("package", getPackageName(), null)));
+                                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+                                    }
+                                }
+                            });
+
+                    alertDialogBuilder.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+                return;
+            }
+        }
+    }
+
 }

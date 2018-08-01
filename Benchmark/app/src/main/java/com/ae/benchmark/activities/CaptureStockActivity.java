@@ -69,6 +69,9 @@ public class CaptureStockActivity extends AppCompatActivity {
 
         edt_empt.setText(emptydBottles);
 
+        edt_empt.setSelection(edt_empt.getText().length());
+
+
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);

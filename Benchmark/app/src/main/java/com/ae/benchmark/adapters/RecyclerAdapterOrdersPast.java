@@ -1,6 +1,7 @@
 package com.ae.benchmark.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.activities.SelectedOrderItemActivity;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 
@@ -79,6 +83,13 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
 
 //        binderHelper.bind(holder.swipeLayout, "");
 
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext , SelectedOrderItemActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -112,6 +123,7 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
 
         public TextView txt_order_no, txt_order_amt;
         public ImageView img_profile;
+        public RelativeLayout llMain;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolderOrder(View parent, final Context context) {
@@ -120,6 +132,7 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
             txt_order_no = (TextView) parent.findViewById(R.id.txt_order_no);
             txt_order_amt = (TextView) parent.findViewById(R.id.txt_order_amt);
 //            img_profile = (ImageView) parent.findViewById(R.id.img_profile);
+            llMain = (RelativeLayout) parent.findViewById(R.id.llMain);
 
         }
 

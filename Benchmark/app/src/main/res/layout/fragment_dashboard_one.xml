@@ -18,9 +18,9 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
 
                 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,48 +34,71 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <ToggleButton
-                            android:id="@+id/tgl_dmt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:checked="true"
-                            android:textOff="MTD"
-                            android:textOn="DTD"
-                            android:visibility="gone" />
-
                         <LinearLayout
                             android:id="@+id/llSwitch"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:gravity="end"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/_5sdp">
+                            android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/txt_name"
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_20sdp"
+                                android:background="@drawable/ic_bg_new">
+
+                                <TextView
+                                    android:id="@+id/txtDate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginTop="@dimen/_1sdp"
+                                    android:background="@drawable/ic_bg_new"
+                                    android:paddingLeft="@dimen/_10sdp"
+                                    android:text="29/07/2017"
+                                    android:textColor="@color/white_100"
+                                    android:textSize="@dimen/_9sdp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <Button
+                                android:id="@+id/btn_test_print"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="DTD"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:text="Test Print" />
 
-                            <Switch
-                                android:id="@+id/swcDtdMtd"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:gravity="end"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/_5sdp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
-                                android:text="MTD"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                <TextView
+                                    android:id="@+id/txt_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="DTD"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+
+                                <Switch
+                                    android:id="@+id/swcDtdMtd"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="20dp"
+                                    android:text="MTD"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -333,9 +356,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/v1"
                                         android:gravity="center"
-
-                                        android:orientation="horizontal"
-                                        android:weightSum="3">
+                                        android:orientation="horizontal">
 
                                         <ImageView
                                             android:layout_width="40dp"
@@ -346,16 +367,15 @@
                                         <!-- First 70k-->
                                         <LinearLayout
 
-                                            android:layout_width="0dp"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginLeft="@dimen/_10sdp"
-                                            android:layout_weight="1">
+                                            android:layout_marginLeft="@dimen/_10sdp">
 
                                             <ImageView
                                                 android:id="@+id/imgSale"
                                                 android:layout_width="20dp"
                                                 android:layout_height="25dp"
-                                                android:layout_gravity="center"/>
+                                                android:layout_gravity="center" />
 
                                             <TextView
                                                 android:id="@+id/txt_left"
@@ -373,15 +393,15 @@
 
                                         <!-- Second 70k-->
                                         <LinearLayout
-                                            android:layout_width="0dp"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1">
+                                            android:layout_marginLeft="@dimen/_10sdp">
 
                                             <ImageView
                                                 android:id="@+id/imgCollection"
                                                 android:layout_width="20dp"
                                                 android:layout_height="25dp"
-                                                android:layout_gravity="center"/>
+                                                android:layout_gravity="center" />
 
                                             <TextView
                                                 android:id="@+id/txt_right"
