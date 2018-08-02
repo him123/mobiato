@@ -66,16 +66,61 @@ public class DBManager {
 
 
     //INSERT LOAD HEADER ONLY SINGLE
-    public void insertSalesman(JSONObject SalesmanObj) {
+    public void insertSalesman(JSONObject salesmanObj) {
+
+        if(checkUserExist(salesmanObj)){
+            updateSalesman(salesmanObj);
+
+        }else {
+            ContentValues contentValue = new ContentValues();
+
+            contentValue.put(DatabaseHelper.UNIQUE_ID, salesmanObj.optString("SALESMAN"));
+            contentValue.put(DatabaseHelper.SALESMAN_ID, salesmanObj.optString("SALESMAN"));
+            contentValue.put(DatabaseHelper.SALESMAN_NAME_EN, salesmanObj.optString("name1"));
+            contentValue.put(DatabaseHelper.SALESMAN_NAME_AR, salesmanObj.optString("name2"));
+            contentValue.put(DatabaseHelper.SALESMAN_DIS_CHANNEL, salesmanObj.optString("channel"));
+            contentValue.put(DatabaseHelper.SALESMAN_ORG, "");
+            contentValue.put(DatabaseHelper.SALESMAN_DIVISION, salesmanObj.optString("Division"));
+            contentValue.put(DatabaseHelper.SALESMAN_ROUTE, "");
+            contentValue.put(DatabaseHelper.SALESMAN_VEHICLE_NO, salesmanObj.optString("Vehicle"));
+            contentValue.put(DatabaseHelper.SALESMAN_LOGIN_STATUS, "1");
+
+            database.insert(DatabaseHelper.TABLE_SALES_MAN, null, contentValue);
+        }
+
+    }
+
+    public boolean checkUserExist(JSONObject salesmanObj) {
+        openDatabsse();
+        boolean userExist = false;
+        Cursor c = database.query(DatabaseHelper.TABLE_SALES_MAN, null, DatabaseHelper.SALESMAN_ID+" = ?", new String[]{salesmanObj.optString("SALESMAN")}, null, null, null);
+        if (c == null) return userExist;
+
+        while (c.moveToNext()) {
+            userExist =  true;
+        }
+        c.close();
+
+        return userExist;
+    }
+
+    public void updateSalesman(JSONObject salesmanObj) {
 
         ContentValues contentValue = new ContentValues();
 
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
+        contentValue.put(DatabaseHelper.UNIQUE_ID, salesmanObj.optString("SALESMAN"));
+        contentValue.put(DatabaseHelper.SALESMAN_ID, salesmanObj.optString("SALESMAN"));
+        contentValue.put(DatabaseHelper.SALESMAN_NAME_EN, salesmanObj.optString("name1"));
+        contentValue.put(DatabaseHelper.SALESMAN_NAME_AR, salesmanObj.optString("name2"));
+        contentValue.put(DatabaseHelper.SALESMAN_DIS_CHANNEL, salesmanObj.optString("channel"));
+        contentValue.put(DatabaseHelper.SALESMAN_ORG, "");
+        contentValue.put(DatabaseHelper.SALESMAN_DIVISION, salesmanObj.optString("Division"));
+        contentValue.put(DatabaseHelper.SALESMAN_ROUTE, "");
+        contentValue.put(DatabaseHelper.SALESMAN_VEHICLE_NO, salesmanObj.optString("Vehicle"));
+        contentValue.put(DatabaseHelper.SALESMAN_LOGIN_STATUS, "1");
 
 
-        database.insert(DatabaseHelper.TABLE_SALES_MAN, null, contentValue);
+        database.update(DatabaseHelper.TABLE_SALES_MAN, contentValue, DatabaseHelper.SALESMAN_ID + " = ? ", new String[]{salesmanObj.optString("SALESMAN")});
     }
 
 

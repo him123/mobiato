@@ -68,4 +68,6 @@ public class Const {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
+    public final static String WS_URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?";
+
  }

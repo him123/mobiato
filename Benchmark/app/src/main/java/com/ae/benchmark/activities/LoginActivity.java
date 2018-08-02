@@ -1,11 +1,13 @@
 package com.ae.benchmark.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +16,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.data.Const;
+import com.ae.benchmark.introslider.MainActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
+import com.ae.benchmark.webservice.WsLogin;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
@@ -275,19 +281,12 @@ public class LoginActivity extends AppCompatActivity {
 
     String fcm_id;
 
-    SweetAlertDialog pDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         ButterKnife.inject(this);
-
-        pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("Downloading...");
-        pDialog.setCancelable(false);
 
 //        items = getResources().getString(R.string.item_resp);
 //        customers = getResources().getString(R.string.customer_resp);
@@ -317,20 +316,64 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    pDialog.show();
 //                    Toast.makeText(LoginActivity.this, "Username and password doesn't match.", Toast.LENGTH_SHORT).show();
 //                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
 //                    new HttpGetRequest().execute();
-                    new AsyncTaskRunner("5").execute();
+                    //new AsyncTaskRunner("5").execute();
+                    new LoginTask().execute();
                 }
             }
         });
     }
 
 
+    private final class LoginTask extends AsyncTask<Void, Void, Void> {
+
+        private WsLogin wsLogin;
+        private Activity activity;
+        private SweetAlertDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Please Wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            this.activity = LoginActivity.this;
+            wsLogin = new WsLogin(activity);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            wsLogin.executeWebservice(edt_id.getText().toString().trim(), edt_pwd.getText().toString());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            if (wsLogin.getSuccess()) {
+                new AsyncTaskRunner("5").execute();
+            } else {
+                new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error")
+                        .setContentText(wsLogin.getMessage())
+                        .show();
+            }
+
+        }
+    }
+
+
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         private String resp;
+        private SweetAlertDialog pDialog;
 //        ProgressDialog progressDialog;
 
         String id;
@@ -344,31 +387,6 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
-//                HttpURLConnection urlConnection = null;
-
-//                try {
-//
-//                    URL url = new URL("https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json");
-//                    urlConnection = (HttpURLConnection) url.openConnection();
-//                    try {
-//                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//                        StringBuilder stringBuilder = new StringBuilder();
-//                        String line;
-//                        while ((line = bufferedReader.readLine()) != null) {
-//                            stringBuilder.append(line).append("\n");
-//                        }
-//                        bufferedReader.close();
-//                        Log.v("", " Response: " + stringBuilder.toString());
-//                        resp = stringBuilder.toString();
-////                        return respstringBuilder.toString();
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                } finally {
-//                    urlConnection.disconnect();
-//                }
-
 
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISSALES, true);
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISJPLOADED, false);
@@ -464,6 +482,10 @@ public class LoginActivity extends AppCompatActivity {
 //            progressDialog = ProgressDialog.show(LoginActivity.this,
 //                    "Fetching data", "Loading...");
 
+            pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Please Wait...");
+            pDialog.setCancelable(false);
             pDialog.show();
 
         }
