@@ -772,15 +772,15 @@ public class DBManager {
                 JSONObject singleObj = jArr.getJSONObject(i);
                 ContentValues contentValue = new ContentValues();
 
-                contentValue.put(DatabaseHelper.ITEM_CODE, singleObj.getString("item_code"));
-                contentValue.put(DatabaseHelper.ITEM_NAME_EN, singleObj.getString("item_name_en"));
-                contentValue.put(DatabaseHelper.ITEM_NAME_AR, singleObj.getString("item_name_ar"));
-                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("item_type"));
-                contentValue.put(DatabaseHelper.ITEM_PRICE, singleObj.getString("item_price"));
-                contentValue.put(DatabaseHelper.ITEM_BARCODE, singleObj.getString("item_barcode"));
-                contentValue.put(DatabaseHelper.ITEM_DIVISION, singleObj.getString("division"));
-                contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, singleObj.getString("conversion_factor"));
-                contentValue.put(DatabaseHelper.ITEM_UOM, singleObj.getString("item_uom"));
+                contentValue.put(DatabaseHelper.ITEM_CODE, singleObj.getString("material"));
+                contentValue.put(DatabaseHelper.ITEM_NAME_EN, singleObj.getString("name1"));
+                contentValue.put(DatabaseHelper.ITEM_NAME_AR, singleObj.getString("name2"));
+                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("type"));
+                contentValue.put(DatabaseHelper.ITEM_PRICE, singleObj.getString("Price"));
+                contentValue.put(DatabaseHelper.ITEM_BARCODE, singleObj.getString("barcode"));
+                contentValue.put(DatabaseHelper.ITEM_DIVISION, singleObj.getString("channel"));
+                contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, singleObj.getString("factor"));
+                contentValue.put(DatabaseHelper.ITEM_UOM, singleObj.getString("uom"));
 
                 database.insert(DatabaseHelper.TABLE_ITEM, null, contentValue);
             }

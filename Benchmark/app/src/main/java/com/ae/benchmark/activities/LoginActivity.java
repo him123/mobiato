@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,32 +15,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.data.Const;
-import com.ae.benchmark.introslider.MainActivity;
-import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
+import com.ae.benchmark.webservice.WsGetItems;
 import com.ae.benchmark.webservice.WsLogin;
-import com.github.mikephil.charting.utils.Utils;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -67,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @InjectView(R.id.text_input_pwd)
     TextInputLayout text_input_pwd;
-
-    DBManager dbManager;
 
 
     String items = "[\n" +
@@ -297,8 +286,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.i("", "Check FCM ID : " + fcm_id);
 
-        dbManager = new DBManager(LoginActivity.this);
-        dbManager.open();
+        /*dbManager = new DBManager(LoginActivity.this);
+        dbManager.open();*/
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,6 +363,7 @@ public class LoginActivity extends AppCompatActivity {
 
         private String resp;
         private SweetAlertDialog pDialog;
+        private Activity activity;
 //        ProgressDialog progressDialog;
 
         String id;
@@ -412,20 +402,22 @@ public class LoginActivity extends AppCompatActivity {
                 //ITEM INSERT
 //                JSONObject itemObj = new JSONObject(String.valueOf(items));
 //                JSONArray itemJArr = itemObj.getJSONArray("data");
-                JSONArray itemJArr = new JSONArray(items);
-                dbManager.insertItemsArray(itemJArr);
+                /*JSONArray itemJArr = new JSONArray(items);
+                dbManager.insertItemsArray(itemJArr);*/
+                WsGetItems wsGetItems = new WsGetItems(activity);
+                wsGetItems.executeWebservice();
 
                 //CUSTOMER INSERT
 //                JSONObject custObj = new JSONObject(customers);
 //                JSONArray custJArr = custObj.getJSONArray("data");
-                JSONArray custJArr = new JSONArray(customers);
-                dbManager.insertCustomerArr(custJArr);
+                /*JSONArray custJArr = new JSONArray(customers);
+                dbManager.insertCustomerArr(custJArr);*/
 
                 //LOAD INSERT
 //                JSONObject loadObj = new JSONObject(loads);
 //                JSONArray loadJArr = loadObj.getJSONArray("data");
-                JSONArray loadJArr = new JSONArray(loads);
-                dbManager.insertLoadArr(loadJArr);
+                /*JSONArray loadJArr = new JSONArray(loads);
+                dbManager.insertLoadArr(loadJArr);*/
 //                dbManager.insertUnload(loadJArr);
 
 
@@ -482,6 +474,7 @@ public class LoginActivity extends AppCompatActivity {
 //            progressDialog = ProgressDialog.show(LoginActivity.this,
 //                    "Fetching data", "Loading...");
 
+            activity = LoginActivity.this;
             pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             pDialog.setTitleText("Please Wait...");
