@@ -442,12 +442,12 @@ public class DBManager {
 
                 ContentValues contentValue = new ContentValues();
 
-                contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
+                contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("Load_no"));
                 contentValue.put(DatabaseHelper.LOAD_DEL_DATE, UtilApp.getCurrentDate());
                 contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, "0");
                 contentValue.put(DatabaseHelper.IS_REQ, "0");
 
-                JSONArray jLoadItemArr = singleObj.getJSONArray("load_items");
+                JSONArray jLoadItemArr = singleObj.getJSONObject("MatDoc").getJSONArray("results");
 
                 for (int j = 0; j < jLoadItemArr.length(); j++) {
                     JSONObject singleObjItem = jLoadItemArr.getJSONObject(j);
@@ -456,11 +456,11 @@ public class DBManager {
                     contentValueItem.put(DatabaseHelper.ITEM_CODE, singleObjItem.getString("item_code"));
                     contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, singleObjItem.getString("item_name"));
                     contentValueItem.put(DatabaseHelper.ITEM_QTY, singleObjItem.getString("item_qty"));
-                    contentValueItem.put(DatabaseHelper.ITEM_TYPE, singleObjItem.getString("item_type"));
+                    contentValueItem.put(DatabaseHelper.ITEM_TYPE, singleObjItem.optString("item_type"));
                     contentValueItem.put(DatabaseHelper.ITEM_UOM, singleObjItem.getString("item_uom"));
                     contentValueItem.put(DatabaseHelper.LOAD_DATE, singleObjItem.getString("load_date"));
                     contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, singleObjItem.getString("total_price"));
-                    contentValueItem.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
+                    contentValueItem.put(DatabaseHelper.LOAD_NO, singleObjItem.getString("load_no"));
                     contentValueItem.put(DatabaseHelper.IS_REQ, "0");
 
                     db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);

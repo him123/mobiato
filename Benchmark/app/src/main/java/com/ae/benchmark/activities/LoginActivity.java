@@ -24,6 +24,7 @@ import com.ae.benchmark.util.UtilApp;
 import com.ae.benchmark.webservice.WsGetCustomers;
 import com.ae.benchmark.webservice.WsGetFreeGoods;
 import com.ae.benchmark.webservice.WsGetItems;
+import com.ae.benchmark.webservice.WsGetLoads;
 import com.ae.benchmark.webservice.WsLogin;
 import com.google.gson.Gson;
 
@@ -420,6 +421,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 WsGetFreeGoods wsGetFreeGoods = new WsGetFreeGoods(activity);
                 wsGetFreeGoods.executeWebservice();
+
+                WsGetLoads wsGetLoads = new WsGetLoads(activity);
+                wsGetLoads.executeWebservice();
 
                 //CUSTOMER INSERT
 //                JSONObject custObj = new JSONObject(customers);
