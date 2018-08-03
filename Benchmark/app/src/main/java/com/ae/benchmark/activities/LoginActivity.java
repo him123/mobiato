@@ -20,6 +20,7 @@ import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
+import com.ae.benchmark.webservice.WsGetCustomers;
 import com.ae.benchmark.webservice.WsGetItems;
 import com.ae.benchmark.webservice.WsLogin;
 import com.google.gson.Gson;
@@ -406,6 +407,9 @@ public class LoginActivity extends AppCompatActivity {
                 dbManager.insertItemsArray(itemJArr);*/
                 WsGetItems wsGetItems = new WsGetItems(activity);
                 wsGetItems.executeWebservice();
+
+                WsGetCustomers wsGetCustomers = new WsGetCustomers(activity);
+                wsGetCustomers.executeWebservice();
 
                 //CUSTOMER INSERT
 //                JSONObject custObj = new JSONObject(customers);
