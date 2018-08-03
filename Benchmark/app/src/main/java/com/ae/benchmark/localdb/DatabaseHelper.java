@@ -52,6 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String SALESMAN_LOGIN_STATUS = "login_status";
 
     //Free Goods columns
+    public static final String FG_PRIORITY = "fg_priority";
+    public static final String FG_PROMOTION_NO = "fg_promotion_no";
     public static final String FG_CONDITION_RECORD = "fg_condition_record";
     public static final String FG_CUSTOMER_ID = "fg_customer_id";
     public static final String FG_QUA_ITEM_ID = "fg_qua_item_id";
@@ -60,6 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FG_ASSI_ITEM_NAME = "fg_assi_item_name";
     public static final String FG_QUA_ITEM_QUALITY = "fg_item_quality";
     public static final String FG_ASS_ITEM_QUALITY = "fg_ass_item_quality";
+    public static final String FG_VALID_END = "fg_valid_end";
+    public static final String FG_VALID_START = "fg_valid_start";
 
 
     public static final String IS_UPLOADED = "is_uploaded";
@@ -259,10 +263,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // CREATE FREE GOODS
     private static final String CREATE_FREE_GOODS = "create table " + TABLE_FREE_GOODS + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + UNIQUE_ID + " TEXT NOT NULL, " +
+            "" + FG_PRIORITY + " TEXT NOT NULL, " + FG_PROMOTION_NO + " TEXT NOT NULL," +
             "" + FG_CONDITION_RECORD + " TEXT NOT NULL, " + FG_CUSTOMER_ID + " TEXT NOT NULL," +
             "" + FG_QUA_ITEM_ID + " TEXT NOT NULL," + FG_QUA_ITEM_NAME + " TEXT NOT NULL," +
             "" + FG_ASSI_ITEM_ID + " TEXT NOT NULL," + FG_ASSI_ITEM_NAME + " TEXT NOT NULL," +
             "" + FG_QUA_ITEM_QUALITY + " TEXT NOT NULL," +
+            "" + FG_VALID_START + " TEXT NOT NULL, " + FG_VALID_END + " TEXT NOT NULL," +
             "" + FG_ASS_ITEM_QUALITY + " TEXT NOT NULL);";
 
     //CREATE INVOICE HEADER

@@ -728,6 +728,46 @@ public class DBManager {
         return item;
     }
 
+
+    //INSERT CUSTOMER BULK
+    public void insertFreeGoodsArr(JSONArray jArr) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.beginTransaction();
+            for (int i = 0; i < jArr.length(); i++) {
+                JSONObject singleObj = jArr.getJSONObject(i);
+                ContentValues contentValue = new ContentValues();
+
+                contentValue.put(DatabaseHelper.UNIQUE_ID, singleObj.getString("route"));
+                contentValue.put(DatabaseHelper.FG_PRIORITY, singleObj.getString("Priority"));
+                contentValue.put(DatabaseHelper.FG_PROMOTION_NO, singleObj.getString("PromotionNo"));
+                contentValue.put(DatabaseHelper.FG_CONDITION_RECORD, "");
+                contentValue.put(DatabaseHelper.FG_CUSTOMER_ID, singleObj.getString("Customer"));
+                contentValue.put(DatabaseHelper.FG_QUA_ITEM_ID, singleObj.getString("QualifyMat"));
+                contentValue.put(DatabaseHelper.FG_ASSI_ITEM_ID, singleObj.getString("FreeMaterial"));
+                contentValue.put(DatabaseHelper.FG_QUA_ITEM_NAME, "");
+                contentValue.put(DatabaseHelper.FG_ASSI_ITEM_NAME, "");
+                contentValue.put(DatabaseHelper.FG_QUA_ITEM_QUALITY, singleObj.getString("MinQuantity"));
+                contentValue.put(DatabaseHelper.FG_ASS_ITEM_QUALITY, singleObj.getString("FreeGoodQty"));
+                contentValue.put(DatabaseHelper.FG_VALID_START, singleObj.getString("ValidStart"));
+                contentValue.put(DatabaseHelper.FG_VALID_END, singleObj.getString("ValidEnd"));
+
+                db.insert(DatabaseHelper.TABLE_FREE_GOODS, null, contentValue);
+
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+//            dbHelper.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     //INSERT ITEMS SINGLE
     public void insertItems(String item_code,
                             String item_name_en,
