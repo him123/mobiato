@@ -1,6 +1,9 @@
 package com.ae.benchmark.activities;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -16,7 +19,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -44,10 +50,9 @@ public class NetworkUtility {
 
     /**
      * Returns Default HTTP client with socket factories initialised.
-     * 
+     *
      * @param context
-     * @param targetUrl
-     *            to do request
+     * @param targetUrl to do request
      * @return Default HTTP Client
      */
     public static HttpClient getDefaultHttpClient(Context context,
@@ -71,10 +76,60 @@ public class NetworkUtility {
         }
     }
 
+    public static String getApiData(Context context, String targetUrl) {
+
+        String response = "";
+        HttpClient httpclient = getDefaultHttpClient(context, targetUrl);
+        Log.e(TAG , "Request\n"+targetUrl);
+        HttpGet httpget = new HttpGet(targetUrl);
+
+        HttpResponse httpResponse;
+        try {
+            httpResponse = httpclient.execute(httpget);
+            Log.e(TAG ,httpResponse.getStatusLine().toString());
+
+            HttpEntity entity = httpResponse.getEntity();
+            if (entity != null) {
+
+                InputStream instream = entity.getContent();
+                response = convertStreamToString(instream);
+                Log.e(TAG , "Response\n"+response);
+                instream.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    private static String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
+
     /**
      * TrustManager to accept all certificates. It does not do any certificates
      * validation.
-     * 
+     * <p>
      * TODO: Once we have actual certificates this implementation should be
      * changed accordingly.
      */
@@ -84,10 +139,8 @@ public class NetworkUtility {
         private String mTargetUrl;
 
         /**
-         * @param context
-         *            - application context.
-         * @param targetUrl
-         *            - to do request.
+         * @param context   - application context.
+         * @param targetUrl - to do request.
          */
         public MyTrustManager(Context context, String targetUrl) {
             try {
@@ -137,7 +190,7 @@ public class NetworkUtility {
      * Get certificate to be installed from the given list of certificates. It
      * iterates all certificates from CA and if a certificate, from the given
      * array is not present into CA, this method returns that certificate.
-     * 
+     *
      * @param certificates
      * @return {@link X509Certificate} to install.
      */
@@ -184,8 +237,8 @@ public class NetworkUtility {
             super((KeyStore) null);
             try {
                 SSLContext sslcontext = SSLContext.getInstance("TLS");
-                sslcontext.init(null, new TrustManager[] { new MyTrustManager(
-                        context, targetUrl) }, null);
+                sslcontext.init(null, new TrustManager[]{new MyTrustManager(
+                        context, targetUrl)}, null);
                 mFactory = sslcontext.getSocketFactory();
                 setHostnameVerifier(new AllowAllHostnameVerifier());
             } catch (Exception ex) {

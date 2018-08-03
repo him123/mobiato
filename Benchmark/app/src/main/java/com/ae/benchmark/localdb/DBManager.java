@@ -66,16 +66,61 @@ public class DBManager {
 
 
     //INSERT LOAD HEADER ONLY SINGLE
-    public void insertSalesman(JSONObject SalesmanObj) {
+    public void insertSalesman(JSONObject salesmanObj) {
+
+        if(checkUserExist(salesmanObj)){
+            updateSalesman(salesmanObj);
+
+        }else {
+            ContentValues contentValue = new ContentValues();
+
+            contentValue.put(DatabaseHelper.UNIQUE_ID, salesmanObj.optString("SALESMAN"));
+            contentValue.put(DatabaseHelper.SALESMAN_ID, salesmanObj.optString("SALESMAN"));
+            contentValue.put(DatabaseHelper.SALESMAN_NAME_EN, salesmanObj.optString("name1"));
+            contentValue.put(DatabaseHelper.SALESMAN_NAME_AR, salesmanObj.optString("name2"));
+            contentValue.put(DatabaseHelper.SALESMAN_DIS_CHANNEL, salesmanObj.optString("channel"));
+            contentValue.put(DatabaseHelper.SALESMAN_ORG, "");
+            contentValue.put(DatabaseHelper.SALESMAN_DIVISION, salesmanObj.optString("Division"));
+            contentValue.put(DatabaseHelper.SALESMAN_ROUTE, "");
+            contentValue.put(DatabaseHelper.SALESMAN_VEHICLE_NO, salesmanObj.optString("Vehicle"));
+            contentValue.put(DatabaseHelper.SALESMAN_LOGIN_STATUS, "1");
+
+            database.insert(DatabaseHelper.TABLE_SALES_MAN, null, contentValue);
+        }
+
+    }
+
+    public boolean checkUserExist(JSONObject salesmanObj) {
+        openDatabsse();
+        boolean userExist = false;
+        Cursor c = database.query(DatabaseHelper.TABLE_SALES_MAN, null, DatabaseHelper.SALESMAN_ID+" = ?", new String[]{salesmanObj.optString("SALESMAN")}, null, null, null);
+        if (c == null) return userExist;
+
+        while (c.moveToNext()) {
+            userExist =  true;
+        }
+        c.close();
+
+        return userExist;
+    }
+
+    public void updateSalesman(JSONObject salesmanObj) {
 
         ContentValues contentValue = new ContentValues();
 
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
-//        contentValue.put(DatabaseHelper.UNIQUE_ID, load_no);
+        contentValue.put(DatabaseHelper.UNIQUE_ID, salesmanObj.optString("SALESMAN"));
+        contentValue.put(DatabaseHelper.SALESMAN_ID, salesmanObj.optString("SALESMAN"));
+        contentValue.put(DatabaseHelper.SALESMAN_NAME_EN, salesmanObj.optString("name1"));
+        contentValue.put(DatabaseHelper.SALESMAN_NAME_AR, salesmanObj.optString("name2"));
+        contentValue.put(DatabaseHelper.SALESMAN_DIS_CHANNEL, salesmanObj.optString("channel"));
+        contentValue.put(DatabaseHelper.SALESMAN_ORG, "");
+        contentValue.put(DatabaseHelper.SALESMAN_DIVISION, salesmanObj.optString("Division"));
+        contentValue.put(DatabaseHelper.SALESMAN_ROUTE, "");
+        contentValue.put(DatabaseHelper.SALESMAN_VEHICLE_NO, salesmanObj.optString("Vehicle"));
+        contentValue.put(DatabaseHelper.SALESMAN_LOGIN_STATUS, "1");
 
 
-        database.insert(DatabaseHelper.TABLE_SALES_MAN, null, contentValue);
+        database.update(DatabaseHelper.TABLE_SALES_MAN, contentValue, DatabaseHelper.SALESMAN_ID + " = ? ", new String[]{salesmanObj.optString("SALESMAN")});
     }
 
 
@@ -593,22 +638,22 @@ public class DBManager {
                 JSONObject singleObj = jArr.getJSONObject(i);
                 ContentValues contentValue = new ContentValues();
 
-                contentValue.put(DatabaseHelper.CUST_NUM, singleObj.getString("cust_num"));
-                contentValue.put(DatabaseHelper.CUST_NAME_EN, singleObj.getString("cust_name_en"));
-                contentValue.put(DatabaseHelper.CUST_NAME_AR, singleObj.getString("cust_name_ar"));
-                contentValue.put(DatabaseHelper.CUST_DIST_CHANNEL, singleObj.getString("cust_dist_channel"));
-                contentValue.put(DatabaseHelper.CUST_DIVISION, singleObj.getString("cust_division"));
-                contentValue.put(DatabaseHelper.CUST_SALES_ORG, singleObj.getString("cust_sales_org"));
-                contentValue.put(DatabaseHelper.CUST_CREDIT_LIMIT, singleObj.getString("cust_credit_limit"));
-                contentValue.put(DatabaseHelper.CUST_AVAIL_BAL, singleObj.getString("cust_avail_bal"));
-                contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, singleObj.getString("cust_payment_term"));
-                contentValue.put(DatabaseHelper.CUST_ADDRESS, singleObj.getString("cust_address"));
-                contentValue.put(DatabaseHelper.CUST_TYPE, singleObj.getString("cust_type"));
-                contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, singleObj.getString("cust_possessed_empty_bottle"));
-                contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("cust_possessed_filled_bottle"));
-                contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("cust_lat"));
-                contentValue.put(DatabaseHelper.CUST_LONGITUDE, singleObj.getString("cust_long"));
-                contentValue.put(DatabaseHelper.CUST_CREATED_DATE, singleObj.getString("cust_created_date"));
+                contentValue.put(DatabaseHelper.CUST_NUM, singleObj.getString("customer"));
+                contentValue.put(DatabaseHelper.CUST_NAME_EN, singleObj.getString("name1"));
+                contentValue.put(DatabaseHelper.CUST_NAME_AR, singleObj.getString("name2"));
+                contentValue.put(DatabaseHelper.CUST_DIST_CHANNEL, singleObj.getString("channel"));
+                contentValue.put(DatabaseHelper.CUST_DIVISION, singleObj.getString("divison"));
+                contentValue.put(DatabaseHelper.CUST_SALES_ORG, singleObj.getString("salesorg"));
+                contentValue.put(DatabaseHelper.CUST_CREDIT_LIMIT, singleObj.getString("creditlimit"));
+                contentValue.put(DatabaseHelper.CUST_AVAIL_BAL, singleObj.getString("availablelimit"));
+                contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, singleObj.getString("payterm"));
+                contentValue.put(DatabaseHelper.CUST_ADDRESS, singleObj.getString("address"));
+                contentValue.put(DatabaseHelper.CUST_TYPE, singleObj.getString("type"));
+                contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, singleObj.getString("empty_bottle"));
+                contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("filled_bottle"));
+                contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("LATITUDE"));
+                contentValue.put(DatabaseHelper.CUST_LONGITUDE, singleObj.getString("LONGITUDE"));
+                contentValue.put(DatabaseHelper.CUST_CREATED_DATE, "");
                 contentValue.put(DatabaseHelper.CUST_SALE, "0");
                 contentValue.put(DatabaseHelper.CUST_ORDER, "0");
                 contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
@@ -727,15 +772,15 @@ public class DBManager {
                 JSONObject singleObj = jArr.getJSONObject(i);
                 ContentValues contentValue = new ContentValues();
 
-                contentValue.put(DatabaseHelper.ITEM_CODE, singleObj.getString("item_code"));
-                contentValue.put(DatabaseHelper.ITEM_NAME_EN, singleObj.getString("item_name_en"));
-                contentValue.put(DatabaseHelper.ITEM_NAME_AR, singleObj.getString("item_name_ar"));
-                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("item_type"));
-                contentValue.put(DatabaseHelper.ITEM_PRICE, singleObj.getString("item_price"));
-                contentValue.put(DatabaseHelper.ITEM_BARCODE, singleObj.getString("item_barcode"));
-                contentValue.put(DatabaseHelper.ITEM_DIVISION, singleObj.getString("division"));
-                contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, singleObj.getString("conversion_factor"));
-                contentValue.put(DatabaseHelper.ITEM_UOM, singleObj.getString("item_uom"));
+                contentValue.put(DatabaseHelper.ITEM_CODE, singleObj.getString("material"));
+                contentValue.put(DatabaseHelper.ITEM_NAME_EN, singleObj.getString("name1"));
+                contentValue.put(DatabaseHelper.ITEM_NAME_AR, singleObj.getString("name2"));
+                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("type"));
+                contentValue.put(DatabaseHelper.ITEM_PRICE, singleObj.getString("Price"));
+                contentValue.put(DatabaseHelper.ITEM_BARCODE, singleObj.getString("barcode"));
+                contentValue.put(DatabaseHelper.ITEM_DIVISION, singleObj.getString("channel"));
+                contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, singleObj.getString("factor"));
+                contentValue.put(DatabaseHelper.ITEM_UOM, singleObj.getString("uom"));
 
                 database.insert(DatabaseHelper.TABLE_ITEM, null, contentValue);
             }

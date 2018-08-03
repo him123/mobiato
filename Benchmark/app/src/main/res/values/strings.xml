@@ -280,5 +280,6 @@
 ]
                         </string>
     <string name="title_activity_maps">Map</string>
+    <string name="common_error">Something went wrong.</string>
 
 </resources>

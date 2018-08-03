@@ -1,6 +1,7 @@
 package com.ae.benchmark.activities;
 
 import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,12 +16,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
+import com.ae.benchmark.webservice.WsGetCustomers;
+import com.ae.benchmark.webservice.WsGetItems;
+import com.ae.benchmark.webservice.WsLogin;
 import com.google.gson.Gson;
 
 import org.apache.commons.codec.binary.Base64;
@@ -30,13 +33,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -66,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @InjectView(R.id.text_input_pwd)
     TextInputLayout text_input_pwd;
-
-    DBManager dbManager;
 
 
     String items = "[\n" +
@@ -280,19 +277,12 @@ public class LoginActivity extends AppCompatActivity {
 
     String fcm_id;
 
-    SweetAlertDialog pDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         ButterKnife.inject(this);
-
-        pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("Downloading...");
-        pDialog.setCancelable(false);
 
 //        items = getResources().getString(R.string.item_resp);
 //        customers = getResources().getString(R.string.customer_resp);
@@ -303,8 +293,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.i("", "Check FCM ID : " + fcm_id);
 
-        dbManager = new DBManager(LoginActivity.this);
-        dbManager.open();
+        /*dbManager = new DBManager(LoginActivity.this);
+        dbManager.open();*/
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,20 +312,65 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    pDialog.show();
 //                    Toast.makeText(LoginActivity.this, "Username and password doesn't match.", Toast.LENGTH_SHORT).show();
 //                    login(edt_id.getText().toString(), edt_pwd.getText().toString(), fcm_id);
 //                    new HttpGetRequest().execute();
-                    new AsyncTaskRunner("5").execute();
+                    //new AsyncTaskRunner("5").execute();
+                    new LoginTask().execute();
                 }
             }
         });
     }
 
 
+    private final class LoginTask extends AsyncTask<Void, Void, Void> {
+
+        private WsLogin wsLogin;
+        private Activity activity;
+        private SweetAlertDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Please Wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            this.activity = LoginActivity.this;
+            wsLogin = new WsLogin(activity);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            wsLogin.executeWebservice(edt_id.getText().toString().trim(), edt_pwd.getText().toString());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            if (wsLogin.getSuccess()) {
+                new AsyncTaskRunner("5").execute();
+            } else {
+                new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error")
+                        .setContentText(wsLogin.getMessage())
+                        .show();
+            }
+
+        }
+    }
+
+
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         private String resp;
+        private SweetAlertDialog pDialog;
+        private Activity activity;
 //        ProgressDialog progressDialog;
 
         String id;
@@ -349,31 +384,6 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
-//                HttpURLConnection urlConnection = null;
-
-//                try {
-//
-//                    URL url = new URL("https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27C11117%27%20and%20PASSWORD%20eq%20%27C11117%27&$format=json");
-//                    urlConnection = (HttpURLConnection) url.openConnection();
-//                    try {
-//                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//                        StringBuilder stringBuilder = new StringBuilder();
-//                        String line;
-//                        while ((line = bufferedReader.readLine()) != null) {
-//                            stringBuilder.append(line).append("\n");
-//                        }
-//                        bufferedReader.close();
-//                        Log.v("", " Response: " + stringBuilder.toString());
-//                        resp = stringBuilder.toString();
-////                        return respstringBuilder.toString();
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                } finally {
-//                    urlConnection.disconnect();
-//                }
-
 
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISSALES, true);
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISJPLOADED, false);
@@ -399,20 +409,25 @@ public class LoginActivity extends AppCompatActivity {
                 //ITEM INSERT
 //                JSONObject itemObj = new JSONObject(String.valueOf(items));
 //                JSONArray itemJArr = itemObj.getJSONArray("data");
-                JSONArray itemJArr = new JSONArray(items);
-                dbManager.insertItemsArray(itemJArr);
+                /*JSONArray itemJArr = new JSONArray(items);
+                dbManager.insertItemsArray(itemJArr);*/
+                WsGetItems wsGetItems = new WsGetItems(activity);
+                wsGetItems.executeWebservice();
+
+                WsGetCustomers wsGetCustomers = new WsGetCustomers(activity);
+                wsGetCustomers.executeWebservice();
 
                 //CUSTOMER INSERT
 //                JSONObject custObj = new JSONObject(customers);
 //                JSONArray custJArr = custObj.getJSONArray("data");
-                JSONArray custJArr = new JSONArray(customers);
-                dbManager.insertCustomerArr(custJArr);
+                /*JSONArray custJArr = new JSONArray(customers);
+                dbManager.insertCustomerArr(custJArr);*/
 
                 //LOAD INSERT
 //                JSONObject loadObj = new JSONObject(loads);
 //                JSONArray loadJArr = loadObj.getJSONArray("data");
-                JSONArray loadJArr = new JSONArray(loads);
-                dbManager.insertLoadArr(loadJArr);
+                /*JSONArray loadJArr = new JSONArray(loads);
+                dbManager.insertLoadArr(loadJArr);*/
 //                dbManager.insertUnload(loadJArr);
 
 
@@ -469,6 +484,11 @@ public class LoginActivity extends AppCompatActivity {
 //            progressDialog = ProgressDialog.show(LoginActivity.this,
 //                    "Fetching data", "Loading...");
 
+            activity = LoginActivity.this;
+            pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Please Wait...");
+            pDialog.setCancelable(false);
             pDialog.show();
 
         }
