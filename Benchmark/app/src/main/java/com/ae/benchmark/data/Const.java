@@ -12,12 +12,12 @@ import java.util.HashMap;
 
 public class Const {
 
-//    public static ArrayList<Customer> dataArrayList=new ArrayList<>();
+    //    public static ArrayList<Customer> dataArrayList=new ArrayList<>();
 //    public static ArrayList<Customer> allCustomerdataArrayList=new ArrayList<>();
 //    public static ArrayList<String> addlist=new ArrayList<>();
 //    public static ArrayList<Sales> salesarrayList;
-    public static int loadNumber=1;
-    public static String creditLimitDays="0";
+    public static int loadNumber = 1;
+    public static String creditLimitDays = "0";
 
     public static String cusVATno = "";
     public static String cusBranchID = "";
@@ -30,7 +30,7 @@ public class Const {
 
     public static HashMap<String, String> AllLoad = new HashMap<>();
 
-//    public static ArrayList<LoadSummary> dataNew = new ArrayList<>();
+    //    public static ArrayList<LoadSummary> dataNew = new ArrayList<>();
 //    public static ArrayList<LoadSummary> dataOld = new ArrayList<>();
 //
 //    public static List<LoadRequestConstants> loadRequestConstantsList=new ArrayList<>();
@@ -46,18 +46,18 @@ public class Const {
     public static String NumbertoWord = "";
 
     public static int TotalAPICOUNT = 12;
-    public static String APICOUNT = TotalAPICOUNT+"/"+TotalAPICOUNT;
+    public static String APICOUNT = TotalAPICOUNT + "/" + TotalAPICOUNT;
 
 
     public static int customerPosition;
-//    public static Customer customerDetail;
+    //    public static Customer customerDetail;
     public static String paySource;
     public static String payReference;
     public static boolean isPostAudit = false;
     public static boolean isDisplayVatTax = true;
 
 
-    public static int id=-1;
+    public static int id = -1;
 
     public static Bundle grBundle = null;
     public static Bundle brBundle = null;
@@ -73,11 +73,11 @@ public class Const {
 //    }
 
     public static boolean isGPSEnable(Context context) {
-        LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-//    public final static String WS_URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
+    //    public final static String WS_URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
     public final static String WS_URL = "http://46.235.93.243:8047/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
 
- }
+}
