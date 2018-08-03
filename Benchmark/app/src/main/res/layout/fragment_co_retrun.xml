@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_100">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="vertical">
+
+        <!--Middle Tile View  -->
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_230sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:orientation="vertical">
+
+            <!-- Title Text RECENT ORDER -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Recent Returns"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="1dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/gray" />
+            </RelativeLayout>
+
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerview_recent_orders"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+            <com.ae.benchmark.views.KKViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/kk_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <!--Bottom Tile View  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Title Text PAST ORDER -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Past Retruns"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="1dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/gray" />
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_past_orders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/blue"
+        app:elevation="@dimen/_11sdp"
+        app:rippleColor="#FFF"
+        app:srcCompat="@drawable/ic_fab" />
+</RelativeLayout>

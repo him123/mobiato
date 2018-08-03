@@ -87,6 +87,7 @@ public class RecyclerAdapterOrdersPast extends RecyclerView.Adapter<RecyclerView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext , SelectedOrderItemActivity.class);
+                intent.putExtra("order_num",item.order_id);
                 mContext.startActivity(intent);
             }
         });

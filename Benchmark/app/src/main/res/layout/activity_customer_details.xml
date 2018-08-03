@@ -191,9 +191,9 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:text="45"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_21sdp" />
+                    android:textSize="@dimen/_21sdp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -209,9 +209,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text=" Empty Bottles "
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -293,8 +293,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_fan_shop_set"
-            fab:fab_label="Deposit"
             android:visibility="gone"
+            fab:fab_label="Deposit"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_fan_shop_set"
+            android:visibility="gone"
+            fab:fab_label="Return"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>

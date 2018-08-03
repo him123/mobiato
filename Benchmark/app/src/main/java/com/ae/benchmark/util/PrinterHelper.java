@@ -430,7 +430,7 @@ public class PrinterHelper {
 //                    JSONObject jsnData = jDict.getJSONObject("mainArr");
 //                    this.count = 0;
 //                    if (request.equals(App.SALES_INVOICE)) {
-            printSalesInvoice(jArr, address);
+            printSalesInvoiceNew(jArr, address);
 //                    }
 //                }
 //            }
@@ -806,36 +806,64 @@ public class PrinterHelper {
             } else {
                 printoultlet = 0;
             }*/
+//            this.hashValues = new HashMap();
+//            this.hashValues.put("نعم لا", Integer.valueOf(6));
+//            this.hashValues.put("رمز الصنف", Integer.valueOf(15));
+//            this.hashValues.put("وصف", Integer.valueOf(32));
+//            this.hashValues.put("UOM", Integer.valueOf(9));
+//            this.hashValues.put("QTY", Integer.valueOf(11));
+//            this.hashValues.put("سعر الوحدة", Integer.valueOf(12));
+//            this.hashValues.put("المبلغ الإجمالي", Integer.valueOf(12));
+//            this.hashValues.put("إجمالي القرص", Integer.valueOf(12));
+//            this.hashValues.put("مقاطعة فات", Integer.valueOf(7));
+//            this.hashValues.put("Vat %", Integer.valueOf(7));
+//            this.hashValues.put("كمية SAR", Integer.valueOf(13));
+//
+//            this.hashPositions = new HashMap();
+//            this.hashPositions.put("نعم لا", Integer.valueOf(0));
+//            this.hashPositions.put("رمز الصنف", Integer.valueOf(0));
+//            this.hashPositions.put("وصف", Integer.valueOf(0));
+//            this.hashPositions.put("UOM", Integer.valueOf(1));
+//            this.hashPositions.put("QTY", Integer.valueOf(1));
+//            this.hashPositions.put("سعر الوحدة", Integer.valueOf(1));
+//            this.hashPositions.put("المبلغ الإجمالي", Integer.valueOf(1));
+//            this.hashPositions.put("إجمالي القرص", Integer.valueOf(1));
+//            this.hashPositions.put("مقاطعة فات", Integer.valueOf(1));
+//            this.hashPositions.put("Vat %", Integer.valueOf(1));
+//            this.hashPositions.put("كمية SAR", Integer.valueOf(1));
+
+
             this.hashValues = new HashMap();
-            this.hashValues.put("نعم لا", Integer.valueOf(6));
-            this.hashValues.put("رمز الصنف", Integer.valueOf(15));
-            this.hashValues.put("وصف", Integer.valueOf(32));
+            this.hashValues.put("SI No", Integer.valueOf(6));
+            this.hashValues.put("Item Code", Integer.valueOf(15));
+            this.hashValues.put("Description", Integer.valueOf(32));
             this.hashValues.put("UOM", Integer.valueOf(9));
             this.hashValues.put("QTY", Integer.valueOf(11));
-            this.hashValues.put("سعر الوحدة", Integer.valueOf(12));
-            this.hashValues.put("المبلغ الإجمالي", Integer.valueOf(12));
-            this.hashValues.put("إجمالي القرص", Integer.valueOf(12));
-            this.hashValues.put("مقاطعة فات", Integer.valueOf(7));
+            this.hashValues.put("UNIT Price", Integer.valueOf(12));
+            this.hashValues.put("Total amount", Integer.valueOf(12));
+            this.hashValues.put("Total Disc", Integer.valueOf(12));
+            this.hashValues.put("Vat Amt", Integer.valueOf(7));
             this.hashValues.put("Vat %", Integer.valueOf(7));
-            this.hashValues.put("كمية SAR", Integer.valueOf(13));
+            this.hashValues.put("Amount SAR", Integer.valueOf(13));
 
             this.hashPositions = new HashMap();
-            this.hashPositions.put("نعم لا", Integer.valueOf(0));
-            this.hashPositions.put("رمز الصنف", Integer.valueOf(0));
-            this.hashPositions.put("وصف", Integer.valueOf(0));
+            this.hashPositions.put("SI No", Integer.valueOf(0));
+            this.hashPositions.put("Item Code", Integer.valueOf(0));
+            this.hashPositions.put("Description", Integer.valueOf(0));
             this.hashPositions.put("UOM", Integer.valueOf(1));
             this.hashPositions.put("QTY", Integer.valueOf(1));
-            this.hashPositions.put("سعر الوحدة", Integer.valueOf(1));
-            this.hashPositions.put("المبلغ الإجمالي", Integer.valueOf(1));
-            this.hashPositions.put("إجمالي القرص", Integer.valueOf(1));
-            this.hashPositions.put("مقاطعة فات",Integer.valueOf(1));
+            this.hashPositions.put("UNIT Price", Integer.valueOf(1));
+            this.hashPositions.put("Total amount", Integer.valueOf(1));
+            this.hashPositions.put("Total Disc", Integer.valueOf(1));
+            this.hashPositions.put("Vat Amt", Integer.valueOf(1));
             this.hashPositions.put("Vat %", Integer.valueOf(1));
-            this.hashPositions.put("كمية SAR", Integer.valueOf(1));
+            this.hashPositions.put("Amount SAR", Integer.valueOf(1));
+
 
             this.outStream.write(this.wakeUp);
             line(this.startln);
 
-            headerprintForInvoice(object, 9);
+            headerprint(object, 9);
 //            this.outStream.write(this.BoldOn);
 //            this.outStream.write(this.DoubleWideOn);
 //            printheaders(getAccurateText("SALES INVOICE", 40, 1), true, 2);
@@ -966,7 +994,7 @@ public class PrinterHelper {
 
             //Gagdadfdsafsd
             this.outStream.write(this.CompressOn);
-            printlines1(printSepratorcomp(), 1, object, 1, args, 9);
+            printlines1(printSepratorcomp(), 1, object, 2, args, 9);
 
             String strTotalNoVat = "";
             String strDiscount = "";
@@ -998,7 +1026,7 @@ public class PrinterHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    printlines1(getAccurateText("GROSS AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
+                    printlines1(getAccurateText("GROSS AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 2, args, 9);
 //                    printlines1(getAccurateText("AED - ANOTHER" + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
                 } else {
 
@@ -1009,7 +1037,7 @@ public class PrinterHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    printlines1(getAccurateText("GROSS AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
+                    printlines1(getAccurateText("GROSS AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 2, args, 9);
 //                    printlines1(getAccurateText("AED - ANOTHER" + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
                 }
 
@@ -1026,7 +1054,7 @@ public class PrinterHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    printlines1(getAccurateText("TOTAL AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
+                    printlines1(getAccurateText("TOTAL AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 2, args, 9);
 //                    printlines1(getAccurateText("AED - ANOTHER" + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
                 } else {
 
@@ -1037,7 +1065,7 @@ public class PrinterHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    printlines1(getAccurateText("TOTAL AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
+                    printlines1(getAccurateText("TOTAL AMOUNT: AED - " + strWord.toUpperCase(), 130, 0), 1, object, 2, args, 9);
 //                    printlines1(getAccurateText("AED - ANOTHER" + strWord.toUpperCase(), 130, 0), 1, object, 1, args, 9);
                 }
 
@@ -1049,25 +1077,25 @@ public class PrinterHelper {
             if (jTOBject.has("Total Befor TAX(AED)")) {
                 strTotalNoVat = getAccurateText("Total Before TAX(AED) : " + jTOBject.getString("Total Befor TAX(AED)"),
                         137 + MAXLEngth, 2);
-                printlines1(strTotalNoVat, 1, object, 1, args, 9);
+                printlines1(strTotalNoVat, 1, object, 2, args, 9);
             }
 
             if (jTOBject.has("INVOICE DISCOUNT(AED)")) {
                 strDiscount = getAccurateText("INVOICE DISCOUNT(AED) : " + jTOBject.getString("INVOICE DISCOUNT(AED)"), 137 + MAXLEngth, 2);
-                printlines1(strDiscount, 1, object, 1, args, 9);
+                printlines1(strDiscount, 1, object, 2, args, 9);
             }
             if (jTOBject.has("Net Amount(AED)")) {
                 strDiscount = getAccurateText("Net Amount(AED) : " + jTOBject.getString("Net Amount(AED)"), 137 + MAXLEngth, 2);
-                printlines1(strDiscount, 1, object, 1, args, 9);
+                printlines1(strDiscount, 1, object, 2, args, 9);
             }
             if (jTOBject.has("VAT(AED)")) {
                 strTotalVat = getAccurateText("VAT(AED) : " + jTOBject.getString("VAT(AED)"), 137 + MAXLEngth, 2);
-                printlines1(strTotalVat, 1, object, 1, args, 9);
+                printlines1(strTotalVat, 1, object, 2, args, 9);
             }
             if (jTOBject.has("Total Amount(AED)")) {
                 strTotalWithVAT = getAccurateText("Total Amount(AED) : " + jTOBject.getString("Total Amount(AED)"),
                         137 + MAXLEngth, 2);
-                printlines1(strTotalWithVAT, 1, object, 1, args, 9);
+                printlines1(strTotalWithVAT, 1, object, 2, args, 9);
             }
 
             this.outStream.write(this.CompressOff);
@@ -1088,21 +1116,22 @@ public class PrinterHelper {
 
             printlines1(getAccurateText("Payment to be pain to our RAK Bank Account",
                     137 + MAXLEngth, 2)
-                    , 1, object, 1, args, 9);
+                    , 1, object, 2, args, 9);
 
             printlines1(getAccurateText("Account Title: Balade Farm Food Industries LLC",
                     137 + MAXLEngth, 2)
-                    , 1, object, 1, args, 9);
+                    , 1, object, 2, args, 9);
 
             printlines1(getAccurateText("Back Name: RAK Bank",
                     137 + MAXLEngth, 2)
-                    , 1, object, 1, args, 9);
+                    , 1, object, 2, args, 9);
 
             printlines1(getAccurateText("IBAN: AES451221646553131",
                     137 + MAXLEngth, 2)
-                    , 1, object, 1, args, 9);
+                    , 1, object, 2, args, 9);
 
-            printlines1(getAccurateText(object.getString("invoicefooter"), 80, 1), 1, object, 1, args, 9);
+//            printlines1(getAccurateText(object.getString("invoicefooter"),
+//                    80, 1), 1, object, 1, args, 9);
             // printlines1(getAccurateText("For any complaints please contact " + object.getString("supervisorname") + "on" + object.getString("supervisorno"), 40, 0), false, 1);
 
             //jSONObject = object;
@@ -1140,19 +1169,17 @@ public class PrinterHelper {
         }
     }
 
-    private void printlines1(String data,
-                             int ln,
+    private void printlines1(String data, int ln,
                              JSONObject object,
-                             int sts,
-                             String adr, int tp) throws JSONException, IOException, LinePrinterException {
+                             int sts, String adr, int tp) throws JSONException, IOException, LinePrinterException {
         int i;
         this.count += ln;
         boolean isEnd = false;
         if (sts == 2 && this.count != 0) {
-            Log.e("String", "" + data);
+            Log.e("Going for Arabic1", "Arabic" + data);
             printArabic(data);
             isEnd = true;
-            int lnno = (55 - this.count) + this.endln;
+            int lnno = (48 - this.count) + this.endln;
             for (i = 0; i < lnno; i++) {
                 try {
                     if (i % 10 == 0) {
@@ -1180,7 +1207,7 @@ public class PrinterHelper {
         }
         if (!isEnd) {
             printArabic(data);
-            Log.e("String", "" + data);
+            Log.e("Going for Arabic", "Arabic" + data);
             for (i = 0; i < ln; i++) {
                 try {
                     this.outStream.write(this.NewLine);
@@ -1195,25 +1222,16 @@ public class PrinterHelper {
                     e32.printStackTrace();
                 }
             }
-            if (this.count > 55) {
+            /*if (this.count > 48) {
                 Log.e("Count 1 time", "Count " + this.count);
                 this.outStream.write(this.CompressOff);
                 this.count = 0;
                 try {
                     line(this.cnln);
-
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.NewLine);
-                    if (tp == 104 || tp == 6 || tp == 25) {
+                    if (tp == 4) {
                         headervanstockprint(object, tp);
-                    } else if (tp == 1 || tp == 2 || tp == 3 || tp == 9 || tp == 10 || tp == 11 || tp == 4 || tp == 7) {
-                        headerprint(object, tp);
+                    } else if (tp == 6 || tp == 25) {
+                        headervanstockprint(object, tp);
                     } else {
                         headerinvprint(object, tp);
                     }
@@ -1222,7 +1240,551 @@ public class PrinterHelper {
                 } catch (Exception e4) {
                     e4.printStackTrace();
                 }
+            }*/
+        }
+    }
+
+
+    private void printlines2(String data, int ln, JSONObject object, int sts, String adr, int tran, int tp) throws JSONException, IOException, LinePrinterException {
+        int i;
+        this.count += ln;
+        boolean isEnd = false;
+        if (sts == 2 && this.count != 0) {
+            printArabic(data);
+            //Log.e("salessummary count", this.count);
+            //Log.e("salessummary pln", 48);
+            isEnd = true;
+            int lnno1 = (48 - this.count) + this.endln;
+            for (i = 0; i < lnno1; i++) {
+                try {
+                    if (i % 10 == 0) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    this.outStream.write(this.NewLine);
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
             }
+            this.outStream.write(this.CarriageReturn);
+            this.count = 0;
+            try {
+                Thread.sleep(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+            } catch (InterruptedException e3) {
+                e3.printStackTrace();
+            }
+//            this.status.put("status", true);
+//            this.status.put("isconnected", 0);
+            //           sendUpdate(this.status, true);
+        }
+        if (!isEnd) {
+            printArabic(data);
+            for (i = 0; i < ln; i++) {
+                try {
+                    this.outStream.write(this.NewLine);
+                } catch (IOException e22) {
+                    e22.printStackTrace();
+                }
+            }
+            if (this.count % 10 == 0) {
+                try {
+                    Thread.sleep(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+                } catch (InterruptedException e32) {
+                    e32.printStackTrace();
+                }
+            }
+            Log.d("Count", "Count1" + this.count);
+            if (this.count > 48) {
+                this.count = 0;
+                Log.d("Count", "Count1" + this.count);
+                Log.d("Pln", "PLn" + 48);
+                try {
+                    line(this.cnln);
+                    //this.outStream.write(this.CompressOff);
+
+                    this.outStream.write(this.CompressOn);
+                    if (tran == 2) {
+                        headerprint(object, tp);
+                    } else if (tran == 1) {
+                        headerprint(object, tp);
+                    } else if (tran == 5) {
+                        headerprint(object, tp);
+                    } else if (tran == 4) {
+                        headerprint(object, tp);
+                    } else if (tran == 3) {
+                        headerprint(object, tp);
+                    } else if (tran == 6) {
+                        headerprint(object, tp);
+                    } else if (tran == 7) {
+                        headerprint(object, tp);
+                    }
+
+                    this.outStream.write(this.CompressOff);
+                    this.outStream.write(printSeprator().getBytes());
+                    this.count++;
+                    if (tran == 5 || tran == 4) {
+                        //this.outStream.write(this.CompressOn);
+                    }
+                } catch (Exception e4) {
+                    e4.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    void printSalesInvoiceNew(JSONObject object, String args) {
+        StringBuffer s1 = new StringBuffer();
+        try {
+            int printoultlet;
+            JSONArray jCheques;
+            JSONObject jCash;
+            JSONObject jChequeDetails;
+            String copyStatus;
+            JSONObject jSONObject;
+            int i;
+            StringBuilder stringBuilder;
+            /*if (object.getString("printoutletitemcode").length() > 0) {
+                printoultlet = Integer.parseInt(object.getString("printoutletitemcode"));
+            } else {
+                printoultlet = 0;
+            }*/
+//            if (object.getString("displayupc").equals("1")) {
+//
+//                this.hashValues = new HashMap();
+//                this.hashValues.put("ITEM NO", Integer.valueOf(10));
+//                this.hashValues.put("DESCRIPTION", Integer.valueOf(80));
+////                this.hashValues.put("ARABIC DESCRIPTION", Integer.valueOf(40));
+//                this.hashValues.put("UPC ", Integer.valueOf(7));
+//                this.hashValues.put("TOTAL UNITS", Integer.valueOf(12));
+//                this.hashValues.put("UNIT PRICE", Integer.valueOf(12));
+//                this.hashValues.put("AMOUNT", Integer.valueOf(12));
+//                this.hashValues.put("REASON CODE", Integer.valueOf(11));
+//                //this.hashValues.put("NET LOAD", Integer.valueOf(8));
+//                //this.hashValues.put("VALUE", Integer.valueOf(8));
+//                //this.hashValues.put("Description", Integer.valueOf(40));
+//                this.hashPositions = new HashMap();
+//                this.hashPositions.put("ITEM NO", Integer.valueOf(0));
+//                // this.hashPositions.put("Item#", Integer.valueOf(0));
+//                this.hashPositions.put("DESCRIPTION", Integer.valueOf(1));
+////                this.hashPositions.put("ARABIC DESCRIPTION", Integer.valueOf(0));
+//                this.hashPositions.put("UPC ", Integer.valueOf(2));
+//                this.hashPositions.put("TOTAL UNITS", Integer.valueOf(2));
+//                this.hashPositions.put("UNIT PRICE", Integer.valueOf(2));
+//                this.hashPositions.put("AMOUNT", Integer.valueOf(2));
+//                this.hashPositions.put("REASON CODE", Integer.valueOf(2));
+//
+//
+//            } else {
+//
+//                this.hashValues = new HashMap();
+//                this.hashValues.put("ITEM NO", Integer.valueOf(10));
+//                this.hashValues.put("DESCRIPTION", Integer.valueOf(80));
+////                this.hashValues.put("ARABIC DESCRIPTION", Integer.valueOf(40));
+//                this.hashValues.put("UPC ", Integer.valueOf(7));
+//                this.hashValues.put("TOTAL UNITS", Integer.valueOf(12));
+//                this.hashValues.put("UNIT PRICE", Integer.valueOf(12));
+//                this.hashValues.put("AMOUNT", Integer.valueOf(12));
+//                this.hashValues.put("REASON CODE", Integer.valueOf(11));
+//                //this.hashValues.put("NET LOAD", Integer.valueOf(8));
+//                //this.hashValues.put("VALUE", Integer.valueOf(8));
+//                //this.hashValues.put("Description", Integer.valueOf(40));
+//                this.hashPositions = new HashMap();
+//                this.hashPositions.put("ITEM NO", Integer.valueOf(0));
+//                // this.hashPositions.put("Item#", Integer.valueOf(0));
+//                this.hashPositions.put("DESCRIPTION", Integer.valueOf(1));
+////                this.hashPositions.put("ARABIC DESCRIPTION", Integer.valueOf(0));
+//                this.hashPositions.put("UPC ", Integer.valueOf(2));
+//                this.hashPositions.put("TOTAL UNITS", Integer.valueOf(2));
+//                this.hashPositions.put("UNIT PRICE", Integer.valueOf(2));
+//                this.hashPositions.put("AMOUNT", Integer.valueOf(2));
+//                this.hashPositions.put("REASON CODE", Integer.valueOf(2));
+//            }
+
+
+            this.hashValues = new HashMap();
+            this.hashValues.put("SI No", Integer.valueOf(6));
+            this.hashValues.put("Item Code", Integer.valueOf(15));
+            this.hashValues.put("Description", Integer.valueOf(32));
+            this.hashValues.put("UOM", Integer.valueOf(9));
+            this.hashValues.put("QTY", Integer.valueOf(11));
+            this.hashValues.put("UNIT Price", Integer.valueOf(12));
+            this.hashValues.put("Total amount", Integer.valueOf(12));
+            this.hashValues.put("Total Disc", Integer.valueOf(12));
+            this.hashValues.put("Vat Amt", Integer.valueOf(7));
+            this.hashValues.put("Vat %", Integer.valueOf(7));
+            this.hashValues.put("Amount SAR", Integer.valueOf(13));
+
+            this.hashPositions = new HashMap();
+            this.hashPositions.put("SI No", Integer.valueOf(0));
+            this.hashPositions.put("Item Code", Integer.valueOf(0));
+            this.hashPositions.put("Description", Integer.valueOf(0));
+            this.hashPositions.put("UOM", Integer.valueOf(1));
+            this.hashPositions.put("QTY", Integer.valueOf(1));
+            this.hashPositions.put("UNIT Price", Integer.valueOf(1));
+            this.hashPositions.put("Total amount", Integer.valueOf(1));
+            this.hashPositions.put("Total Disc", Integer.valueOf(1));
+            this.hashPositions.put("Vat Amt", Integer.valueOf(1));
+            this.hashPositions.put("Vat %", Integer.valueOf(1));
+            this.hashPositions.put("Amount SAR", Integer.valueOf(1));
+
+
+
+
+            this.outStream.write(this.wakeUp);
+            line(this.startln);
+            this.outStream.write(this.CompressOn);
+            headerprint(object, 9);
+
+
+            //this.outStream.write(this.BoldOn);
+            //this.outStream.write(this.DoubleWideOn);
+            //printheaders(object.getString("invheadermsg"), false, 3);
+            printheaders(getAccurateText("SALES INVOICE" +" "+ArabicLabels.salesinvoice,
+                    100, 1), true, 2);
+            //this.outStream.write(this.BoldOff);
+            //this.outStream.write(this.DoubleWideOff);
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.NewLine);
+            //this.outStream.write(this.NewLine);
+            //this.outStream.write(this.NewLine);
+            //this.outStream.write(this.NewLine);
+
+            JSONArray headers = object.getJSONArray("HEADERS");
+            String strheader = "";
+            String strHeaderBottom = "";
+            String strTotal = "";
+
+            JSONArray jTotal = object.getJSONArray("TOTAL");
+            int MAXLEngth = 137;
+            for (i = 0; i < headers.length(); i++) {
+                MAXLEngth -= ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue();
+            }
+            if (MAXLEngth > 0) {
+                MAXLEngth /= headers.length();
+            }
+            JSONObject jTOBject = jTotal.getJSONObject(0);
+            for (i = 0; i < headers.length(); i++) {
+                try {
+                    String string;
+                    stringBuilder = new StringBuilder(String.valueOf(strheader));
+                    string = headers.getString(i);
+                    strheader = stringBuilder.append(getAccurateText(string,
+                            ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue() +
+                                    MAXLEngth, ((Integer) this.hashPositions.get(headers.getString(i).toString())).intValue())).toString();
+
+                    stringBuilder = new StringBuilder(String.valueOf(strHeaderBottom));
+                    if (headers.getString(i).indexOf(" ") == -1) {
+                        string = "";
+                    } else {
+                        string = headers.getString(i).substring(headers.getString(i).indexOf(" "), headers.getString(i).length());
+                    }
+                    //strHeaderBottom = stringBuilder.append(getAccurateText(string, ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue() + MAXLEngth, ((Integer) this.hashPositions.get(headers.getString(i).toString())).intValue())).toString();
+                    if (jTOBject.has(headers.getString(i))) {
+                        strTotal = new StringBuilder(String.valueOf(strTotal)).append(getAccurateText(jTOBject.getString(headers.getString(i).toString()), ((Integer) this.hashValues.get(headers.getString(i).toString())).intValue() + MAXLEngth, ((Integer) this.hashPositions.get(headers.getString(i).toString())).intValue())).toString();
+                    } else {
+                        stringBuilder = new StringBuilder(String.valueOf(strTotal));
+                        if (headers.getString(i).equals("DESCRIPTION")) {
+                            string = ArabicLabels.total +" "+"TOTAL";
+                        } else {
+                            string = "";
+                        }
+                        strTotal = stringBuilder.append(getAccurateText(string, ((Integer) this.hashValues.get(headers.getString(i))).intValue() + MAXLEngth, 1)).toString();
+                    }
+                } catch (Exception e) {
+                }
+            }
+            //this.outStream.write(this.CompressOn);
+
+
+            String arabicheader = "@"+getAccurateText(ArabicLabels.amount+"" +
+                    "     "+ArabicLabels.UnitPrice +"  "+ArabicLabels.TotalUnits + "                                          "+ArabicLabels.Description+"                                     "+ArabicLabels.ItemNo , 150, 0) + "!";
+            printheaders(arabicheader,true,1);
+            this.outStream.write(this.NewLine);this.outStream.write(this.NewLine);
+
+            printlines1(strheader, 1, object, 1, args, 1);
+            // printlines1(strHeaderBottom, 1, object, 1, args, 5);
+            printlines1(printSepratorcomp(), 1, object, 1, args, 1);
+            //this.outStream.write(this.CompressOff);
+
+            JSONArray jData = object.getJSONArray(JsonRpcUtil.PARAM_DATA);
+            for (i = 0; i < jData.length(); i++) {
+                JSONArray jArr = jData.getJSONArray(i);
+                String strData = "";
+                for (int j = 0; j < jArr.length(); j++) {
+                    int i2;
+                    Object obj;
+                    String itemDescrion = jArr.getString(j);
+                    if (j == 0) {
+                        //itemDescrion = new StringBuilder(String.valueOf(i + 1)).toString();
+                    } else if (j == 2) {
+                        itemDescrion = "           @" + jArr.getString(j) + "!";
+                    }
+                    stringBuilder = new StringBuilder(String.valueOf(strData));
+                    if (j == 2) {
+                        //i2 = 60;
+                        i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+                    } else {
+                        i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+                    }
+                    HashMap hashMap = this.hashPositions;
+                    if (j == 7) {
+                        obj = "Description";
+                    } else {
+                        obj = headers.getString(j).toString();
+                    }
+                    strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
+                }
+                //this.outStream.write(this.CompressOn);
+                this.count++;
+                printlines1(strData, 1, object, 1, args, 1);
+                //this.outStream.write(this.CompressOff);
+            }
+
+            //this.outStream.write(this.BoldOn);
+            //this.outStream.write(this.DoubleWideOn);
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.NewLine);
+            //printheaders(object.getString("invheadermsg"), false, 3);
+
+//            JSONArray focData = object.getJSONArray("foc");
+//            if (focData.length() > 0) {
+//                printheaders(getAccurateText("FREE GOODS", 40, 1), false, 2);
+//                //this.outStream.write(this.BoldOff);
+//                //this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//
+//                //this.outStream.write(this.CompressOn);
+//                printlines1(strheader, 1, object, 1, args, 1);
+//                // printlines1(strHeaderBottom, 1, object, 1, args, 5);
+//                printlines1(printSepratorcomp(), 1, object, 1, args, 1);
+//                //this.outStream.write(this.CompressOff);
+//
+//                for (i = 0; i < focData.length(); i++) {
+//                    JSONArray jArr = focData.getJSONArray(i);
+//                    String strData = "";
+//                    for (int j = 0; j < jArr.length(); j++) {
+//                        int i2;
+//                        Object obj;
+//                        String itemDescrion = jArr.getString(j);
+//                        if (j == 0) {
+//                            //itemDescrion = new StringBuilder(String.valueOf(i + 1)).toString();
+//                        } else if (j == 2) {
+//                            itemDescrion = "           @" + jArr.getString(j) + "!";
+//                        }
+//                        stringBuilder = new StringBuilder(String.valueOf(strData));
+//                        if (j == 2) {
+//                            //i2 = 60;
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        } else {
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        }
+//                        HashMap hashMap = this.hashPositions;
+//                        if (j == 7) {
+//                            obj = "Description";
+//                        } else {
+//                            obj = headers.getString(j).toString();
+//                        }
+//                        strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
+//                    }
+//                    //this.outStream.write(this.CompressOn);
+//                    this.count++;
+//                    printlines1(strData, 1, object, 1, args, 1);
+//                    //this.outStream.write(this.CompressOff);
+//                }
+//            }
+
+//            JSONArray grData = object.getJSONArray("gr");
+//            if (grData.length() > 0) {
+//                printheaders(getAccurateText("GOOD RETURN", 40, 1), false, 2);
+//                //this.outStream.write(this.BoldOff);
+//                //this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//
+//                //this.outStream.write(this.CompressOn);
+//                printlines1(strheader, 1, object, 1, args, 1);
+//                // printlines1(strHeaderBottom, 1, object, 1, args, 5);
+//                printlines1(printSepratorcomp(), 1, object, 1, args, 1);
+//                //this.outStream.write(this.CompressOff);
+//
+//                for (i = 0; i < grData.length(); i++) {
+//                    JSONArray jArr = grData.getJSONArray(i);
+//                    String strData = "";
+//                    for (int j = 0; j < jArr.length(); j++) {
+//                        int i2;
+//                        Object obj;
+//                        String itemDescrion = jArr.getString(j);
+//                        if (j == 0) {
+//                            //itemDescrion = new StringBuilder(String.valueOf(i + 1)).toString();
+//                        } else if (j == 2) {
+//                            itemDescrion = "           @" + jArr.getString(j) + "!";
+//                        }
+//                        stringBuilder = new StringBuilder(String.valueOf(strData));
+//                        if (j == 2) {
+//                            //i2 = 60;
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        } else {
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        }
+//                        HashMap hashMap = this.hashPositions;
+//                        if (j == 7) {
+//                            obj = "Description";
+//                        } else {
+//                            obj = headers.getString(j).toString();
+//                        }
+//                        strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
+//                    }
+//                    //this.outStream.write(this.CompressOn);
+//                    this.count++;
+//                    printlines1(strData, 1, object, 1, args, 1);
+//                    //this.outStream.write(this.CompressOff);
+//                }
+//            }
+
+
+            //this.outStream.write(this.BoldOn);
+            //this.outStream.write(this.DoubleWideOn);
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.NewLine);
+//            JSONArray brData = object.getJSONArray("br");
+//            if (brData.length() > 0) {
+//                //printheaders(object.getString("invheadermsg"), false, 3);
+//                printheaders(getAccurateText("BAD RETURN", 40, 1), false, 2);
+//                //this.outStream.write(this.BoldOff);
+//                //this.outStream.write(this.DoubleWideOff);
+//                // this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//
+//                //this.outStream.write(this.CompressOn);
+//                printlines1(strheader, 1, object, 1, args, 1);
+//                // printlines1(strHeaderBottom, 1, object, 1, args, 5);
+//                printlines1(printSepratorcomp(), 1, object, 1, args, 1);
+//                //this.outStream.write(this.CompressOff);
+//
+//                for (i = 0; i < brData.length(); i++) {
+//                    JSONArray jArr = brData.getJSONArray(i);
+//                    String strData = "";
+//                    for (int j = 0; j < jArr.length(); j++) {
+//                        int i2;
+//                        Object obj;
+//                        String itemDescrion = jArr.getString(j);
+//                        if (j == 0) {
+//                            //itemDescrion = new StringBuilder(String.valueOf(i + 1)).toString();
+//                        } else if (j == 2) {
+//                            itemDescrion = "           @" + jArr.getString(j) + "!";
+//                        }
+//                        stringBuilder = new StringBuilder(String.valueOf(strData));
+//                        if (j == 2) {
+//                            //i2 = 60;
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        } else {
+//                            i2 = ((Integer) this.hashValues.get(headers.getString(j).toString())).intValue() + MAXLEngth;
+//                        }
+//                        HashMap hashMap = this.hashPositions;
+//                        if (j == 7) {
+//                            obj = "Description";
+//                        } else {
+//                            obj = headers.getString(j).toString();
+//                        }
+//                        strData = stringBuilder.append(getAccurateText(itemDescrion, i2, ((Integer) hashMap.get(obj)).intValue())).toString();
+//                    }
+//                    //this.outStream.write(this.CompressOn);
+//                    this.count++;
+//                    printlines1(strData, 1, object, 1, args, 1);
+//                    //this.outStream.write(this.CompressOff);
+//                }
+//            }
+
+
+            //Gagdadfdsafsd
+            //this.outStream.write(this.CompressOn);
+            printlines1(printSepratorcomp(), 1, object, 1, args, 1);
+            printlines1(strTotal, 1, object, 1, args, 1);
+            //this.outStream.write(this.CompressOff);
+            printlines1(getAccurateText("", 80, 1), 2, object, 1, args, 1);
+            //this.outStream.write(this.BoldOn);
+            jSONObject = object;
+            if (object.getString("invoicepriceprint").equals("1")) {
+                jSONObject = object;
+                printlines2(getAccurateText("NET SALES", 20, 0) +
+                        getAccurateText(" : ", 3, 0) +
+                        getAccurateText(object.getString("SUB TOTAL") + " SAR", 12, 0) +
+                        getAccurateText(" : ", 3, 0) + "@" +
+                        getAccurateText(ArabicTEXT.NetSales, 15, 2) + "!",
+                        1, jSONObject, 1, args, 1, 1);
+                //this.outStream.write(this.BoldOff);
+                //this.outStream.write(this.BoldOn);
+                if (object.has("INVOICE DISCOUNT")) {
+                    Log.e("I have discount", "Discount");
+                    if (object.getString("INVOICE DISCOUNT").toString().length() > 0) {
+                        Log.e("I have discount", "Discount1");
+                        if (Double.parseDouble(object.getString("INVOICE DISCOUNT")) > 0.0d) {
+                            jSONObject = object;
+                            printlines2(getAccurateText("INVOICE DISCOUNT", 20, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(object.getString("INVOICE DISCOUNT") + " SAR", 12, 0) + getAccurateText(" : ", 3, 0) + "@" + getAccurateText(ArabicTEXT.InvoiceDiscount, 15, 2) + "!", 1, jSONObject, 1, args, 1, 1);
+                        } else {
+                            Log.e("I have discount", "Discount Else");
+                            jSONObject = object;
+                            printlines2(getAccurateText("INVOICE DISCOUNT", 20, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(object.getString("INVOICE DISCOUNT") + " SAR", 12, 0) + getAccurateText(" : ", 3, 0) + "@" + getAccurateText(ArabicTEXT.InvoiceDiscount, 15, 2) + "!", 1, jSONObject, 1, args, 1, 1);
+                        }
+                    }
+                }
+                //this.outStream.write(this.BoldOff);
+                //this.outStream.write(this.BoldOn);
+                if (Const.isDisplayVatTax) {
+                    try {
+                        printlines2(getAccurateText("VATVATATVAT5%", 27, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(object.getString("VAT") + " SAR", 12, 0) + getAccurateText(" : 5%", 5, 0) + "@" + getAccurateText(ArabicTEXT.Vat, 22, 2) + "!", 1, jSONObject, 1, args, 1, 1);
+                        //this.outStream.write(this.BoldOff);
+                        //this.outStream.write(this.BoldOn);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                jSONObject = object;
+                printlines2(getAccurateText("TOTAL", 20, 0) +
+                        getAccurateText(" : ", 3, 0) + getAccurateText(
+                                object.getString("NET SALES") + " SAR", 12, 0)
+                        + getAccurateText(" : ", 3, 0) + "@" +
+                        getAccurateText(ArabicTEXT.TOTAL, 15, 2) + "!",
+                        1, jSONObject, 1, args, 1, 1);
+                //this.outStream.write(this.BoldOff);
+            }
+            //printlines1(getAccurateText("Net Value : ", 50, 2) + getAccurateText(object.getString("netvalue"), 12, 2), 3, jSONObject, 1, args, 5);
+            this.outStream.write(this.NewLine);
+            //this.outStream.write(this.BoldOff);
+            this.outStream.write(this.NewLine);
+
+            printlines1(getAccurateText("_____________", 40, 1) + getAccurateText("____________", 80, 2), 2, object, 1, args, 5);
+            printlines1(getAccurateText("CUSTOMER", 40, 1) + getAccurateText("SALESMAN", 80, 2), 2, object, 1, args, 5);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+
+            // chagnes
+            try {
+                printlines1(getAccurateText(ArabicLabels.customer, 40, 1) + getAccurateText(ArabicLabels.salesman, 80, 2), 2, object, 1, args, 5);
+                this.outStream.write(this.NewLine);
+                this.outStream.write(this.NewLine);
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+
+            printlines1(getAccurateText(object.getString("invoicefooter"), 80, 1), 1, object, 1, args, 5);
+            // printlines1(getAccurateText("For any complaints please contact " + object.getString("supervisorname") + "on" + object.getString("supervisorno"), 40, 0), false, 1);
+
+            //jSONObject = object;
+            this.outStream.write(this.CompressOff);
+//            if (context instanceof PromotioninfoActivity) {
+//                closeConnection();
+//                ((PromotioninfoActivity) context).callback(App.SALES_INVOICE);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1301,29 +1863,349 @@ public class PrinterHelper {
         }
     }
 
-    private void headerprint(JSONObject object, int type) throws JSONException {
+//    private void headerprint(JSONObject object, int type) throws JSONException {
+//
+//        try {
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.BoldOn);
+//            printheaders(getAccurateText("Berain Water and Beverages Factory - Branch",
+//                    45, 0) + getAccurateText("@" + ArabicLabels.one + "!",
+//                    80, 2), true, 1);
+//
+//            printheaders(getAccurateText("ROUTE#: " + object.getString("ROUTE"), 26, 0) + getAccurateText("SALESMAN#: " + object.getString("SALESMAN"), 26, 0) + getAccurateText("DATE:" + object.getString("DOC DATE") + " " + object.getString("TIME"), 26, 2), false, 1);
+//            this.outStream.write(this.NewLine);
+//            if (type == 3 || type == 5 || type == 6 || type == 4 || type == 7) {
+//                printheaders(getAccurateText("TRIP START DATE:" + object.getString("TRIP START DATE"), 40, 0), false, 1);
+//            } else {
+//                /*if (!(type == 9 || type == 10)) {
+//                    printheaders(getAccurateText("TRIP ID:" + object.getString("TripID"), 80, 0), false, 1);
+//                }*/
+//                /*else if(type == 9){
+//                    printheaders(getAccurateText("SUPERVISOR NAME: " + object.getString("supervisorname"), 40, 0) + getAccurateText("SUPERVISOR NO: " + object.getString("supervisorno"), 40, 2), false, 1);
+//                }*/
+//            }
+//            this.outStream.write(this.BoldOff);
+//            this.outStream.write(this.NewLine);
+//            this.outStream.write(this.NewLine);
+//            if (!(type == 3 && type == 6 && type == 4 && type == 5 && type == 7) && object.has("invheadermsg") && object.getString("invheadermsg").length() > 0) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                //printheaders(object.getString("invheadermsg"), false, 3);
+//                printheaders(getAccurateText(object.getString("invheadermsg"), 40, 1), false, 2);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.DoubleWideOff);
+//            }
+//            if (type == 1) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                try {
+//                    printheaders(getAccurateText("Customer Order Request - " + object.getString("DELIVERY DATE"), 40, 1), false, 2);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    printheaders(getAccurateText("Customer Order Request", 40, 1), false, 2);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                try {
+//                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String parts = object.getString("CUSTOMER");
+//                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
+//                    printheaders("ADDRESS: " + address, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
+//                    printheaders("CUSTOMER TRN: " + no, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.BoldOff);
+//
+//                } catch (Exception e) {
+//                }
+//                this.count++;
+//            } else if (type == 9) {   //Type for Sales Invoice
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    String customerType = "";
+//                    if (object.getString("customertype").equals("1")) {
+//                        customerType = "CASH";
+//                    } else if (object.getString("customertype").equals("2")) {
+//                        customerType = "CREDIT";
+//                    } else if (object.getString("customertype").equals("3")) {
+//                        customerType = "TC";
+//                    }
+//                    printheaders(getAccurateText("TAX INVOICE", 40, 1), false, 2);
+//
+//                    this.outStream.write(this.NewLine);
+//                    //printheaders(getAccurateText(customerType + " " + "INVOICE NO - " + object.getString("ORDERNO"),40,1),false,2);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                if (!object.getString("LPONO").equals("")) {
+//                    printheaders(getAccurateText("LPO NO: " + object.getString("LPONO"), 137, 2), false, 0);
+//                }
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                try {
+//                    printheaders("INVOICE NO: " + object.getString("ORDERNO"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String parts = object.getString("CUSTOMER");
+//                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
+//                    printheaders("ADDRESS: " + address, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
+//                    printheaders("CUSTOMER TRN: " + no, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.BoldOff);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                this.count++;
+//            } else if (type == 11) {   //Type for GR,BR
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    String customerType = "";
+//                    if (object.getString("customertype").equals("1")) {
+//                        customerType = "CASH";
+//                    } else if (object.getString("customertype").equals("2")) {
+//                        customerType = "CREDIT";
+//                    } else if (object.getString("customertype").equals("3")) {
+//                        customerType = "TC";
+//                    }
+//                    printheaders(getAccurateText("TAX CREDIT NOTE", 40, 1), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    //printheaders(getAccurateText(customerType + " " + "INVOICE NO - " + object.getString("ORDERNO"),40,1),false,2);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                try {
+//                    printheaders("CREDIT NOTE NO: " + object.getString("ORDERNO"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String parts = object.getString("CUSTOMER");
+//                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
+//                    printheaders("ADDRESS: " + address, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
+//                    printheaders("CUSTOMER TRN: " + no, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.BoldOff);
+//
+//                } catch (Exception e) {
+//                }
+//                this.count++;
+//            } else if (type == 10) {   //Type for Delivery
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("DELIVERY NO - " + object.getString("ORDERNO"), 40, 1), false, 2);
+//                    printheaders(getAccurateText("DELIVERY DATE - " + object.getString("DELIVERYDATE"), 40, 1), false, 2);
+//                }
+//                if (object.getString("LANG").equals("en")) {
+//                    String customerType = "";
+//                    if (object.getString("customertype").equals("1")) {
+//                        customerType = "CASH";
+//                    } else if (object.getString("customertype").equals("2")) {
+//                        customerType = "CREDIT";
+//                    } else if (object.getString("customertype").equals("3")) {
+//                        customerType = "TC";
+//                    }
+//                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("INVOICE NO - " + object.getString("ORDERNO"), 40, 1), false, 2);
+//                }
+//
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                try {
+//                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                    this.outStream.write(this.NewLine);
+//
+//                    String[] parts = object.getString("CUSTOMER").split("\\-");
+//                    printheaders("CUSTOMER: " + parts[0], false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("ADDRESS: " + object.getString("ADDRESS"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("PAYEE: " + object.getString("payee"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//
+//                    String method = "";
+//                    try {
+//                        if (!Const.paySource.equals("") && !Const.paySource.equals("null")) {
+//                            method = Const.paySource.replace("%20", " ");
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    String reference = "";
+//                    try {
+//                        if (!Const.payReference.equals("") && !Const.payReference.equals("null")) {
+//                            reference = Const.payReference.replace("%20", " ");
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    printheaders(getAccurateText("PAYMENT REFERENCE: " + reference, 80, 0) + getAccurateText("  PAYMENT METHOD: " + method, 80, 2), false, 1);
+////                    printheaders("PAYMENT REFERENCE: " + object.getString("PAYMENTREF") + "     "+"PAYMENT METHOD: "+method, false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    //this.outStream.write(this.NewLine);
+//                    //this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.BoldOff);
+//                } catch (Exception e) {
+//                }
+//                this.count++;
+//            } else if (type == 2) {
+//                printheaders("Doc No: " + object.getString("DOCUMENT NO"), false, 2);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    printheaders(getAccurateText("PAYMENT RECEIPT", 40, 1), false, 2);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                this.outStream.write(this.NewLine);
+//                String parts = object.getString("CUSTOMER");
+//                printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), true, 2);
+//                this.outStream.write(this.NewLine);
+//
+//                this.outStream.write(this.BoldOff);
+//                printheaders("ADDRESS :" + object.getString("ADDRESS"), true, 1);
+//                this.outStream.write(this.NewLine);
+//                String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
+//                printheaders("CUSTOMER TRN: " + no, false, 1);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 3) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (isFirstInvoice) {
+//                    printheaders(getAccurateText("DEPOSIT SUMMARY", 40, 1), false, 3);
+//                } else {
+//                    printheaders(getAccurateText("CREDIT NOTE", 40, 1), false, 3);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.count++;
+//            } else if (type == 4) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("SALES SUMMARY", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 5) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("ROUTE ACTIVITY LOG", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 6) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("ROUTE SUMMARY", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 7) {
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("DAMAGE/EXPIRY REPORT", 40, 1), false, 3);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            }
+//        } catch (Exception e2) {
+//            e2.printStackTrace();
+//        }
+//    }
 
+
+    private void headerprint(JSONObject object, int type) throws JSONException {
         try {
+
+            if (type == 9 || type == 10) {
+                printheaders(getAccurateText("Berain Water and Beverages Factory - Branch",
+
+                        45, 0) + getAccurateText("@" + ArabicLabels.one + "!", 80, 2), true, 1);
+                this.outStream.write(this.NewLine);
+                printheaders(getAccurateText("C.C.No 72253 C.R. 1010167216", 45, 0) + getAccurateText("@" + ArabicLabels.two + "!", 80, 2), true, 1);
+                this.outStream.write(this.NewLine);
+//                printheaders(getAccurateText("P.O box 1799 - Riyadh 11441", 45, 0) + getAccurateText("@" + ArabicLabels.three + "!", 80, 2), true, 1);
+//                this.outStream.write(this.NewLine);
+//                printheaders(getAccurateText("Riyadh - 2nd Industrial City", 45, 0) + getAccurateText("@" + ArabicLabels.four + "!", 80, 2), true, 1);
+//                this.outStream.write(this.NewLine);
+//                printheaders(getAccurateText("Kingdom of Saudi Arabia", 45, 0) + getAccurateText("@" + ArabicLabels.five + "!", 80, 2), true, 1);
+//                this.outStream.write(this.NewLine);
+//                printheaders(getAccurateText("Customer services : 920025555", 45, 0) + getAccurateText("@" + ArabicLabels.six + "!", 80, 2), true, 1);
+//                this.outStream.write(this.NewLine);
+                printheaders(getAccurateText("VAT Registration No. 310099425600003", 45, 0) + getAccurateText("@" + ArabicLabels.seven + "!", 80, 2), true, 1);
+                this.outStream.write(this.NewLine);
+            }
             this.outStream.write(this.NewLine);
+            //this.outStream.write(this.BoldOn);
+            printheaders(getAccurateText("ROUTE#: " +
+                    object.getString("ROUTE"), 42, 0) +
+                    getAccurateText("SALESMAN#: " + object.getString("SALESMAN"), 42, 0)
+                    + getAccurateText("Invoice Date: " + object.getString("DOC DATE") + " "
+                    + object.getString("TIME"), 42, 2), false, 1);
             this.outStream.write(this.NewLine);
+            printheaders(getAccurateText(object.getString("ROUTE") + "@" + ArabicLabels.Route + "!", 42, 0) + getAccurateText(object.getString("SALESMAN") + " " + "@" + ArabicLabels.SalesMan + "!", 42, 0), true, 1);
+            printheaders(getAccurateText(object.getString("TIME") + " " + object.getString("DOC DATE") + " " + "@" + ArabicLabels.Date + "!", 47, 2), true, 1);
+            //printheaders(getAccurateText("SALESMAN: " + object.getString("SALESMAN"), 40, 0) + getAccurateText("SALESMAN NO: " + object.getString("CONTACTNO"), 40, 2), true, 1);
             this.outStream.write(this.NewLine);
-            this.outStream.write(this.NewLine);
-            this.outStream.write(this.NewLine);
-            this.outStream.write(this.BoldOn);
-            printheaders(getAccurateText("ROUTE#: " + object.getString("ROUTE"), 26, 0) + getAccurateText("SALESMAN#: " + object.getString("SALESMAN"), 26, 0) + getAccurateText("DATE:" + object.getString("DOC DATE") + " " + object.getString("TIME"), 26, 2), false, 1);
-            this.outStream.write(this.NewLine);
+            //printheaders(getAccurateText("SUPERVISOR NAME:" + object.getString("supervisorname"), 40, 0) + getAccurateText("SUPERVISOR PHONE: " + object.getString("supervisorno"), 40, 2), true, 1);
             if (type == 3 || type == 5 || type == 6 || type == 4 || type == 7) {
-                printheaders(getAccurateText("TRIP START DATE:" + object.getString("TRIP START DATE"), 40, 0), false, 1);
+                printheaders(getAccurateText("TRIP START DATE:" + object.getString("TRIP START DATE"), 40, 0) + getAccurateText("TRIP ID:" + object.getString("TripID"), 40, 2), false, 1);
             } else {
-                /*if (!(type == 9 || type == 10)) {
+                if (!(type == 9 || type == 10)) {
                     printheaders(getAccurateText("TRIP ID:" + object.getString("TripID"), 80, 0), false, 1);
-                }*/
+                }
                 /*else if(type == 9){
                     printheaders(getAccurateText("SUPERVISOR NAME: " + object.getString("supervisorname"), 40, 0) + getAccurateText("SUPERVISOR NO: " + object.getString("supervisorno"), 40, 2), false, 1);
                 }*/
             }
-            this.outStream.write(this.BoldOff);
-            this.outStream.write(this.NewLine);
+            //this.outStream.write(this.BoldOff);
             this.outStream.write(this.NewLine);
             if (!(type == 3 && type == 6 && type == 4 && type == 5 && type == 7) && object.has("invheadermsg") && object.getString("invheadermsg").length() > 0) {
                 this.outStream.write(this.BoldOn);
@@ -1333,262 +2215,293 @@ public class PrinterHelper {
                 this.outStream.write(this.BoldOff);
                 this.outStream.write(this.DoubleWideOff);
             }
-            if (type == 1) {
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                try {
-                    printheaders(getAccurateText("Customer Order Request - " + object.getString("DELIVERY DATE"), 40, 1), false, 2);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    printheaders(getAccurateText("Customer Order Request", 40, 1), false, 2);
-                }
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                try {
-                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
-                    this.outStream.write(this.NewLine);
-                    String parts = object.getString("CUSTOMER");
-                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), true, 2);
-                    this.outStream.write(this.NewLine);
-                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
-                    printheaders("ADDRESS: " + address, false, 1);
-                    this.outStream.write(this.NewLine);
-                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
-                    printheaders("CUSTOMER TRN: " + no, false, 1);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.BoldOff);
 
-                } catch (Exception e) {
+//            if (type == 1) {
+//                this.outStream.write(this.BoldOn);
+//                //this.outStream.write(this.DoubleWideOn);//Segi
+//                if (object.getString("LANG").equals("en")) {
+//                    printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("ORDER NO - " + object.getString("ORDERNO"), 40, 1), false, 2);
+//                } else if (object.getString("invoicepaymentterms").contains("2")) {
+//                    printheaders(getAccurateText("@" + ArabicTEXT.Creditinvoice + "!:" + object.getString("invoicenumber"), 40, 1), true, 2);
+//                } else if (object.getString("invoicepaymentterms").contains("0") || object.getString("invoicepaymentterms").contains("1")) {
+//                    printheaders(getAccurateText("@" + ArabicTEXT.Cashinvoice + "!:" + object.getString("invoicenumber"), 40, 1), true, 2);
+//                } else {
+//                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                }
+////                this.outStream.write(this.DoubleWideOff);//Segi
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                try {
+//                    String[] parts = object.getString("CUSTOMER").split("\\-");
+//                    printheaders("CUSTOMER: " + parts[0], true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    try {
+//                        Log.e("ARABIC CUSTOMER", "" + parts[1]);
+//                        printheaders("          @" + parts[1] + "!", true, 1);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.BoldOff);
+//                    printheaders("ADDRESS: " + object.getString("ADDRESS"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("          @" + object.getString("ARBADDRESS") + "!", true, 1);
+//                    this.outStream.write(this.NewLine);
+//                    // this.outStream.write(this.NewLine);
+//                    //  this.outStream.write(this.NewLine);
+//                } catch (Exception e) {
+//                }
+//                this.count++;
+//            }
+//
+//            else if (type == 9) {   //Type for Sales Invoice
+            //this.outStream.write(this.BoldOn);
+            //this.outStream.write(this.DoubleWideOn);
+            if (object.getString("LANG").equals("en")) {
+                String customerType = "";
+                String customerTypear = "";
+                if (object.getString("customertype").equals("1")) {
+                    customerType = "CASH INVOICE NO";
+                    customerTypear = ArabicLabels.CASH; // changes
+                } else if (object.getString("customertype").equals("2")) {
+                    customerType = "CREDIT INVOICE NO";
+                    customerTypear = ArabicLabels.Credit + " " + ArabicLabels.InvoiceNo;  // changes
+                } else if (object.getString("customertype").equals("3")) {
+                    customerType = "TC INVOICE NO";
+                    customerTypear = ArabicLabels.TC + " " + ArabicLabels.InvoiceNo; //changes
                 }
-                this.count++;
-            } else if (type == 9) {   //Type for Sales Invoice
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                if (object.getString("LANG").equals("en")) {
-                    String customerType = "";
-                    if (object.getString("customertype").equals("1")) {
-                        customerType = "CASH";
-                    } else if (object.getString("customertype").equals("2")) {
-                        customerType = "CREDIT";
-                    } else if (object.getString("customertype").equals("3")) {
-                        customerType = "TC";
-                    }
-                    printheaders(getAccurateText("TAX INVOICE", 40, 1), false, 2);
+                //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                    printheaders(getAccurateText(customerType + " " + "INVOICE NO - " + object.getString("ORDERNO"),40,1),false,2);
+                printheaders("        " + getAccurateText("@" + customerTypear + "!" + " / " + customerType + " - " + object.getString("ORDERNO"), 100, 1), true, 2);
+                this.outStream.write(this.NewLine);
+                printheaders("        " + getAccurateText("MANUAL INVOICE - " + object.getString("MANUAL INVOICE"), 100, 1), false, 0);
 
-                    this.outStream.write(this.NewLine);
-                    //printheaders(getAccurateText(customerType + " " + "INVOICE NO - " + object.getString("ORDERNO"),40,1),false,2);
-                }
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                if (!object.getString("LPONO").equals("")) {
-                    printheaders(getAccurateText("LPO NO: " + object.getString("LPONO"), 137, 2), false, 0);
-                }
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                try {
-                    printheaders("INVOICE NO: " + object.getString("ORDERNO"), false, 1);
-                    this.outStream.write(this.NewLine);
-                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
-                    this.outStream.write(this.NewLine);
-                    String parts = object.getString("CUSTOMER");
-                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), false, 2);
-                    this.outStream.write(this.NewLine);
-                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
-                    printheaders("ADDRESS: " + address, false, 1);
-                    this.outStream.write(this.NewLine);
-                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
-                    printheaders("CUSTOMER TRN: " + no, false, 1);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.BoldOff);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                this.count++;
-            } else if (type == 11) {   //Type for GR,BR
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                if (object.getString("LANG").equals("en")) {
-                    String customerType = "";
-                    if (object.getString("customertype").equals("1")) {
-                        customerType = "CASH";
-                    } else if (object.getString("customertype").equals("2")) {
-                        customerType = "CREDIT";
-                    } else if (object.getString("customertype").equals("3")) {
-                        customerType = "TC";
-                    }
-                    printheaders(getAccurateText("TAX CREDIT NOTE", 40, 1), false, 2);
-                    this.outStream.write(this.NewLine);
-                    //printheaders(getAccurateText(customerType + " " + "INVOICE NO - " + object.getString("ORDERNO"),40,1),false,2);
-                }
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                try {
-                    printheaders("CREDIT NOTE NO: " + object.getString("ORDERNO"), false, 1);
-                    this.outStream.write(this.NewLine);
-                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
-                    this.outStream.write(this.NewLine);
-                    String parts = object.getString("CUSTOMER");
-                    printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), false, 2);
-                    this.outStream.write(this.NewLine);
-                    String address = object.getString("ADDRESS").equals("null") ? "" : object.getString("ADDRESS");
-                    printheaders("ADDRESS: " + address, false, 1);
-                    this.outStream.write(this.NewLine);
-                    String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
-                    printheaders("CUSTOMER TRN: " + no, false, 1);
-                    this.outStream.write(this.NewLine);
-                    this.outStream.write(this.BoldOff);
-
-                } catch (Exception e) {
-                }
-                this.count++;
-            } else if (type == 10) {   //Type for Delivery
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                if (object.getString("LANG").equals("en")) {
-                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
-                    this.outStream.write(this.NewLine);
-                    printheaders(getAccurateText("DELIVERY NO - " + object.getString("ORDERNO"), 40, 1), false, 2);
-                    printheaders(getAccurateText("DELIVERY DATE - " + object.getString("DELIVERYDATE"), 40, 1), false, 2);
-                }
-                if (object.getString("LANG").equals("en")) {
-                    String customerType = "";
-                    if (object.getString("customertype").equals("1")) {
-                        customerType = "CASH";
-                    } else if (object.getString("customertype").equals("2")) {
-                        customerType = "CREDIT";
-                    } else if (object.getString("customertype").equals("3")) {
-                        customerType = "TC";
-                    }
-                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
-                    this.outStream.write(this.NewLine);
-                    printheaders(getAccurateText("INVOICE NO - " + object.getString("ORDERNO"), 40, 1), false, 2);
-                }
-
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                try {
-                    printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
-                    this.outStream.write(this.NewLine);
-
-                    String[] parts = object.getString("CUSTOMER").split("\\-");
-                    printheaders("CUSTOMER: " + parts[0], false, 2);
-                    this.outStream.write(this.NewLine);
-                    printheaders("ADDRESS: " + object.getString("ADDRESS"), false, 1);
-                    this.outStream.write(this.NewLine);
-                    printheaders("PAYEE: " + object.getString("payee"), false, 1);
-                    this.outStream.write(this.NewLine);
-
-                    String method = "";
-                    try {
-                        if (!Const.paySource.equals("") && !Const.paySource.equals("null")) {
-                            method = Const.paySource.replace("%20", " ");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    String reference = "";
-                    try {
-                        if (!Const.payReference.equals("") && !Const.payReference.equals("null")) {
-                            reference = Const.payReference.replace("%20", " ");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    printheaders(getAccurateText("PAYMENT REFERENCE: " + reference, 80, 0) + getAccurateText("  PAYMENT METHOD: " + method, 80, 2), false, 1);
-//                    printheaders("PAYMENT REFERENCE: " + object.getString("PAYMENTREF") + "     "+"PAYMENT METHOD: "+method, false, 1);
-                    this.outStream.write(this.NewLine);
-                    //this.outStream.write(this.NewLine);
-                    //this.outStream.write(this.NewLine);
-                    this.outStream.write(this.BoldOff);
-                } catch (Exception e) {
-                }
-                this.count++;
-            } else if (type == 2) {
-                printheaders("Doc No: " + object.getString("DOCUMENT NO"), false, 2);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                if (object.getString("LANG").equals("en")) {
-                    printheaders(getAccurateText("PAYMENT RECEIPT", 40, 1), false, 2);
-                }
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
-                this.outStream.write(this.NewLine);
-                String parts = object.getString("CUSTOMER");
-                printheaders("CUSTOMER: " + parts.replaceAll("%20", " ").replaceAll("%26", "&").replaceAll("%2C", ",").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%2F", "/").replaceAll("%5C", "\\"), true, 2);
-                this.outStream.write(this.NewLine);
-
-                this.outStream.write(this.BoldOff);
-                printheaders("ADDRESS :" + object.getString("ADDRESS"), true, 1);
-                this.outStream.write(this.NewLine);
-                String no = object.getString("TRN").equals("null") ? "" : object.getString("TRN");
-                printheaders("CUSTOMER TRN: " + no, false, 1);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-            } else if (type == 3) {
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                if (isFirstInvoice) {
-                    printheaders(getAccurateText("DEPOSIT SUMMARY", 40, 1), false, 3);
-                } else {
-                    printheaders(getAccurateText("CREDIT NOTE", 40, 1), false, 3);
-                }
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-                this.count++;
-            } else if (type == 4) {
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                printheaders(getAccurateText("SALES SUMMARY", 40, 1), false, 1);
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-            } else if (type == 5) {
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                printheaders(getAccurateText("ROUTE ACTIVITY LOG", 40, 1), false, 1);
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-            } else if (type == 6) {
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                printheaders(getAccurateText("ROUTE SUMMARY", 40, 1), false, 1);
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
-            } else if (type == 7) {
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.BoldOn);
-                this.outStream.write(this.DoubleWideOn);
-                printheaders(getAccurateText("DAMAGE/EXPIRY REPORT", 40, 1), false, 3);
-                this.outStream.write(this.DoubleWideOff);
-                this.outStream.write(this.BoldOff);
-                this.outStream.write(this.NewLine);
-                this.outStream.write(this.NewLine);
+            } else if (object.getString("invoicepaymentterms").contains("2")) {
+                printheaders(getAccurateText("@" + ArabicTEXT.Creditinvoice + "!:"
+                        + object.getString("invoicenumber"), 40, 1), true, 2);
+            } else if (object.getString("invoicepaymentterms").contains("0") || object.getString("invoicepaymentterms").contains("1")) {
+                printheaders(getAccurateText("@" + ArabicTEXT.Cashinvoice + "!:" + object.getString("invoicenumber"), 40, 1), true, 2);
+            } else {
+                //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
             }
+            //this.outStream.write(this.DoubleWideOff);
+            //this.outStream.write(this.BoldOff);
+            this.outStream.write(this.NewLine);
+            this.outStream.write(this.NewLine);
+            //this.outStream.write(this.BoldOn);
+            try {
+
+                printheaders(getAccurateText("CUSTOMER ID: " + Const.custPayID,
+                        60, 0) + getAccurateText(" : ", 3,
+                        0) + getAccurateText(ArabicLabels.CustomerID, 35,
+                        2), true, 2);
+                this.outStream.write(this.NewLine);
+                printheaders(getAccurateText("CUSTOMER NAME: " + Const.custPayName,
+                        60, 0) + getAccurateText(" : ", 3, 0) +
+                        getAccurateText(ArabicLabels.CustomerName, 35, 2), true, 2);
+                this.outStream.write(this.NewLine);
+                printheaders("ARABIC NAME: @" + Const.custPayNameAR + "!", true, 1);
+                this.outStream.write(this.NewLine);
+                //this.outStream.write(this.BoldOff);
+
+                // changes
+                printheaders("CUSTOMER ADDRESS: @" + Const.custPayAddress + "!", true, 1);
+                this.outStream.write(this.NewLine);
+                this.outStream.write(this.NewLine);
+
+                printheaders(getAccurateText("CUSTOMER VAT NUMBER: " + Const.cusVATno, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.CUSTOMER_VAT_NUMBER, 45, 2), true, 2);
+                this.outStream.write(this.NewLine);
+                printheaders(getAccurateText("CUSTOMER BRANCH ID: " + Const.cusBranchID, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.CUSTOMER_BRANCH_ID, 45, 2), true, 2);
+                this.outStream.write(this.NewLine);
+                printheaders(getAccurateText("BRANCH NAME: " + Const.cusBranchName, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.BRANCH_NAME, 45, 2), true, 2);
+                this.outStream.write(this.NewLine);
+                    /*printheaders("BRANCH ARABIC NAME: @" + Const.cusBranchNameAR + "!", true, 1);
+                    this.outStream.write(this.NewLine);
+                    this.outStream.write(this.NewLine);*/
+
+            } catch (Exception e) {
+            }
+            this.count++;
+//            }
+
+//            else if (type == 10) {   //Type for Delivery
+//                //this.outStream.write(this.BoldOn);
+//                //this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("        "+ getAccurateText(ArabicLabels.DeliveryNo +" / DELIVERY NO - " + object.getString("ORDERNO"), 100, 1), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("        "+ getAccurateText(ArabicLabels.DeliveryDate +" / DELIVERY DATE - " + object.getString("DELIVERYDATE"), 100, 1), true, 2);
+//
+//                }
+//                if (object.getString("LANG").equals("en")) {
+//                    String customerType = "";
+//                    if (object.getString("customertype").equals("1")) {
+//                        customerType = "CASH";
+//                    } else if (object.getString("customertype").equals("2")) {
+//                        customerType = "CREDIT";
+//                    } else if (object.getString("customertype").equals("3")) {
+//                        customerType = "TC";
+//                    }
+//                    this.outStream.write(this.NewLine);
+//
+//                    printheaders("      " + getAccurateText("@"+ArabicLabels.InvoiceNo + "!" + " / INVOICE NO - " + object.getString("ORDERNO"), 100, 1), true, 2);
+//
+////                    this.outStream.write(this.NewLine);
+////                    printheaders("        "+getAccurateText("MANUAL INVOICE - " + object.getString("MANUAL INVOICE"),100,1),false,0);
+//
+//                } else if (object.getString("invoicepaymentterms").contains("2")) {
+//                    printheaders(getAccurateText("@" + ArabicTEXT.Creditinvoice + "!:" + object.getString("invoicenumber"), 40, 1), true, 2);
+//                } else if (object.getString("invoicepaymentterms").contains("0") || object.getString("invoicepaymentterms").contains("1")) {
+//                    printheaders(getAccurateText("@" + ArabicTEXT.Cashinvoice + "!:" + object.getString("invoicenumber"), 40, 1), true, 2);
+//                } else {
+//                    //printheaders(getAccurateText(object.getString("INVOICETYPE"), 40, 1), false, 2);
+//                }
+//
+//                //this.outStream.write(this.DoubleWideOff);
+//                //this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                //this.outStream.write(this.BoldOn);
+//                try {
+//                    printheaders(getAccurateText("CUSTOMER ID: " + Const.custPayID, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.CustomerID, 35, 2), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("CUSTOMER NAME: " + Const.custPayName, 60, 0) + getAccurateText(" : ", 3, 0)+ getAccurateText(ArabicLabels.CustomerName, 35, 2), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("ARABIC NAME: @" + Const.custPayNameAR + "!", true, 1);
+//                    this.outStream.write(this.NewLine);
+//
+//                    printheaders("CUSTOMER ADDRESS: @" + Const.custPayAddress+ "!", true, 1);
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.NewLine);
+//
+//                    printheaders(getAccurateText("CUSTOMER VAT NUMBER: " + Const.cusVATno, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.CUSTOMER_VAT_NUMBER, 45, 2), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("CUSTOMER BRANCH ID: " + Const.cusBranchID, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.CUSTOMER_BRANCH_ID, 45, 2), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders(getAccurateText("BRANCH NAME: " + Const.cusBranchName, 60, 0) + getAccurateText(" : ", 3, 0) + getAccurateText(ArabicLabels.BRANCH_NAME, 45, 2), true, 2);
+//                    this.outStream.write(this.NewLine);
+//                    printheaders("BRANCH ARABIC NAME: @" + Const.cusBranchNameAR + "!", true, 1);
+//                    this.outStream.write(this.NewLine);
+//
+//
+//                    printheaders("PAYEE: " + object.getString("payee"), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    String method = "";
+//                    try {
+//                        if (!Const.paySource.equals("") && !Const.paySource.equals("null")) {
+//                            method = Const.paySource.replace("%20", " ");
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    String reference = "";
+//                    try {
+//                        if (!Const.payReference.equals("") && !Const.payReference.equals("null")) {
+//                            reference = Const.payReference.replace("%20", " ");
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    printheaders(getAccurateText("PAYMENT REFERENCE: " + reference, 68, 0) + getAccurateText("  PAYMENT METHOD: " + method, 68, 2), false, 1);
+//                    this.outStream.write(this.NewLine);
+//                    this.outStream.write(this.NewLine);
+//                    //this.outStream.write(this.NewLine);
+//                    //this.outStream.write(this.NewLine);
+//                } catch (Exception e) {
+//                }
+//                this.count++;
+//            } else if (type == 2) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                if (object.getString("LANG").equals("en")) {
+//                    printheaders(getAccurateText("RECEIPT: " + object.getString("RECEIPT"), 40, 1), false, 2);
+//                } else {
+//                    printheaders(getAccurateText("@" + ArabicTEXT.Receipt + "!:" + object.getString("RECEIPT"), 40, 1), true, 2);
+//                }
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//
+//                printheaders("CUSTOMER ID: " + object.getString("CUSTOMERID"), false, 2);
+//                this.outStream.write(this.NewLine);
+//                printheaders("CUSTOMER NAME: " + Const.custPayName, false, 2);
+//                this.outStream.write(this.NewLine);
+//                try {
+//                    printheaders("ARABIC NAME: @" + Const.custPayNameAR + "!", true, 1);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOff);
+//                printheaders("CUSTOMER ADDRESS: @" + Const.custPayAddress+ "!", true, 1);
+//                this.outStream.write(this.NewLine);
+//                String reference = "";
+//                try {
+//                    if (!Const.payReference.equals("") && !Const.payReference.equals("null")) {
+//                        reference = Const.payReference.replace("%20", " ");
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//                printheaders("PAYMENT REFERENCE: " + reference, false, 1);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//
+//            } else if (type == 3) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("DEPOSIT SUMMARY", 40, 1), false, 3);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//                this.count++;
+//            } else if (type == 4) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("SALES SUMMARY", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 5) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("ROUTE ACTIVITY LOG", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 6) {
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("ROUTE SUMMARY", 40, 1), false, 1);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            } else if (type == 7) {
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.BoldOn);
+//                this.outStream.write(this.DoubleWideOn);
+//                printheaders(getAccurateText("DAMAGE/EXPIRY REPORT", 40, 1), false, 3);
+//                this.outStream.write(this.DoubleWideOff);
+//                this.outStream.write(this.BoldOff);
+//                this.outStream.write(this.NewLine);
+//                this.outStream.write(this.NewLine);
+//            }
         } catch (Exception e2) {
             e2.printStackTrace();
         }

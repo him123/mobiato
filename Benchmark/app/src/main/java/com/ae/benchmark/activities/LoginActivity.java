@@ -1,5 +1,6 @@
 package com.ae.benchmark.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,9 @@ import com.ae.benchmark.util.MyFirebaseInstanceIDService;
 import com.ae.benchmark.util.UtilApp;
 import com.google.gson.Gson;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -36,6 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -162,9 +167,9 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_type\":\"credit\",\n" +
             "                    \"cust_possessed_empty_bottle\":\"7\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"9\",\n" +
-            "                    \"cust_long\":\"43.104137\",\n" +
+            "                    \"cust_long\":\"42.972301\",\n" +
             "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"43.104137\"\n" +
+            "                    \"cust_lat\":\"27.633569\"\n" +
             "\n" +
             "                    },\n" +
             "\n" +
@@ -182,9 +187,9 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_type\":\"cash\",\n" +
             "                    \"cust_possessed_empty_bottle\":\"3\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"2\",\n" +
-            "                      \"cust_long\":\"43.104137\",\n" +
+            "                      \"cust_long\":\"45.301403\",\n" +
             "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"43.104137\"\n" +
+            "                    \"cust_lat\":\"21.768335\"\n" +
             "                    }\n" +
             "                    ,\n" +
             "\n" +
@@ -202,9 +207,9 @@ public class LoginActivity extends AppCompatActivity {
             "                    \"cust_type\":\"credit\",\n" +
             "                    \"cust_possessed_empty_bottle\":\"5\",\n" +
             "                    \"cust_possessed_filled_bottle\":\"5\",\n" +
-            "                     \"cust_long\":\"43.104137\",\n" +
+            "                     \"cust_long\":\"53.475230\",\n" +
             "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"43.104137\"\n" +
+            "                    \"cust_lat\":\"20.662248\"\n" +
             "                    }\n" +
             "\n" +
             "                    ]";
@@ -576,4 +581,45 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+//    public static ArrayList<String> loginUser(Context context, String username, String password, String url) {
+//        ArrayList<String> mylist = new ArrayList<String>();
+//        try {
+//            Log.e("URL is", "" + url);
+//            DefaultHttpClient client = new DefaultHttpClient();
+//            client.getCredentialsProvider().setCredentials(getAuthScope(), getCredentials());
+//            HttpGet get = new HttpGet(getUrl(url));
+//            String authString = App.SERVICE_USER + ":" + App.SERVICE_PASSWORD;
+//            byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+//            get.addHeader(App.SAP_CLIENT, App.SAP_CLIENT_ID);
+//            get.addHeader(ACCEPT, APPLICATION_JSON);
+//            HttpResponse response = client.execute(get);
+//            if (response.getStatusLine().getStatusCode() == 201 || response.getStatusLine().getStatusCode() == 200) {
+//                Header[] headers = response.getAllHeaders();
+//                HttpEntity r_entity = response.getEntity();
+//                String jsonString = getJSONString(r_entity);
+//                JSONObject jsonObj = new JSONObject(jsonString);
+//                jsonObj = jsonObj.getJSONObject("d");
+//                Log.e("JSON", "" + jsonObj);
+//                JSONArray jsonArray = jsonObj.getJSONArray("results");
+//                jsonObj = jsonArray.getJSONObject(0);
+//                //jsonObj = jsonObj.getJSONObject("__metadata");
+//                String message = jsonObj.getString("Message");
+//                Log.e("Message", "" + message);
+//                String user = jsonObj.getString("Username");
+//                String passCode = jsonObj.getString("Password");
+//                String returnMessage = jsonObj.getString("Message");
+//                mylist.add(user);
+//                mylist.add(passCode);
+//                mylist.add(returnMessage);
+//                return mylist;
+//            } else {
+//                Log.e("Fail Again", "Fail Again");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return mylist;
+//    }
 }

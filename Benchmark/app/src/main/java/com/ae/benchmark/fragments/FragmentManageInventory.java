@@ -12,10 +12,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ItemsListActivity;
@@ -51,7 +55,7 @@ public class FragmentManageInventory extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_mange_inventory, container, false);
-
+        setHasOptionsMenu(true);
         initViewPagerAndTabs(rootView);
         dbManager = new DBManager(getActivity());
 
@@ -82,7 +86,7 @@ public class FragmentManageInventory extends Fragment {
 
         viewPager.setAdapter(pagerAdapter);
 
-        if (Constant.VAN_STOCK.equals("yes")){
+        if (Constant.VAN_STOCK.equals("yes")) {
             viewPager.setCurrentItem(2);
             Constant.VAN_STOCK = "no";
         }
@@ -124,11 +128,11 @@ public class FragmentManageInventory extends Fragment {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        dbManager  = new DBManager(getActivity());
+        dbManager = new DBManager(getActivity());
         dbManager.open();
-        if (dbManager.checkIsNotVerified()){
-            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+        if (dbManager.checkIsNotVerified()) {
+            LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+            for (int i = 0; i < tabStrip.getChildCount(); i++) {
                 tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -142,7 +146,7 @@ public class FragmentManageInventory extends Fragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     if (viewPager.getCurrentItem() == 0) {
                         viewPager.setCurrentItem(0, false);
-                        return  true;
+                        return true;
                     }
                     return false;
                 }
@@ -179,5 +183,29 @@ public class FragmentManageInventory extends Fragment {
         public CharSequence getPageTitle(int position) {
             return fragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.manage_inv_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+
+            case R.id.action_load_history:
+                Toast.makeText(getActivity(), "LOAD HISTORY", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_unload_history:
+                Toast.makeText(getActivity(), "UNLOAD HISTORY", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+
+        return true;
     }
 }

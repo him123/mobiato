@@ -45,7 +45,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private com.github.clans.fab.FloatingActionMenu fam;
-    private com.github.clans.fab.FloatingActionButton fab1, fab2, fab3, fab4, fab5;
+    private com.github.clans.fab.FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     Context context;
 
     @InjectView(R.id.recycle_feed)
@@ -136,6 +136,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         fab3 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab3);
         fab4 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab4);
         fab5 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab5);
+        fab6 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab6);
 
 
         fam = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.fab_menu);
@@ -203,6 +204,17 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(CustomerDetailOperationActivity.this, FragmentContainActivity.class);
                 i.putExtra("flag", "MER");
+                i.putExtra("cust", customer);
+                startActivity(i);
+                fam.close(true);
+            }
+        });
+
+        fab6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CustomerDetailOperationActivity.this, FragmentContainActivity.class);
+                i.putExtra("flag", "RETURNS");
                 i.putExtra("cust", customer);
                 startActivity(i);
                 fam.close(true);
@@ -308,27 +320,29 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
             fab3.setEnabled(true);
             fab4.setEnabled(true);
             fab5.setEnabled(true);
+            fab6.setEnabled(true);
 
             fab2.setLabelTextColor(context.getResources().getColor(R.color.white));
             fab3.setLabelTextColor(context.getResources().getColor(R.color.white));
             fab4.setLabelTextColor(context.getResources().getColor(R.color.white));
             fab5.setLabelTextColor(context.getResources().getColor(R.color.white));
+            fab6.setLabelTextColor(context.getResources().getColor(R.color.white));
 
         } else {
             fab2.setEnabled(false);
             fab3.setEnabled(false);
             fab4.setEnabled(false);
             fab5.setEnabled(false);
+            fab6.setEnabled(false);
 
             fab2.setLabelTextColor(context.getResources().getColor(R.color.gray));
             fab3.setLabelTextColor(context.getResources().getColor(R.color.gray));
             fab4.setLabelTextColor(context.getResources().getColor(R.color.gray));
             fab5.setLabelTextColor(context.getResources().getColor(R.color.gray));
+            fab6.setLabelTextColor(context.getResources().getColor(R.color.gray));
         }
 
-
         itemList.clear();
-
 
         itemListTransaction = dbManager.getAllTransactionsForCustomer(customer.cust_num);
 
@@ -435,7 +449,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                                 break;
                             case Constant.TRANSACTION_TYPES.TT_OREDER_CREATED:
                                 feed.name = "Order created.";
-                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_invoice_id;
+                                feed.inv_no = "Order id: " + itemListTransaction.get(i).tr_order_id;
                                 break;
 
                             default:
@@ -467,25 +481,30 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.nav_details:{
-
-                Intent intent = new Intent(getApplicationContext() , CustomerDetailActivity.class);
-                intent.putExtra("cust" , customer);
-                startActivity(intent);
-                break;
-            }
+//            case R.id.nav_details:{
+//
+//                Intent intent = new Intent(getApplicationContext() , CustomerDetailActivity.class);
+//                intent.putExtra("cust" , customer);
+//                startActivity(intent);
+//                break;
+//            }
 
 
             case R.id.nav_stock:
-                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(CustomerDetailOperationActivity.this, VanStockActivity.class));
+//                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_sales:
-                Toast.makeText(getBaseContext(), "You selected Sale", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), CustomerDetailActivity.class);
+                intent.putExtra("cust", customer);
+                startActivity(intent);
                 break;
 
             case R.id.nav_Print:
-                Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(getApplicationContext(), CustomerPrintActivity.class);
+                intent2.putExtra("cust", customer);
+                startActivity(intent2);
                 break;
 
             case R.id.coupon_history:

@@ -175,7 +175,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         Constant.checkBoxValue = "";
         itemList.clear();
         dbManager.open();
-        itemList = dbManager.getVanStock();
+        itemList = dbManager.getVanStock(true);
 
         for (int i = 0; i < itemList.size(); i++) {
 //            arrCheckedItems.add(itemList.get(i).item_code);

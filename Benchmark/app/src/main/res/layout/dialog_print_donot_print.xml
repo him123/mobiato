@@ -33,9 +33,9 @@
                 android:layout_marginTop="@dimen/_21sdp"
                 android:gravity="right"
                 android:text="SALE"
-                android:visibility="gone"
                 android:textSize="@dimen/_19sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,6 +59,12 @@
             android:paddingBottom="@dimen/_11sdp"
             android:paddingTop="@dimen/_11sdp">
 
+            <ImageView
+                android:id="@+id/img_pring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/print" />
+
             <TextView
                 android:id="@+id/txtCash"
                 android:layout_width="wrap_content"
@@ -68,7 +74,8 @@
                 android:text="PRINT  "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -81,21 +88,27 @@
             android:paddingBottom="@dimen/_11sdp"
             android:paddingTop="@dimen/_20sdp">
 
+            <ImageView
+                android:id="@+id/img_nopring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/iv_notprint" />
+
             <TextView
                 android:id="@+id/txtCustody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="DO NOT\n PRINT"
                 android:gravity="center"
+                android:text="DO NOT\n PRINT"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rl_normal"
             android:layout_width="@dimen/_75sdp"
             android:layout_height="@dimen/_75sdp"
@@ -103,7 +116,8 @@
             android:layout_centerVertical="true"
             android:background="@drawable/rounded_orange"
             android:paddingBottom="@dimen/_11sdp"
-            android:paddingTop="@dimen/_11sdp">
+            android:paddingTop="@dimen/_11sdp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

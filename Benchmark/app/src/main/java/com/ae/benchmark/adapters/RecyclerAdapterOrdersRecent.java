@@ -85,8 +85,9 @@ public class RecyclerAdapterOrdersRecent extends RecyclerView.Adapter<RecyclerVi
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext , SelectedOrderItemActivity.class);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext , SelectedOrderItemActivity.class);
+//                intent.putExtra("order_num",item.order_id);
+//                mContext.startActivity(intent);
             }
         });
     }

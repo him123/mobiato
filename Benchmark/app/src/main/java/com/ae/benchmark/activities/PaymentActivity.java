@@ -84,6 +84,9 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     @InjectView(R.id.btnPayment)
     Button btnPayment;
 
+    @InjectView(R.id.txt_address)
+    TextView txt_address;
+
     //    String name;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener date;
@@ -116,6 +119,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             invDate = extras.getString("invDate");
             grandTot = extras.getString("amt");
         }
+
+        txt_address.setText("(" + customer.cust_address + ")");
 
         txt_amount.setText(amount);
 
@@ -197,9 +202,14 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//<<<<<<< HEAD
 
                 if (!edt_amount.getText().toString().equalsIgnoreCase("")) {
+
+                    if (customer.cust_type.equalsIgnoreCase("cash") && !edt_amount.getText().toString().equalsIgnoreCase(amount)) {
+
+                        Toast.makeText(PaymentActivity.this, "Please do full payment as this is cash customer", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     Payment payment = new Payment();
                     dbManager.open();

@@ -272,7 +272,7 @@ public class FragmentIMVUnload extends Fragment {
         super.onResume();
         dbManager = new DBManager(getActivity());
         dbManager.open();
-        List<Item> itemList = dbManager.getVanStock();
+        List<Item> itemList = dbManager.getVanStock(true);
 
         int countRto = 0;
         for (int i=0;i<itemList.size();i++){

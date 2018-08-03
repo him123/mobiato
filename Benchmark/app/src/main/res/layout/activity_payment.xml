@@ -71,10 +71,12 @@
                             android:layout_centerHorizontal="true"
                             android:text="200288 Panda"
                             android:textColor="@color/white"
+                            android:visibility="invisible"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/txt_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"

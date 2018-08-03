@@ -1481,6 +1481,56 @@ public class DBManager {
 
 
     //Item List
+    public ArrayList<Item> getOrderItems(String order_no) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_ITEMS +
+                " WHERE " + DatabaseHelper.ORDER_NO + " = " + order_no;
+        ;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
+                        item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
+                        item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+                        item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
+
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+
+    //Item List
     public ArrayList<Item> getAllOrdersForCustomer(String cust_num) {
 
         ArrayList<Item> list = new ArrayList<Item>();
@@ -1864,13 +1914,20 @@ public class DBManager {
     }
 
 
-    public ArrayList<Item> getVanStock() {
+    public ArrayList<Item> getVanStock(boolean showCoupon) {
 
         ArrayList<Item> list = new ArrayList<Item>();
-
+        String selectQuery;
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS + "";
-//                " WHERE " + DatabaseHelper.LOAD_NO + " = " + load_no;
+        if (showCoupon) {
+
+
+            selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS;
+        } else {
+
+            selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
+                    " WHERE " + DatabaseHelper.ITEM_UOM + " = " + "'Bottle'";
+        }
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -2207,6 +2264,34 @@ public class DBManager {
         return index;
     }
 
+    //GET LAST INVOICE GENERATED NUMBER
+    public long getLastCustomerID() { // type = 0 empty, 1 = filled
+        long index = 0;
+        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_CUSTOMER;
+//                " WHERE " + DatabaseHelper.CUST_NUM + " = " + custNum;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM));
+                index = Integer.parseInt(count);
+            } else {
+                index = 0;
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return index;
+    }
+
 
     //GET EMPTY OR FILLEd BOTTLES
     public String getBottleQty(String item_code) { // type = 0 empty, 1 = filled
@@ -2478,7 +2563,7 @@ public class DBManager {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE "  + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'";
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {

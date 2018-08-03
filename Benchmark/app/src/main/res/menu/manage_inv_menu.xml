@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_load_history"
+        android:orderInCategory="100"
+        android:title="@string/action_load_history"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_unload_history"
+        android:orderInCategory="100"
+        android:title="@string/action_unload_history"
+        app:showAsAction="never" />
+</menu>

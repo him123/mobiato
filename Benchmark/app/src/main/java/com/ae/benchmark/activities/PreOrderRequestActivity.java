@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -140,46 +141,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
         mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
-        if (type.equals("cash")) {
+        if (customer.cust_type.equalsIgnoreCase("cash")) {
             mTitle.setText("CASH SALE");
-
-            main_layout.setVisibility(View.VISIBLE);
-            waiting_layout.setVisibility(View.GONE);
-
-            if (oldOrNew.equals("new")) {
-            }
-
-        } else if (type.equals("credit")) {
+        } else {
             mTitle.setText("CREDIT SALE");
-
-            main_layout.setVisibility(View.VISIBLE);
-            waiting_layout.setVisibility(View.GONE);
-
-            if (oldOrNew.equals("new")) {
-            }
-
-        } else if (type.equals("norm")) {
-            mTitle.setText("SALE");
-
-            main_layout.setVisibility(View.VISIBLE);
-            waiting_layout.setVisibility(View.GONE);
-
-            if (oldOrNew.equals("new")) {
-            }
-        } else if (type.equals("custody")) {
-            mTitle.setText("CUSTODY SALE");
-
-            main_layout.setVisibility(View.GONE);
-            waiting_layout.setVisibility(View.VISIBLE);
-
-            request_for_approval("SV1", custName, "SM1", "22");
-
-
-        } else if (type.equals("Order")) {
-            mTitle.setText("Order");
-
-            main_layout.setVisibility(View.VISIBLE);
-            waiting_layout.setVisibility(View.GONE);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -197,7 +162,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
         dbManager.open();
 
-        itemList = dbManager.getVanStock();
+        if (isCoupon.equalsIgnoreCase("yes")) {
+            itemList = dbManager.getVanStock(false);
+        } else {
+            itemList = dbManager.getVanStock(true);
+        }
+
+        for (int i = 0; i < itemList.size(); i++)
+            itemList.get(i).item_qty = "0";
+
 
         mLayoutManager = new LinearLayoutManager(this);
         recyclerview_orders.setLayoutManager(mLayoutManager);
@@ -395,40 +368,63 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 }
 
 
+                // REDIRECTING ACTIVITY CONDITION
                 if (isCoupon.equals("yes")) {
                     deleteDialog.dismiss();
 
                     UtilApp.askForPrint(PreOrderRequestActivity.this,
                             PreOrderRequestActivity.this);
-//                    finish();
                 } else {
-                    deleteDialog.dismiss();
+//                    deleteDialog.dismiss();
 
                     if (customer.cust_type.equalsIgnoreCase("cash")) {
-                        Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
-                        i.putExtra("name", custName);
+                        final Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("cust", customer);
+                        i.putExtra("amount", ""+price);
+                        i.putExtra("col_doc_no", "" + CollNum);
+                        i.putExtra("invDate", "" + salesInvoice.inv_date);
                         i.putExtra("amt", String.valueOf(grandTot));
-//                        startActivity(i);
 
-                        UtilApp.askForPrint(PreOrderRequestActivity.this,
-                                PreOrderRequestActivity.this, i);
+//                        UtilApp.askForPrint(PreOrderRequestActivity.this,
+//                                PreOrderRequestActivity.this, i);
 
-//                        finish();
+                        final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
+                        alertDialog.setCancelable(false);
+                        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+                        img_print.setColorFilter(ContextCompat.getColor(PreOrderRequestActivity.this, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //your business logic
+
+                                alertDialog.dismiss();
+
+                                startActivity(i);
+
+                            }
+                        });
+
+                        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //your business logic
+                                alertDialog.dismiss();
+
+                                startActivity(i);
+
+                            }
+                        });
+
+                        alertDialog.show();
+
                     } else {
-//                        Intent i = new Intent(PreOrderRequestActivity.this, CollectionPaymentActivity.class);
-//                        i.putExtra("name", custName);
-//                        startActivity(i);
-//                        finish();
-
-                        Intent i = new Intent(PreOrderRequestActivity.this, FragmentContainActivity.class);
-                        i.putExtra("flag", "COL");
-                        i.putExtra("cust", customer);
-//                        startActivity(i);
 
                         UtilApp.askForPrint(PreOrderRequestActivity.this,
-                                PreOrderRequestActivity.this, i);
-//                        finish();
+                                PreOrderRequestActivity.this);
                     }
                 }
             }

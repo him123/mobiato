@@ -77,36 +77,43 @@ public class FragmentDashboardOne extends Fragment {
     String jsonString = "{\n" +
             "\"customer_name_en\":\"\",\n" +
             "\"customer_name_ar\":\"\",\n" +
-            "\"بائع\":\"\",\n" +
-            "\"طريق\":\"\",\n" +
+            "\"SALESMAN\":\"\",\n" +
+            "\"ROUTE\":\"\",\n" +
             "\"invoice_date\":\"\",\n" +
             "\"customer_address\":\"\",\n" +
             "\"print_type\":\"\",\n" +
             "\"DOC DATE\":\"\",\n" +
             "\"LPONO\":\"\",\n" +
-            "\"رقم الاتصال\":\"\",\n" +
+            "\"CONTACTNO\":\"\",\n" +
             "\"TRN\":\"\",\n" +
             "\"ORDERNO\":\"\",\n" +
             "\"TRIP START DATE\":\"\",\n" +
-            "\"زمن\":\"45456454\",\n" +
-            "\n" +
+            "\"invoicepriceprint\":\"1\",\n" +
+            "\"invoicepaymentterms\":\"2\",\n" +
+            "\"SUB TOTAL\":\"215.32\",\n" +
+            "\"invoicenumber\":\"INV123\",\n" +
+            "\"TIME\":\"45456454\",\n" +
+            "\"LANG\":\"AR\",\n" +
             "\"TOTAL\":\"2568.00\",\n" +
-            "\n" +
-            "\"مجموع\":[{\n" +
-            "\"المبلغ الإجمالي(AED)\":\"2568.00\",\n" +
-            "\"المجموع دون الضريبة(AED)\":\"2568.00\",\n" +
-            "\"المبلغ الإجمالي: AED - \":\"2568.00\"\n" +
+            "\"INVOICE DISCOUNT\":\"\",\n" +
+            "\"VAT\":\"\",\n" +
+            "\"NET SALES\":\"1235.00\",\n" +
+            "\"invoicefooter\":\"\",\n" +
+            "\"TOTAL\":[{\n" +
+            "\"Total Amount(AED)\":\"2568.00\",\n" +
+            "\"Total Befor TAX(AED)\":\"2568.00\",\n" +
+            "\"GROSS AMOUNT: AED - \":\"2568.00\"\n" +
             "}\n" +
             "]\n" +
             ",\n" +
             "\"HEADERS\":[\n" +
             "\"SI No\",\n" +
             "\"Item Code\",\n" +
-            "\"وصف\",\n" +
+            "\"Description\",\n" +
             "\"UOM\",\n" +
             "\"QTY\",\n" +
             "\"UNIT Price\",\n" +
-            "\"المبلغ الإجمالي\",\n" +
+            "\"Total amount\",\n" +
             "\"Total Disc\",\n" +
             "\"Vat Amt\",\n" +
             "\"Vat %\",\n" +
@@ -119,8 +126,8 @@ public class FragmentDashboardOne extends Fragment {
             "[\n" +
             "\"1\",\n" +
             "\"241\",\n" +
-            "\"زجاجة مع الماء\",\n" +
-            "\"زجاجة\",\n" +
+            "\"bottle with woater\",\n" +
+            "\"bottle\",\n" +
             "\"2\",\n" +
             "\"256\",\n" +
             "\"545\",\n" +
@@ -130,7 +137,7 @@ public class FragmentDashboardOne extends Fragment {
             "\"565\"\n" +
             "]\n" +
             "]\n" +
-            "}";
+            "}\n";
 
 
     public FragmentDashboardOne() {

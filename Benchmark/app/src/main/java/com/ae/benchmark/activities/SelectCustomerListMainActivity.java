@@ -94,6 +94,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 //    MaterialShowcaseSequence sequence;
 
     DBManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +133,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         pg.setVisibility(View.VISIBLE);
-        new AsyncTaskRunner().execute();
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +201,11 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new AsyncTaskRunner().execute();
+    }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
@@ -272,7 +278,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
             try {
 
                 itemList = new ArrayList<>();
-
+                itemList.clear();
                 dbManager = new DBManager(getApplicationContext());
                 dbManager.open();
                 itemList = dbManager.getAllREcentCust();
@@ -362,31 +368,31 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.nav_stock:{
-                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Constant.VAN_STOCK = "yes";
+            case R.id.nav_stock: {
+                Intent intent = new Intent(getApplicationContext(), VanStockActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                Constant.VAN_STOCK = "yes";
                 startActivity(intent);
                 break;
             }
 
             case R.id.nav_dashboard: {
-                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DashBoardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
             }
 
             case R.id.nav_sales: {
-                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DashBoardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 Constant.NAV_AUDIT = "yes";
                 startActivity(intent);
                 break;
             }
 
-            case R.id.nav_Print:{
-                Intent intent = new Intent(getApplicationContext() , DashBoardActivity.class);
+            case R.id.nav_Print: {
+                Intent intent = new Intent(getApplicationContext(), DashBoardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 Constant.PRINT = "yes";
                 startActivity(intent);
@@ -394,7 +400,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
             }
 
             case R.id.nav_map:
-                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
                 Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
                 break;

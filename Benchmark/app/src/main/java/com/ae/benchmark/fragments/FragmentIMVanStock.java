@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ItemsListActivity;
@@ -87,13 +88,16 @@ public class FragmentIMVanStock extends Fragment {
         super.setMenuVisibility(visible);
         if (visible) {
 
+
+//            Toast.makeText(getActivity(), "VAN SALE VISIBLE", Toast.LENGTH_SHORT).show();
+
             try {
                 DBManager dbManager = new DBManager(getActivity());
                 dbManager.open();
                 itemList = new ArrayList<>();
 
                 itemList.clear();
-                itemList = dbManager.getVanStock();
+                itemList = dbManager.getVanStock(true);
 
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerview_items.setLayoutManager(mLayoutManager);

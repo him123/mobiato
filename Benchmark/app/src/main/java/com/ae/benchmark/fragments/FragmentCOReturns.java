@@ -9,9 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +17,6 @@ import android.view.ViewGroup;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ALLItemsListActivity;
-import com.ae.benchmark.activities.ItemsListActivity;
-import com.ae.benchmark.activities.OrderReqeustActivity;
-import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.adapters.RecyclerAdapterOrdersPast;
 import com.ae.benchmark.adapters.RecyclerAdapterOrdersRecent;
 import com.ae.benchmark.adapters.TestFragmentAdapter;
@@ -40,7 +35,7 @@ import butterknife.InjectView;
  * Created by Himm on 3/13/2018.
  */
 
-public class FragmentCOOrder extends Fragment {
+public class FragmentCOReturns extends Fragment {
 
 
 //    private Toolbar toolbar;
@@ -71,18 +66,18 @@ public class FragmentCOOrder extends Fragment {
     private GridLayoutManager mGridLayoutManager;
 
     Customer customer;
-    public FragmentCOOrder(Customer customer) {
+    public FragmentCOReturns(Customer customer) {
         // Required empty public constructor
         this.customer = customer;
     }
 
-    public FragmentCOOrder() {
+    public FragmentCOReturns() {
         // Required empty public constructor
 
     }
 
-    public static FragmentCOOrder newInstance(String content, Context c) {
-        FragmentCOOrder fragment = new FragmentCOOrder();
+    public static FragmentCOReturns newInstance(String content, Context c) {
+        FragmentCOReturns fragment = new FragmentCOReturns();
 
         fragment.mContent = content;
         return fragment;
@@ -102,7 +97,7 @@ public class FragmentCOOrder extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_co_order, container, false);
+        View v = inflater.inflate(R.layout.fragment_co_retrun, container, false);
         ButterKnife.inject(this, v);
 
         Bundle extras = getActivity().getIntent().getExtras();
@@ -156,7 +151,7 @@ public class FragmentCOOrder extends Fragment {
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
             switch (position) {
                 case 0:
 

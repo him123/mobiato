@@ -97,17 +97,9 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final String TAG_MANAGE_LOAD = "mange_inventory";
     private static final String TAG_JOURNEY_PLAN = "Journey_Plan";
     private static final String TAG_PAYMENTS = "Payments";
-    //    private static final String TAG_ROUTE_RECONE = "Route_Recone";
-//    private static final String TAG_SALE_SNAP = "Sales_Snap";
     private static final String TAG_DATA_POSTING = "Data_Posting_Audit";
     private static final String TAG_PRINT = "Print";
-    //    private static final String TAG_CATALOGUE = "Catalogue";
-    private static final String TAG_SETTINGS = "settings";
-    private static final String TAG_SUGGESTIONS = "suggestions";
-    private static final String TAG_RATE_APP = "RATE_APP";
-    private static final String TAG_DATAPOSTING_AUDIT = "Datapostiong Audit";
-    //new
-    private static final String TAG_SHARE_APP = "SHARE_APP";
+    private static final String TAG_SETTINGS = "Settings";
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
@@ -196,7 +188,7 @@ public class DashBoardActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_MANAGE_LOAD;
             loadHomeFragment();
         } else if (Constant.PRINT.equals("yes")) {
-            navItemIndex = 5;
+            navItemIndex = 4;
             CURRENT_TAG = TAG_PRINT;
             loadHomeFragment();
         } else if (savedInstanceState == null) {
@@ -215,15 +207,14 @@ public class DashBoardActivity extends AppCompatActivity {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
 
-        if (UtilApp.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, DashBoardActivity.this)) {
+        if (UtilApp.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                DashBoardActivity.this)) {
             createFile();
         } else {
             ActivityCompat.requestPermissions(DashBoardActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
-
-
     }
 
     public void createFile() {
@@ -377,52 +368,6 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_select_customer, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        super.onOptionsItemSelected(item);
-//
-//        switch (item.getItemId()) {
-//            case R.id.nav_import:
-//                Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_stock:
-//                Toast.makeText(getBaseContext(), "You selected Stock", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_dashboard:
-//                Toast.makeText(getBaseContext(), "You selected Dashboard", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_sales:
-//                Toast.makeText(getBaseContext(), "You selected Sales", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_Print:
-//                Toast.makeText(getBaseContext(), "You selected Print", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_cat:
-//                Toast.makeText(getBaseContext(), "You selected Catalogue", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.nav_map:
-//                Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
-//                startActivity(intent);
-//                break;
-//
-//        }
-//        return true;
-//
-//    }
-
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
@@ -440,47 +385,14 @@ public class DashBoardActivity extends AppCompatActivity {
                 // PAYMENTS
                 FragmentPayments connectionsFragment = new FragmentPayments();
                 return connectionsFragment;
-//            case 4:
-//                // ROUTE RECON
-//                FragmentOrder messagesFragments = new FragmentOrder();
-//                return messagesFragments;
-//            case 5:
-//                // SALES SNAP
-//                InvoiceSummury dailyActivityFragment = new InvoiceSummury();
-//                return dailyActivityFragment;
             case 4:
                 // DATA POSTING AUDIT
                 FragmentAudit employeeCodeSearchFragment = new FragmentAudit();
                 return employeeCodeSearchFragment;
-//            case 5:
-////                // CATALOGUE
-//                FragmentSales settingsFragment = new FragmentSales();
-//                return settingsFragment;
-
-//            case 5:
-//                // SETTINGS
-//                FragmentPrint printFragment = new FragmentPrint();
-//                return printFragment;
-
             case 5:
                 // SETTINGS
                 FragmentSettings shareAppFragment = new FragmentSettings();
                 return shareAppFragment;
-//            case 6:
-//                // SHARE APP
-//                FragmentManageInventory rateThisAppFragment = new FragmentManageInventory();
-//                return rateThisAppFragment;
-//
-////            case 7:
-////                // RATE THIS APP
-////                FragmentSales suggestionsFragment = new FragmentSales();
-////                return suggestionsFragment;
-//
-//            case 8:
-//                // QUERY AND SUGGESTIONS
-//                FragmentSales queryFragment = new FragmentSales();
-//                return queryFragment;
-
 
             default:
                 return new DashboardFragment().newInstance(getSupportFragmentManager());
@@ -535,67 +447,14 @@ public class DashBoardActivity extends AppCompatActivity {
                         navItemIndex = 4;
                         CURRENT_TAG = TAG_PRINT;
                         break;
-//                    case R.id.nav_sales:
-//                        navItemIndex = 4;
-//                        CURRENT_TAG = TAG_SALE_SNAP;
-//                        break;
-//                    case R.id.nav_data:
-//                        navItemIndex = 4;
-//                        CURRENT_TAG = TAG_DATA_POSTING;
-//                        isMenu = false;
-//                        onPrepareOptionsMenu(menu);
-//                        break;
-//                    case R.id.nav_catalogue:
-//                        navItemIndex = 6;
-//                        CURRENT_TAG = TAG_CATALOGUE;
-//                        break;
-
-//                    case R.id.nav_print:
-//                        navItemIndex = 5;
-//                        CURRENT_TAG = TAG_PRINT;
-//                        isMenu = false;
-//                        onPrepareOptionsMenu(menu);
-//                        break;
 
                     case R.id.nav_settings:
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
-                        isMenu = false;
-                        onPrepareOptionsMenu(menu);
+//                        isMenu = false;
+//                        onPrepareOptionsMenu(menu);
                         break;
 
-//                    case R.id.nav_share:
-//                        navItemIndex = 6;
-//                        CURRENT_TAG = TAG_SHARE_APP;
-//                        break;
-//
-//
-//                    case R.id.nav_rate: // Rate this app
-//                        navItemIndex = 7;
-//                        CURRENT_TAG = TAG_RATE_APP;
-////                        Intent intent = new Intent(MainActivity.this, RateThisAppActivity.class);
-////                        startActivity(intent);
-////                        drawer.closeDrawers();
-//
-//                        Uri uri = Uri.parse("market://details?id=" + getPackageName());
-//                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-//                        // To count with Play market backstack, After pressing back button,
-//                        // to taken back to our application, we need to add following flags to intent.
-//                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-//                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-//                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//                        try {
-//                            startActivity(goToMarket);
-//                        } catch (ActivityNotFoundException e) {
-//                            startActivity(new Intent(Intent.ACTION_VIEW,
-//                                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-//                        }
-//                        break;
-//
-//                    case R.id.nav_your_suggestions:
-//                        navItemIndex = 8;
-//                        CURRENT_TAG = TAG_SUGGESTIONS;
-//                        break;
                     default:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
@@ -736,13 +595,10 @@ public class DashBoardActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.nav_stock: {
-                navItemIndex = 1;
-                CURRENT_TAG = TAG_MANAGE_LOAD;
-                Constant.VAN_STOCK = "yes";
-                loadHomeFragment();
-                Constant.VAN_STOCK = "no";
+
+                Intent intent = new Intent(getApplicationContext(), VanStockActivity.class);
+                startActivity(intent);
                 isMenu = false;
-                onPrepareOptionsMenu(menu);
                 break;
             }
 
@@ -760,26 +616,8 @@ public class DashBoardActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SaleHistoyyActivity.class);
                 startActivity(intent);
                 isMenu = false;
-                /*navItemIndex = 4;
-                CURRENT_TAG = TAG_DATA_POSTING;
-                Constant.NAV_AUDIT = "yes";
-                loadHomeFragment();
-                Constant.NAV_AUDIT = "no";
-                isMenu = false;
-                onPrepareOptionsMenu(menu);*/
                 break;
             }
-
-//            case R.id.nav_Print:
-//                navItemIndex = 4;
-//                CURRENT_TAG = TAG_DATA_POSTING;
-//                Constant.NAV_AUDIT= "yes";
-//                loadHomeFragment();
-//                Constant.NAV_AUDIT = "no";
-//                isMenu = false;
-//                onPrepareOptionsMenu(menu);
-//                break;
-
 
             case R.id.nav_map:
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
@@ -793,6 +631,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu) {
+
         MenuItem nav_stock = menu.findItem(R.id.nav_stock);
         nav_stock.setVisible(isMenu);
 

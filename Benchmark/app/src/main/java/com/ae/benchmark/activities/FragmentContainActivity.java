@@ -12,6 +12,7 @@ import com.ae.benchmark.fragments.FragmentCOCollection;
 import com.ae.benchmark.fragments.FragmentCODelivery;
 import com.ae.benchmark.fragments.FragmentCOMerchandising;
 import com.ae.benchmark.fragments.FragmentCOOrder;
+import com.ae.benchmark.fragments.FragmentCOReturns;
 import com.ae.benchmark.fragments.FragmentCOSales;
 import com.ae.benchmark.model.Customer;
 
@@ -26,6 +27,7 @@ public class FragmentContainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     String flag = "";
     Customer customer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class FragmentContainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             flag = extras.getString("flag");
-            customer= extras.getParcelable("cust");
+            customer = extras.getParcelable("cust");
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,6 +78,9 @@ public class FragmentContainActivity extends AppCompatActivity {
         } else if (flag.equals("DEL")) {
             mTitle.setText("DELEVERY");
             fragment = new FragmentCODelivery();
+        } else if (flag.equals("RETURN")) {
+            mTitle.setText("RETURNS");
+            fragment = new FragmentCOReturns();
         }
 
         fragmentTransaction.add(R.id.fragment_container, fragment, "HELLO");

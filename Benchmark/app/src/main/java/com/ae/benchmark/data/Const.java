@@ -19,6 +19,15 @@ public class Const {
     public static int loadNumber=1;
     public static String creditLimitDays="0";
 
+    public static String cusVATno = "";
+    public static String cusBranchID = "";
+    public static String cusBranchName = "";
+    public static String cusBranchNameAR = "";
+    public static String custPayID = "";
+    public static String custPayAddress = "";
+    public static String custPayName = "";
+    public static String custPayNameAR = "";
+
     public static HashMap<String, String> AllLoad = new HashMap<>();
 
 //    public static ArrayList<LoadSummary> dataNew = new ArrayList<>();

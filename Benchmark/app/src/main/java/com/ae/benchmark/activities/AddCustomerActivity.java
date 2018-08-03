@@ -174,7 +174,12 @@ public class AddCustomerActivity extends AppCompatActivity {
                         FragmentAddCustTwo.edtCustType.requestFocus();
                     } else {
                         db = new DBManager(getApplicationContext());
-                        db.insertCustomer("", Constant.NEW_CUSTOMER.edtCustomerName, "",
+                        db.open();
+                        long id = db.getLastCustomerID();
+
+                        int nextCustID = (int) id + 1;
+
+                        db.insertCustomer(nextCustID + "", Constant.NEW_CUSTOMER.edtCustomerName, "",
                                 Constant.NEW_CUSTOMER.edtDistCh, Constant.NEW_CUSTOMER.edtDiv, Constant.NEW_CUSTOMER.edtSalesOrg,
                                 Constant.NEW_CUSTOMER.edtCreditLim, Constant.NEW_CUSTOMER.edtAvailBal, Constant.NEW_CUSTOMER.edtPayTerm, Constant.NEW_CUSTOMER.edtAddress,
                                 Constant.NEW_CUSTOMER.edtCustType, "0"

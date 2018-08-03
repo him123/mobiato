@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.PreOrderRequestActivity;
@@ -149,7 +151,8 @@ public class UtilApp {
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.setContentView(R.layout.dialog_print_donot_print);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
+        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+        img_print.setColorFilter(ContextCompat.getColor(context, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +187,8 @@ public class UtilApp {
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.setContentView(R.layout.dialog_print_donot_print);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+        img_print.setColorFilter(ContextCompat.getColor(context, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
 
         alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
