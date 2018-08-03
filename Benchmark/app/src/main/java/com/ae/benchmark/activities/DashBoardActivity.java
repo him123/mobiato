@@ -144,7 +144,7 @@ public class DashBoardActivity extends AppCompatActivity {
         db.open();
         mHandler = new Handler();
 
-        Log.v("", "Check items: " + db.getAllItems().get(1).item_name_en.toString());
+//        Log.v("", "Check items: " + db.getAllItems().get(1).item_name_en.toString());
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
@@ -33,6 +34,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -277,6 +279,8 @@ public class LoginActivity extends AppCompatActivity {
 
     String fcm_id;
 
+    DBManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -293,8 +297,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.i("", "Check FCM ID : " + fcm_id);
 
-        /*dbManager = new DBManager(LoginActivity.this);
-        dbManager.open();*/
+        dbManager = new DBManager(LoginActivity.this);
+        dbManager.open();
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,10 +428,8 @@ public class LoginActivity extends AppCompatActivity {
                 dbManager.insertCustomerArr(custJArr);*/
 
                 //LOAD INSERT
-//                JSONObject loadObj = new JSONObject(loads);
-//                JSONArray loadJArr = loadObj.getJSONArray("data");
-                /*JSONArray loadJArr = new JSONArray(loads);
-                dbManager.insertLoadArr(loadJArr);*/
+                JSONArray loadJArr = new JSONArray(loads);
+                dbManager.insertLoadArr(loadJArr);
 //                dbManager.insertUnload(loadJArr);
 
 

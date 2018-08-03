@@ -188,6 +188,7 @@ public class UtilApp {
         alertDialog.setContentView(R.layout.dialog_print_donot_print);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+
         img_print.setColorFilter(ContextCompat.getColor(context, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
 

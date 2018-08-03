@@ -305,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
             ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
             LOAD_NO + " TEXT NOT NULL, " + "" + LOAD_DATE + " TEXT NOT NULL, " +
-            ITEM_UOM + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " +  ITEM_TYPE + " TEXT NOT NULL, " +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
     // CREATE LOAD ITEM

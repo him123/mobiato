@@ -219,7 +219,7 @@ public class FreshUnloadActivity extends AppCompatActivity {
 //                Toast.makeText(getBaseContext(), "You selected Import", Toast.LENGTH_SHORT).show();
                 new SweetAlertDialog(FreshUnloadActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Done")
-                        .setContentText("Fresh unload created!")
+                        .setContentText("Fresh unload reverted back!")
                         .setConfirmText("Ok!")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override

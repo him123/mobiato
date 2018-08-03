@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -137,10 +138,15 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
         Spinner spinner2 = (Spinner) deleteDialogView.findViewById(R.id.sp_reason);
         spinner2.setAdapter(dataAdapter);
         TextView txt_name = (TextView) deleteDialogView.findViewById(R.id.txt_name);
-        final EditText edt_qty = (EditText) deleteDialogView.findViewById(R.id.edt_qty);
+        LinearLayout llVarient = (LinearLayout)deleteDialogView.findViewById(R.id.llVarient);
+        final EditText edt_act_qty = (EditText) deleteDialogView.findViewById(R.id.edt_act_qty);
 
         txt_name.setText(item.item_name_en);
-        edt_qty.setText(item.item_qty);
+        edt_act_qty.setText(item.item_qty);
+        llVarient.setVisibility(View.GONE);
+        edt_act_qty.setSelection(edt_act_qty.getText().length());
+
+
 
         final AlertDialog deleteDialog = new AlertDialog.Builder(context).create();
         deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -151,12 +157,12 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
             public void onClick(View v) {
                 //your business logic
 
-                if (!item.item_qty.equals(edt_qty.getText().toString())) {
+                if (!item.item_qty.equals(edt_act_qty.getText().toString())) {
 //                    Toast.makeText(context, "Update load this load item", Toast.LENGTH_SHORT).show();
 
                     db.open();
 //                    db.updateLoadItemQty(item.load_no, item.item_code, edt_qty.getText().toString());
-                    item.item_qty = edt_qty.getText().toString();
+                    item.item_qty = edt_act_qty.getText().toString();
                     intent.putExtra("item", item);
                     context.sendBroadcast(intent);
                 }

@@ -68,10 +68,10 @@ public class DBManager {
     //INSERT LOAD HEADER ONLY SINGLE
     public void insertSalesman(JSONObject salesmanObj) {
 
-        if(checkUserExist(salesmanObj)){
+        if (checkUserExist(salesmanObj)) {
             updateSalesman(salesmanObj);
 
-        }else {
+        } else {
             ContentValues contentValue = new ContentValues();
 
             contentValue.put(DatabaseHelper.UNIQUE_ID, salesmanObj.optString("SALESMAN"));
@@ -93,11 +93,11 @@ public class DBManager {
     public boolean checkUserExist(JSONObject salesmanObj) {
         openDatabsse();
         boolean userExist = false;
-        Cursor c = database.query(DatabaseHelper.TABLE_SALES_MAN, null, DatabaseHelper.SALESMAN_ID+" = ?", new String[]{salesmanObj.optString("SALESMAN")}, null, null, null);
+        Cursor c = database.query(DatabaseHelper.TABLE_SALES_MAN, null, DatabaseHelper.SALESMAN_ID + " = ?", new String[]{salesmanObj.optString("SALESMAN")}, null, null, null);
         if (c == null) return userExist;
 
         while (c.moveToNext()) {
-            userExist =  true;
+            userExist = true;
         }
         c.close();
 
@@ -1134,6 +1134,7 @@ public class DBManager {
                         contentValueItem.put(DatabaseHelper.LOAD_DATE, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.LOAD_DATE)));
                         contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE)));
                         contentValueItem.put(DatabaseHelper.LOAD_NO, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.LOAD_NO)));
+                        contentValueItem.put(DatabaseHelper.ITEM_TYPE, cursor2.getString(cursor2.getColumnIndex(DatabaseHelper.ITEM_TYPE)));
 
                         db.insert(DatabaseHelper.TABLE_VANSTOCK_ITEMS, null, contentValueItem);
 
@@ -1243,6 +1244,7 @@ public class DBManager {
                             contentValueItem.put(DatabaseHelper.LOAD_DATE, "22/07/2018");
                             contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE)));
                             contentValueItem.put(DatabaseHelper.LOAD_NO, cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO)));
+                            contentValueItem.put(DatabaseHelper.ITEM_TYPE, cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_TYPE)));
 
 
                             db.insert(DatabaseHelper.TABLE_UNLOAD_ITEMS, null, contentValueItem);
@@ -1276,6 +1278,7 @@ public class DBManager {
                             contentValueItem.put(DatabaseHelper.LOAD_DATE, "22/07/2018");
                             contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE)));
                             contentValueItem.put(DatabaseHelper.LOAD_NO, cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO)));
+                            contentValueItem.put(DatabaseHelper.ITEM_TYPE, cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_TYPE)));
 
 
                             db.insert(DatabaseHelper.TABLE_UNLOAD_ITEMS, null, contentValueItem);
