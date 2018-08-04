@@ -40,6 +40,9 @@ public class FragmentPayments extends Fragment {
     @InjectView(R.id.txtCash)
     TextView txtCash;
 
+    @InjectView(R.id.txt_total)
+    TextView txt_total;
+
     DBManager db;
 
     public FragmentPayments() {
@@ -76,8 +79,12 @@ public class FragmentPayments extends Fragment {
         }
 
         txtAmtDue.setText(String.valueOf(due_amt));
+
         txtCash.setText(String.valueOf(cash));
         txtCheque.setText(String.valueOf(cheque));
+
+        Double total = cash + cheque;
+        txt_total.setText("" + total);
 
         btn_day_end.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +113,6 @@ public class FragmentPayments extends Fragment {
                             }
                         })
                         .show();
-
 
 
             }

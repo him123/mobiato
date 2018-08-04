@@ -1906,6 +1906,8 @@ public class DBManager {
     }
 
 
+
+
     public ArrayList<Collection> getAllCollections(String custNum) {
 
         ArrayList<Collection> list = new ArrayList<Collection>();

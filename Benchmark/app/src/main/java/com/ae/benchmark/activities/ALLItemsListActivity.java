@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.RecyclerItemsAdapter;
@@ -115,6 +116,10 @@ public class ALLItemsListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
+                if (itemList.size() <= 0) {
+                    Toast.makeText(ALLItemsListActivity.this, "Please select item", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 for (int i = 0; i < itemList.size(); i++) {
                     if (!itemList.get(i).item_qty.equals("0")) {
                         Item item = itemList.get(i);
@@ -124,15 +129,15 @@ public class ALLItemsListActivity extends AppCompatActivity {
                 }
 
                 long lastIOrdId = dbManager.getLastOrderID();
-                if (lastIOrdId == 0){
-                    ordId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.ORD_LAST));
+                if (lastIOrdId == 0) {
+                    ordId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.ORD_LAST));
                 } else {
                     ordId = (int) lastIOrdId + 1;
                 }
 
                 long lastLoadId = dbManager.getLastLoadHeaderNo();
-                if (lastLoadId == 0){
-                    loadId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.LOAD_LAST));
+                if (lastLoadId == 0) {
+                    loadId = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.LOAD_LAST));
                 } else {
                     loadId = (int) lastLoadId + 1;
                 }
@@ -160,25 +165,25 @@ public class ALLItemsListActivity extends AppCompatActivity {
                     long lastInvId = dbManager.getLastInvoiceID();
 
                     int invNum;
-                    if (lastInvId == 0){
-                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                    if (lastInvId == 0) {
+                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                     } else {
                         invNum = (int) lastInvId + 1;
                     }
 
                     //CREATE LOAD WITH LOAD ITEMS
-                    dbManager.insertLoad(newItemArr, loadId+"", UtilApp.getCurrentDate(), "0", "1", "1");
+                    dbManager.insertLoad(newItemArr, loadId + "", UtilApp.getCurrentDate(), "0", "1", "1");
 
                     //INSERT TRANSACTION
                     Transaction transaction = new Transaction();
 
                     transaction.tr_type = Constant.TRANSACTION_TYPES.TT_LOAD_CREATE;
                     transaction.tr_date_time = UtilApp.getCurrentDate() + " " + UtilApp.getCurrentTime();
-                    transaction.tr_customer_num ="";
+                    transaction.tr_customer_num = "";
                     transaction.tr_customer_name = "";
                     transaction.tr_salesman_id = UtilApp.ReadSharePrefrenceString(ALLItemsListActivity.this, Constant.SHRED_PR.SALESMANID);
                     transaction.tr_invoice_id = invNum + "";
-                    transaction.tr_order_id = ordId+"";
+                    transaction.tr_order_id = ordId + "";
                     transaction.tr_collection_id = "";
                     transaction.tr_pyament_id = "";
 
@@ -228,8 +233,8 @@ public class ALLItemsListActivity extends AppCompatActivity {
 
                     long lastInvId = dbManager.getLastInvoiceID();
                     int invNum;
-                    if (lastInvId == 0){
-                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext() , Constant.INV_LAST));
+                    if (lastInvId == 0) {
+                        invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                     } else {
                         invNum = (int) lastInvId + 1;
                     }

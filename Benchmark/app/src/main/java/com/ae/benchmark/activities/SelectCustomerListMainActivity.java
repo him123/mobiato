@@ -42,8 +42,13 @@ import com.ae.benchmark.util.UtilApp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -67,6 +72,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
     RecyclerAdapterCustomerRecent recyclerAdapter_recent;
 
     List<RecentCustomer> itemList;
+    List<RecentCustomer> uniqueItemList;
+
     RecentCustomer recentCustomer;
     boolean flag_seq;
     ViewPager viewPager;
@@ -277,6 +284,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         private String resp;
 //        ProgressDialog progressDialog;
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
@@ -287,6 +295,12 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
                 dbManager = new DBManager(getApplicationContext());
                 dbManager.open();
                 itemList = dbManager.getAllREcentCust();
+
+
+                HashSet<RecentCustomer> listToSet = new HashSet<RecentCustomer>(itemList);
+
+                uniqueItemList = new ArrayList<>(listToSet);
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -301,7 +315,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 
             mLayoutManager_recent = new LinearLayoutManager(SelectCustomerListMainActivity.this, LinearLayoutManager.HORIZONTAL, false);
             recyclerview_recent.setLayoutManager(mLayoutManager_recent);
-            recyclerAdapter_recent = new RecyclerAdapterCustomerRecent(itemList, SelectCustomerListMainActivity.this);
+            recyclerAdapter_recent = new RecyclerAdapterCustomerRecent(uniqueItemList, SelectCustomerListMainActivity.this);
 
             recyclerview_recent.setAdapter(recyclerAdapter_recent);
             viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));

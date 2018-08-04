@@ -402,13 +402,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Sales sales = gson.fromJson(SalesmanObj.toString(), Sales.class);
 
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.INV_LAST, sales.getData().getINVLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.ORD_LAST, sales.getData().getORDLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.LOAD_LAST, sales.getData().getLOADLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.COLLECTION_LAST, sales.getData().getCOLLECTIONLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.CUSTOMER_LAST, sales.getData().getCUSTOMERLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.PAYMENT_LAST, sales.getData().getPAYMENTLAST());
-                UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.LOAD_REQUEST_LAST, sales.getData().getLOADREQUESTLAST());
+
 //                JSONArray itemJArr = itemObj.getJSONArray("data");
 //                dbManager.insertSalesman(SalesmanObj);
 

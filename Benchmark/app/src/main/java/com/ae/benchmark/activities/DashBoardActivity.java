@@ -155,6 +155,15 @@ public class DashBoardActivity extends AppCompatActivity {
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
 
+        TextView txt_route = (TextView) navHeader.findViewById(R.id.txt_route);
+        TextView txt_salemane_no = (TextView) navHeader.findViewById(R.id.txt_salemane_no);
+        TextView txt_vehicle_no = (TextView) navHeader.findViewById(R.id.txt_vehicle_no);
+
+        txtName.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_NAME));
+        txt_route.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ID));
+        txt_salemane_no.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ID));
+        txt_vehicle_no.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_VEHICLE));
+
 //        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
 //        txt_unique_id = (TextView) navHeader.findViewById(R.id.txt_unique_id);
 //        imgNavHeaderBg = (View) navHeader.findViewById(R.id.img_header_bg);

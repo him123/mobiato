@@ -30,7 +30,6 @@ public class Constant {
     public static String LOAD_REQUEST_LAST = "LOAD_REQUEST_LAST";
 
 
-
     public static class SHRED_PR {
         public static String END_DATE = "end_date";
         public static String IS_DAY_END = "is_day_end";
@@ -51,6 +50,18 @@ public class Constant {
         public static final String USERNAME = "username";
         public static final String ISUNLOAD = "is_unload";
         public static final String ISCHECKIN = "is_checkin";
+    }
+
+    public static class SALESMAN {
+        public static final String SALESMAN_ID = "SALESMAN";
+        public static final String SALESMAN_NAME = "name1";
+        public static final String SALESMAN_SALES_ORG = "salesorg";
+        public static final String SALESMAN_CHANNEL = "channel";
+        public static final String SALESMAN_DIVISION = "Division";
+        public static final String SALESMAN_VEHICLE = "Vehicle";
+        public static final String SALESMAN_SUPERVISOR = "supervisor";
+
+
     }
 
     public static class TRANSACTION_TYPES {

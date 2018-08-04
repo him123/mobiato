@@ -45,6 +45,7 @@ import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseMessagingService;
 import com.ae.benchmark.util.UtilApp;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.Inet4Address;
@@ -283,6 +284,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 dbManager = new DBManager(PreOrderRequestActivity.this);
                 dbManager.open();
 
+                JSONObject outterObject = new JSONObject();
+                ArrayList<String> headerData = new ArrayList<>();
+                JSONObject totalObj =new JSONObject();
+
                 //CREATING INVOICE FOR SALE
                 SalesInvoice salesInvoice = new SalesInvoice();
 
@@ -373,6 +378,32 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 }
 
+                try{
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");
+                    outterObject.put("customer_name_en","");outterObject.put("customer_name_en","");
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
 
                 // REDIRECTING ACTIVITY CONDITION
                 if (isCoupon.equals("yes")) {
@@ -384,6 +415,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     UtilApp.askForPrint(PreOrderRequestActivity.this, PreOrderRequestActivity.this, intent);
+
                 } else {
                     deleteDialog.dismiss();
 
@@ -614,6 +646,76 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
         unregisterReceiver(broadcastReceiver2);
+    }
+
+    private JSONObject makePrintObject(){
+        JSONObject printObj = new JSONObject();
+        try{
+
+            printObj.put("customer_name_en","");
+            printObj.put("customer_name_ar","");
+            printObj.put("SALESMAN","");
+            printObj.put("ROUTE","");
+            printObj.put("invoice_date","");
+            printObj.put("print_type","");
+            printObj.put("DOC DATE","");
+            printObj.put("LPONO","");
+            printObj.put("CONTACTNO","");
+            printObj.put("TRN","");
+            printObj.put("ORDERNO","");
+            printObj.put("TRIP START DATE","");
+            printObj.put("invoicepriceprint","");
+            printObj.put("invoicepaymentterms","");
+            printObj.put("SUB TOTAL","");
+            printObj.put("invoicenumber","");
+            printObj.put("TIME","");
+            printObj.put("LANG","");
+            printObj.put("LANG","");
+            printObj.put("INVOICE DISCOUNT","");
+            printObj.put("VAT","");
+            printObj.put("NET SALES","");
+            printObj.put("invoicefooter","");
+
+            // TOTAL ARRAY
+            JSONArray TOTAL  = new JSONArray();
+            JSONObject total = new JSONObject();
+            total.put("Total Amount(AED)","");
+            total.put("Total Befor TAX(AED)","");
+            total.put("GROSS AMOUNT: AED - ","");
+            TOTAL.put(total);
+
+            // HEADER ARRAY
+            JSONArray HEADER  = new JSONArray();
+            HEADER.put("SI No");
+            HEADER.put("Item Code");
+            HEADER.put("Description");
+            HEADER.put("UOM");
+            HEADER.put("QTY");
+            HEADER.put("UNIT Price");
+            HEADER.put("Total amount");
+            HEADER.put("Total Disc");
+            HEADER.put("Vat Amt");
+            HEADER.put("Vat %");
+            HEADER.put("Amount SAR");
+
+
+            // DATA ARRAY
+            JSONArray data  = new JSONArray();
+            data.put("");
+
+
+            printObj.put("TOTAL",TOTAL);
+            printObj.put("HEADER",HEADER);
+            printObj.put("data",data);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+        return printObj;
     }
 
 //    private void askForPrint(final Intent intent){

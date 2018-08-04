@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/_15sdp">
+        android:layout_margin="@dimen/_15sdp"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/img_profile"
@@ -21,31 +21,34 @@
             android:background="@drawable/ico_salesman" />
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_margin="@dimen/_5sdp"
-            android:paddingLeft="@dimen/_10sdp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_10sdp">
 
             <TextView
+                android:id="@+id/txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textSize="@dimen/_15sdp"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_5sdp" />
 
             <TextView
+                android:id="@+id/txt_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textSize="@dimen/_15sdp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15sdp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -57,22 +60,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
         <ImageView
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/ic_action_print"/>
+            android:background="@drawable/ic_action_print" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:text="Resync Data"
-            android:textSize="@dimen/_15sdp"
             android:textColor="@color/black"
-            android:layout_marginLeft="@dimen/_10sdp"/>
+            android:textSize="@dimen/_15sdp" />
 
     </LinearLayout>
 
@@ -84,22 +87,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
         <ImageView
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/ic_action_print"/>
+            android:background="@drawable/ic_action_print" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:text="Language"
-            android:textSize="@dimen/_15sdp"
             android:textColor="@color/black"
-            android:layout_marginLeft="@dimen/_10sdp"/>
+            android:textSize="@dimen/_15sdp" />
 
     </LinearLayout>
 
@@ -111,22 +114,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
         <ImageView
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/ic_action_print"/>
+            android:background="@drawable/ic_action_print" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:text="Clear Data"
-            android:textSize="@dimen/_15sdp"
             android:textColor="@color/black"
-            android:layout_marginLeft="@dimen/_10sdp"/>
+            android:textSize="@dimen/_15sdp" />
 
     </LinearLayout>
 

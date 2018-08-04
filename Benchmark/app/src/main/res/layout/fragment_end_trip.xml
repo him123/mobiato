@@ -141,6 +141,7 @@
                     android:textSize="@dimen/_21sdp" />
 
                 <TextView
+                    android:id="@+id/txt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="15K"
