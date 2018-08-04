@@ -127,7 +127,11 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+//                finish();
+                Intent i = new Intent(CustomerDetailOperationActivity.this, SelectCustomerListMainActivity.class);
+//                    i.putExtra("load_no", load.load_no);
+//                    i.putExtra("isBack", "No");
+                startActivity(i);
             }
         });
 

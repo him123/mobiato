@@ -126,7 +126,15 @@
                 android:layout_height="wrap_content"
                 android:text="Logout"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 android:textSize="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"/>
+            <ImageView
+                android:id="@+id/img_logout"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_logout"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"/>
         </LinearLayout>

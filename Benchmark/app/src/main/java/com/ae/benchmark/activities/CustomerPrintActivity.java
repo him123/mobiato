@@ -55,6 +55,7 @@ public class CustomerPrintActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_customer_print);
         ButterKnife.inject(this);
 
+        context = this;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             customer = getIntent().getParcelableExtra("cust");
@@ -70,6 +71,13 @@ public class CustomerPrintActivity extends AppCompatActivity {
         mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
         mTitle.setText("Print");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         db = new DBManager(CustomerPrintActivity.this);
         db.open();

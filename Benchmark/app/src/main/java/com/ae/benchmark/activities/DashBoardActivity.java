@@ -78,6 +78,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -113,6 +114,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private View navHeader;
     //    private View imgNavHeaderBg;
     private ImageView imgProfile;
+    private ImageView img_logout;
     private TextView txtName, txtWebsite, txt_unique_id;
     private Toolbar toolbar;
     // toolbar titles respected to selected nav menu item
@@ -157,6 +159,29 @@ public class DashBoardActivity extends AppCompatActivity {
 //        txt_unique_id = (TextView) navHeader.findViewById(R.id.txt_unique_id);
 //        imgNavHeaderBg = (View) navHeader.findViewById(R.id.img_header_bg);
         imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
+
+
+        img_logout = (ImageView) navHeader.findViewById(R.id.img_logout);
+
+        img_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SweetAlertDialog(DashBoardActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Logout!")
+                        .setContentText("Do you want to logout the app?")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+//                                    dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
+//                                    finish();
+
+//                                UtilApp.askForPrint(ALLItemsListActivity.this, ALLItemsListActivity.this);
+                            }
+                        })
+                        .show();
+            }
+        });
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles_own);

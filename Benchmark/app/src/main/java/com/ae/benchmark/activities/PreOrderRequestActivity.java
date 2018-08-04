@@ -189,15 +189,21 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     subTot += Double.parseDouble(arrItem.get(i).item_price);
                 }
 
-                if (subTot > 0) {
-                    if (Double.parseDouble(customer.cust_avail_bal) < (subTot * 5 / 100)) {
-                        Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
+//                if (customer.cust_type.equalsIgnoreCase("credit")) {
+                    if (subTot > 0) {
+                        if (Double.parseDouble(customer.cust_avail_bal) < (subTot * 5 / 100) &&
+                                customer.cust_type.equalsIgnoreCase("credit")) {
+                            Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
+                        } else {
+                            makeDilog(arrItem);
+                        }
                     } else {
-                        makeDilog(arrItem);
+                        Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
-                }
+//                }
+//                else {
+//
+//                }
 
             }
         });
@@ -283,15 +289,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
 
-                int invNum, CollNum;
+                double invNum, CollNum;
                 if (lastInvId == 0) {
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
+                    invNum = Double.parseDouble(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                 } else {
                     invNum = (int) lastInvId + 1;
                 }
 
                 if (lastCollId == 0) {
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
+                    CollNum = Double.parseDouble(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
                 } else {
                     CollNum = (int) lastCollId + 1;
                 }
@@ -339,7 +345,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 for (int i = 0; i < arrItem.size(); i++) {
                     String current = dbManager.getBottleQty(arrItem.get(i).item_code);
-                    int remaining_qty = Integer.parseInt(current) - Integer.parseInt(arrItem.get(i).item_qty);
+                    double remaining_qty = Double.parseDouble(current) - Double.parseDouble(arrItem.get(i).item_qty);
 
                     Item item = new Item();
                     item.sales_inv_nun = salesInvoice.inv_no;
@@ -372,15 +378,19 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 if (isCoupon.equals("yes")) {
                     deleteDialog.dismiss();
 
-                    UtilApp.askForPrint(PreOrderRequestActivity.this,
-                            PreOrderRequestActivity.this);
+                    Intent intent = new Intent(PreOrderRequestActivity.this, CustomerDetailOperationActivity.class);
+                    intent.putExtra("cust", customer);
+                    intent.putExtra("tag", "old");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    UtilApp.askForPrint(PreOrderRequestActivity.this, PreOrderRequestActivity.this, intent);
                 } else {
-//                    deleteDialog.dismiss();
+                    deleteDialog.dismiss();
 
                     if (customer.cust_type.equalsIgnoreCase("cash")) {
                         final Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
                         i.putExtra("cust", customer);
-                        i.putExtra("amount", ""+price);
+                        i.putExtra("amount", "" + price);
                         i.putExtra("col_doc_no", "" + CollNum);
                         i.putExtra("invDate", "" + salesInvoice.inv_date);
                         i.putExtra("amt", String.valueOf(grandTot));

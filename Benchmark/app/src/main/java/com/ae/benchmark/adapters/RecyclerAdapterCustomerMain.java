@@ -100,9 +100,9 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
             holder.rl_new.setVisibility(View.GONE);
         }
 
-        if (customer.cust_type.equals("cash")) {
+        if (customer.cust_type.equalsIgnoreCase("cash")) {
             holder.iv_color.setImageResource(R.drawable.ic_mark_blue);
-        } else if (customer.cust_type.equals("credit")) {
+        } else if (customer.cust_type.equalsIgnoreCase("credit")) {
             holder.iv_color.setImageResource(R.drawable.ic_mark_red);
         } else
             holder.iv_color.setImageResource(R.drawable.ic_mark_yellow);

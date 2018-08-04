@@ -190,6 +190,15 @@ public class InputDailogActivity extends Activity {
 //                edt_sale.setClickable(false);
 //                edt_sale.setFocusable(false);
                 edt_sale.setHint("Pcs");
+            } else {
+                ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN NO EMPTY
+                ll_reason.setVisibility(View.GONE);
+                ll_empty.setVisibility(View.GONE);
+//                edt_sale.setEnabled(true);
+//                edt_sale.setClickable(true);
+//                edt_sale.setFocusable(true);
+                edt_sale.setHint("Pcs");
+                edt_sale.requestFocus();
             }
 
         } else {
@@ -220,6 +229,15 @@ public class InputDailogActivity extends Activity {
 //                edt_sale.setClickable(true);
 //                edt_sale.setFocusable(true);
                 edt_sale.setHint("Bottle");
+                edt_sale.requestFocus();
+            } else {
+                ll_scan_code.setVisibility(View.GONE); // NOT ABLE TO SCAN NO EMPTY
+                ll_reason.setVisibility(View.GONE);
+                ll_empty.setVisibility(View.GONE);
+//                edt_sale.setEnabled(true);
+//                edt_sale.setClickable(true);
+//                edt_sale.setFocusable(true);
+                edt_sale.setHint("Pcs");
                 edt_sale.requestFocus();
             }
         }
@@ -253,7 +271,7 @@ public class InputDailogActivity extends Activity {
                 if (item_type.equalsIgnoreCase("empty")) {
                     if (!edt_sale.getText().toString().equals("")) {
                         double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
-                        if (Integer.parseInt(edt_sale.getText().toString()) <= Integer.parseInt(qty)) {
+                        if (Double.parseDouble(edt_sale.getText().toString()) <= Double.parseDouble(qty)) {
 
                             intent.putExtra("tag", "show");
                             intent.putExtra("bottle", edt_sale.getText().toString());
@@ -287,7 +305,8 @@ public class InputDailogActivity extends Activity {
 //                            Toast.makeText(InputDailogActivity.this, "Please Scan Coupon", Toast.LENGTH_SHORT).show();
 //                        else
                         Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
-                    } else if ((!edt_sale.getText().toString().equalsIgnoreCase(edt_emp.getText().toString())) && sp_reason.getSelectedItemPosition() == 0){
+                    } else if ((!edt_sale.getText().toString().equalsIgnoreCase(edt_emp.getText().toString()))
+                            && sp_reason.getSelectedItemPosition() == 0) {
                         Toast.makeText(InputDailogActivity.this, "Please select reason", Toast.LENGTH_SHORT).show();
                     } else {
 
@@ -331,6 +350,35 @@ public class InputDailogActivity extends Activity {
                         sendBroadcast(intent);
                         finish();
                     }
+                }else{
+
+                    if (!edt_sale.getText().toString().equals("")) {
+                        double final_price = Double.parseDouble(edt_sale.getText().toString()) * price;
+                        if (Double.parseDouble(edt_sale.getText().toString()) <= Double.parseDouble(qty)) {
+
+                            intent.putExtra("tag", "no");
+                            intent.putExtra("bottle", edt_sale.getText().toString());
+                            intent.putExtra("price", final_price);
+                            intent.putExtra("empty", "0");
+                            item.item_qty = edt_sale.getText().toString();
+                            item.is_empty = "0";
+                            item.item_emp_qty = "0";
+                            item.item_price = "" + final_price;
+                            intent.putExtra("item", item);
+                            intent.putExtra("isCoupon", isCoupon);
+
+                            intent.putStringArrayListExtra("barcodeArr", arr);
+                            sendBroadcast(intent);
+                            finish();
+                        } else {
+                            new SweetAlertDialog(InputDailogActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("Oops...")
+                                    .setContentText("Entered quantity exceed to van stock limit!")
+                                    .show();
+                        }
+                    } else {
+                        Toast.makeText(InputDailogActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -350,7 +398,7 @@ public class InputDailogActivity extends Activity {
             public void afterTextChanged(Editable s) {
                 try {
                     edt_emp.setText(edt_sale.getText().toString());
-                } catch (Exception e){
+                } catch (Exception e) {
                     edt_sale.setText("");
                     edt_emp.setText("");
                 }
@@ -415,9 +463,9 @@ public class InputDailogActivity extends Activity {
                 if (edt_sale.getText().toString().equals(""))
                     edt_sale.setText("0");
 
-                int current = Integer.parseInt(edt_sale.getText().toString());
+                double current = Double.parseDouble(edt_sale.getText().toString());
 
-                if (Integer.parseInt(edt_sale.getText().toString()) <= Integer.parseInt(qty) - 1) {
+                if (Double.parseDouble(edt_sale.getText().toString()) <= Double.parseDouble(qty) - 1) {
                     current++;
                     edt_sale.setText("" + current);
                     arr.add(message);

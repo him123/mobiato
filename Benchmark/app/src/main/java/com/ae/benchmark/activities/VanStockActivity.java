@@ -65,7 +65,7 @@ public class VanStockActivity extends AppCompatActivity {
             }
         });
 
-
+        fab.setVisibility(View.GONE);
         try {
             DBManager dbManager = new DBManager(VanStockActivity.this);
             dbManager.open();

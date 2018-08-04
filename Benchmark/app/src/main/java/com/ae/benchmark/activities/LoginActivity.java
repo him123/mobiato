@@ -401,6 +401,7 @@ public class LoginActivity extends AppCompatActivity {
                 Gson gson = new Gson();
 
                 Sales sales = gson.fromJson(SalesmanObj.toString(), Sales.class);
+
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.INV_LAST, sales.getData().getINVLAST());
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.ORD_LAST, sales.getData().getORDLAST());
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.LOAD_LAST, sales.getData().getLOADLAST());
@@ -436,8 +437,8 @@ public class LoginActivity extends AppCompatActivity {
                 dbManager.insertCustomerArr(custJArr);*/
 
                 //LOAD INSERT
-                JSONArray loadJArr = new JSONArray(loads);
-                dbManager.insertLoadArr(loadJArr);
+//                JSONArray loadJArr = new JSONArray(loads);
+//                dbManager.insertLoadArr(loadJArr);
 //                dbManager.insertUnload(loadJArr);
 
 

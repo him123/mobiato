@@ -646,9 +646,20 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.CUST_SALES_ORG, singleObj.getString("salesorg"));
                 contentValue.put(DatabaseHelper.CUST_CREDIT_LIMIT, singleObj.getString("creditlimit"));
                 contentValue.put(DatabaseHelper.CUST_AVAIL_BAL, singleObj.getString("availablelimit"));
-                contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, singleObj.getString("payterm"));
+
                 contentValue.put(DatabaseHelper.CUST_ADDRESS, singleObj.getString("address"));
-                contentValue.put(DatabaseHelper.CUST_TYPE, singleObj.getString("type"));
+
+                if (singleObj.getString("payterm").equalsIgnoreCase("Z001")) {
+                    contentValue.put(DatabaseHelper.CUST_TYPE, "CASH");
+                    contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, "0");
+                } else if (singleObj.getString("payterm").equalsIgnoreCase("Z003")) {
+                    contentValue.put(DatabaseHelper.CUST_TYPE, "TC");
+                    contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, "30");
+                } else {
+                    contentValue.put(DatabaseHelper.CUST_TYPE, "CREDIT");
+                    contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, "60");
+                }
+
                 contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, singleObj.getString("empty_bottle"));
                 contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("filled_bottle"));
                 contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("LATITUDE"));
@@ -1262,12 +1273,12 @@ public class DBManager {
 
 //                    int updateQty = Integer.parseInt(qty)+Integer.parseInt(item_qty);
 
-                    if (Integer.parseInt(qty) == Integer.parseInt(item_qty)) {
+                    if (Double.parseDouble(qty) == Double.parseDouble(item_qty)) {
 
                         if (CheckIsItemAlreadyExist(item_code, db, DatabaseHelper.TABLE_UNLOAD_ITEMS)) {
                             //UPDATE TO UNLOAD
                             String current_qty = getUnloadBottleQty(item_code, db, DatabaseHelper.TABLE_UNLOAD_ITEMS);
-                            int updateQty = Integer.parseInt(current_qty) + Integer.parseInt(item_qty);
+                            double updateQty = Double.parseDouble(current_qty) + Double.parseDouble(item_qty);
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(DatabaseHelper.ITEM_QTY, updateQty);
                             int i = db.update(DatabaseHelper.TABLE_UNLOAD_ITEMS, contentValues,
@@ -1296,12 +1307,12 @@ public class DBManager {
                         int i = db.delete(DatabaseHelper.TABLE_VANSTOCK_ITEMS,
                                 DatabaseHelper.ITEM_CODE + " = " + item_code, null);
 
-                    } else if (Integer.parseInt(qty) > Integer.parseInt(item_qty)) {
+                    } else if (Double.parseDouble(qty) > Double.parseDouble(item_qty)) {
 
                         if (CheckIsItemAlreadyExist(item_code, db, DatabaseHelper.TABLE_UNLOAD_ITEMS)) {
                             //UPDATE TO UNLOAD
                             String current_qty = getUnloadBottleQty(item_code, db, DatabaseHelper.TABLE_UNLOAD_ITEMS);
-                            int updateQty = Integer.parseInt(current_qty) + Integer.parseInt(item_qty);
+                            double updateQty = Double.parseDouble(current_qty) + Double.parseDouble(item_qty);
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(DatabaseHelper.ITEM_QTY, updateQty);
                             int i = db.update(DatabaseHelper.TABLE_UNLOAD_ITEMS, contentValues,
@@ -1325,7 +1336,7 @@ public class DBManager {
                         }
 
 
-                        Integer remainingQty = Integer.parseInt(qty) - Integer.parseInt(item_qty);
+                        double remainingQty = Double.parseDouble(qty) - Double.parseDouble(item_qty);
                         //UPDATE IN VAN STOCK
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(DatabaseHelper.ITEM_QTY, remainingQty);
@@ -1392,7 +1403,7 @@ public class DBManager {
                         //only one column
                         a = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
 
-                        count += Integer.parseInt(a);
+                        count += Double.parseDouble(a);
 
                     } while (cursor.moveToNext());
                 }
@@ -1432,7 +1443,7 @@ public class DBManager {
                 do {
                     String qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
 
-                    if (Integer.parseInt(qty) == Integer.parseInt(item_qty)) {
+                    if (Double.parseDouble(qty) == Double.parseDouble(item_qty)) {
 
                         //REMOVE FROM VAN STOCK
                         ContentValues contentValues = new ContentValues();
@@ -1453,7 +1464,7 @@ public class DBManager {
 
                         db.insert(DatabaseHelper.TABLE_UNLOAD_ITEMS, null, contentValueItem);
 
-                    } else if (Integer.parseInt(qty) > Integer.parseInt(item_qty)) {
+                    } else if (Double.parseDouble(qty) > Double.parseDouble(item_qty)) {
                         //update in van stock
 
                         ContentValues contentValues = new ContentValues();
@@ -2008,13 +2019,10 @@ public class DBManager {
         String selectQuery;
         // Select All Query
         if (showCoupon) {
-
-
             selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS;
         } else {
-
             selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
-                    " WHERE " + DatabaseHelper.ITEM_UOM + " = " + "'Bottle'";
+                    " WHERE " + DatabaseHelper.ITEM_TYPE + " != " + "'Coupon'";
         }
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -2253,7 +2261,7 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CODE));
-                index = Integer.parseInt(count);
+                index = Long.parseLong(count);
             } else {
                 index = 0;
             }
@@ -2281,7 +2289,7 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
-                index = Integer.parseInt(count);
+                index = Long.parseLong(count);
             } else {
                 index = 0;
             }
@@ -2310,7 +2318,7 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
-                index = Integer.parseInt(count);
+                index = Long.parseLong(count);
             } else {
                 index = 0;
             }
@@ -2339,7 +2347,7 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DOC_CODE));
-                index = Integer.parseInt(count);
+                index = Long.parseLong(count);
             } else {
                 index = 0;
             }
@@ -2367,7 +2375,7 @@ public class DBManager {
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM));
-                index = Integer.parseInt(count);
+                index = Long.parseLong(count);
             } else {
                 index = 0;
             }

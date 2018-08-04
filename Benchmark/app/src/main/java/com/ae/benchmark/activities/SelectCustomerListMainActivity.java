@@ -119,7 +119,12 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+//                finish();
+
+                Intent i = new Intent(SelectCustomerListMainActivity.this, DashBoardActivity.class);
+//                    i.putExtra("load_no", load.load_no);
+//                    i.putExtra("isBack", "No");
+                startActivity(i);
             }
         });
 

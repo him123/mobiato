@@ -68,7 +68,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
     List<Item> newItemArr = new ArrayList<>();
     int ordId = 0, loadId = 0;
     Customer customer;
-    int tot = 0;
+    double tot = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class ALLItemsListActivity extends AppCompatActivity {
                     if (!itemList.get(i).item_qty.equals("0")) {
                         Item item = itemList.get(i);
                         newItemArr.add(item);
-                        tot += Integer.parseInt(itemList.get(i).item_price);
+                        tot += Double.parseDouble(itemList.get(i).item_price);
                     }
                 }
 

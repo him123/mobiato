@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,8 +126,8 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void afterTextChanged(Editable s) {
 
                 try {
-                    int edtAct = Integer.parseInt(edt_act_qty.getText().toString());
-                    int total = Integer.parseInt(item.item_qty);
+                    double edtAct = Double.parseDouble(edt_act_qty.getText().toString());
+                    double total = Double.parseDouble(item.item_qty);
 
                     if (edtAct > total) {
                         edt_act_qty.removeTextChangedListener(this);
@@ -137,6 +138,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
                         edt_qty.setText(String.valueOf(total - edtAct));
                     }
                 } catch (Exception e) {
+                    Log.v("","Exception: "+e);
                     edt_act_qty.removeTextChangedListener(this);
                     edt_act_qty.setText("");
                     edt_act_qty.addTextChangedListener(this);

@@ -71,8 +71,8 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             flag = false;
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new);
         } else {
-            holder.txt_uom.setText("Bottles");
-            flag = true;
+            holder.txt_uom.setText("Pcs");
+            flag = false;
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new_green);
         }
 

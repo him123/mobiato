@@ -92,6 +92,9 @@ public class CaptureStockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (emptydBottles.equalsIgnoreCase(""))
+                    emptydBottles = "0";
+
                 int empty = Integer.parseInt(emptydBottles);
                 int inputed = Integer.parseInt(edt_empt.getText().toString());
 

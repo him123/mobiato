@@ -205,7 +205,9 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
                 if (!edt_amount.getText().toString().equalsIgnoreCase("")) {
 
-                    if (customer.cust_type.equalsIgnoreCase("cash") && !edt_amount.getText().toString().equalsIgnoreCase(amount)) {
+                    if (customer.cust_type.equalsIgnoreCase("credit")
+                            && Double.parseDouble(edt_amount.getText().toString()) <
+                            Double.parseDouble(amount)) {
 
                         Toast.makeText(PaymentActivity.this, "Please do full payment as this is cash customer", Toast.LENGTH_SHORT).show();
                         return;
@@ -268,9 +270,14 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                 } else {
                     Toast.makeText(PaymentActivity.this, "Please enter amount", Toast.LENGTH_SHORT).show();
                 }
-//                makDil();
 
-                UtilApp.askForPrint(PaymentActivity.this, PaymentActivity.this);
+
+                Intent intent = new Intent(PaymentActivity.this, CustomerDetailOperationActivity.class);
+                intent.putExtra("cust", customer);
+                intent.putExtra("tag", "old");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                UtilApp.askForPrint(PaymentActivity.this, PaymentActivity.this, intent);
             }
 
         });
@@ -327,118 +334,5 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    public void makDil() {
-//        LayoutInflater factory = LayoutInflater.from(context);
-//        final View deleteDialogView = factory.inflate(R.layout.dialog_cash_custody, null);
-//        final AlertDialog deleteDialog = new AlertDialog.Builder(context).create();
-//        final TextView txtCust = deleteDialog.findViewById(R.id.txtCustody);
-//        final TextView txtCash = deleteDialog.findViewById(R.id.txtCash);
-//
-//        txtCash.setText("Print");
-//        txtCust.setText("Do Not Print");
-//        deleteDialog.setView(deleteDialogView);
-//        deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        deleteDialogView.findViewById(R.id.rl_cash).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //your business logic
-//                deleteDialog.dismiss();
-        makPay();
-
-//            }
-//                });
-
-//                deleteDialogView.findViewById(R.id.rl_custody).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //your business logic
-//                        deleteDialog.dismiss();
-//
-//                        Intent i = new Intent(CustomerDetailOperationActivity.this, PreOrderRequestActivity.class);
-//                        i.putExtra("isScan", "yes");
-//                        i.putExtra("type", "custody");
-//                        i.putExtra("name", custName);
-//                        i.putExtra("tag", oldOrNew);
-//                        startActivity(i);
-//                    }
-//                });
-
-//                deleteDialogView.findViewById(R.id.rl_normal).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //your business logic
-//                        deleteDialog.dismiss();
-//
-//                        Intent i = new Intent(CustomerDetailOperationActivity.this, PreOrderRequestActivity.class);
-//                        i.putExtra("isScan", "yes");
-//                        i.putExtra("type", "norm");
-//                        i.putExtra("name", custName);
-//                        i.putExtra("tag", oldOrNew);
-//                        startActivity(i);
-//                    }
-//                });
-//
-//                deleteDialog.show();
-//            }
-//        });
-//
-//        deleteDialogView.findViewById(R.id.rl_custody).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //your business logic
-//                deleteDialog.dismiss();
-//                makPay();
-//
-//            }
-//        });
-//
-//        deleteDialog.show();
-    }
-
-    public void makPay() {
-        Payment payment = new Payment();
-        dbManager.open();
-
-        long lastInvId = dbManager.getLastInvoiceID();
-        long lastCollId = dbManager.getLastCollectionID();
-
-        int invNum, CollNum;
-        if (lastInvId == 0) {
-            invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
-        } else {
-            invNum = (int) lastInvId + 1;
-        }
-
-        if (lastCollId == 0) {
-            CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
-        } else {
-            CollNum = (int) lastCollId + 1;
-        }
-
-        if (!swcPayment.isChecked()) {
-            payment.setInvoice_id(String.valueOf(invNum));
-            payment.setCollection_id(String.valueOf(CollNum));
-            payment.setPayment_type("Cash");
-            payment.setPayment_date(UtilApp.getCurrentDate());
-            payment.setCheque_no("");
-            payment.setBank_name("");
-            payment.setPayment_amount(edt_amount.getText().toString());
-            payment.setCust_id(customer.cust_num);
-        } else {
-            payment.setInvoice_id(String.valueOf(invNum));
-            payment.setCollection_id(String.valueOf(CollNum));
-            payment.setPayment_type("Cheque");
-            payment.setPayment_date(edtDate.getText().toString());
-            payment.setCheque_no(edtChequeNumber.getText().toString());
-            payment.setBank_name(spinner.getSelectedItem().toString());
-            payment.setPayment_amount(edtChequeAmount.getText().toString());
-            payment.setCust_id(customer.cust_num);
-        }
-
-        dbManager.insertPayment(payment);
-
-        onBackPressed();
     }
 }

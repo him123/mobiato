@@ -121,14 +121,18 @@ public class FragmentIMVUnload extends Fragment {
             }
         });
 
-        if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
-            btn_checkin.setEnabled(true);
-            btn_checkin.setClickable(true);
-            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
-        } else {
-            btn_checkin.setEnabled(false);
-            btn_checkin.setClickable(false);
-            btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+        try {
+            if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
+                btn_checkin.setEnabled(true);
+                btn_checkin.setClickable(true);
+                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+            } else {
+                btn_checkin.setEnabled(false);
+                btn_checkin.setClickable(false);
+                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         btn_checkin.setOnClickListener(new View.OnClickListener() {
@@ -217,17 +221,20 @@ public class FragmentIMVUnload extends Fragment {
     public void setMenuVisibility(final boolean visible) {
         super.setMenuVisibility(visible);
         if (visible) {
-//            makeDilog(getActivity());
-            if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
-                btn_checkin.setEnabled(true);
-                btn_checkin.setClickable(true);
-                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
-            } else {
-                btn_checkin.setEnabled(false);
-                btn_checkin.setClickable(false);
-                btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
-            }
 
+            try {
+                if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
+                    btn_checkin.setEnabled(true);
+                    btn_checkin.setClickable(true);
+                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+                } else {
+                    btn_checkin.setEnabled(false);
+                    btn_checkin.setClickable(false);
+                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -274,9 +281,9 @@ public class FragmentIMVUnload extends Fragment {
         dbManager.open();
         List<Item> itemList = dbManager.getVanStock(true);
 
-        int countRto = 0;
-        for (int i=0;i<itemList.size();i++){
-            countRto += Integer.parseInt(itemList.get(i).item_qty);
+        double countRto = 0;
+        for (int i = 0; i < itemList.size(); i++) {
+            countRto += Double.parseDouble(itemList.get(i).item_qty);
         }
         txtRto.setText(String.valueOf(countRto));
 
