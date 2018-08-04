@@ -66,7 +66,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         checkbox = findViewById(R.id.checkbox);
-        checkbox.setVisibility(View.VISIBLE);
+        checkbox.setVisibility(View.GONE);
         intent = new Intent(BROADCAST_ACTION_END_INVENTORY);
 
 //        Bundle extras = getIntent().getExtras();

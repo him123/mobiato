@@ -35,6 +35,7 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.adapters.OrderAdapter;
 import com.ae.benchmark.adapters.RecyclerItemsUnloadAdapter;
 import com.ae.benchmark.adapters.SalesAdapter;
+import com.ae.benchmark.data.Const;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
@@ -43,6 +44,7 @@ import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.MyFirebaseMessagingService;
+import com.ae.benchmark.util.PrinterHelper;
 import com.ae.benchmark.util.UtilApp;
 
 import org.json.JSONArray;
@@ -191,16 +193,16 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 }
 
 //                if (customer.cust_type.equalsIgnoreCase("credit")) {
-                    if (subTot > 0) {
-                        if (Double.parseDouble(customer.cust_avail_bal) < (subTot * 5 / 100) &&
-                                customer.cust_type.equalsIgnoreCase("credit")) {
-                            Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
-                        } else {
-                            makeDilog(arrItem);
-                        }
+                if (subTot > 0) {
+                    if (Double.parseDouble(customer.cust_avail_bal) < (subTot * 5 / 100) &&
+                            customer.cust_type.equalsIgnoreCase("credit")) {
+                        Toast.makeText(PreOrderRequestActivity.this, "You don't have enough balance", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
+                        makeDilog(arrItem);
                     }
+                } else {
+                    Toast.makeText(PreOrderRequestActivity.this, "Please select at-least one item", Toast.LENGTH_SHORT).show();
+                }
 //                }
 //                else {
 //
@@ -284,9 +286,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 dbManager = new DBManager(PreOrderRequestActivity.this);
                 dbManager.open();
 
-                JSONObject outterObject = new JSONObject();
-                ArrayList<String> headerData = new ArrayList<>();
-                JSONObject totalObj =new JSONObject();
+                final JSONObject outterObject = new JSONObject();
+                JSONArray headerData = new JSONArray();
+                JSONArray headerJarr = new JSONArray();
+                JSONObject totalObj = new JSONObject();
 
                 //CREATING INVOICE FOR SALE
                 SalesInvoice salesInvoice = new SalesInvoice();
@@ -294,15 +297,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
 
-                double invNum, CollNum;
+                int invNum, CollNum;
                 if (lastInvId == 0) {
-                    invNum = Double.parseDouble(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
+                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
                 } else {
                     invNum = (int) lastInvId + 1;
                 }
 
                 if (lastCollId == 0) {
-                    CollNum = Double.parseDouble(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
+                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
                 } else {
                     CollNum = (int) lastCollId + 1;
                 }
@@ -349,6 +352,25 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 dbManager.insertTransaction(transaction);
 
                 for (int i = 0; i < arrItem.size(); i++) {
+
+                    headerData.put(i + "");// SI NO
+                    headerData.put(arrItem.get(i).item_code); // ITEM CODE
+                    headerData.put(arrItem.get(i).item_name_en);// DESC
+                    headerData.put(arrItem.get(i).item_uom);// UOM
+
+                    headerData.put(arrItem.get(i).item_qty);// QTY
+                    headerData.put(arrItem.get(i).item_price); // UNIT Price
+                    double totAmt = Double.parseDouble(arrItem.get(i).item_price) * Double.parseDouble(arrItem.get(i).item_qty);
+                    headerData.put(totAmt + ""); // TOTAL amount
+
+                    double vatAmt = totAmt * 5 / 100;
+                    headerData.put(vatAmt + ""); //Vat Amt
+                    headerData.put("5"); //Vat %
+                    double amtSAR = totAmt + vatAmt;
+                    headerData.put(amtSAR + ""); //Amount SAR
+
+
+
                     String current = dbManager.getBottleQty(arrItem.get(i).item_code);
                     double remaining_qty = Double.parseDouble(current) - Double.parseDouble(arrItem.get(i).item_qty);
 
@@ -378,29 +400,76 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                 }
 
-                try{
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");
-                    outterObject.put("customer_name_en","");outterObject.put("customer_name_en","");
+                headerJarr.put(headerData);
+
+                try {
+                    outterObject.put("customer_name_en", "");
+                    outterObject.put("customer_name_ar", "");
+                    outterObject.put("SALESMAN", "");
+                    outterObject.put("ROUTE", "");
+                    outterObject.put("invoice_date", UtilApp.getCurrentDate());
+                    outterObject.put("customer_address", "");
+                    outterObject.put("print_type", "");
+                    outterObject.put("DOC DATE", "");
+                    outterObject.put("LPONO", "");
+                    outterObject.put("CONTACTNO", "");
+                    outterObject.put("TRN", "");
+                    outterObject.put("ORDERNO", "");
+                    outterObject.put("TRIP START DATE", "");
+                    outterObject.put("invoicepriceprint", "1");
+                    outterObject.put("invoicepaymentterms", "2");
+                    outterObject.put("SUB TOTAL", price);
+                    outterObject.put("invoicenumber", invNum);
+                    outterObject.put("TIME", UtilApp.getCurrentDate());
+                    outterObject.put("LANG", "AR");
+                    outterObject.put("INVOICE DISCOUNT", "");
+                    outterObject.put("VAT", "5");
+                    outterObject.put("NET SALES", price);
+                    outterObject.put("invoicefooter", "");
+
+                    Const.custPayID = customer.cust_num;
+                    Const.custPayName = customer.cust_name_en;
+                    Const.custPayNameAR = customer.cust_name_ar;
+                    Const.custPayAddress = customer.cust_address;
+                    Const.cusVATno = "";
+                    Const.cusBranchID = "";
+                    Const.cusBranchName = "";
+
+                    // HEADER ARRAY
+                    JSONArray HEADER = new JSONArray();
+                    HEADER.put("SI No");
+                    HEADER.put("Item Code");
+                    HEADER.put("Description");
+                    HEADER.put("UOM");
+                    HEADER.put("QTY");
+                    HEADER.put("UNIT Price");
+                    HEADER.put("Total amount");
+                    HEADER.put("Total Disc");
+                    HEADER.put("Vat Amt");
+                    HEADER.put("Vat %");
+                    HEADER.put("Amount SAR");
+
+                    //ADDING TOTAL IN MAIN OBJECT
+                    totalObj.put("Total Amount(AED)", price);
+                    double afterTax = price * 5 / 100;
+                    totalObj.put("Total Befor TAX(AED)", price);
+                    totalObj.put("GROSS AMOUNT: AED - ", afterTax);
+
+                    //ADDING DATA IN MAIN OBJECT
+                    JSONArray totalArr = new JSONArray();
+                    totalArr.put(totalObj);
+
+                    outterObject.put("TOTAL", totalArr);
+                    outterObject.put("data", headerJarr);
+                    outterObject.put("HEADERS", HEADER);
 
 
+                    Log.v("", "Check this json array: " + outterObject.toString());
+//                    PrinterHelper printerHelper =
+//                            new PrinterHelper(PreOrderRequestActivity.this, PreOrderRequestActivity.this);
+//                    printerHelper.execute(outterObject);
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -414,7 +483,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     intent.putExtra("tag", "old");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    UtilApp.askForPrint(PreOrderRequestActivity.this, PreOrderRequestActivity.this, intent);
+                    UtilApp.askForPrintWithPrint(PreOrderRequestActivity.this,
+                            PreOrderRequestActivity.this, intent, outterObject);
 
                 } else {
                     deleteDialog.dismiss();
@@ -443,6 +513,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 //your business logic
 
+                                PrinterHelper printerHelper =
+                                        new PrinterHelper(PreOrderRequestActivity.this, PreOrderRequestActivity.this);
+                                printerHelper.execute(outterObject);
+
                                 alertDialog.dismiss();
 
                                 startActivity(i);
@@ -465,8 +539,13 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
                     } else {
 
-                        UtilApp.askForPrint(PreOrderRequestActivity.this,
-                                PreOrderRequestActivity.this);
+                        Intent intent = new Intent(PreOrderRequestActivity.this, CustomerDetailOperationActivity.class);
+                        intent.putExtra("cust", customer);
+                        intent.putExtra("tag", "old");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        UtilApp.askForPrintWithPrint(PreOrderRequestActivity.this,
+                                PreOrderRequestActivity.this, intent, outterObject);
                     }
                 }
             }
@@ -648,44 +727,44 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver2);
     }
 
-    private JSONObject makePrintObject(){
+    private JSONObject makePrintObject() {
         JSONObject printObj = new JSONObject();
-        try{
+        try {
 
-            printObj.put("customer_name_en","");
-            printObj.put("customer_name_ar","");
-            printObj.put("SALESMAN","");
-            printObj.put("ROUTE","");
-            printObj.put("invoice_date","");
-            printObj.put("print_type","");
-            printObj.put("DOC DATE","");
-            printObj.put("LPONO","");
-            printObj.put("CONTACTNO","");
-            printObj.put("TRN","");
-            printObj.put("ORDERNO","");
-            printObj.put("TRIP START DATE","");
-            printObj.put("invoicepriceprint","");
-            printObj.put("invoicepaymentterms","");
-            printObj.put("SUB TOTAL","");
-            printObj.put("invoicenumber","");
-            printObj.put("TIME","");
-            printObj.put("LANG","");
-            printObj.put("LANG","");
-            printObj.put("INVOICE DISCOUNT","");
-            printObj.put("VAT","");
-            printObj.put("NET SALES","");
-            printObj.put("invoicefooter","");
+            printObj.put("customer_name_en", "");
+            printObj.put("customer_name_ar", "");
+            printObj.put("SALESMAN", "");
+            printObj.put("ROUTE", "");
+            printObj.put("invoice_date", "");
+            printObj.put("print_type", "");
+            printObj.put("DOC DATE", "");
+            printObj.put("LPONO", "");
+            printObj.put("CONTACTNO", "");
+            printObj.put("TRN", "");
+            printObj.put("ORDERNO", "");
+            printObj.put("TRIP START DATE", "");
+            printObj.put("invoicepriceprint", "");
+            printObj.put("invoicepaymentterms", "");
+            printObj.put("SUB TOTAL", "");
+            printObj.put("invoicenumber", "");
+            printObj.put("TIME", "");
+            printObj.put("LANG", "");
+            printObj.put("LANG", "");
+            printObj.put("INVOICE DISCOUNT", "");
+            printObj.put("VAT", "");
+            printObj.put("NET SALES", "");
+            printObj.put("invoicefooter", "");
 
             // TOTAL ARRAY
-            JSONArray TOTAL  = new JSONArray();
+            JSONArray TOTAL = new JSONArray();
             JSONObject total = new JSONObject();
-            total.put("Total Amount(AED)","");
-            total.put("Total Befor TAX(AED)","");
-            total.put("GROSS AMOUNT: AED - ","");
+            total.put("Total Amount(AED)", "");
+            total.put("Total Befor TAX(AED)", "");
+            total.put("GROSS AMOUNT: AED - ", "");
             TOTAL.put(total);
 
             // HEADER ARRAY
-            JSONArray HEADER  = new JSONArray();
+            JSONArray HEADER = new JSONArray();
             HEADER.put("SI No");
             HEADER.put("Item Code");
             HEADER.put("Description");
@@ -700,19 +779,18 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
 
             // DATA ARRAY
-            JSONArray data  = new JSONArray();
+            JSONArray data = new JSONArray();
             data.put("");
 
 
-            printObj.put("TOTAL",TOTAL);
-            printObj.put("HEADER",HEADER);
-            printObj.put("data",data);
+            printObj.put("TOTAL", TOTAL);
+            printObj.put("HEADER", HEADER);
+            printObj.put("data", data);
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
         return printObj;

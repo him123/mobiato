@@ -58,11 +58,30 @@ public class WsLogin {
                         UtilApp.WriteSharePrefrence(context, Constant.SHRED_PR.USERNAME, username);
 
 
-                        UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, jsonObject.optString("inv_last"));
-                        UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, jsonObject.optString("order_last"));
-                        UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, jsonObject.optString("load_last"));
-                        UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, jsonObject.optString("collection_last"));
-                        UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last"));
+                        if (jsonObject.optString("inv_last").equalsIgnoreCase(""))
+                            UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, "0");
+                        else
+                            UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, jsonObject.optString("inv_last"));
+
+                        if (jsonObject.optString("order_last").equalsIgnoreCase(""))
+                            UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, "0");
+                        else
+                            UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, jsonObject.optString("order_last"));
+
+                        if (jsonObject.optString("load_last").equalsIgnoreCase(""))
+                            UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, "0");
+                        else
+                            UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, jsonObject.optString("load_last"));
+
+                        if (jsonObject.optString("collection_last").equalsIgnoreCase(""))
+                            UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, "0");
+                        else
+                            UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, jsonObject.optString("collection_last"));
+
+                        if (jsonObject.optString("customer_last").equalsIgnoreCase(""))
+                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, "0");
+                        else
+                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last"));
 //                        UtilApp.WriteSharePrefrence(context, Constant.PAYMENT_LAST, jsonObject.optString("message"));
 //                        UtilApp.WriteSharePrefrence(context, Constant.LOAD_REQUEST_LAST, jsonObject.optString("message"));
 

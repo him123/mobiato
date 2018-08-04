@@ -1083,7 +1083,8 @@ public class DBManager {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.IS_STOCK_CAPTURED, val);
-        int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues, DatabaseHelper.CUST_NUM + " = " + cust_num, null);
+        int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues,
+                DatabaseHelper.CUST_NUM + " = " + cust_num, null);
         return i;
     }
 

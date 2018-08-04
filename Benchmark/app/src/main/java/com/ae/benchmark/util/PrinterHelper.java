@@ -158,7 +158,7 @@ public class PrinterHelper {
             this.arrData = new ArrayList();
 //            print();
 
-            Log.v("", "Check object: " + jsonArray.toString());
+            Log.v("","Check object: "+jsonArray.toString());
 
 
             AsyncTask.execute(new Runnable() {
@@ -1434,6 +1434,8 @@ public class PrinterHelper {
             this.hashPositions.put("Amount SAR", Integer.valueOf(1));
 
 
+
+
             this.outStream.write(this.wakeUp);
             line(this.startln);
             this.outStream.write(this.CompressOn);
@@ -1443,7 +1445,7 @@ public class PrinterHelper {
             //this.outStream.write(this.BoldOn);
             //this.outStream.write(this.DoubleWideOn);
             //printheaders(object.getString("invheadermsg"), false, 3);
-            printheaders(getAccurateText("SALES INVOICE" + " " + ArabicLabels.salesinvoice,
+            printheaders(getAccurateText("SALES INVOICE" +" "+ArabicLabels.salesinvoice,
                     100, 1), true, 2);
             //this.outStream.write(this.BoldOff);
             //this.outStream.write(this.DoubleWideOff);
@@ -1488,7 +1490,7 @@ public class PrinterHelper {
                     } else {
                         stringBuilder = new StringBuilder(String.valueOf(strTotal));
                         if (headers.getString(i).equals("DESCRIPTION")) {
-                            string = ArabicLabels.total + " " + "TOTAL";
+                            string = ArabicLabels.total +" "+"TOTAL";
                         } else {
                             string = "";
                         }
@@ -1500,11 +1502,10 @@ public class PrinterHelper {
             //this.outStream.write(this.CompressOn);
 
 
-            String arabicheader = "@" + getAccurateText(ArabicLabels.amount + "" +
-                    "     " + ArabicLabels.UnitPrice + "  " + ArabicLabels.TotalUnits + "                                          " + ArabicLabels.Description + "                                     " + ArabicLabels.ItemNo, 150, 0) + "!";
-            printheaders(arabicheader, true, 1);
-            this.outStream.write(this.NewLine);
-            this.outStream.write(this.NewLine);
+            String arabicheader = "@"+getAccurateText(ArabicLabels.amount+"" +
+                    "     "+ArabicLabels.UnitPrice +"  "+ArabicLabels.TotalUnits + "                                          "+ArabicLabels.Description+"                                     "+ArabicLabels.ItemNo , 150, 0) + "!";
+            printheaders(arabicheader,true,1);
+            this.outStream.write(this.NewLine);this.outStream.write(this.NewLine);
 
             printlines1(strheader, 1, object, 1, args, 1);
             // printlines1(strHeaderBottom, 1, object, 1, args, 5);
@@ -1714,10 +1715,10 @@ public class PrinterHelper {
             if (object.getString("invoicepriceprint").equals("1")) {
                 jSONObject = object;
                 printlines2(getAccurateText("NET SALES", 20, 0) +
-                                getAccurateText(" : ", 3, 0) +
-                                getAccurateText(object.getString("SUB TOTAL") + " SAR", 12, 0) +
-                                getAccurateText(" : ", 3, 0) + "@" +
-                                getAccurateText(ArabicTEXT.NetSales, 15, 2) + "!",
+                        getAccurateText(" : ", 3, 0) +
+                        getAccurateText(object.getString("SUB TOTAL") + " SAR", 12, 0) +
+                        getAccurateText(" : ", 3, 0) + "@" +
+                        getAccurateText(ArabicTEXT.NetSales, 15, 2) + "!",
                         1, jSONObject, 1, args, 1, 1);
                 //this.outStream.write(this.BoldOff);
                 //this.outStream.write(this.BoldOn);
@@ -1749,10 +1750,10 @@ public class PrinterHelper {
 
                 jSONObject = object;
                 printlines2(getAccurateText("TOTAL", 20, 0) +
-                                getAccurateText(" : ", 3, 0) + getAccurateText(
-                        object.getString("NET SALES") + " SAR", 12, 0)
-                                + getAccurateText(" : ", 3, 0) + "@" +
-                                getAccurateText(ArabicTEXT.TOTAL, 15, 2) + "!",
+                        getAccurateText(" : ", 3, 0) + getAccurateText(
+                                object.getString("NET SALES") + " SAR", 12, 0)
+                        + getAccurateText(" : ", 3, 0) + "@" +
+                        getAccurateText(ArabicTEXT.TOTAL, 15, 2) + "!",
                         1, jSONObject, 1, args, 1, 1);
                 //this.outStream.write(this.BoldOff);
             }

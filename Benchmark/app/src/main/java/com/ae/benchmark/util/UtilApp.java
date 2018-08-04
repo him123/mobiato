@@ -17,6 +17,8 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.activities.SplashActivity;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -144,7 +146,50 @@ public class UtilApp {
 
     }
 
-    public static void askForPrint(final Activity contextIntent, final Context context, final Intent redirectIntent){
+    public static void askForPrintWithPrint(final Activity contextIntent,
+                                            final Context context, final Intent redirectIntent, final JSONObject pringObject) {
+
+        final Dialog alertDialog = new Dialog(context);
+        alertDialog.setCancelable(false);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+        img_print.setColorFilter(ContextCompat.getColor(context, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+
+
+                PrinterHelper printerHelper =
+                        new PrinterHelper(context, contextIntent);
+                printerHelper.execute(pringObject);
+
+                alertDialog.dismiss();
+                context.startActivity(redirectIntent);
+                contextIntent.finish();
+
+
+            }
+        });
+
+        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertDialog.dismiss();
+                context.startActivity(redirectIntent);
+                contextIntent.finish();
+
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    public static void askForPrint(final Activity contextIntent, final Context context, final Intent redirectIntent) {
 
         final Dialog alertDialog = new Dialog(context);
         alertDialog.setCancelable(false);
@@ -180,7 +225,7 @@ public class UtilApp {
         alertDialog.show();
     }
 
-    public static void askForPrint(final Activity contextIntent, final Context context){
+    public static void askForPrint(final Activity contextIntent, final Context context) {
 
         final Dialog alertDialog = new Dialog(context);
         alertDialog.setCancelable(false);
