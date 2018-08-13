@@ -6,356 +6,368 @@
     android:orientation="vertical">
 
 
-    <com.chauthai.swipereveallayout.SwipeRevealLayout
+    <!--<com.chauthai.swipereveallayout.SwipeRevealLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:dragEdge="right"-->
+    <!--app:mode="normal">-->
+
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/rl_back"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/white_100"-->
+    <!--android:visibility="visible">-->
+
+    <!--&lt;!&ndash; Forground view - Your main layout here &ndash;&gt;-->
+    <!--<FrameLayout-->
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="@dimen/_4sdp"-->
+    <!--card_view:cardElevation="4dp">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:visibility="visible">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageView-->
+    <!--android:visibility="invisible"-->
+    <!--android:id="@+id/img_order"-->
+    <!--android:layout_width="@dimen/_46sdp"-->
+    <!--android:layout_height="@dimen/_46sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_order_ring" />-->
+
+    <!--<ImageView-->
+    <!--android:visibility="invisible"-->
+    <!--android:id="@+id/img_sales"-->
+    <!--android:layout_width="@dimen/_46sdp"-->
+    <!--android:layout_height="@dimen/_46sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_collection_ring" />-->
+
+    <!--<ImageView-->
+    <!--android:visibility="invisible"-->
+    <!--android:id="@+id/img_collection"-->
+    <!--android:layout_width="@dimen/_46sdp"-->
+    <!--android:layout_height="@dimen/_46sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_sales_rign" />-->
+
+    <!--<ImageView-->
+    <!--android:visibility="invisible"-->
+    <!--android:id="@+id/img_merchandize"-->
+    <!--android:layout_width="@dimen/_46sdp"-->
+    <!--android:layout_height="@dimen/_46sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_shop_rign" />-->
+
+    <!--<ImageView-->
+    <!--android:visibility="invisible"-->
+    <!--android:id="@+id/img_delivery"-->
+    <!--android:layout_width="@dimen/_46sdp"-->
+    <!--android:layout_height="@dimen/_46sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_delivery_ring" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="@dimen/_33sdp"-->
+    <!--android:layout_height="@dimen/_12sdp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:visibility="invisible"-->
+    <!--android:background="@drawable/ic_bg_new">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="@dimen/_1sdp"-->
+    <!--android:text="NEW"-->
+    <!--android:textColor="@color/white_100"-->
+    <!--android:textSize="@dimen/_7sdp"-->
+    <!--android:textStyle="bold" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:visibility="invisible"-->
+    <!--android:paddingLeft="@dimen/_7sdp">-->
+
+    <!--<com.github.ivbaranov.mli.MaterialLetterIcon-->
+    <!--android:layout_width="@dimen/_45sdp"-->
+    <!--android:layout_height="@dimen/_45sdp"-->
+    <!--android:layout_marginTop="@dimen/_7sdp" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="@dimen/_5sdp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Customer ID : 20015475"-->
+    <!--android:textColor="@color/gray"-->
+    <!--android:textSize="@dimen/_12sdp"-->
+    <!--android:textStyle="bold" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Customer Name: Panda"-->
+    <!--android:textColor="@color/gray"-->
+    <!--android:textSize="@dimen/_9sdp" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Address: 222, U.O.L Area, New High Ways"-->
+    <!--android:textColor="@color/gray"-->
+    <!--android:textSize="@dimen/_9sdp" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_marginTop="@dimen/_2sdp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_25sdp"-->
+    <!--android:layout_height="@dimen/_25sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_order_ring" />-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_25sdp"-->
+    <!--android:layout_height="@dimen/_25sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_collection_ring" />-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_25sdp"-->
+    <!--android:layout_height="@dimen/_25sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_sales_rign" />-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_25sdp"-->
+    <!--android:layout_height="@dimen/_25sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_shop_rign" />-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_25sdp"-->
+    <!--android:layout_height="@dimen/_25sdp"-->
+    <!--android:layout_marginLeft="@dimen/_10sdp"-->
+    <!--app:srcCompat="@drawable/ic_icon_delivery_ring" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/_5sdp"-->
+    <!--android:layout_height="@dimen/_75sdp"-->
+    <!--app:srcCompat="@drawable/ic_mark_red" />-->
+    <!--</RelativeLayout>-->
+    <!--</android.support.v7.widget.CardView>-->
+    <!--</FrameLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!-- Forground view-->
+    <RelativeLayout
+        android:id="@+id/rl_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:dragEdge="right"
-        app:mode="normal">
+        android:layout_height="wrap_content"
+        android:background="@color/white_100"
+        android:visibility="visible">
 
+        <!-- Forground view - Your main layout here -->
+        <FrameLayout
 
-        <RelativeLayout
-            android:id="@+id/rl_back"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_100"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
-            <!-- Forground view - Your main layout here -->
-            <FrameLayout
-
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                card_view:cardElevation="4dp">
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_4sdp"
-                    card_view:cardElevation="4dp">
+                    android:visibility="visible">
 
                     <RelativeLayout
+                        android:id="@+id/rl_new"
+                        android:layout_width="@dimen/_33sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/ic_bg_new">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_1sdp"
+                            android:text="NEW"
+                            android:textColor="@color/white_100"
+                            android:textSize="@dimen/_7sdp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible">
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/_7sdp">
+
+                        <com.github.ivbaranov.mli.MaterialLetterIcon
+                            android:id="@+id/imageView2"
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_marginTop="@dimen/_7sdp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:visibility="invisible"
-                                android:id="@+id/img_order"
-                                android:layout_width="@dimen/_46sdp"
-                                android:layout_height="@dimen/_46sdp"
-                                app:srcCompat="@drawable/ic_icon_order_ring" />
-
-                            <ImageView
-                                android:visibility="invisible"
-                                android:id="@+id/img_sales"
-                                android:layout_width="@dimen/_46sdp"
-                                android:layout_height="@dimen/_46sdp"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_collection_ring" />
-
-                            <ImageView
-                                android:visibility="invisible"
-                                android:id="@+id/img_collection"
-                                android:layout_width="@dimen/_46sdp"
-                                android:layout_height="@dimen/_46sdp"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_sales_rign" />
-
-                            <ImageView
-                                android:visibility="invisible"
-                                android:id="@+id/img_merchandize"
-                                android:layout_width="@dimen/_46sdp"
-                                android:layout_height="@dimen/_46sdp"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_shop_rign" />
-
-                            <ImageView
-                                android:visibility="invisible"
-                                android:id="@+id/img_delivery"
-                                android:layout_width="@dimen/_46sdp"
-                                android:layout_height="@dimen/_46sdp"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_delivery_ring" />
-
-
-                        </LinearLayout>
-
-                        <RelativeLayout
-                            android:layout_width="@dimen/_33sdp"
-                            android:layout_height="@dimen/_12sdp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:visibility="invisible"
-                            android:background="@drawable/ic_bg_new">
+                            android:orientation="vertical"
+                            android:padding="@dimen/_5sdp">
 
                             <TextView
+                                android:id="@+id/txt_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:text="NEW"
-                                android:textColor="@color/white_100"
-                                android:textSize="@dimen/_7sdp"
+                                android:text="Customer ID : 20015475"
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/_12sdp"
                                 android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal"
-                            android:visibility="invisible"
-                            android:paddingLeft="@dimen/_7sdp">
-
-                            <com.github.ivbaranov.mli.MaterialLetterIcon
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="@dimen/_45sdp"
-                                android:layout_marginTop="@dimen/_7sdp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="@dimen/_5sdp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Customer ID : 20015475"
-                                    android:textColor="@color/gray"
-                                    android:textSize="@dimen/_12sdp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Customer Name: Panda"
-                                    android:textColor="@color/gray"
-                                    android:textSize="@dimen/_9sdp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Address: 222, U.O.L Area, New High Ways"
-                                    android:textColor="@color/gray"
-                                    android:textSize="@dimen/_9sdp" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="@dimen/_2sdp"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        app:srcCompat="@drawable/ic_icon_order_ring" />
-
-                                    <ImageView
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_collection_ring" />
-
-                                    <ImageView
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_sales_rign" />
-
-                                    <ImageView
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_shop_rign" />
-
-                                    <ImageView
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_delivery_ring" />
-
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="@dimen/_5sdp"
-                            android:layout_height="@dimen/_75sdp"
-                            app:srcCompat="@drawable/ic_mark_red" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </FrameLayout>
-
-        </RelativeLayout>
-
-        <!-- Forground view-->
-        <RelativeLayout
-            android:id="@+id/rl_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_100"
-            android:visibility="visible">
-
-            <!-- Forground view - Your main layout here -->
-            <FrameLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_4sdp"
-                    card_view:cardElevation="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible">
-
-                        <RelativeLayout
-                            android:id="@+id/rl_new"
-                            android:layout_width="@dimen/_33sdp"
-                            android:layout_height="@dimen/_12sdp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:background="@drawable/ic_bg_new">
 
                             <TextView
+                                android:id="@+id/txt_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:text="NEW"
-                                android:textColor="@color/white_100"
-                                android:textSize="@dimen/_7sdp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/_7sdp">
-
-                            <com.github.ivbaranov.mli.MaterialLetterIcon
-                                android:id="@+id/imageView2"
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="@dimen/_45sdp"
-                                android:layout_marginTop="@dimen/_7sdp" />
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:text="Customer Name: Panda"
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/_10sdp" />
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="@dimen/_5sdp">
+                                android:layout_width="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/txt_id"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Customer ID : 20015475"
-                                    android:textColor="@color/gray"
-                                    android:textSize="@dimen/_12sdp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/txt_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Customer Name: Panda"
-                                    android:textColor="@color/gray"
-                                    android:layout_marginTop="@dimen/_2sdp"
-                                    android:textSize="@dimen/_9sdp" />
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:background="@drawable/ic_tel" />
 
                                 <TextView
                                     android:id="@+id/txt_tel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Address: 222, U.O.L Area, New High Ways"
+                                    android:text="23565232"
+                                    android:layout_marginLeft="@dimen/_3sdp"
                                     android:textColor="@color/gray"
                                     android:textSize="@dimen/_9sdp" />
+                            </LinearLayout>
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="@dimen/_2sdp"
-                                    android:gravity="center"
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:gravity="center"
 
-                                    android:orientation="horizontal">
+                                android:orientation="horizontal">
 
-                                    <ImageView
-                                        android:id="@+id/img_small_order"
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:visibility="invisible"
-                                        app:srcCompat="@drawable/ic_icon_order_ring" />
+                                <ImageView
+                                    android:id="@+id/img_small_order"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:visibility="invisible"
+                                    app:srcCompat="@drawable/ic_icon_order_ring" />
 
-                                    <ImageView
-                                        android:id="@+id/img_small_sales"
-                                        android:visibility="invisible"
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_collection_ring" />
+                                <ImageView
+                                    android:id="@+id/img_small_sales"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:visibility="invisible"
+                                    app:srcCompat="@drawable/ic_icon_collection_ring" />
 
-                                    <ImageView
-                                        android:id="@+id/img_small_collection"
-                                        android:visibility="invisible"
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_sales_rign" />
+                                <ImageView
+                                    android:id="@+id/img_small_collection"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:visibility="invisible"
+                                    app:srcCompat="@drawable/ic_icon_sales_rign" />
 
-                                    <ImageView
-                                        android:id="@+id/img_small_deposit"
-                                        android:visibility="invisible"
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_shop_rign" />
+                                <ImageView
+                                    android:id="@+id/img_small_deposit"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:visibility="invisible"
+                                    app:srcCompat="@drawable/ic_icon_shop_rign" />
 
-                                    <ImageView
-                                        android:id="@+id/img_small_delivey"
-                                        android:visibility="invisible"
-                                        android:layout_width="@dimen/_25sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        app:srcCompat="@drawable/ic_icon_delivery_ring" />
+                                <ImageView
+                                    android:id="@+id/img_small_delivey"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:visibility="invisible"
+                                    app:srcCompat="@drawable/ic_icon_delivery_ring" />
 
-
-                                </LinearLayout>
 
                             </LinearLayout>
+
                         </LinearLayout>
+                    </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/img_color"
-                            android:layout_width="@dimen/_5sdp"
-                            android:layout_height="@dimen/_75sdp"
-                            app:srcCompat="@drawable/ic_mark_red" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </FrameLayout>
+                    <ImageView
+                        android:id="@+id/img_color"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_85sdp"
+                        app:srcCompat="@drawable/ic_mark_red" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+    <!--</com.chauthai.swipereveallayout.SwipeRevealLayout>-->
 
 
 </FrameLayout>

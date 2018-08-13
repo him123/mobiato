@@ -112,6 +112,7 @@
         android:background="@color/gray" />
 
     <LinearLayout
+        android:id="@+id/ll_clear_data"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:gravity="center"

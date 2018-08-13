@@ -97,7 +97,7 @@ public class FragmentIMVanStock extends Fragment {
                 itemList = new ArrayList<>();
 
                 itemList.clear();
-                itemList = dbManager.getVanStock(true);
+                itemList = dbManager.getFullVanStock(true);
 
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerview_items.setLayoutManager(mLayoutManager);

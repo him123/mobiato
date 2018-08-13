@@ -86,9 +86,9 @@ public class FragmentManageInventory extends Fragment {
 
         viewPager.setAdapter(pagerAdapter);
 
-        if (Constant.VAN_STOCK.equals("yes")) {
+        if (Constant.IS_VAN_STOCK.equals("yes")) {
             viewPager.setCurrentItem(2);
-            Constant.VAN_STOCK = "no";
+            Constant.IS_VAN_STOCK = "no";
         }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

@@ -9,6 +9,7 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 import static com.ae.benchmark.util.Constant.URL;
+import static com.ae.benchmark.util.Constant.URLPHP;
 
 
 /**
@@ -30,7 +31,7 @@ public class RestClient extends Activity {
                 .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
                 .create();
 
-        REST_CLIENT_MUTUAL_TRANSFER = buildAdapter(URL, gson).create(CommonService.class);
+        REST_CLIENT_MUTUAL_TRANSFER = buildAdapter(URLPHP, gson).create(CommonService.class);
     }
 
     private static RestAdapter buildAdapter(String endPoint, Gson gson) {

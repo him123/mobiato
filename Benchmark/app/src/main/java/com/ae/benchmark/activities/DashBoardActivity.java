@@ -41,6 +41,7 @@ import com.ae.benchmark.fragments.DashboardFragment;
 import com.ae.benchmark.fragments.FragmentAudit;
 import com.ae.benchmark.fragments.FragmentCustomerSelection;
 import com.ae.benchmark.fragments.FragmentDashboardOne;
+import com.ae.benchmark.fragments.FragmentJourneyPlan;
 import com.ae.benchmark.fragments.FragmentManageInventory;
 import com.ae.benchmark.fragments.FragmentPayments;
 import com.ae.benchmark.fragments.FragmentSales;
@@ -55,6 +56,10 @@ import com.google.android.gms.maps.model.Dash;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -68,6 +73,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -131,6 +137,14 @@ public class DashBoardActivity extends AppCompatActivity {
     String isEnd = "0";
     public boolean isMenu = false;
     public Menu menu;
+    String reqBody = "{\"d\":{\"Currency\":\"SAR\",\"OrderValue\":\"2000\",\"OrderId\":\"0\"," +
+            "\"TripId\":\"C111000000000969\",\"Division\":\"00\",\"SalesOrg\"" +
+            ":\"1000\",\"DistChannel\":\"10\",\"Function\":\"HHTIV\",\"PurchaseNum\":" +
+            "\"9690300001\",\"CustomerId\":\"0000200026\",\"DocumentType\":" +
+            "\"ZVAN\",\"SOItems\":[{\"Storagelocation\":\"\",\"Material\":" +
+            "\"000000000014000000\",\"ItemValue\":\"17.50\",\"Plant\":\"\",\"Description\":" +
+            "\"Berain 48*200ml Carton\",\"UoM\":\"CAR\",\"Value\":\"17.50\",\"Quantity\":" +
+            "\"5\",\"Item\":\"0010\",\"Route\":\"C11100\"}]}}";
 
 
     @Override
@@ -138,6 +152,13 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.inject(this);
+
+//        new AsyncTaskREST().execute();
+
+
+//        String str = "INV0000000000";
+//        String digits = str.replaceAll("[^0-9.]", "");
+//        str.replaceAll("[^\\d.]", "");;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -158,11 +179,24 @@ public class DashBoardActivity extends AppCompatActivity {
         TextView txt_route = (TextView) navHeader.findViewById(R.id.txt_route);
         TextView txt_salemane_no = (TextView) navHeader.findViewById(R.id.txt_salemane_no);
         TextView txt_vehicle_no = (TextView) navHeader.findViewById(R.id.txt_vehicle_no);
+        TextView txt_channel = (TextView) navHeader.findViewById(R.id.txt_channel);
 
         txtName.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_NAME));
-        txt_route.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ID));
-        txt_salemane_no.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ID));
-        txt_vehicle_no.setText(UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_VEHICLE));
+        txt_route.setText("Route: " + UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ROUTE));
+        txt_salemane_no.setText("Salesman ID: " + UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_ID));
+        txt_vehicle_no.setText("Vehicle No: " + UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_VEHICLE));
+
+        if (UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_CHANNEL)
+                .equalsIgnoreCase("20")) {
+            txt_channel.setText("Channel: " + "Direct Distribution");
+        } else if (UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_CHANNEL)
+                .equalsIgnoreCase("40")) {
+            txt_channel.setText("Channel: " + "Horeca");
+        } else if (UtilApp.ReadSharePrefrenceString(DashBoardActivity.this, Constant.SALESMAN.SALESMAN_CHANNEL)
+                .equalsIgnoreCase("20")) {
+            txt_channel.setText("Channel: " + "Home Delivery");
+        }
+
 
 //        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
 //        txt_unique_id = (TextView) navHeader.findViewById(R.id.txt_unique_id);
@@ -175,17 +209,27 @@ public class DashBoardActivity extends AppCompatActivity {
         img_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SweetAlertDialog(DashBoardActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                new SweetAlertDialog(DashBoardActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Logout!")
-                        .setContentText("Do you want to logout the app?")
+                        .setContentText("Are you sure want to logout?")
+                        .setCancelText("No")
+                        .setConfirmText("Yes")
+
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-//                                    dbManager.updateCustomerTransactionType(customer.cust_num, "order", "1");
-//                                    finish();
-
-//                                UtilApp.askForPrint(ALLItemsListActivity.this, ALLItemsListActivity.this);
+                                UtilApp.WriteSharePrefrence(DashBoardActivity.this, Constant.SHRED_PR.ISLOGIN, false);
+                                Intent intent = new Intent(DashBoardActivity.this, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                                startActivity(intent);
+                                finish(); // call this to finish the current activity
                             }
                         })
                         .show();
@@ -217,7 +261,7 @@ public class DashBoardActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_DATA_POSTING;
             loadHomeFragment();
             Constant.NAV_AUDIT = "no";
-        } else if (Constant.VAN_STOCK.equals("yes")) {
+        } else if (Constant.IS_VAN_STOCK.equals("yes")) {
             navItemIndex = 1;
             CURRENT_TAG = TAG_MANAGE_LOAD;
             loadHomeFragment();
@@ -241,14 +285,14 @@ public class DashBoardActivity extends AppCompatActivity {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
 
-        if (UtilApp.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                DashBoardActivity.this)) {
-            createFile();
-        } else {
-            ActivityCompat.requestPermissions(DashBoardActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
-        }
+//        if (UtilApp.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                DashBoardActivity.this)) {
+//            createFile();
+//        } else {
+//            ActivityCompat.requestPermissions(DashBoardActivity.this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    1);
+//        }
     }
 
     public void createFile() {
@@ -413,7 +457,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 return mainRequestFragment;
             case 2:
                 // JOURNEY PLAN
-                FragmentCustomerSelection moviesFragment = new FragmentCustomerSelection();
+                FragmentJourneyPlan moviesFragment = new FragmentJourneyPlan();
                 return moviesFragment;
             case 3:
                 // PAYMENTS
@@ -613,76 +657,76 @@ public class DashBoardActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_select_customer, menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_select_customer, menu);
+//
+//        this.menu = menu;
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-        this.menu = menu;
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        super.onOptionsItemSelected(item);
+//
+//        switch (item.getItemId()) {
+//
+//            case R.id.nav_stock: {
+//
+//                Intent intent = new Intent(getApplicationContext(), VanStockActivity.class);
+//                startActivity(intent);
+//                isMenu = false;
+//                break;
+//            }
+//
+//            case R.id.nav_dashboard: {
+//                navItemIndex = 0;
+//                CURRENT_TAG = TAG_HOME;
+//                loadHomeFragment();
+//                isMenu = false;
+//                onPrepareOptionsMenu(menu);
+//                break;
+//            }
+//
+//            case R.id.nav_sales: {
+//
+//                Intent intent = new Intent(getApplicationContext(), SaleHistoyyActivity.class);
+//                startActivity(intent);
+//                isMenu = false;
+//                break;
+//            }
+//
+//            case R.id.nav_map:
+//                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+//                startActivity(intent);
+//                Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//        }
+//        return true;
+//
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        switch (item.getItemId()) {
-
-            case R.id.nav_stock: {
-
-                Intent intent = new Intent(getApplicationContext(), VanStockActivity.class);
-                startActivity(intent);
-                isMenu = false;
-                break;
-            }
-
-            case R.id.nav_dashboard: {
-                navItemIndex = 0;
-                CURRENT_TAG = TAG_HOME;
-                loadHomeFragment();
-                isMenu = false;
-                onPrepareOptionsMenu(menu);
-                break;
-            }
-
-            case R.id.nav_sales: {
-
-                Intent intent = new Intent(getApplicationContext(), SaleHistoyyActivity.class);
-                startActivity(intent);
-                isMenu = false;
-                break;
-            }
-
-            case R.id.nav_map:
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
-                Toast.makeText(getBaseContext(), "You selected Map", Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-        return true;
-
-    }
-
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        MenuItem nav_stock = menu.findItem(R.id.nav_stock);
-        nav_stock.setVisible(isMenu);
-
-        MenuItem nav_dashboard = menu.findItem(R.id.nav_dashboard);
-        nav_dashboard.setVisible(isMenu);
-
-        MenuItem nav_sales = menu.findItem(R.id.nav_sales);
-        nav_sales.setVisible(isMenu);
-
-        MenuItem nav_Print = menu.findItem(R.id.nav_Print);
-        nav_Print.setVisible(isMenu);
-
-        MenuItem nav_map = menu.findItem(R.id.nav_map);
-        nav_map.setVisible(isMenu);
-
-        return true;
-    }
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//
+//        MenuItem nav_stock = menu.findItem(R.id.nav_stock);
+//        nav_stock.setVisible(isMenu);
+//
+//        MenuItem nav_dashboard = menu.findItem(R.id.nav_dashboard);
+//        nav_dashboard.setVisible(isMenu);
+//
+//        MenuItem nav_sales = menu.findItem(R.id.nav_sales);
+//        nav_sales.setVisible(isMenu);
+//
+//        MenuItem nav_Print = menu.findItem(R.id.nav_Print);
+//        nav_Print.setVisible(isMenu);
+//
+//        MenuItem nav_map = menu.findItem(R.id.nav_map);
+//        nav_map.setVisible(isMenu);
+//
+//        return true;
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -722,6 +766,54 @@ public class DashBoardActivity extends AppCompatActivity {
                     alertDialog.show();
                 }
                 return;
+            }
+        }
+    }
+
+    public class AsyncTaskREST extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            HttpURLConnection urlConnection = null;
+            String json = null;
+            // The Username & Password
+//            final EditText em =  (EditText) findViewById(R.id.Username);
+//            String email = (String) em.getText().toString();
+//            final EditText pw =  (EditText) findViewById(R.id.Password);
+//            String password = (String) pw.getText().toString();
+            // -----------------------
+
+            try {
+                HttpResponse response;
+                JSONObject jsonObject = new JSONObject();
+//                jsonObject.accumulate("email", "");
+//                jsonObject.accumulate("password", "");
+                json = jsonObject.toString();
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://46.235.93.243:8047/sap/opu/odata/sap/ZSFA_CUSTOMER_ORDER_SRV/SOHeaders/");
+                httpPost.setEntity(new StringEntity(reqBody, "UTF-8"));
+                httpPost.setHeader("Content-Type", "application/json; charset=utf-8");
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("X-Requested-With", "application/json");
+                httpPost.setHeader("Accept-Language", "en-US");
+                response = httpClient.execute(httpPost);
+                String sresponse = response.getEntity().toString();
+                Log.w("QueingSystem", sresponse);
+                Log.w("QueingSystem", EntityUtils.toString(response.getEntity()));
+            } catch (Exception e) {
+                Log.d("InputStream", e.getLocalizedMessage());
+
+            } finally {
+                /* nothing to do here */
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (result != null) {
+                // do something
+            } else {
+                // error occured
             }
         }
     }

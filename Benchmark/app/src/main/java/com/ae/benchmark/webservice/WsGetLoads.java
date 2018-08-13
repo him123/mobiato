@@ -1,6 +1,7 @@
 package com.ae.benchmark.webservice;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.NetworkUtility;
@@ -19,9 +20,12 @@ public class WsGetLoads {
     private Context context;
     private String message = "";
     private boolean success = false;
+    public static final String BROADCAST_REFRESH_LOAD = "com.benchmark.REFRESH_LOAD";
+    Intent intent;
 
     public WsGetLoads(Context context) {
         this.context = context;
+        intent = new Intent(BROADCAST_REFRESH_LOAD);
     }
 
     public boolean getSuccess() {
@@ -32,26 +36,31 @@ public class WsGetLoads {
         return message;
     }
 
+
+
     public void executeWebservice() {
-        final String url = Const.WS_URL + "LoadSet?$filter=Route%20eq%20%27"+ UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$expand=MatDoc&$format=json";
+        final String url = Const.WS_URL + "LoadSet?$filter=Route%20eq%20%27" +
+                UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME) + "%27&$expand=MatDoc&$format=json";
         parseResponse(NetworkUtility.getApiData(context, url));
     }
 
     private void parseResponse(final String response) {
 
         try {
-
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.has("d")) {
                 jsonObject = jsonObject.getJSONObject("d");
                 JSONArray array = jsonObject.optJSONArray("results");
-                if(array.length() > 0){
+                if (array.length() > 0) {
                     success = true;
                     DBManager dbManager = new DBManager(context);
                     dbManager.open();
                     dbManager.insertLoadArr(array);
+
                 }
             }
+
+            context.sendBroadcast(intent);
 
         } catch (JSONException e) {
             e.printStackTrace();

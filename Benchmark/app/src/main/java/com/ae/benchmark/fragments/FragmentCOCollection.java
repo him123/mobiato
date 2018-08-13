@@ -29,6 +29,7 @@ import butterknife.InjectView;
  * Created by Himm on 3/13/2018.
  */
 
+@SuppressLint("ValidFragment")
 public class FragmentCOCollection extends Fragment {
 
     @InjectView(R.id.recyclerview_collection)

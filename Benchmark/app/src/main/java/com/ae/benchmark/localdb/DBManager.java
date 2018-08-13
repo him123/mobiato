@@ -104,6 +104,23 @@ public class DBManager {
         return userExist;
     }
 
+//    public boolean checkIfCustomerMadeInvoice(String cust_num) {
+//        openDatabsse();
+//        boolean userExist = false;
+//        Cursor c = database.query(DatabaseHelper.TABLE_INVOICE_HEADER,
+//                null, DatabaseHelper.SVH_CUST_NAME + " = ?",
+//                new String[]{salesmanObj.optString("SALESMAN")}, null, null, null);
+//        if (c == null) return userExist;
+//
+//        while (c.moveToNext()) {
+//            userExist = true;
+//        }
+//        c.close();
+//
+//        return userExist;
+//    }
+
+
     public void updateSalesman(JSONObject salesmanObj) {
 
         ContentValues contentValue = new ContentValues();
@@ -154,6 +171,7 @@ public class DBManager {
                 contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, singleObjItem.item_price);
                 contentValueItem.put(DatabaseHelper.LOAD_NO, load_no);
                 contentValueItem.put(DatabaseHelper.IS_REQ, is_req);
+                contentValueItem.put(DatabaseHelper.ITEM_TYPE, singleObjItem.item_type);
 
                 db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);
 
@@ -217,13 +235,54 @@ public class DBManager {
     }
 
 
+    //INSERT LOAD ITEMS ONKY SINGLE
+    public void insertReturnItems(List<Item> items, String order_no, String salesman_id, String cust_num,
+                                  String order_amount, String order_date) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.beginTransaction();
+            ContentValues contentValueHead = new ContentValues();
+            ContentValues contentValue = new ContentValues();
+
+            contentValueHead.put(DatabaseHelper.ORDER_NO, order_no);
+            contentValueHead.put(DatabaseHelper.SALESMAN_ID, salesman_id);
+            contentValueHead.put(DatabaseHelper.CUST_NUM, cust_num);
+            contentValueHead.put(DatabaseHelper.ORDER_AMOUNT, order_amount);
+            contentValueHead.put(DatabaseHelper.ORDER_DATE, order_date);
+
+            db.insert(DatabaseHelper.TABLE_RETURN_HEADER, null, contentValueHead);
+
+            for (int i = 0; i < items.size(); i++) {
+                contentValue.put(DatabaseHelper.ITEM_CODE, items.get(i).item_code);
+                contentValue.put(DatabaseHelper.ITEM_NAME_EN, items.get(i).item_name_en);
+                contentValue.put(DatabaseHelper.ITEM_QTY, items.get(i).item_qty);
+                contentValue.put(DatabaseHelper.ITEM_PRICE, items.get(i).item_price);
+                contentValue.put(DatabaseHelper.ITEM_UOM, items.get(i).item_uom);
+
+                contentValue.put(DatabaseHelper.ORDER_NO, order_no);
+                contentValue.put(DatabaseHelper.ORDER_DATE, order_date);
+
+
+                db.insert(DatabaseHelper.TABLE_RETURN_ITEMS, null, contentValue);
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void insertCollectionHeader(String docNum, String invNum,
                                        String custNum, String custName,
-                                       String payMethod, String isCollected,
+                                       String payMethod, String last_collected_amt,
                                        String amount,
                                        String dueDate,
                                        String dueAmnt,
-                                       String inv_date) {
+                                       String inv_date, String is_payable) {
         try {
             ContentValues contentValue = new ContentValues();
 
@@ -232,13 +291,18 @@ public class DBManager {
             contentValue.put(DatabaseHelper.COL_CUST_NO, custNum);
             contentValue.put(DatabaseHelper.COL_CUST_NAME, custName);
             contentValue.put(DatabaseHelper.COL_PAY_METHOD, payMethod);
-            contentValue.put(DatabaseHelper.COL_IS_COLLECTED, isCollected);
+            contentValue.put(DatabaseHelper.COL_IS_COLLECTED,
+                    "true");
+            contentValue.put(DatabaseHelper.COL_LAST_COLLECTED_AMT,
+                    last_collected_amt);
 
             contentValue.put(DatabaseHelper.COL_AMOUNT, amount);
             contentValue.put(DatabaseHelper.COL_DUE_DATE, dueDate);
             contentValue.put(DatabaseHelper.COL_DUE_AMOUNT, dueAmnt);
             contentValue.put(DatabaseHelper.COL_INVOICE_DATE, inv_date);
             contentValue.put(DatabaseHelper.COL_INVOICE_DATE, inv_date);
+            contentValue.put(DatabaseHelper.COL_IS_PAYABLE, is_payable);
+
 
             database.insert(DatabaseHelper.TABLE_COLLECTION_HEADER, null, contentValue);
         } catch (Exception e) {
@@ -301,6 +365,8 @@ public class DBManager {
 
         try {
 
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
             ContentValues contentValue = new ContentValues();
 
             contentValue.put(DatabaseHelper.SVH_CODE, salesInvoice.inv_no);
@@ -319,8 +385,10 @@ public class DBManager {
             contentValue.put(DatabaseHelper.SVH_VAT_PER, salesInvoice.inv_header_vat_per);
             contentValue.put(DatabaseHelper.SVH_VAT_VAL, salesInvoice.inv_header_vat_val);
 
+            contentValue.put(DatabaseHelper.SVH_EMPTY_TYPE, salesInvoice.empty_type);
+            contentValue.put(DatabaseHelper.SVH_EMPTY_BOTTLES, salesInvoice.empty_bottles);
 
-            database.insert(DatabaseHelper.TABLE_INVOICE_HEADER, null, contentValue);
+            db.insert(DatabaseHelper.TABLE_INVOICE_HEADER, null, contentValue);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -422,6 +490,7 @@ public class DBManager {
             contentValue.put(DatabaseHelper.ITEM_DISCOUNT_VAL, salesInvoiceItem.item_disc_val);
             contentValue.put(DatabaseHelper.ITEM_VAT_PER, salesInvoiceItem.item_vat_per);
             contentValue.put(DatabaseHelper.ITEM_VAT_VAL, salesInvoiceItem.item_vat_val);
+            contentValue.put(DatabaseHelper.ITEM_UOM, salesInvoiceItem.item_uom);
 
             database.insert(DatabaseHelper.TABLE_INVOICE_ITEMS, null, contentValue);
 
@@ -443,7 +512,7 @@ public class DBManager {
                 ContentValues contentValue = new ContentValues();
 
                 contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("Load_no"));
-                contentValue.put(DatabaseHelper.LOAD_DEL_DATE, UtilApp.getCurrentDate());
+                contentValue.put(DatabaseHelper.LOAD_DEL_DATE, singleObj.getString("delivery_date"));
                 contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, "0");
                 contentValue.put(DatabaseHelper.IS_REQ, "0");
 
@@ -463,9 +532,20 @@ public class DBManager {
                     contentValueItem.put(DatabaseHelper.LOAD_NO, singleObjItem.getString("load_no"));
                     contentValueItem.put(DatabaseHelper.IS_REQ, "0");
 
-                    db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);
+//                    if (checkIsItemExistInCurrentLoad(singleObjItem.getString("item_code"), db)) {
+//                        double existQty = Double.parseDouble(getVanStockExistItemQty(singleObjItem.getString("item_code"), db));
+//                        double addQty = Double.parseDouble(singleObjItem.getString("item_qty"));
+//                        double totAddingQty = existQty + addQty;
+//                        updateLoadItemQty(singleObjItem.getString("item_code"), String.valueOf(totAddingQty));
+//                    } else {
+                    if (!checkIsLoadExist(singleObj.getString("Load_no"), db)) {
+                        db.insert(DatabaseHelper.TABLE_LOAD_ITEMS, null, contentValueItem);
+                    }
+//                    }
                 }
-                db.insert(DatabaseHelper.TABLE_LOAD_HEADER, null, contentValue);
+                if (!checkIsLoadExist(singleObj.getString("Load_no"), db)) {
+                    db.insert(DatabaseHelper.TABLE_LOAD_HEADER, null, contentValue);
+                }
             }
 
             db.setTransactionSuccessful();
@@ -534,24 +614,12 @@ public class DBManager {
 
         try {
             db.beginTransaction();
-//            for (int i = 0; i < jArr.length(); i++) {
-//                JSONObject singleObj = jArr.getJSONObject(i);
-//
-//                ContentValues contentValue = new ContentValues();
-//
-//                contentValue.put(DatabaseHelper.LOAD_NO, singleObj.getString("load_no"));
-//                contentValue.put(DatabaseHelper.LOAD_DEL_DATE, singleObj.getString("delivery_date"));
-//                contentValue.put(DatabaseHelper.LOAD_IS_VERIFIED, "0");
-//
-//                JSONArray jLoadItemArr = singleObj.getJSONArray("load_items");
 
             for (int j = 0; j < jArr.size(); j++) {
-//                JSONObject singleObjItem = jArr.getJSONObject(j);
                 ContentValues contentValueItem = new ContentValues();
 
                 contentValueItem.put(DatabaseHelper.ITEM_CODE, jArr.get(j).item_code);
                 contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, jArr.get(j).item_name_en);
-//                contentValueItem.put(DatabaseHelper.ITEM_NAME_EN, jArr.get(j).item_name_ar);
                 contentValueItem.put(DatabaseHelper.ITEM_QTY, jArr.get(j).item_qty);
                 contentValueItem.put(DatabaseHelper.ITEM_TYPE, jArr.get(j).item_type);
                 contentValueItem.put(DatabaseHelper.ITEM_UOM, jArr.get(j).item_uom);
@@ -559,13 +627,15 @@ public class DBManager {
                 contentValueItem.put(DatabaseHelper.LOAD_TOT_PRICE, jArr.get(j).item_price);
                 contentValueItem.put(DatabaseHelper.LOAD_NO, load_no);
 
-                db.insert(DatabaseHelper.TABLE_VANSTOCK_ITEMS, null, contentValueItem);
-
+                if (checkIsItemExistInCurrentVanstock(jArr.get(j).item_code, db)) {
+                    double existQty = Double.parseDouble(getVanStockExistItemQty(jArr.get(j).item_code, db));
+                    double addQty = Double.parseDouble(jArr.get(j).item_qty);
+                    double totAddingQty = existQty + addQty;
+                    updateVanStockItemQty(jArr.get(j).item_code, String.valueOf(totAddingQty));
+                } else {
+                    db.insert(DatabaseHelper.TABLE_VANSTOCK_ITEMS, null, contentValueItem);
+                }
             }
-
-//                db.insert(DatabaseHelper.TABLE_VANSTOCK_HEADER, null, contentValue);
-
-//            }
 
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -638,7 +708,8 @@ public class DBManager {
                 JSONObject singleObj = jArr.getJSONObject(i);
                 ContentValues contentValue = new ContentValues();
 
-                contentValue.put(DatabaseHelper.CUST_NUM, singleObj.getString("customer"));
+//                contentValue.put(DatabaseHelper.CUST_NUM, singleObj.getString("customer").toString().substring(4));
+                contentValue.put(DatabaseHelper.CUST_NUM, singleObj.getString("customer").toString());
                 contentValue.put(DatabaseHelper.CUST_NAME_EN, singleObj.getString("name1"));
                 contentValue.put(DatabaseHelper.CUST_NAME_AR, singleObj.getString("name2"));
                 contentValue.put(DatabaseHelper.CUST_DIST_CHANNEL, singleObj.getString("channel"));
@@ -660,8 +731,16 @@ public class DBManager {
                     contentValue.put(DatabaseHelper.CUST_PAYMENT_TERM, "60");
                 }
 
-                contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, singleObj.getString("empty_bottle"));
-                contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("filled_bottle"));
+                if (singleObj.getString("empty_bottle").equalsIgnoreCase(""))
+                    contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, "0");
+                else
+                    contentValue.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, singleObj.getString("empty_bottle"));
+
+                if (singleObj.getString("filled_bottle").equalsIgnoreCase(""))
+                    contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, "0");
+                else
+                    contentValue.put(DatabaseHelper.CUST_POSSESSED_FILLED_BOTTLE, singleObj.getString("filled_bottle"));
+
                 contentValue.put(DatabaseHelper.CUST_LATITUDE, singleObj.getString("LATITUDE"));
                 contentValue.put(DatabaseHelper.CUST_LONGITUDE, singleObj.getString("LONGITUDE"));
                 contentValue.put(DatabaseHelper.CUST_CREATED_DATE, "");
@@ -669,9 +748,12 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.CUST_ORDER, "0");
                 contentValue.put(DatabaseHelper.CUST_COLLECTION, "0");
                 contentValue.put(DatabaseHelper.IS_STOCK_CAPTURED, "0");
+                contentValue.put(DatabaseHelper.CUST_TEL, singleObj.getString("telephone"));
 
 
-                db.insert(DatabaseHelper.TABLE_CUSTOMER, null, contentValue);
+                if (!CheckIfCustomerAlreadyExist(singleObj.getString("customer").toString(), db)) {
+                    db.insert(DatabaseHelper.TABLE_CUSTOMER, null, contentValue);
+                }
 
             }
 
@@ -833,7 +915,10 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.ITEM_CON_FECTOR, singleObj.getString("factor"));
                 contentValue.put(DatabaseHelper.ITEM_UOM, singleObj.getString("uom"));
 
-                database.insert(DatabaseHelper.TABLE_ITEM, null, contentValue);
+                if (!CheckIfMasterItemAlreadyExist(singleObj.getString("material"), db)) {
+                    database.insert(DatabaseHelper.TABLE_ITEM, null, contentValue);
+                }
+
             }
 
             db.setTransactionSuccessful();
@@ -959,7 +1044,10 @@ public class DBManager {
         contentValue.put(DatabaseHelper.CUSTOMER_NAME, recentCustomer.getCustomer_name());
         contentValue.put(DatabaseHelper.DATE_TIME, recentCustomer.getDate_time());
 
-        database.insert(DatabaseHelper.TABLE_RECENT_CUSTOMER, null, contentValue);
+        if (!CheckIfRecentCustomerAlreadyExist(recentCustomer.getCustomer_id(), db)) {
+            database.insert(DatabaseHelper.TABLE_RECENT_CUSTOMER, null, contentValue);
+        }
+
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -1079,12 +1167,19 @@ public class DBManager {
         return i;
     }
 
-    public int updateCustCaptredStock(String cust_num, String val) {
+    public int updateCustCaptredStockAndEmpties(String cust_num,
+                                                String val, String strBottles) {
 
+        Log.i("", "=========== cust num: " + cust_num);
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.IS_STOCK_CAPTURED, val);
+
+        contentValues.put(DatabaseHelper.IS_STOCK_CAPTURED, "1");
+        contentValues.put(DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE, strBottles);
+
         int i = database.update(DatabaseHelper.TABLE_CUSTOMER, contentValues,
-                DatabaseHelper.CUST_NUM + " = " + cust_num, null);
+                DatabaseHelper.CUST_NUM + " = ?", new String[]{cust_num});
+
         return i;
     }
 
@@ -1112,27 +1207,34 @@ public class DBManager {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.ITEM_QTY, item_qty);
+//        contentValues.put(DatabaseHelper.LOAD_NO, load_num);
+
         int i = database.update(DatabaseHelper.TABLE_LOAD_ITEMS, contentValues,
-                DatabaseHelper.ITEM_CODE + " = " + item_code, null);
+                DatabaseHelper.ITEM_CODE + " = ? AND " + DatabaseHelper.LOAD_NO + " = ?", new String[]{item_code, load_num});
+
+//        int i = database.update(DatabaseHelper.TABLE_LOAD_ITEMS, contentValues,
+//                DatabaseHelper.ITEM_CODE + " = " + item_code, null);
         return i;
     }
 
-    public int updateCollectionLastCollectionAmount(String col_doc_no, String last_collected_amt) {
+    public int updateCollectionLastCollectionAmount(String col_doc_no, String last_collected_amt, String is_payable) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.COL_LAST_COLLECTED_AMT, last_collected_amt);
+        contentValues.put(DatabaseHelper.COL_IS_PAYABLE, is_payable);
+
         int i = database.update(DatabaseHelper.TABLE_COLLECTION_HEADER, contentValues,
                 DatabaseHelper.COL_DOC_CODE + " = " + col_doc_no, null);
         return i;
     }
 
 
-    public int updateUnLoadItemQty(String load_num, String item_code, String item_qty) {
+    public int updateVanstockItemQty(String item_code, String item_qty) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.ITEM_QTY, item_qty);
-        int i = database.update(DatabaseHelper.TABLE_UNLOAD_ITEMS, contentValues,
-                DatabaseHelper.ITEM_CODE + " = " + item_code, null);
+        int i = database.update(DatabaseHelper.TABLE_VANSTOCK_ITEMS, contentValues,
+                DatabaseHelper.ITEM_CODE + " = " + item_code + "", null);
         return i;
     }
 
@@ -1147,8 +1249,12 @@ public class DBManager {
     public int updateLoadVerified(String load_no) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.LOAD_NO, load_no);
+
         contentValues.put(DatabaseHelper.LOAD_IS_VERIFIED, "1");
-        int i = database.update(DatabaseHelper.TABLE_LOAD_HEADER, contentValues, DatabaseHelper.LOAD_NO + " = " + load_no, null);
+
+        int i = database.update(DatabaseHelper.TABLE_LOAD_HEADER,
+                contentValues, DatabaseHelper.LOAD_NO + " = " +
+                        load_no, null);
         return i;
     }
 
@@ -1157,6 +1263,32 @@ public class DBManager {
         contentValues.put(DatabaseHelper.ITEM_QTY, item_qty);
         int i = database.update(DatabaseHelper.TABLE_VANSTOCK_ITEMS, contentValues,
                 DatabaseHelper.ITEM_CODE + " = " + item_code, null);
+        return i;
+    }
+
+
+    public int updateVanStockEmptiesAdd(String item_code, String item_qty) {
+        ContentValues contentValues = new ContentValues();
+
+        double existing = Double.parseDouble(getBottleQty(item_code));
+        double add = Double.parseDouble(item_qty);
+
+        double tot = existing + add;
+        contentValues.put(DatabaseHelper.ITEM_QTY, "" + tot);
+        int i = database.update(DatabaseHelper.TABLE_VANSTOCK_ITEMS, contentValues,
+                DatabaseHelper.ITEM_CODE + " = " + item_code, null);
+        return i;
+    }
+
+    public int updateVanStockItemQty(String item_code, String item_qty) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.ITEM_QTY, item_qty);
+
+        int i = database.update(DatabaseHelper.TABLE_VANSTOCK_ITEMS, contentValues,
+                DatabaseHelper.ITEM_CODE + " = ?", new String[]{item_code});
+
+//        int i = database.update(DatabaseHelper.TABLE_VANSTOCK_ITEMS, contentValues,
+//                DatabaseHelper.ITEM_QTY + " = " + item_qty, null);
         return i;
     }
 
@@ -1371,10 +1503,82 @@ public class DBManager {
         return true;
     }
 
+    public static boolean CheckIfRecentCustomerAlreadyExist(String cust_num, SQLiteDatabase db) {
+//        SQLiteDatabase sqldb = EGLifeStyleApplication.sqLiteDatabase;
+        String Query = "Select * from " + DatabaseHelper.TABLE_RECENT_CUSTOMER + " where " +
+                DatabaseHelper.CUSTOMER_ID + " = " + cust_num;
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public static boolean CheckIfCustomerAlreadyExist(String cust_num, SQLiteDatabase db) {
+//        SQLiteDatabase sqldb = EGLifeStyleApplication.sqLiteDatabase;
+        String Query = "Select * from " + DatabaseHelper.TABLE_CUSTOMER + " where " +
+                DatabaseHelper.CUST_NUM + " = " + cust_num;
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
+    public static boolean CheckIfMasterItemAlreadyExist(String item_code, SQLiteDatabase db) {
+//        SQLiteDatabase sqldb = EGLifeStyleApplication.sqLiteDatabase;
+        String Query = "Select * from " + DatabaseHelper.TABLE_ITEM + " where " +
+                DatabaseHelper.ITEM_CODE + " = " + item_code;
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
     public boolean checkIsCollectionAlreadyExist(String col_doc_no) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String Query = "Select * from " + DatabaseHelper.TABLE_COLLECTION_HEADER + " where " +
                 DatabaseHelper.COL_DOC_CODE + " = " + col_doc_no;
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public boolean checkIsItemExistInCurrentVanstock(String item_code, SQLiteDatabase db) {
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        String Query = "Select * from " + DatabaseHelper.TABLE_ITEM + " where " +
+//                DatabaseHelper.ITEM_CODE + " = '" + "0000000000" + item_code + "'";
+        String Query = "Select * from " + DatabaseHelper.TABLE_VANSTOCK_ITEMS + " where " +
+                DatabaseHelper.ITEM_CODE + " = " + item_code + "";
+        Cursor cursor = db.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
+    public boolean checkIsLoadExist(String load_no, SQLiteDatabase db) {
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        String Query = "Select * from " + DatabaseHelper.TABLE_ITEM + " where " +
+//                DatabaseHelper.ITEM_CODE + " = '" + "0000000000" + item_code + "'";
+        String Query = "Select * from " + DatabaseHelper.TABLE_LOAD_HEADER + " where " +
+                DatabaseHelper.LOAD_NO + " = " + load_no + "";
         Cursor cursor = db.rawQuery(Query, null);
         if (cursor.getCount() <= 0) {
             cursor.close();
@@ -1677,6 +1881,54 @@ public class DBManager {
         return list;
     }
 
+
+    //Item List
+    public ArrayList<Item> getAllReturnsForCustomer(String cust_num) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_RETURN_HEADER +
+                " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+
+                        //you could add additional columns here..
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
     public ArrayList<Customer> getAllCust() {
 
         ArrayList<Customer> list = new ArrayList<Customer>();
@@ -1718,6 +1970,7 @@ public class DBManager {
                         customer.cust_order = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_ORDER));
                         customer.cust_collection = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_COLLECTION));
                         customer.cust_collection = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_COLLECTION));
+                        customer.cust_tel_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_TEL));
 
                         //you could add additional columns here..
                         list.add(customer);
@@ -1907,8 +2160,6 @@ public class DBManager {
     }
 
 
-
-
     public ArrayList<Collection> getAllCollections(String custNum) {
 
         ArrayList<Collection> list = new ArrayList<Collection>();
@@ -1917,7 +2168,7 @@ public class DBManager {
 //        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER;
 
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER +
-                " WHERE " + DatabaseHelper.COL_CUST_NO + " = " + custNum;
+                " WHERE " + DatabaseHelper.COL_CUST_NO + "='" + custNum + "'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -1941,6 +2192,7 @@ public class DBManager {
                         collection.coll_due_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
                         collection.coll_due_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
                         collection.coll_last_col_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_LAST_COLLECTED_AMT));
+                        collection.coll_is_payable = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_IS_PAYABLE));
 
                         //you could add additional columns here..
                         list.add(collection);
@@ -2016,17 +2268,133 @@ public class DBManager {
     }
 
 
+    public ArrayList<Item> getItemsForPrint(String column, String value, String table) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + table +
+                " WHERE " + column + " = " + value;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
+                        item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
+
+                        item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+
+                        if (table.equalsIgnoreCase(DatabaseHelper.TABLE_ORDER_ITEMS) ||
+                                table.equalsIgnoreCase(DatabaseHelper.TABLE_RETURN_ITEMS)) {
+                            item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
+                            item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                        } else if (table.equalsIgnoreCase(DatabaseHelper.TABLE_INVOICE_ITEMS)) {
+                            item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
+                            item.sales_inv_nun = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CODE));
+                        } else if (table.equalsIgnoreCase(DatabaseHelper.TABLE_VANSTOCK_ITEMS)) {
+                            item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE));
+                            item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+                        }
+
+                        item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
+//                        item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+//
+                        //you could add additional columns here..
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+
     public ArrayList<Item> getVanStock(boolean showCoupon) {
 
         ArrayList<Item> list = new ArrayList<Item>();
         String selectQuery;
         // Select All Query
         if (showCoupon) {
-            selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS;
+            selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
+                    " WHERE " + DatabaseHelper.ITEM_TYPE + " != " + "'Empty'";
         } else {
             selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
-                    " WHERE " + DatabaseHelper.ITEM_TYPE + " != " + "'Coupon'";
+                    " WHERE " + DatabaseHelper.ITEM_TYPE + " != " + "'Coupon'" + " AND "
+                    + DatabaseHelper.ITEM_TYPE + " != " + "'Empty'";
         }
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
+                        item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE));
+                        item.item_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_TYPE));
+                        item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+                        item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
+                        item.load_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_NO));
+//
+                        //you could add additional columns here..
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    public ArrayList<Item> getFullVanStock(boolean showCoupon) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+        String selectQuery;
+        // Select All Query
+
+        selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS;
+
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -2249,6 +2617,34 @@ public class DBManager {
     }
 
 
+    //GET EMPTY OR FILLEd BOTTLES
+    public String getVanStockExistItemQty(String item_code, SQLiteDatabase db) { // type = 0 empty, 1 = filled
+
+        String qty = "0";
+
+        String selectQuery;
+        selectQuery = "SELECT " + DatabaseHelper.ITEM_QTY + " FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
+                " WHERE " + DatabaseHelper.ITEM_CODE + " = " + item_code;
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            cursor.moveToFirst();
+            int count = cursor.getCount();
+            if (count > 0)
+                qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return qty;
+    }
+
+
     //GET LAST INVOICE GENERETED NUMBER
     public long getLastInvoiceID() { // type = 0 empty, 1 = filled
         long index = 0;
@@ -2334,6 +2730,34 @@ public class DBManager {
         return index;
     }
 
+    //GET LAST INVOICE GENERETED NUMBER
+    public long getLastReturnID() { // type = 0 empty, 1 = filled
+        long index = 0;
+        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_RETURN_HEADER;
+//                " WHERE " + DatabaseHelper.CUST_NUM + " = " + custNum;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                String count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                index = Long.parseLong(count);
+            } else {
+                index = 0;
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return index;
+    }
+
 
     //GET LAST INVOICE GENERATED NUMBER
     public long getLastCollectionID() { // type = 0 empty, 1 = filled
@@ -2361,6 +2785,35 @@ public class DBManager {
         }
 
         return index;
+    }
+
+
+    //GET LAST INVOICE GENERATED NUMBER
+    public String getLastPaymentAmount(String col_code) { // type = 0 empty, 1 = filled
+        long index = 0;
+        String selectQuery = "SELECT" + DatabaseHelper.COL_LAST_COLLECTED_AMT + " FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER +
+                " WHERE " + DatabaseHelper.COL_DOC_CODE + " = " + col_code;
+        String count = "";
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                count = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_LAST_COLLECTED_AMT));
+                index = Long.parseLong(count);
+            } else {
+                index = 0;
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return count;
     }
 
     //GET LAST INVOICE GENERATED NUMBER
@@ -2431,6 +2884,140 @@ public class DBManager {
 
 
     //GET EMPTY OR FILLEd BOTTLES
+    public String getEmptyBottle(String type) { // type = 0 empty, 1 = filled
+
+        String bottlesCount = "0";
+
+//        String selectQuery;
+//        selectQuery = "SELECT " + DatabaseHelper.SVH_EMPTY_BOTTLES + " FROM " +
+//                DatabaseHelper.TABLE_INVOICE_HEADER +
+//                " WHERE " + DatabaseHelper.SVH_EMPTY_TYPE + " = '" + type + "'";
+
+        int total = 0;
+
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery("SELECT SUM(" + DatabaseHelper.SVH_EMPTY_BOTTLES + ") as Total FROM "
+                    + DatabaseHelper.TABLE_INVOICE_HEADER, null);
+
+            if (cursor.moveToFirst()) {
+
+                total = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.SVH_EMPTY_BOTTLES));// get final tot
+            }
+//            Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//            cursor.moveToFirst();
+//            int count = cursor.getCount();
+//            if (count > 0)
+//
+//                bottlesCount = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_EMPTY_BOTTLES));
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return "" + total;
+    }
+
+
+    //GET VISITED CUSTOMERS
+    public int getVisitedCust() { // type = 0 empty, 1 = filled
+
+        int index = 0;
+
+        String selectQuery;
+        // GET FILLED BOTTLE
+        selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_RECENT_CUSTOMER;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            index = cursor.getCount();
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return index;
+    }
+
+
+    //GET VISITED CUSTOMERS
+    public String getLoadQty(String column, String table) { // type = 0 empty, 1 = filled
+
+        double count = 0;
+//
+        String selectQuery;
+        // GET FILLED BOTTLE
+        selectQuery = "SELECT " + column + " FROM " + table;
+//                " WHERE " + DatabaseHelper.ITEM_CODE + " = " + item_code;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            cursor.moveToFirst();
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String totalAmt = cursor.getString(cursor.getColumnIndex(column));
+                    count += Double.parseDouble(totalAmt);
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return "" + count;
+    }
+
+
+    //GET VISITED CUSTOMERS
+    public String getLoadQty(String column,
+                             String table,
+                             String extras) { // type = 0 empty, 1 = filled
+
+        double count = 0;
+//
+        String selectQuery;
+        // GET FILLED BOTTLE
+        selectQuery = "SELECT " + DatabaseHelper.SVH_EMPTY_BOTTLES + " FROM " + table + " WHERE " + column + "=?";
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            Cursor cursor = db.rawQuery(selectQuery, new String[]{extras});
+            cursor.moveToFirst();
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String totalAmt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_EMPTY_BOTTLES));
+                    count += Double.parseDouble(totalAmt);
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return "" + count;
+    }
+
+
+    //GET EMPTY OR FILLEd BOTTLES
     public String getUnloadBottleQty(String item_code, SQLiteDatabase db, String tableName) { // type = 0 empty, 1 = filled
 
         String bottlesCount = "0";
@@ -2476,8 +3063,8 @@ public class DBManager {
         String selectQuery;
 //        if (type == 1) {
         // Get FILLED BOTTLE
-        selectQuery = "SELECT " + DatabaseHelper.LOAD_TOT_PRICE + " FROM " + DatabaseHelper.TABLE_VANSTOCK_ITEMS +
-                " WHERE " + DatabaseHelper.ITEM_CODE + " = " + item_code;
+        selectQuery = "SELECT " + DatabaseHelper.ITEM_PRICE + " FROM " + DatabaseHelper.TABLE_ITEM +
+                " WHERE " + DatabaseHelper.ITEM_CODE + " = '" + "0000000000" + item_code + "'";
 //        } else {
 //            // Get EMPTY BOTTLE
 //            selectQuery = "SELECT " + DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE + " FROM " + DatabaseHelper.TABLE_CUSTOMER +
@@ -2494,7 +3081,7 @@ public class DBManager {
             int count = cursor.getCount();
             if (count > 0)
 
-                bottlesCount = cursor.getString(cursor.getColumnIndex(DatabaseHelper.LOAD_TOT_PRICE));
+                bottlesCount = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
 
             cursor.close();
         } catch (Exception e) {
@@ -2515,7 +3102,9 @@ public class DBManager {
 //        if (type == 1) {
         // Get FILLED BOTTLE
         selectQuery = "SELECT " + DatabaseHelper.IS_STOCK_CAPTURED + " FROM " + DatabaseHelper.TABLE_CUSTOMER +
-                " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
+                " WHERE " + DatabaseHelper.CUST_NUM + " ='" + cust_num + "'";
+
+        Log.e("", "Query: " + selectQuery);
 //        } else {
 //            // Get EMPTY BOTTLE
 //            selectQuery = "SELECT " + DatabaseHelper.CUST_POSSESSED_EMPTY_BOTTLE + " FROM " + DatabaseHelper.TABLE_CUSTOMER +
@@ -2554,8 +3143,7 @@ public class DBManager {
 //                " AND " + DatabaseHelper.LOAD_DEL_DATE + "=" + UtilApp.getCurrentDate();
 
         String selectQuery = "SELECT  * FROM " +
-                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ? AND "
-                + DatabaseHelper.LOAD_DEL_DATE + " = ?";
+                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ?";
 
 //        "select docid as _id, recipeID from " +
 //                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ? AND "
@@ -2566,7 +3154,7 @@ public class DBManager {
         db.beginTransaction();
         try {
 
-            Cursor cursor = db.rawQuery(selectQuery, new String[]{is_req, UtilApp.getCurrentDate()});
+            Cursor cursor = db.rawQuery(selectQuery, new String[]{is_req});
             try {
 
                 // looping through all rows and adding to list
@@ -2663,6 +3251,62 @@ public class DBManager {
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION + " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Transaction transaction = new Transaction();
+                        //only one column
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
+
+                        //you could add additional columns here..
+                        list.add(transaction);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+
+    public ArrayList<Transaction> getAllCustodyTransactionsCust(String id) {
+
+        open();
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION +
+                " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'"
+                + " AND " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + "Custody";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {

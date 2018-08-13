@@ -8,6 +8,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ae.benchmark.util.Constant;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Table Name
@@ -30,6 +32,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_ORDER_HEADER = "order_header";
     public static final String TABLE_ORDER_ITEMS = "order_items";
+
+    public static final String TABLE_RETURN_HEADER = "return_header";
+    public static final String TABLE_RETURN_ITEMS = "return_items";
 
     public static final String TABLE_CUSTOMER = "customers";
 
@@ -119,6 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUST_COLLECTION = "cust_collection";
     public static final String IS_STOCK_CAPTURED = "is_stock_captured";
     public static final String CUST_CREATED_DATE = "cust_created_date";
+    public static final String CUST_TEL = "cust_tel";
 
 
     //SALES INVOICE HEADER COLUMNS
@@ -136,8 +142,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String SVH_INVOICE_HEADER_DISC_IN_PER = "sv_invoice_header_disc_in_per";
     public static final String SVH_INVOICE_HEADER_DISC_IN_VAL = "sv_invoice_header_disc_in_val";
     public static final String SVH_VAT_PER = "sv_vat_per";
+    public static final String SVH_EMP_TYPE = "sv_vat_emp_type";
     public static final String SVH_VAT_VAL = "sv_vat_val";
-
+    public static final String SVH_EMPTY_TYPE = "empty_type";
+    public static final String SVH_EMPTY_BOTTLES = "empty_bottles";
 
     //COLLECTION COLUMNS
     public static final String COL_DOC_CODE = "col_code";
@@ -153,6 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_INVOICE_DATE = "col_inv_date";
     public static final String COL_LAST_COLLECTED_AMT = "col_last_collected_amt";
     public static final String COL_DUE_DATE = "col_due_date";
+    public static final String COL_IS_PAYABLE = "col_is_payale";
 
 
     //Transaction table columns
@@ -249,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + CUST_POSSESSED_FILLED_BOTTLE + " TEXT NOT NULL, " +
             "" + CUST_SALE + " TEXT NOT NULL, " + CUST_ORDER + " TEXT NOT NULL, " +
             "" + CUST_COLLECTION + " TEXT NOT NULL, " + CUST_LATITUDE + " TEXT NOT NULL, " +
-            "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " + CUST_CREATED_DATE + " TEXT , " +
+            "" + IS_STOCK_CAPTURED + " TEXT NOT NULL, " + CUST_CREATED_DATE + " TEXT , " + CUST_TEL + " TEXT , " +
             "" + CUST_LONGITUDE + " TEXT NOT NULL);";
 
     // CREATE ITEM MASTER
@@ -279,14 +288,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + SVH_CUST_DIVISION + " TEXT NOT NULL, " + SVH_INVOICE_DATE + " TEXT NOT NULL, " +
             "" + SVH_DELVERY_DATE + " TEXT NOT NULL, " + SVH_CUST_NAME + " TEXT NOT NULL, " +
             "" + SVH_TOT_AMT_SALES + " TEXT NOT NULL, " + SVH_INVOICE_HEADER_DISC_IN_PER + " TEXT NOT NULL, " +
-            "" + SVH_INVOICE_HEADER_DISC_IN_VAL + " TEXT NOT NULL, " + SVH_VAT_PER + " TEXT NOT NULL, " +
-            "" + SVH_VAT_VAL + " TEXT NOT NULL);";
+            "" + SVH_INVOICE_HEADER_DISC_IN_VAL + " TEXT NOT NULL, " + SVH_VAT_PER + " TEXT NOT NULL, " + SVH_EMPTY_TYPE + " TEXT, " +
+            "" + SVH_EMPTY_BOTTLES + " TEXT, " + "" + SVH_VAT_VAL + " TEXT NOT NULL);";
 
     //CREATE INVOICE ITEMS
     private static final String CREATE_INVOICE_ITEMS = "create table " + TABLE_INVOICE_ITEMS + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SVH_CODE + " TEXT NOT NULL, " + ITEM_CODE + " TEXT NOT NULL," +
             "" + ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_PRICE + " TEXT NOT NULL, " +
-            "" + ITEM_QTY + " TEXT NOT NULL, " + ITEM_COUPON_CODE + " TEXT NOT NULL, " +
+            "" + ITEM_QTY + " TEXT NOT NULL, " + ITEM_COUPON_CODE + " TEXT NOT NULL, " + ITEM_UOM + " TEXT NOT NULL, " +
             "" + ITEM_DISCOUNT_PER + " TEXT NOT NULL, " + ITEM_DISCOUNT_VAL + " TEXT NOT NULL, " +
             "" + ITEM_VAT_VAL + " TEXT NOT NULL, " +
             "" + ITEM_VAT_PER + " TEXT NOT NULL);";
@@ -296,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_DOC_CODE + " TEXT NOT NULL, " + COL_INVOICE_NO + " TEXT NOT NULL," +
             "" + COL_CUST_NO + " TEXT NOT NULL, " + COL_CUST_NAME + " TEXT NOT NULL, " + COL_IS_COLLECTED + " TEXT NOT NULL, " + ""
             + COL_AMOUNT + " TEXT NOT NULL, " + COL_INVOICE_DATE + " TEXT NOT NULL, " +
-            COL_DUE_AMOUNT + " TEXT NOT NULL, " + COL_DUE_DATE + " TEXT NOT NULL, " +
+            COL_DUE_AMOUNT + " TEXT NOT NULL, " + COL_DUE_DATE + " TEXT NOT NULL, " + COL_IS_PAYABLE + " TEXT, " +
             "" + COL_LAST_COLLECTED_AMT + " TEXT, " +
             "" + COL_PAY_METHOD + " TEXT NOT NULL);";
 
@@ -311,7 +320,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
             ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
             LOAD_NO + " TEXT NOT NULL, " + "" + LOAD_DATE + " TEXT NOT NULL, " +
-            ITEM_UOM + " TEXT NOT NULL, " +  ITEM_TYPE + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " + ITEM_TYPE + " TEXT NOT NULL, " +
             LOAD_TOT_PRICE + " TEXT NOT NULL);";
 
     // CREATE LOAD ITEM
@@ -351,6 +360,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ITEM_PRICE + " TEXT NOT NULL);";
 
 
+    // RETURN HEADER
+    private static final String CREATE_TABLE_RETURN_HEADER = "create table " + TABLE_RETURN_HEADER + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "" + ORDER_NO + " TEXT NOT NULL, " + "" + SALESMAN_ID + " TEXT NOT NULL, " +
+            "" + CUST_NUM + " TEXT NOT NULL, " + "" + ORDER_AMOUNT + " TEXT NOT NULL, " +
+            "" + ORDER_DATE + " TEXT NOT NULL);";
+
+    // RETURN ITEMS
+    private static final String CREATE_TABLE_RETURN_ITEMS = "create table " + TABLE_RETURN_ITEMS + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ITEM_CODE + " TEXT NOT NULL, " +
+            ITEM_NAME_EN + " TEXT NOT NULL, " + ITEM_QTY + " TEXT NOT NULL, " +
+            ORDER_NO + " TEXT NOT NULL, " + "" + ORDER_DATE + " TEXT NOT NULL, " +
+            ITEM_UOM + " TEXT NOT NULL, " +
+            ITEM_PRICE + " TEXT NOT NULL);";
+
+
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -375,6 +400,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PAYMENT);
         db.execSQL(CREATE_TABLE_ORDER_HEADER);
         db.execSQL(CREATE_TABLE_ORDER_ITEMS);
+        db.execSQL(CREATE_TABLE_RETURN_HEADER);
+        db.execSQL(CREATE_TABLE_RETURN_ITEMS);
         db.execSQL(CREATE_RECENT_CUSTOMER);
     }
 
@@ -383,5 +410,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
 //        onCreate(db);
+    }
+
+    public void clearAll(SQLiteDatabase db) {
+        db.delete(TABLE_SALES_MAN, null, null);
+        db.delete(TABLE_LOAD_HEADER, null, null);
+        db.delete(TABLE_LOAD_ITEMS, null, null);
+        db.delete(TABLE_CUSTOMER, null, null);
+        db.delete(TABLE_ITEM, null, null);
+        db.delete(TABLE_FREE_GOODS, null, null);
+        db.delete(TABLE_INVOICE_HEADER, null, null);
+        db.delete(TABLE_INVOICE_ITEMS, null, null);
+        db.delete(TABLE_COLLECTION_HEADER, null, null);
+        db.delete(TABLE_COLLECTION_ITEMS, null, null);
+        db.delete(TABLE_TRANSACTION, null, null);
+        db.delete(TABLE_VANSTOCK_HEADER, null, null);
+        db.delete(TABLE_VANSTOCK_ITEMS, null, null);
+        db.delete(TABLE_UNLOAD_ITEMS, null, null);
+        db.delete(TABLE_PAYMENT, null, null);
+        db.delete(TABLE_ORDER_HEADER, null, null);
+        db.delete(TABLE_ORDER_ITEMS, null, null);
+        db.delete(TABLE_RETURN_HEADER, null, null);
+        db.delete(TABLE_RETURN_ITEMS, null, null);
+        db.delete(TABLE_RECENT_CUSTOMER, null, null);
     }
 }

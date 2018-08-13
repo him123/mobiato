@@ -30,6 +30,7 @@ public class Customer implements Parcelable {
     public String cust_order;
     public String cust_collection;
     public String cust_created_date;
+    public String cust_tel_num;
 
     public Customer() {
     }
@@ -207,6 +208,8 @@ public class Customer implements Parcelable {
         cust_order = in.readString();
         cust_collection = in.readString();
         cust_created_date = in.readString();
+        cust_tel_num = in.readString();
+
     }
 
     @Override
@@ -236,6 +239,7 @@ public class Customer implements Parcelable {
         dest.writeString(cust_order);
         dest.writeString(cust_collection);
         dest.writeString(cust_created_date);
+        dest.writeString(cust_tel_num);
     }
 
     @SuppressWarnings("unused")

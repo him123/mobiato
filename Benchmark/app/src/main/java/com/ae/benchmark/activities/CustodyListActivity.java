@@ -1,19 +1,12 @@
 package com.ae.benchmark.activities;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ae.benchmark.R;
@@ -21,47 +14,33 @@ import com.ae.benchmark.adapters.RecyclerAdapterAudit;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Transaction;
-import com.ae.benchmark.util.Constant;
-import com.ae.benchmark.util.UtilApp;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
-/**
- * Created by Himm on 3/13/2018.
- */
-
-public class CustomerPrintActivity extends AppCompatActivity {
-
+public class CustodyListActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    TextView mTitle;
-
-    @InjectView(R.id.recyclerAudit)
-    RecyclerView recyclerAudit;
     ArrayList<Transaction> transactions = new ArrayList<>();
     DBManager db;
     Context context;
     RecyclerAdapterAudit adapter;
-
+    @InjectView(R.id.recyclerAudit)
+    RecyclerView recyclerAudit;
     Customer customer;
-    String all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_customer_print);
+        setContentView(R.layout.activity_customer_detail);
         ButterKnife.inject(this);
-
         context = this;
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            all = extras.getString("all");
-            if (all.equalsIgnoreCase("no"))
-                customer = getIntent().getParcelableExtra("cust");
+            customer = extras.getParcelable("cust");
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,32 +48,31 @@ public class CustomerPrintActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         getSupportActionBar().setTitle("");
 
-        mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-
-        mTitle.setText("Print");
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(customer.cust_name_en);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
-        db = new DBManager(CustomerPrintActivity.this);
-        db.open();
+        db = new DBManager(context);
+        transactions = db.getAllCustodyTransactionsCust(customer.cust_num);
 
-        if (all.equalsIgnoreCase("yes"))
-            transactions = db.getAllTransactions();
-        else
-            transactions = db.getAllTransactionsForCustomer(customer.cust_num);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(CustomerPrintActivity.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerAudit.setLayoutManager(mLayoutManager);
 
         adapter = new RecyclerAdapterAudit(transactions, context, "");
         recyclerAudit.setAdapter(adapter);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

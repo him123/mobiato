@@ -2,6 +2,7 @@ package com.ae.benchmark.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -90,6 +92,9 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
     @InjectView(R.id.ll_tab)
     RelativeLayout rl_name_seq;
 
+    @InjectView(R.id.ll_butons)
+    LinearLayout ll_butons;
+
     @InjectView(R.id.rl_name)
     RelativeLayout rl_name;
 
@@ -100,7 +105,9 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
     TextView txt_title_seq;
 //    MaterialShowcaseSequence sequence;
 
+
     DBManager dbManager;
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +115,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_cust_list_main);
         ButterKnife.inject(this);
 
-        UtilApp.WriteSharePrefrence(SelectCustomerListMainActivity.this, Constant.SHRED_PR.ISJPLOADED, true);
+        UtilApp.WriteSharePrefrence(SelectCustomerListMainActivity.this,
+                Constant.SHRED_PR.ISJPLOADED, true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,6 +131,7 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 //        mTitle.setText(getCurrentDate());
         mTitle.setText("Customers");
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +144,8 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
             }
         });
 
+
+
         mTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +154,24 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         });
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        viewPager.setCurrentItem(0);
+
+        rl_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag){
+                    txt_title.setText("SEQ");
+                    viewPager.setCurrentItem(1);
+                    flag=false;
+                }else{
+                    txt_title.setText("ALL");
+                    viewPager.setCurrentItem(0);
+                    flag=true;
+                }
+
+            }
+        });
 
         pg.setVisibility(View.VISIBLE);
 
@@ -176,30 +205,32 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(viewPager, true);
 
-        rl_name_seq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(SelectCustomerListMainActivity.this, "SEQ", Toast.LENGTH_SHORT).show();
+//        rl_name_seq.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//
+////                Toast.makeText(SelectCustomerListMainActivity.this, "SEQ", Toast.LENGTH_SHORT).show();
 //                viewPager.setCurrentItem(1);
-            }
-        });
-
-        rl_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SelectCustomerListMainActivity.this, "ALL", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        rl_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(SelectCustomerListMainActivity.this, "ALL", Toast.LENGTH_SHORT).show();
 //                viewPager.setCurrentItem(0);
-            }
-        });
-
-
-        txt_title_seq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SelectCustomerListMainActivity.this, "ALL", Toast.LENGTH_SHORT).show();
-            }
-        });
+//            }
+//        });
+//
+//
+//        txt_title_seq.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(SelectCustomerListMainActivity.this, "ALL", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        sequence = new MaterialShowcaseSequence(this, "ADDCUST");
 //        ShowcaseConfig config = new ShowcaseConfig();
@@ -212,6 +243,15 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
 //        sequence.start();
 
     }
+
+
+//    private void swapFragment(){
+//        FragmentCustAll newGamefragment = new FragmentCustAll();
+//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.txt_no_app, newGamefragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
+//    }
 
     @Override
     protected void onResume() {
@@ -411,10 +451,9 @@ public class SelectCustomerListMainActivity extends AppCompatActivity {
             }
 
             case R.id.nav_Print: {
-                Intent intent = new Intent(getApplicationContext(), DashBoardActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Constant.PRINT = "yes";
-                startActivity(intent);
+                Intent intent2 = new Intent(getApplicationContext(), CustomerPrintActivity.class);
+                intent2.putExtra("all", "yes");
+                startActivity(intent2);
                 break;
             }
 

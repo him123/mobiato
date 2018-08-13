@@ -78,9 +78,9 @@ public class FragmentContainActivity extends AppCompatActivity {
         } else if (flag.equals("DEL")) {
             mTitle.setText("DELEVERY");
             fragment = new FragmentCODelivery();
-        } else if (flag.equals("RETURN")) {
+        } else if (flag.equals("RETURNS")) {
             mTitle.setText("RETURNS");
-            fragment = new FragmentCOReturns();
+            fragment = new FragmentCOReturns(customer);
         }
 
         fragmentTransaction.add(R.id.fragment_container, fragment, "HELLO");

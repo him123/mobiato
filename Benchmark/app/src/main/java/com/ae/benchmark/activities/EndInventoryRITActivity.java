@@ -66,7 +66,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         checkbox = findViewById(R.id.checkbox);
-        checkbox.setVisibility(View.GONE);
+//        checkbox.setVisibility(View.GONE);
         intent = new Intent(BROADCAST_ACTION_END_INVENTORY);
 
 //        Bundle extras = getIntent().getExtras();
@@ -86,7 +86,7 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         toolbar.setTitleTextColor(Color.WHITE);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        mTitle.setText("Stock Remain In Truck");
+        mTitle.setText("ROT");
 
         itemList = new ArrayList<>();
 
@@ -138,8 +138,8 @@ public class EndInventoryRITActivity extends AppCompatActivity {
                                         sDialog.dismissWithAnimation();
                                         sendBroadcast(intent);
 
-                                        UtilApp.askForPrint(EndInventoryRITActivity.this, EndInventoryRITActivity.this);
-//                                        finish();
+//                                        UtilApp.askForPrint(EndInventoryRITActivity.this, EndInventoryRITActivity.this);
+                                        finish();
 
 
                                     }
@@ -153,15 +153,16 @@ public class EndInventoryRITActivity extends AppCompatActivity {
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (Constant.checkBoxFalse.equals("no")) {
-                    if (isChecked) {
-                        Constant.checkBoxValue = "true";
-                        recyclerAdapter.notifyDataChanged();
-                    } else {
-                        Constant.checkBoxValue = "false";
-                        recyclerAdapter.notifyDataChanged();
-                    }
-                }
+//                if (Constant.checkBoxFalse.equals("no")) {
+//                    if (isChecked) {
+//                        Constant.checkBoxValue = "true";
+//                        recyclerAdapter.notifyDataChanged();
+//                    } else {
+//                        Constant.checkBoxValue = "false";
+//                        recyclerAdapter.notifyDataChanged();
+//                    }
+//                }
+                recyclerAdapter.selectAll();
 
             }
         });

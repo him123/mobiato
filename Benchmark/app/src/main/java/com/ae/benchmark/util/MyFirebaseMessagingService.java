@@ -73,7 +73,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intentBr.putExtra("salesman_id", object.getString("salesman_id").toString());
                 intentBr.putExtra("no_of_bottles", object.getString("no_of_bottles").toString());
 
-
                 intent.putExtra("supervisor_id", object.getString("supervisor_id").toString());
                 intent.putExtra("cust_id", object.getString("cust_id").toString());
                 intent.putExtra("salesman_id", object.getString("salesman_id").toString());
@@ -82,7 +81,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendBroadcast(intentBr);
 
             } else {
+
+
                 intentBr.putExtra("status", object.getString("status").toString());
+                intentBr.putExtra("no_of_bottles", object.getString("no_of_bottles").toString());
 //                intent.putExtra("tag", "type");
                 sendBroadcast(intentBr);
             }

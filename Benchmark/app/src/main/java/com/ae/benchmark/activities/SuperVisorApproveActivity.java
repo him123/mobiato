@@ -70,7 +70,10 @@ public class SuperVisorApproveActivity extends AppCompatActivity {
     private Toolbar toolbar;
     TextView mTitle;
 
-    String supervisor_id, cust_id, salesman_id, no_of_bottles;
+    String supervisor_id,
+            cust_id,
+            salesman_id,
+            no_of_bottles, cust_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class SuperVisorApproveActivity extends AppCompatActivity {
             cust_id = extras.getString("cust_id");
             salesman_id = extras.getString("salesman_id");
             no_of_bottles = extras.getString("no_of_bottles");
+//            cust_name = extras.getString("cust_name");
 
             txt_title.setText("Approval request comes from " + salesman_id);
 
@@ -135,20 +139,20 @@ public class SuperVisorApproveActivity extends AppCompatActivity {
         btn_approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accept_reject_approval("SM1", "yes");
+                accept_reject_approval(salesman_id, "yes", edt_btl.getText().toString());
             }
         });
 
         btn_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accept_reject_approval("SM1", "no");
+                accept_reject_approval(salesman_id, "no", edt_btl.getText().toString());
             }
         });
     }
 
-    private void accept_reject_approval(final String id, final String status) {
-        RestClient.getMutualTransfer().accept_reject_approval(id,
+    private void accept_reject_approval(final String id, final String status, String num_of_bottles) {
+        RestClient.getMutualTransfer().accept_reject_approval(id, num_of_bottles,
                 status,
                 new Callback<Response>() {
                     @Override
@@ -199,6 +203,9 @@ public class SuperVisorApproveActivity extends AppCompatActivity {
 //            txt_btl_num.setText("Totle number extran bottles: " + intent.getStringExtra("no_of_bottles"));
             txt_sm.setText(intent.getStringExtra("salesman_id"));
             txt_title.setText("Approval request comes from " + intent.getStringExtra("salesman_id"));
+
+            salesman_id = intent.getStringExtra("salesman_id");
+            no_of_bottles = intent.getStringExtra("no_of_bottles");
 
         }
     };

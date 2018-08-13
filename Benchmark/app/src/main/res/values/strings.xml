@@ -8,6 +8,7 @@
     <string name="button_go">Perform the transition</string>
     <string name="action_load_history">Load History</string>
     <string name="action_unload_history">Unload History</string>
+    <string name="action_search">Search</string>
 
 
     <!-- Navigation Drawer menu labels -->

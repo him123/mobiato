@@ -29,12 +29,11 @@
             android:id="@+id/txt_qty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:gravity="left"
             android:text="Available Qty: 5"
             android:textColor="@color/bg_screen1"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_13sdp"
-             />
+            android:textSize="@dimen/_13sdp" />
 
 
         <!-- Selling Layout -->
@@ -125,26 +124,32 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_row_cust"
                     android:ems="3"
-                    android:inputType="number"
                     android:hint="Bottles"
+                    android:inputType="number"
 
                     android:lines="1"
                     android:padding="@dimen/_6sdp" />
 
-                <!--<EditText-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="@dimen/_6sdp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/rounded_row_cust"-->
-                <!--android:ems="3"-->
-                <!--android:hint="Psc"-->
-                <!--android:lines="1"-->
-                <!--android:padding="@dimen/_6sdp" />-->
+                <ImageView
+                    android:id="@+id/img_approved"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_ok_green"
+                    android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txt_approved"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Your supervisor has been approved "
+            android:textColor="@color/red"
+            android:textSize="@dimen/_12sdp" />
         <!-- Reason -->
         <LinearLayout
             android:id="@+id/ll_reason"
@@ -237,10 +242,10 @@
                     android:layout_height="@dimen/_28sdp"
                     android:layout_weight="1.5"
                     android:background="@drawable/rounded_row_cust"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:hint="Scan Or Input"
                     android:inputType="number"
-                    android:focusable="false"
-                    android:clickable="false"
                     android:paddingLeft="@dimen/_10sdp" />
 
                 <!--</LinearLayout>-->

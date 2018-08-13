@@ -14,14 +14,16 @@ import android.widget.TextView;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.InputDailogActivity;
+import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 
 import java.util.List;
 import java.util.Random;
 
 /*
-* RecyclerView Adapter that allows to add a header view.
-* */
+ * RecyclerView Adapter that allows to add a header view.
+ * */
 public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 2;
@@ -32,13 +34,17 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     Random rand = new Random();
     private List<Item> mItemList;
     String isCoupon = "", isNewCust = "";
+    DBManager db;
+    Customer customer;
 
-
-    public SalesAdapter(List<Item> itemList, Context context, String isCoupon, String isNewCust) {
+    public SalesAdapter(List<Item> itemList, Context context, String isCoupon, String isNewCust, Customer customer) {
         this.mItemList = itemList;
         mContext = context;
         this.isCoupon = isCoupon;
         this.isNewCust = isNewCust;
+        db = new DBManager(context);
+        db.open();
+        this.customer = customer;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -57,9 +63,10 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final Item item = mItemList.get(position);
 
         holder.txt_name.setText(item.item_name_en);
+        String price = db.getBottlePrice(item.item_code);
+        holder.txt_qty.setText("Qty: " + item.item_qty + " | " + "Price: " + price);
         holder.txt_item_code.setText(item.item_code);
-        holder.txt_qty.setText("Qty: "+item.item_qty);
-//        holder.txt_desc.setText(item.desc);
+
 
         final boolean flag;
         if (item.item_type.equalsIgnoreCase("Coupon")) {
@@ -76,6 +83,8 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.rl_tag.setBackgroundResource(R.drawable.ic_bg_new_green);
         }
 
+        holder.txt_uom.setText(item.item_uom);
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +96,8 @@ public class SalesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 i.putExtra("item", item);
                 i.putExtra("tag", isNewCust);
                 i.putExtra("item_type", item.item_type);
+                i.putExtra("cust_num", customer.cust_num);
+                i.putExtra("cust_name", customer.cust_name_en);
 
                 mContext.startActivity(i);
 //                makeDilog(mContext);

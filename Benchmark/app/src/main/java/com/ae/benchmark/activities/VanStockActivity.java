@@ -72,7 +72,7 @@ public class VanStockActivity extends AppCompatActivity {
             itemList = new ArrayList<>();
 
             itemList.clear();
-            itemList = dbManager.getVanStock(true);
+            itemList = dbManager.getFullVanStock(true);
 
             mLayoutManager = new LinearLayoutManager(this);
             recyclerview_items.setLayoutManager(mLayoutManager);

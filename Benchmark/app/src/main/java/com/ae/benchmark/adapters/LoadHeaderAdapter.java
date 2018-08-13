@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
 import com.ae.benchmark.activities.ItemsListActivity;
+import com.ae.benchmark.activities.JourneyPlanActivity;
 import com.ae.benchmark.activities.SelectCustomerListMainActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Item;
@@ -66,7 +67,7 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         holder.txt_load_no.setText(load.load_no);
-//        holder.txt_desc.setText(item.desc);
+        holder.txt_del_date.setText("Delivery Date: "+load.del_date);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,9 +80,9 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         i.putExtra("isBack", "No");
                         mContext.startActivity(i);
                     } else {
-                        Intent i = new Intent(mContext, SelectCustomerListMainActivity.class);
-//                    i.putExtra("load_no", load.load_no);
-//                    i.putExtra("isBack", "No");
+                        Intent i = new Intent(mContext, JourneyPlanActivity.class);
+                        i.putExtra("load_no", load.load_no);
+                        i.putExtra("isBack", "No");
                         mContext.startActivity(i);
                     }
             }
@@ -120,10 +121,10 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public TextView
                 txt_load_no,
-                txt_desc,
-                txt_sub_dept,
-                txt_price,
-                txt_up;
+                txt_del_date;
+               // txt_sub_dept,
+               // txt_price;
+               // txt_up;
 
         public ImageView imgVerified;
 
@@ -132,9 +133,9 @@ public class LoadHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(parent);
 
             txt_load_no = (TextView) parent.findViewById(R.id.txt_load_no);
-            txt_desc = (TextView) parent.findViewById(R.id.txt_desc);
-            txt_price = (TextView) parent.findViewById(R.id.txt_price);
-            txt_up = (TextView) parent.findViewById(R.id.txt_up);
+            txt_del_date = (TextView) parent.findViewById(R.id.txt_del_date);
+//            txt_price = (TextView) parent.findViewById(R.id.txt_price);
+//            txt_up = (TextView) parent.findViewById(R.id.txt_up);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }

@@ -100,15 +100,15 @@ public class CaptureStockActivity extends AppCompatActivity {
 
                 int tot = empty + inputed;
 
-                UtilApp.WriteSharePrefrence(CaptureStockActivity.this, Constant.SHRED_PR.ISSTOCKCAPTURED, true);
+//                UtilApp.WriteSharePrefrence(CaptureStockActivity.this, Constant.SHRED_PR.ISSTOCKCAPTURED, true);
 //
 //                UtilApp.WriteSharePrefrence(CaptureStockActivity.this, Constant.SHRED_PR.EMPTYES, "" + tot);
 
                 //Toast.makeText(CaptureStockActivity.this, "Stock captured!", Toast.LENGTH_SHORT).show();
 
-                dbManager.updateEmptyBottles("" + tot, customer.cust_num);
+//                dbManager.updateEmptyBottles("" + tot, customer.cust_num);
 
-                dbManager.updateCustCaptredStock(customer.cust_num, "1");
+                dbManager.updateCustCaptredStockAndEmpties(customer.cust_num, "1", tot+"");
 
                 Transaction transaction = new Transaction();
 
@@ -141,7 +141,21 @@ public class CaptureStockActivity extends AppCompatActivity {
                             public void onClick(SweetAlertDialog sDialog) {
 //                                sDialog.dismissWithAnimation();
 
-                                makeDilog(CaptureStockActivity.this, customer.cust_name_en, oldNew);
+
+
+                                if (UtilApp.ReadSharePrefrenceString(CaptureStockActivity.this, Constant.SALESMAN.SALESMAN_CHANNEL)
+                                        .equalsIgnoreCase("20")) {
+                                    Intent i = new Intent(CaptureStockActivity.this, PreOrderRequestActivity.class);
+                                    i.putExtra("isCoupon", "no");
+                                    i.putExtra("type", "norm");
+                                    i.putExtra("name", customer.cust_name_en);
+                                    i.putExtra("cust", customer);
+                                    i.putExtra("tag", oldNew);
+                                    startActivity(i);
+                                    finish();
+                                } else {
+                                    makeDilog(CaptureStockActivity.this, customer.cust_name_en, oldNew);
+                                }
                             }
                         })
                         .show();

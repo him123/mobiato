@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="3"
         android:padding="@dimen/_10sdp">
 
         <TextView
@@ -43,7 +44,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="No"
             android:textStyle="bold"
             android:textColor="@color/black"/>
@@ -51,20 +52,12 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="Print"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:gravity="center"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Print"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            android:textColor="@color/black"
-            android:gravity="center"/>
+
 
     </LinearLayout>
 

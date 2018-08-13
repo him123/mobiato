@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -32,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
-import com.ae.benchmark.adapters.OrderAdapter;
-import com.ae.benchmark.adapters.RecyclerItemsUnloadAdapter;
 import com.ae.benchmark.adapters.SalesAdapter;
 import com.ae.benchmark.data.Const;
 import com.ae.benchmark.localdb.DBManager;
@@ -41,25 +33,18 @@ import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
-import com.ae.benchmark.rest.RestClient;
 import com.ae.benchmark.util.Constant;
-import com.ae.benchmark.util.MyFirebaseMessagingService;
 import com.ae.benchmark.util.PrinterHelper;
 import com.ae.benchmark.util.UtilApp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by Himm on 3/13/2018.
@@ -82,7 +67,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
     Item item;
     LinearLayoutManager mLayoutManager;
     private Toolbar toolbar;
-    String isCoupon = "", type = "", custName = "", oldOrNew = "";
+    String isCoupon = "", type = "", custName = "", oldOrNew = "", emp_type = "";
 
     @InjectView(R.id.waiting_layout)
     LinearLayout waiting_layout;
@@ -103,11 +88,12 @@ public class PreOrderRequestActivity extends AppCompatActivity {
     ImageView img_sad;
 
     public static final String BROADCAST_ACTION = "com.benchmark.FCM";
-
+    int invNum, CollNum;
     DBManager dbManager;
     TextView mTitle;
     Customer customer;
-//    String isCoupon=;
+    String empty_bottles;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +113,6 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
 
         registerReceiver(broadcastReceiver, new IntentFilter(InputDailogActivity.BROADCAST_ACTION));
-        registerReceiver(broadcastReceiver2, new IntentFilter(MyFirebaseMessagingService.BROADCAST_ACTION));
 
         LayoutInflater mInflater = LayoutInflater.from(this);
 
@@ -157,7 +142,6 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             }
         });
 
-
         itemList = new ArrayList<>();
 
 
@@ -178,7 +162,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerview_orders.setLayoutManager(mLayoutManager);
 
-        recyclerAdapter = new SalesAdapter(itemList, this, isCoupon, oldOrNew);
+        recyclerAdapter = new SalesAdapter(itemList, this, isCoupon, oldOrNew, customer);
         recyclerview_orders.setAdapter(recyclerAdapter);
 
 
@@ -241,10 +225,6 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             priceTV.setTypeface(null, Typeface.BOLD);
 
 
-//            itemTV.setTextSize(14);
-//            qtyTV.setTextSize(14);
-//            priceTV.setTextSize(14);
-
             itemTV.setText(arrItem.get(i).item_name_en);
             qtyTV.setText(arrItem.get(i).item_qty);
             priceTV.setText(arrItem.get(i).item_price);
@@ -257,10 +237,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
         }
 
         txt_sub_tot.setText(subTot + "");
-        double vatVal = subTot * 5 / 100;
+//        double vatVal = subTot * 5 / 100;
 
-        txt_vat_value.setText(vatVal + "");
-        final double grandTot = subTot + vatVal;
+//        txt_vat_value.setText(vatVal + "");
+        final double grandTot = subTot;
         txt_grand_tot.setText(grandTot + "");
 
 
@@ -279,6 +259,8 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             }
         });
 
+        deleteDialog.show();
+
         txtProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,28 +269,28 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 dbManager.open();
 
                 final JSONObject outterObject = new JSONObject();
-                JSONArray headerData = new JSONArray();
+                JSONArray headerData = null;
                 JSONArray headerJarr = new JSONArray();
                 JSONObject totalObj = new JSONObject();
 
                 //CREATING INVOICE FOR SALE
-                SalesInvoice salesInvoice = new SalesInvoice();
+                final SalesInvoice salesInvoice = new SalesInvoice();
 
                 long lastInvId = dbManager.getLastInvoiceID();
                 long lastCollId = dbManager.getLastCollectionID();
 
-                int invNum, CollNum;
-                if (lastInvId == 0) {
-                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
-                } else {
-                    invNum = (int) lastInvId + 1;
-                }
 
-                if (lastCollId == 0) {
-                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
-                } else {
-                    CollNum = (int) lastCollId + 1;
-                }
+//                if (lastInvId == 0) {
+//                    invNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.INV_LAST));
+//                } else {
+                invNum = (int) lastInvId + 1;
+//                }
+
+//                if (lastCollId == 0) {
+//                    CollNum = Integer.parseInt(UtilApp.ReadSharePrefrenceString(getApplicationContext(), Constant.COLLECTION_LAST));
+//                } else {
+                CollNum = (int) lastCollId + 1;
+//                }
 
                 salesInvoice.inv_no = "" + invNum;
                 salesInvoice.inv_type = "Sale";
@@ -326,14 +308,15 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 salesInvoice.inv_header_vat_val = "0";
                 salesInvoice.inv_header_vat_per = "0";
 
+                salesInvoice.empty_bottles = empty_bottles;
+                salesInvoice.empty_type = emp_type;
+
                 dbManager.insertSalesInvoiceHeader(salesInvoice);
-                dbManager.updateCustomerArr(customer.cust_num, String.valueOf(grandTot));
+
+                if (customer.cust_type.equalsIgnoreCase("credit"))
+                    dbManager.updateCustomerArr(customer.cust_num, String.valueOf(grandTot));
 
                 double dueAmt = price + 50;
-                dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
-                        customer.cust_name_en, customer.cust_type, "0",
-                        "" + price, salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date);
-
 
                 //INSERT TRANSACTION
                 Transaction transaction = new Transaction();
@@ -352,6 +335,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 dbManager.insertTransaction(transaction);
 
                 for (int i = 0; i < arrItem.size(); i++) {
+                    headerData = new JSONArray();
 
                     headerData.put(i + "");// SI NO
                     headerData.put(arrItem.get(i).item_code); // ITEM CODE
@@ -369,8 +353,6 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     double amtSAR = totAmt + vatAmt;
                     headerData.put(amtSAR + ""); //Amount SAR
 
-
-
                     String current = dbManager.getBottleQty(arrItem.get(i).item_code);
                     double remaining_qty = Double.parseDouble(current) - Double.parseDouble(arrItem.get(i).item_qty);
 
@@ -380,6 +362,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     item.item_name_en = arrItem.get(i).item_name_en;
                     item.item_price = arrItem.get(i).item_price;
                     item.item_qty = arrItem.get(i).item_qty;
+                    item.item_uom = arrItem.get(i).item_uom;
                     if (arrItem.get(i).item_barcode != null && isCoupon.equalsIgnoreCase("yes"))
                         item.item_barcode = barCodeArr.get(i);
                     else
@@ -395,12 +378,12 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     dbManager.updateVanStock(arrItem.get(i).item_code, "" + remaining_qty);
 
                     dbManager.updateCustomerTransactionType(customer.cust_num, "sale", "1");
-                    if (customer.cust_type.equals("credit"))
-                        dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
+//                    if (customer.cust_type.equals("credit"))
+                    dbManager.updateCustomerTransactionType(customer.cust_num, "collection", "1");
 
+                    headerJarr.put(headerData);
                 }
 
-                headerJarr.put(headerData);
 
                 try {
                     outterObject.put("customer_name_en", "");
@@ -409,7 +392,7 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     outterObject.put("ROUTE", "");
                     outterObject.put("invoice_date", UtilApp.getCurrentDate());
                     outterObject.put("customer_address", "");
-                    outterObject.put("print_type", "");
+                    outterObject.put("print_type", Constant.SALES_INVOICE);
                     outterObject.put("DOC DATE", "");
                     outterObject.put("LPONO", "");
                     outterObject.put("CONTACTNO", "");
@@ -463,42 +446,66 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                     outterObject.put("data", headerJarr);
                     outterObject.put("HEADERS", HEADER);
 
-
                     Log.v("", "Check this json array: " + outterObject.toString());
-//                    PrinterHelper printerHelper =
-//                            new PrinterHelper(PreOrderRequestActivity.this, PreOrderRequestActivity.this);
-//                    printerHelper.execute(outterObject);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-
                 // REDIRECTING ACTIVITY CONDITION
-                if (isCoupon.equals("yes")) {
+                if (isCoupon.equals("yes")) { //******************* COUPON YES ******************************
+
+
+                    dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
+                            customer.cust_name_en, customer.cust_type, "" + price,
+                            "0.0", salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date, "no");
+
+                    final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
+                    alertDialog.setCancelable(false);
+                    alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertDialog.setContentView(R.layout.dialog_print_donot_print);
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+
+                    img_print.setColorFilter(ContextCompat.getColor(PreOrderRequestActivity.this,
+                            R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+                    alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //your business logic
+
+                            alertDialog.dismiss();
+
+                            try {
+                                PrinterHelper printerHelper = new PrinterHelper(PreOrderRequestActivity.this,
+                                        PreOrderRequestActivity.this);
+                                printerHelper.execute(outterObject);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //your business logic
+                            alertDialog.dismiss();
+                            finish();
+                        }
+                    });
+
+                    alertDialog.show();
+
                     deleteDialog.dismiss();
 
-                    Intent intent = new Intent(PreOrderRequestActivity.this, CustomerDetailOperationActivity.class);
-                    intent.putExtra("cust", customer);
-                    intent.putExtra("tag", "old");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                    UtilApp.askForPrintWithPrint(PreOrderRequestActivity.this,
-                            PreOrderRequestActivity.this, intent, outterObject);
-
-                } else {
+                } else {//******************* COUPON NO ******************************
                     deleteDialog.dismiss();
 
-                    if (customer.cust_type.equalsIgnoreCase("cash")) {
-                        final Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
-                        i.putExtra("cust", customer);
-                        i.putExtra("amount", "" + price);
-                        i.putExtra("col_doc_no", "" + CollNum);
-                        i.putExtra("invDate", "" + salesInvoice.inv_date);
-                        i.putExtra("amt", String.valueOf(grandTot));
-
-//                        UtilApp.askForPrint(PreOrderRequestActivity.this,
-//                                PreOrderRequestActivity.this, i);
+                    if (customer.cust_type.equalsIgnoreCase("cash")) {//******************* COUPON NO CASH******************************
 
                         final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
                         alertDialog.setCancelable(false);
@@ -506,21 +513,26 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                         alertDialog.setContentView(R.layout.dialog_print_donot_print);
                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                         ImageView img_print = alertDialog.findViewById(R.id.img_pring);
-                        img_print.setColorFilter(ContextCompat.getColor(PreOrderRequestActivity.this, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                        img_print.setColorFilter(ContextCompat.getColor(PreOrderRequestActivity.this,
+                                R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
 
                         alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //your business logic
 
-                                PrinterHelper printerHelper =
-                                        new PrinterHelper(PreOrderRequestActivity.this, PreOrderRequestActivity.this);
-                                printerHelper.execute(outterObject);
-
                                 alertDialog.dismiss();
 
-                                startActivity(i);
+                                try {
+                                    PrinterHelper printerHelper = new PrinterHelper(PreOrderRequestActivity.this,
+                                            PreOrderRequestActivity.this);
+                                    printerHelper.execute(outterObject);
 
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
 
@@ -530,58 +542,81 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                                 //your business logic
                                 alertDialog.dismiss();
 
+                                final Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
+                                i.putExtra("cust", customer);
+                                i.putExtra("amount", "" + price);
+                                i.putExtra("col_doc_no", "" + CollNum);
+                                i.putExtra("invDate", "" + salesInvoice.inv_date);
+                                i.putExtra("amt", price + "");
+                                i.putExtra("invNo", "" + invNum);
+
                                 startActivity(i);
 
+                                finish();
                             }
                         });
 
                         alertDialog.show();
 
-                    } else {
+//                        afterProceed(outterObject, i);
 
-                        Intent intent = new Intent(PreOrderRequestActivity.this, CustomerDetailOperationActivity.class);
-                        intent.putExtra("cust", customer);
-                        intent.putExtra("tag", "old");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        UtilApp.askForPrint(PreOrderRequestActivity.this,
+//                                PreOrderRequestActivity.this, outterObject);
 
-                        UtilApp.askForPrintWithPrint(PreOrderRequestActivity.this,
-                                PreOrderRequestActivity.this, intent, outterObject);
+                    } else {//******************* COUPON NO CREDIT OR TC******************************
+
+
+                        dbManager.insertCollectionHeader("" + CollNum, "" + invNum, customer.cust_num,
+                                customer.cust_name_en, customer.cust_type, "",
+                                "" + price, salesInvoice.inv_date, "" + dueAmt, salesInvoice.inv_date, "yes");
+
+                        final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
+                        alertDialog.setCancelable(false);
+                        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+
+                        img_print.setColorFilter(ContextCompat.getColor(PreOrderRequestActivity.this,
+                                R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+                        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //your business logic
+
+                                alertDialog.dismiss();
+
+                                try {
+                                    PrinterHelper printerHelper = new PrinterHelper(PreOrderRequestActivity.this,
+                                            PreOrderRequestActivity.this);
+                                    printerHelper.execute(outterObject);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //your business logic
+                                alertDialog.dismiss();
+                                finish();
+                            }
+                        });
+
+                        alertDialog.show();
+
+
                     }
                 }
             }
         });
-
-        deleteDialog.show();
     }
 
-    private void request_for_approval(final String supervisor_id, String cust_id, String salesman_id, String no_of_bottles) {
-        RestClient.getMutualTransfer().request_for_approval(supervisor_id,
-                cust_id,
-                salesman_id,
-                no_of_bottles,
-                new Callback<Response>() {
-                    @Override
-                    public void success(Response response, Response response2) {
-                        Log.v("", "Response: " + response);
-
-                        try {
-
-                            JSONObject jsonObject = new JSONObject(UtilApp.getString(response.getBody().in()));
-                            Log.v("", "==== Json: " + jsonObject.toString());
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                        Log.v("", "Error: " + error);
-                    }
-                });
-    }
 
     ArrayList<Double> arrQty = new ArrayList<>();
     ArrayList<Item> arrItem = new ArrayList<>();
@@ -594,6 +629,10 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
             Item item = intent.getParcelableExtra("item");
 
+            isCoupon = intent.getStringExtra("isCoupon");
+            emp_type = intent.getStringExtra("empt_type");
+            empty_bottles = intent.getStringExtra("empty_bottles");
+
             for (int i = 0; i < itemList.size(); i++) {
                 if (itemList.get(i).item_code.equals(item.item_code)) {
                     itemList.get(i).item_qty = item.item_qty;
@@ -601,67 +640,31 @@ public class PreOrderRequestActivity extends AppCompatActivity {
             }
 
 
-            Log.d("", "=========== broadcat receiver : " + intent.getStringExtra("message"));
+            Log.d("", "=========== broadcast receiver : " + intent.getStringExtra("message"));
 //            Item item = intent.getParcelableExtra("item");
             barCodeArr = intent.getStringArrayListExtra("barcodeArr");
+
             arrItem.add(item);
+
+//            double totEmptPrice;
+
+            if (!emp_type.equalsIgnoreCase("")) {
+                Item itemEmp = new Item();
+                itemEmp.item_name_en = "5 Gallon Empty Bottle";
+                itemEmp.item_qty = empty_bottles;
+                itemEmp.item_code = "13000000";
+//                totEmptPrice =+ 10.0;
+                if (emp_type.equalsIgnoreCase("cash"))
+
+                    itemEmp.item_price = "" + Double.parseDouble(empty_bottles) * 10;
+                else
+                    itemEmp.item_price = "0";
+
+                arrItem.add(itemEmp);
+            }
 
             if (intent.getDoubleExtra("price", 0.0) != 0.0)
                 arrQty.add(intent.getDoubleExtra("price", 0.0));
-
-            if (intent.getStringExtra("tag").equals("new")) {
-                new SweetAlertDialog(PreOrderRequestActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Congratulations!")
-                        .setContentText("You are eligible to get free Bottle!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                            }
-                        })
-                        .show();
-            } else if (intent.getStringExtra("tag").equals("custody")) {
-
-                main_layout.setVisibility(View.GONE);
-                waiting_layout.setVisibility(View.VISIBLE);
-                mTitle.setText("Custody Sale");
-
-                request_for_approval("SV1", custName, "SM1", "22");
-
-            } else if (intent.getStringExtra("tag").equals("show")) {
-
-                final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
-                alertDialog.setCancelable(false);
-                alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertDialog.setContentView(R.layout.dialog_cash_custody);
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-                alertDialog.findViewById(R.id.rl_cash).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //your business logic
-                        alertDialog.dismiss();
-
-                    }
-                });
-
-                alertDialog.findViewById(R.id.rl_custody).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //your business logic
-                        alertDialog.dismiss();
-
-                        main_layout.setVisibility(View.GONE);
-                        waiting_layout.setVisibility(View.VISIBLE);
-                        mTitle.setText("Custody Sale");
-
-                        request_for_approval("SV1", custName, "SM1", intent.getStringExtra("bottle"));
-                    }
-                });
-
-                alertDialog.show();
-            }
 
             if (arrQty.size() > 0) {
                 price = 0;
@@ -671,7 +674,62 @@ public class PreOrderRequestActivity extends AppCompatActivity {
                 txt_tot.setText(price + " SAR");
             }
 
+//            if (intent.getStringExtra("tag").equals("new")) {
+//                new SweetAlertDialog(PreOrderRequestActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+//                        .setTitleText("Congratulations!")
+//                        .setContentText("You are eligible to get free Bottle!")
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                            }
+//                        })
+//                        .show();
+//            } else if (intent.getStringExtra("tag").equals("custody")) {
+//
+//                main_layout.setVisibility(View.GONE);
+//                waiting_layout.setVisibility(View.VISIBLE);
+//                mTitle.setText("Custody Sale");
+//
+//
+//            } else if (intent.getStringExtra("tag").equals("show")) {
+
+//                final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
+//                alertDialog.setCancelable(false);
+//                alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                alertDialog.setContentView(R.layout.dialog_cash_custody);
+//                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//
+//
+//                alertDialog.findViewById(R.id.rl_cash).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //your business logic
+//                        alertDialog.dismiss();
+//
+//                    }
+//                });
+//
+//                alertDialog.findViewById(R.id.rl_custody).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //your business logic
+//                        alertDialog.dismiss();
+//
+//                        main_layout.setVisibility(View.GONE);
+//                        waiting_layout.setVisibility(View.VISIBLE);
+//                        mTitle.setText("Custody Sale");
+//
+//                        request_for_approval("SV1", custName, "SM1", intent.getStringExtra("bottle"));
+//                    }
+//                });
+//
+//                alertDialog.show();
         }
+
+
+//
+//        }
 
 
     };
@@ -686,146 +744,33 @@ public class PreOrderRequestActivity extends AppCompatActivity {
 
     }
 
-    private BroadcastReceiver broadcastReceiver2 = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Log.d("", "=========== broadcat receiver : " + intent.getStringExtra("message"));
-
-
-            isCoupon = intent.getStringExtra("isCoupon");
-            if (intent.getStringExtra("status").equals("yes")) {
-
-                main_layout.setVisibility(View.VISIBLE);
-                waiting_layout.setVisibility(View.GONE);
-
-                new SweetAlertDialog(PreOrderRequestActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Approved!")
-                        .setContentText("You request has been approved!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                            }
-                        })
-                        .show();
-            } else {
-
-                img_sad.setVisibility(View.VISIBLE);
-                prb.setVisibility(View.GONE);
-                txt_counter.setVisibility(View.GONE);
-                txt_up.setText("Your Supervisor has rejected your request!");
-            }
-        }
-
-    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-        unregisterReceiver(broadcastReceiver2);
     }
 
-    private JSONObject makePrintObject() {
-        JSONObject printObj = new JSONObject();
-        try {
+    public void callback(String invNo) {
 
-            printObj.put("customer_name_en", "");
-            printObj.put("customer_name_ar", "");
-            printObj.put("SALESMAN", "");
-            printObj.put("ROUTE", "");
-            printObj.put("invoice_date", "");
-            printObj.put("print_type", "");
-            printObj.put("DOC DATE", "");
-            printObj.put("LPONO", "");
-            printObj.put("CONTACTNO", "");
-            printObj.put("TRN", "");
-            printObj.put("ORDERNO", "");
-            printObj.put("TRIP START DATE", "");
-            printObj.put("invoicepriceprint", "");
-            printObj.put("invoicepaymentterms", "");
-            printObj.put("SUB TOTAL", "");
-            printObj.put("invoicenumber", "");
-            printObj.put("TIME", "");
-            printObj.put("LANG", "");
-            printObj.put("LANG", "");
-            printObj.put("INVOICE DISCOUNT", "");
-            printObj.put("VAT", "");
-            printObj.put("NET SALES", "");
-            printObj.put("invoicefooter", "");
-
-            // TOTAL ARRAY
-            JSONArray TOTAL = new JSONArray();
-            JSONObject total = new JSONObject();
-            total.put("Total Amount(AED)", "");
-            total.put("Total Befor TAX(AED)", "");
-            total.put("GROSS AMOUNT: AED - ", "");
-            TOTAL.put(total);
-
-            // HEADER ARRAY
-            JSONArray HEADER = new JSONArray();
-            HEADER.put("SI No");
-            HEADER.put("Item Code");
-            HEADER.put("Description");
-            HEADER.put("UOM");
-            HEADER.put("QTY");
-            HEADER.put("UNIT Price");
-            HEADER.put("Total amount");
-            HEADER.put("Total Disc");
-            HEADER.put("Vat Amt");
-            HEADER.put("Vat %");
-            HEADER.put("Amount SAR");
+        if (customer.cust_type.equalsIgnoreCase("cash")) {
 
 
-            // DATA ARRAY
-            JSONArray data = new JSONArray();
-            data.put("");
+            final Intent i = new Intent(PreOrderRequestActivity.this, PaymentActivity.class);
+            i.putExtra("cust", customer);
+            i.putExtra("amount", "" + price);
+            i.putExtra("col_doc_no", "" + CollNum);
+            i.putExtra("invDate", "" + UtilApp.getCurrentDate());
+            i.putExtra("amt", price + "");
+            i.putExtra("invNo", invNo);
 
+            if (isCoupon.equalsIgnoreCase("no"))
+                startActivity(i);
+            else
+                finish();
+        } else {
 
-            printObj.put("TOTAL", TOTAL);
-            printObj.put("HEADER", HEADER);
-            printObj.put("data", data);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-
-        return printObj;
+        finish();
     }
-
-//    private void askForPrint(final Intent intent){
-//
-//        final Dialog alertDialog = new Dialog(PreOrderRequestActivity.this);
-//        alertDialog.setCancelable(false);
-//        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        alertDialog.setContentView(R.layout.dialog_print_donot_print);
-//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//
-//
-//        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //your business logic
-//
-//                alertDialog.dismiss();
-//                startActivity(intent);
-//
-//            }
-//        });
-//
-//        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //your business logic
-//                alertDialog.dismiss();
-//                startActivity(intent);
-//
-//            }
-//        });
-//
-//        alertDialog.show();
-//    }
 }

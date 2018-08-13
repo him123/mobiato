@@ -47,7 +47,7 @@ public class FragmentAudit extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerAudit.setLayoutManager(mLayoutManager);
 
-        adapter = new RecyclerAdapterAudit(transactions , context , "");
+        adapter = new RecyclerAdapterAudit(transactions , context , "audit");
         recyclerAudit.setAdapter(adapter);
         return v;
     }

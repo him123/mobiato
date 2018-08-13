@@ -75,6 +75,8 @@ public class FragmentDashboardOne extends Fragment {
     Button btn_test_print;
 
     String jsonString = "{\n" +
+            "\"print_type\":\"OrderRequest\",\n" +
+            "\"TripID\":\"\",\n" +
             "\"customer_name_en\":\"\",\n" +
             "\"customer_name_ar\":\"\",\n" +
             "\"SALESMAN\":\"\",\n" +
@@ -84,21 +86,20 @@ public class FragmentDashboardOne extends Fragment {
             "\"print_type\":\"\",\n" +
             "\"DOC DATE\":\"\",\n" +
             "\"LPONO\":\"\",\n" +
+            "\"INVOICETYPE\":\"\",\n" +
             "\"CONTACTNO\":\"\",\n" +
             "\"TRN\":\"\",\n" +
-            "\"ORDERNO\":\"\",\n" +
-            "\"TRIP START DATE\":\"\",\n" +
-            "\"invoicepriceprint\":\"1\",\n" +
-            "\"invoicepaymentterms\":\"2\",\n" +
-            "\"SUB TOTAL\":\"215.32\",\n" +
-            "\"invoicenumber\":\"INV123\",\n" +
-            "\"TIME\":\"45456454\",\n" +
             "\"LANG\":\"AR\",\n" +
+            "\"invoicepaymentterms\":\"2\",\n" +
+            "\"ORDERNO\":\"\",\n" +
+            "\"invoicenumber\":\"\",\n" +
+            "\"TRIP START DATE\":\"\",\n" +
+            "\"TIME\":\"45456454\",\n" +
+            "\"CUSTOMER\":\"customer name - customer name2\",\n" +
+            "\"ADDRESS\":\"\",\n" +
+            "\"ARBADDRESS\":\"\",\n" +
             "\"TOTAL\":\"2568.00\",\n" +
-            "\"INVOICE DISCOUNT\":\"\",\n" +
-            "\"VAT\":\"\",\n" +
-            "\"NET SALES\":\"1235.00\",\n" +
-            "\"invoicefooter\":\"\",\n" +
+            "\n" +
             "\"TOTAL\":[{\n" +
             "\"Total Amount(AED)\":\"2568.00\",\n" +
             "\"Total Befor TAX(AED)\":\"2568.00\",\n" +
@@ -107,17 +108,13 @@ public class FragmentDashboardOne extends Fragment {
             "]\n" +
             ",\n" +
             "\"HEADERS\":[\n" +
-            "\"SI No\",\n" +
-            "\"Item Code\",\n" +
-            "\"Description\",\n" +
+            "\"ITEM NO\",\n" +
+            "\"ENGLISH DESCRIPTION\",\n" +
+            "\"ARABIC DESCRIPTION\",\n" +
             "\"UOM\",\n" +
-            "\"QTY\",\n" +
-            "\"UNIT Price\",\n" +
-            "\"Total amount\",\n" +
-            "\"Total Disc\",\n" +
-            "\"Vat Amt\",\n" +
-            "\"Vat %\",\n" +
-            "\"Amount SAR\"\n" +
+            "\"TOTAL UNITS\",\n" +
+            "\"UNIT PRICE\",\n" +
+            "\"AMOUNT\"\n" +
             "]\n" +
             "\n" +
             ",\n" +
@@ -125,15 +122,11 @@ public class FragmentDashboardOne extends Fragment {
             "\"data\":[\n" +
             "[\n" +
             "\"1\",\n" +
-            "\"241\",\n" +
             "\"bottle with woater\",\n" +
-            "\"bottle\",\n" +
-            "\"2\",\n" +
-            "\"256\",\n" +
-            "\"545\",\n" +
-            "\"\",\n" +
+            "\"bottle with woater\",\n" +
+            "\"AE\",\n" +
             "\"25\",\n" +
-            "\"5\",\n" +
+            "\"12\",\n" +
             "\"565\"\n" +
             "]\n" +
             "]\n" +

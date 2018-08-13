@@ -75,6 +75,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.txt_name.setText(item.item_name_en);
         holder.txt_price.setText(item.item_price + " SAR");
         holder.txt_qty.setText(item.item_qty);
+        holder.txt_item_code.setText(item.item_code);
 
         if (!isViewOnly)
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +139,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
                         edt_qty.setText(String.valueOf(total - edtAct));
                     }
                 } catch (Exception e) {
-                    Log.v("","Exception: "+e);
+                    Log.v("", "Exception: " + e);
                     edt_act_qty.removeTextChangedListener(this);
                     edt_act_qty.setText("");
                     edt_act_qty.addTextChangedListener(this);
@@ -214,7 +215,8 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 txt_name,
                 txt_qty,
                 txt_price,
-                txt_uom;
+                txt_uom,
+                txt_item_code;
 
         public ImageView imgVerified;
 
@@ -226,6 +228,7 @@ public class RecyclerItemsAdapter extends RecyclerView.Adapter<RecyclerView.View
             txt_qty = (TextView) parent.findViewById(R.id.txt_qty);
             txt_price = (TextView) parent.findViewById(R.id.txt_price);
             txt_uom = (TextView) parent.findViewById(R.id.txt_uom);
+            txt_item_code = (TextView) parent.findViewById(R.id.txt_item_code);
             imgVerified = (ImageView) parent.findViewById(R.id.imgVerified);
 
         }

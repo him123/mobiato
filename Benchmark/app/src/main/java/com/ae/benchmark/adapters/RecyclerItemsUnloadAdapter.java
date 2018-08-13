@@ -47,6 +47,7 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
     public static final String BROADCAST_ACTION = "com.benchmark.DIALOG";
     public static final String BROADCAST_ACTION_CHK = "com.benchmark.CHK";
     Intent intent, intete2;
+    boolean isSelected;
 
     public RecyclerItemsUnloadAdapter(List<Item> itemList, Context context) {
         this.mItemList = itemList;
@@ -84,6 +85,11 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
             }
         });
 
+
+        if(isSelected){
+            holder.chk.setChecked(true);
+        }
+
         holder.chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -101,6 +107,8 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
 
         }
         });
+
+
 
         if (Constant.checkBoxValue.equals("true")){
             holder.chk.setChecked(true);
@@ -198,6 +206,11 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
         isLoading = false;
     }
 
+    public void selectAll(){
+        isSelected = true;
+        notifyDataChanged();
+    }
+
     interface OnLoadMoreListener {
         void onLoadMore();
     }
@@ -227,9 +240,11 @@ public class RecyclerItemsUnloadAdapter extends RecyclerView.Adapter<RecyclerVie
             chk.setVisibility(View.VISIBLE);
 
         }
+
+        public void selectAll(){
+
+        }
     }
 
-    public static void checkBoxChange(){
 
-    }
 }

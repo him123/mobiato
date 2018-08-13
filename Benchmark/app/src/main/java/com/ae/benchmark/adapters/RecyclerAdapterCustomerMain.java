@@ -52,7 +52,7 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
     private List<Customer> mItemList;
     private static final Random RANDOM = new Random();
     private int[] mMaterialColors;
-//    MaterialShowcaseSequence sequence;
+    //    MaterialShowcaseSequence sequence;
     DBManager db;
 
     public RecyclerAdapterCustomerMain(List<Customer> itemList, Context context) {
@@ -90,10 +90,10 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
         final Customer customer = mItemList.get(position);
 
         holder.txt_name.setText(customer.cust_name_en);
-        holder.txt_tel.setText("tel: " + customer.cust_address);
+        holder.txt_tel.setText(customer.cust_tel_num);
         holder.txt_cust_id.setText(customer.cust_num);
 
-        if (customer.getCust_created_date().equals(UtilApp.getCurrentDate())){
+        if (customer.getCust_created_date().equals(UtilApp.getCurrentDate())) {
             holder.iv_color.setImageResource(R.drawable.ic_mark_yellow);
             holder.rl_new.setVisibility(View.VISIBLE);
         } else {
@@ -123,78 +123,81 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
 
         if (customer.cust_sale.equals("1")) {
             holder.img_small_sales.setVisibility(View.VISIBLE);
-            holder.img_sales.setVisibility(View.VISIBLE);
+//            holder.img_sales.setVisibility(View.VISIBLE);
         } else {
             holder.img_small_sales.setVisibility(View.INVISIBLE);
-            holder.img_sales.setVisibility(View.INVISIBLE);
+//            holder.img_sales.setVisibility(View.INVISIBLE);
         }
 
         if (customer.cust_order.equals("1")) {
             holder.img_small_order.setVisibility(View.VISIBLE);
-            holder.img_order.setVisibility(View.VISIBLE);
+//            holder.img_order.setVisibility(View.VISIBLE);
         } else {
             holder.img_small_order.setVisibility(View.INVISIBLE);
-            holder.img_order.setVisibility(View.INVISIBLE);
+//            holder.img_order.setVisibility(View.INVISIBLE);
         }
 
         if (customer.cust_collection.equals("1")) {
             holder.img_small_collection.setVisibility(View.VISIBLE);
-            holder.img_collection.setVisibility(View.VISIBLE);
+//            holder.img_collection.setVisibility(View.VISIBLE);
         } else {
             holder.img_small_collection.setVisibility(View.INVISIBLE);
-            holder.img_collection.setVisibility(View.INVISIBLE);
+//            holder.img_collection.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.img_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, FragmentContainActivity.class);
-                i.putExtra("flag", "ORD");
-                mContext.startActivity(i);
-            }
-        });
-
-        holder.img_sales.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, FragmentContainActivity.class);
-                i.putExtra("flag", "SAL");
-                mContext.startActivity(i);
-            }
-        });
-
-        holder.img_collection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, FragmentContainActivity.class);
-                i.putExtra("flag", "COL");
-                mContext.startActivity(i);
-            }
-        });
-
-
-        holder.img_merchandize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, FragmentContainActivity.class);
-                i.putExtra("flag", "MER");
-                mContext.startActivity(i);
-            }
-        });
+//        holder.img_order.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mContext, FragmentContainActivity.class);
+//                i.putExtra("flag", "ORD");
+//                mContext.startActivity(i);
+//            }
+//        });
+//
+//        holder.img_sales.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mContext, FragmentContainActivity.class);
+//                i.putExtra("flag", "SAL");
+//                mContext.startActivity(i);
+//            }
+//        });
+//
+//        holder.img_collection.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mContext, FragmentContainActivity.class);
+//                i.putExtra("flag", "COL");
+//                mContext.startActivity(i);
+//            }
+//        });
 
 
-        holder.img_delivery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, FragmentContainActivity.class);
-                i.putExtra("flag", "DEL");
-                mContext.startActivity(i);
-            }
-        });
+//        holder.img_merchandize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mContext, FragmentContainActivity.class);
+//                i.putExtra("flag", "MER");
+//                mContext.startActivity(i);
+//            }
+//        });
+//
+//
+//        holder.img_delivery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mContext, FragmentContainActivity.class);
+//                i.putExtra("flag", "DEL");
+//                mContext.startActivity(i);
+//            }
+//        });
 
-        holder.icon.setLetter(desuNoto[position]);
-
+        try {
+            holder.icon.setLetter(desuNoto[position]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        binderHelper.bind(holder.swipeLayout, "");
 
     }
@@ -231,10 +234,10 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
         public TextView txt_name, txt_tel, txt_cust_id;
         public RelativeLayout rl_main;
         ImageView iv_color;
-        public RelativeLayout rl_new, rl_back;
+        public RelativeLayout rl_new;//, rl_back;
         MaterialLetterIcon icon;
-        ImageView img_order, img_sales, img_collection, img_merchandize, img_delivery,
-                img_small_order, img_small_sales, img_small_collection;
+        //        ImageView img_order, img_sales, img_collection, img_merchandize, img_delivery;
+        ImageView img_small_order, img_small_sales, img_small_collection;
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public RecyclerItemViewHolderCustomer(View parent, final Context context) {
@@ -244,16 +247,16 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
             txt_tel = (TextView) parent.findViewById(R.id.txt_tel);
             txt_cust_id = (TextView) parent.findViewById(R.id.txt_id);
             rl_main = (RelativeLayout) parent.findViewById(R.id.rl_main);
-            rl_back = (RelativeLayout) parent.findViewById(R.id.rl_back);
+//            rl_back = (RelativeLayout) parent.findViewById(R.id.rl_back);
             iv_color = (ImageView) parent.findViewById(R.id.img_color);
             rl_new = (RelativeLayout) parent.findViewById(R.id.rl_new);
             icon = (MaterialLetterIcon) parent.findViewById(R.id.imageView2);
 
-            img_order = (ImageView) parent.findViewById(R.id.img_order);
-            img_sales = (ImageView) parent.findViewById(R.id.img_sales);
-            img_collection = (ImageView) parent.findViewById(R.id.img_collection);
-            img_merchandize = (ImageView) parent.findViewById(R.id.img_merchandize);
-            img_delivery = (ImageView) parent.findViewById(R.id.img_delivery);
+//            img_order = (ImageView) parent.findViewById(R.id.img_order);
+//            img_sales = (ImageView) parent.findViewById(R.id.img_sales);
+//            img_collection = (ImageView) parent.findViewById(R.id.img_collection);
+//            img_merchandize = (ImageView) parent.findViewById(R.id.img_merchandize);
+//            img_delivery = (ImageView) parent.findViewById(R.id.img_delivery);
 
             img_small_order = (ImageView) parent.findViewById(R.id.img_small_order);
             img_small_sales = (ImageView) parent.findViewById(R.id.img_small_sales);
@@ -329,5 +332,13 @@ public class RecyclerAdapterCustomerMain extends RecyclerView.Adapter<RecyclerVi
 
 
         deleteDialog.show();
+    }
+
+//    ArrayList<Customer> mCountryModel;
+
+    public void setFilter(List<Customer> countryModels) {
+        mItemList = new ArrayList<>();
+        mItemList.addAll(countryModels);
+        notifyDataSetChanged();
     }
 }

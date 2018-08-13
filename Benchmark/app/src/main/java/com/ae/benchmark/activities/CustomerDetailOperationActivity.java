@@ -1,6 +1,7 @@
 package com.ae.benchmark.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,6 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,10 +98,9 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
             customer = extras.getParcelable("cust");
         }
 
-
         txt_credit_days.setText(customer.cust_payment_term);
-        txt_credit_limit.setText(customer.cust_credit_limit + " SAR");
-        txt_available_bal.setText(customer.cust_avail_bal + " SAR");
+        txt_credit_limit.setText(customer.cust_credit_limit);
+        txt_available_bal.setText(customer.cust_avail_bal);
 
         sequence = new MaterialShowcaseSequence(this, "OPR");
         ShowcaseConfig config = new ShowcaseConfig();
@@ -128,10 +132,12 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                finish();
-                Intent i = new Intent(CustomerDetailOperationActivity.this, SelectCustomerListMainActivity.class);
-//                    i.putExtra("load_no", load.load_no);
-//                    i.putExtra("isBack", "No");
-                startActivity(i);
+
+                askForBack();
+//                Intent i = new Intent(CustomerDetailOperationActivity.this, SelectCustomerListMainActivity.class);
+////                    i.putExtra("load_no", load.load_no);
+////                    i.putExtra("isBack", "No");
+//                startActivity(i);
             }
         });
 
@@ -141,7 +147,6 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         fab4 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab4);
         fab5 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab5);
         fab6 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab6);
-
 
         fam = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.fab_menu);
 
@@ -186,7 +191,19 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeDilog(CustomerDetailOperationActivity.this, customer, oldOrNew);
+                if (UtilApp.ReadSharePrefrenceString(CustomerDetailOperationActivity.this, Constant.SALESMAN.SALESMAN_CHANNEL)
+                        .equalsIgnoreCase("20")) {
+                    Intent i = new Intent(CustomerDetailOperationActivity.this, PreOrderRequestActivity.class);
+                    i.putExtra("isCoupon", "no");
+                    i.putExtra("type", "norm");
+                    i.putExtra("name", customer.cust_name_en);
+                    i.putExtra("cust", customer);
+                    i.putExtra("tag", oldOrNew);
+                    startActivity(i);
+                } else {
+                    makeDilog(CustomerDetailOperationActivity.this, customer, oldOrNew);
+                }
+
                 fam.close(true);
             }
         });
@@ -507,6 +524,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 
             case R.id.nav_Print:
                 Intent intent2 = new Intent(getApplicationContext(), CustomerPrintActivity.class);
+                intent2.putExtra("all", "no");
                 intent2.putExtra("cust", customer);
                 startActivity(intent2);
                 break;
@@ -516,8 +534,70 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
 //                Toast.makeText(getBaseContext(), "You selected Promotion", Toast.LENGTH_SHORT).show();
                 break;
 
+            case R.id.coupon_custody:
+                startActivity(new Intent(CustomerDetailOperationActivity.this, CustodyListActivity.class));
+//                Toast.makeText(getBaseContext(), "You selected Promotion", Toast.LENGTH_SHORT).show();
+                break;
+
         }
         return true;
+
+    }
+
+    private void askForBack() {
+        isStockCaptured = dbManager.getCustStockCaptured(customer.cust_num);
+
+        if (isStockCaptured.equals("1") ) {
+            Intent i = new Intent(CustomerDetailOperationActivity.this, SelectCustomerListMainActivity.class);
+            startActivity(i);
+        } else {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(CustomerDetailOperationActivity.this);
+            builderSingle.setIcon(R.drawable.ic_launcher);
+            builderSingle.setTitle("Select any one");
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CustomerDetailOperationActivity.this, android.R.layout.select_dialog_singlechoice);
+            arrayAdapter.add("Non Buyer");
+            arrayAdapter.add("Non Productive");
+
+            builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    String strName = arrayAdapter.getItem(which);
+//                    AlertDialog.Builder builderInner = new AlertDialog.Builder(CustomerDetailOperationActivity.this);
+//                    builderInner.setMessage(strName);
+//                    builderInner.setTitle("Your Selected Item is");
+//                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog,int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    builderInner.show();
+
+                    Intent i = new Intent(CustomerDetailOperationActivity.this,
+                            SelectCustomerListMainActivity.class);
+                    startActivity(i);
+
+                }
+            });
+            builderSingle.show();
+        }
+    }
+
+    String[] s = {"Non Buyer", "Non Productive"};
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        askForBack();
 
     }
 }

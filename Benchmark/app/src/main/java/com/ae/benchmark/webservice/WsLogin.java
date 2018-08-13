@@ -34,7 +34,9 @@ public class WsLogin {
     }
 
     public void executeWebservice(String username, String password) {
-        final String url = Const.WS_URL + "UserauthSet?$filter=USERID%20eq%20%27" + username + "%27%20and%20PASSWORD%20eq%20%27" + password + "%27&$format=json";
+        final String url = Const.WS_URL + "UserauthSet?$filter=USERID%20eq%20%27"
+                + username + "%27%20and%20PASSWORD%20eq%20%27"
+                + password + "%27&$format=json";
         parseResponse(NetworkUtility.getApiData(context, url), username);
     }
 
@@ -61,27 +63,27 @@ public class WsLogin {
                         if (jsonObject.optString("inv_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, jsonObject.optString("inv_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, jsonObject.optString("inv_last").replaceAll("[^0-9.]", ""));
 
                         if (jsonObject.optString("order_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, jsonObject.optString("order_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, jsonObject.optString("order_last").replaceAll("[^0-9.]", ""));
 
                         if (jsonObject.optString("load_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, jsonObject.optString("load_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, jsonObject.optString("load_last").replaceAll("[^0-9.]", ""));
 
                         if (jsonObject.optString("collection_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, jsonObject.optString("collection_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, jsonObject.optString("collection_last").replaceAll("[^0-9.]", ""));
 
                         if (jsonObject.optString("customer_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last").replaceAll("[^0-9.]", ""));
 //                        UtilApp.WriteSharePrefrence(context, Constant.PAYMENT_LAST, jsonObject.optString("message"));
 //                        UtilApp.WriteSharePrefrence(context, Constant.LOAD_REQUEST_LAST, jsonObject.optString("message"));
 
@@ -95,13 +97,13 @@ public class WsLogin {
 //                        public static final String SALESMAN_SUPERVISOR = "supervisor";
                         //SALES MAN DETIALS
 
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_ID, jsonObject.optString("SALESMAN"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_NAME, jsonObject.optString("name1"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_SALES_ORG, jsonObject.optString("salesorg"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_CHANNEL, jsonObject.optString("channel"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_DIVISION, jsonObject.optString("Division"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_VEHICLE, jsonObject.optString("Vehicle"));
-                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_SUPERVISOR, jsonObject.optString("supervisor"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_ID, jsonObject.getString("SALESMAN"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_NAME, jsonObject.getString("name1"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_SALES_ORG, jsonObject.getString("salesorg"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_CHANNEL, jsonObject.getString("channel"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_DIVISION, jsonObject.getString("Division"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_VEHICLE, jsonObject.getString("Vehicle"));
+                        UtilApp.WriteSharePrefrence(context, Constant.SALESMAN.SALESMAN_SUPERVISOR, jsonObject.getString("supervisor"));
 
                     } else {
                         success = false;

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ae.benchmark.R;
+import com.ae.benchmark.introslider.WelcomeActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.rest.RestClient;
@@ -69,215 +70,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @InjectView(R.id.text_input_pwd)
     TextInputLayout text_input_pwd;
-
-
-    String items = "[\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"1\",\n" +
-            "                    \"item_name_en\":\"GBC Coupon Book 20’s\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"2000\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"2\",\n" +
-            "                    \"item_name_en\":\"GBC Coupon Book 50’s\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"5000\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"3\",\n" +
-            "                    \"item_name_en\":\"GBC Coupon Book 100’s\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"pcs\",\n" +
-            "                    \"item_price\":\"10000\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"4\",\n" +
-            "                    \"item_name_en\":\"GBC Water\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
-            "                    \"item_price\":\"43\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    },\n" +
-            "\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"5\",\n" +
-            "                    \"item_name_en\":\"GBC Empty Bottle\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
-            "                    \"item_price\":\"66\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                    \"item_code\":\"6\",\n" +
-            "                    \"item_name_en\":\"GBC Bottle with Water\",\n" +
-            "                    \"item_name_ar\":\"\",\n" +
-            "                    \"item_type\":\"coupon\",\n" +
-            "                    \"item_uom\":\"bottle\",\n" +
-            "                    \"item_price\":\"85\",\n" +
-            "                    \"item_barcode\":\"52365926\",\n" +
-            "                    \"division\":\"division1\",\n" +
-            "                    \"conversion_factor\":\"5\"\n" +
-            "\n" +
-            "\n" +
-            "                    }\n" +
-            "]";
-
-    String customers = "[\n" +
-            "                    {\n" +
-            "                    \"cust_num\":\"45\",\n" +
-            "                    \"cust_name_en\":\"Al Maya Market\",\n" +
-            "                    \"cust_name_ar\":\"سوق المايا\",\n" +
-            "                    \"cust_dist_channel\":\"divsion1\",\n" +
-            "                    \"cust_division\":\"org1\",\n" +
-            "                    \"cust_sales_org\":\"2563\",\n" +
-            "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30000\",\n" +
-            "                    \"cust_payment_term\":\"30\",\n" +
-            "                    \"cust_address\":\"Credit\",\n" +
-            "                    \"cust_type\":\"credit\",\n" +
-            "                    \"cust_possessed_empty_bottle\":\"7\",\n" +
-            "                    \"cust_possessed_filled_bottle\":\"9\",\n" +
-            "                    \"cust_long\":\"42.972301\",\n" +
-            "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"27.633569\"\n" +
-            "\n" +
-            "                    },\n" +
-            "\n" +
-            "                    {\n" +
-            "                   \"cust_num\":\"65\",\n" +
-            "                    \"cust_name_en\":\"Al Maya Market\",\n" +
-            "                    \"cust_name_ar\":\"سوق المايا\",\n" +
-            "                    \"cust_dist_channel\":\"divsion1\",\n" +
-            "                    \"cust_division\":\"org1\",\n" +
-            "                    \"cust_sales_org\":\"2563\",\n" +
-            "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30000\",\n" +
-            "                    \"cust_payment_term\":\"30\",\n" +
-            "                    \"cust_address\":\"Credit\",\n" +
-            "                    \"cust_type\":\"cash\",\n" +
-            "                    \"cust_possessed_empty_bottle\":\"3\",\n" +
-            "                    \"cust_possessed_filled_bottle\":\"2\",\n" +
-            "                      \"cust_long\":\"45.301403\",\n" +
-            "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"21.768335\"\n" +
-            "                    }\n" +
-            "                    ,\n" +
-            "\n" +
-            "                    {\n" +
-            "                   \"cust_num\":\"33\",\n" +
-            "                    \"cust_name_en\":\"Al Maya Market\",\n" +
-            "                    \"cust_name_ar\":\"سوق المايا\",\n" +
-            "                    \"cust_dist_channel\":\"divsion1\",\n" +
-            "                    \"cust_division\":\"org1\",\n" +
-            "                    \"cust_sales_org\":\"2563\",\n" +
-            "                    \"cust_credit_limit\":\"256\",\n" +
-            "                    \"cust_avail_bal\":\"30000\",\n" +
-            "                    \"cust_payment_term\":\"30\",\n" +
-            "                    \"cust_address\":\"Credit\",\n" +
-            "                    \"cust_type\":\"credit\",\n" +
-            "                    \"cust_possessed_empty_bottle\":\"5\",\n" +
-            "                    \"cust_possessed_filled_bottle\":\"5\",\n" +
-            "                     \"cust_long\":\"53.475230\",\n" +
-            "                    \"cust_created_date\":\"26\",\n" +
-            "                    \"cust_lat\":\"20.662248\"\n" +
-            "                    }\n" +
-            "\n" +
-            "                    ]";
-
-    String loads = "[\n" +
-            "                    {\n" +
-            "                    \"load_no\":\"546\",\n" +
-            "                    \"delivery_date\":\"19-07-2018\",\n" +
-            "\n" +
-            "                    \"load_items\":[\n" +
-            "                    {\n" +
-            "                    \"load_no\":\"546\",\n" +
-            "                    \"item_code\":\"1\",\n" +
-            "                    \"item_name\":\"GBC Bottle with Water\",\n" +
-            "                    \"item_type\":\"Bottle\",\n" +
-            "                    \"item_qty\":\"12\",\n" +
-            "                    \"item_uom\":\"Bottle\",\n" +
-            "                    \"load_date\":\"19-07-2018\",\n" +
-            "                    \"total_price\":\"58\"\n" +
-            "                    },\n" +
-            "\n" +
-            "\n" +
-            "                    {\"load_no\":\"546\",\n" +
-            "                    \"item_code\":\"2\",\n" +
-            "                    \"item_name\":\"GBC Empty Bottle\",\n" +
-            "                    \"item_type\":\"Empty\",\n" +
-            "                    \"item_qty\":\"14\",\n" +
-            "                    \"item_uom\":\"Bottle\",\n" +
-            "                    \"load_date\":\"19-07-2018\",\n" +
-            "                    \"total_price\":\"685\"},\n" +
-            "{\"load_no\":\"546\",\n" +
-            "                    \"item_code\":\"3\",\n" +
-            "                    \"item_name\":\"GBC Coupon Book 50’s\",\n" +
-            " \"item_type\":\"Coupon\",\n" +
-            "                    \"item_qty\":\"14\",\n" +
-            "                    \"item_uom\":\"Coupon\",\n" +
-            "                    \"load_date\":\"19-07-2018\",\n" +
-            "                    \"total_price\":\"5000\"}\n" +
-            "                    ]\n" +
-            "                    }\n" +
-            "\n" +
-            "                    ]";
-
-    String salesman = "{\"data\":{\n" +
-            "                    \"trip_id\":\"546\",\n" +
-            "                    \"salesman_id\":\"546\",\n" +
-            "                    \"salesman_name_en\":\"546\",\n" +
-            "                    \"salesman_name_ar\":\"546\",\n" +
-            "                    \"salesman_dis_channel\":\"546\",\n" +
-            "                    \"salesman_org\":\"546\",\n" +
-            "                    \"salesman_division\":\"546\",\n" +
-            "                    \"salesman_route\":\"546\",\n" +
-            "                    \"salesman_vehicle_no\":\"546\",\n" +
-            "                    \"supervisor_id\":\"24\",\n" +
-            "                    \"INV_LAST\":\"10\",\n" +
-            "                    \"ORD_LAST\":\"10\",\n" +
-            "                    \"LOAD_LAST\":\"10\",\n" +
-            "                    \"COLLECTION_LAST\":\"10\",\n" +
-            "                    \"CUSTOMER_LAST\":\"10\",\n" +
-            "                    \"PAYMENT_LAST\":\"10\",\n" +
-            "                    \"LOAD_REQUEST_LAST\":\"10\",\n" +
-            "                    \"status\":\"1\",\n" +
-            "                    \"message\":\"You are successfully login.\"\n" +
-            "\n" +
-            "                    }\n" +
-            "}\n";
-
 
     String fcm_id;
 
@@ -349,7 +141,13 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            wsLogin.executeWebservice(edt_id.getText().toString().trim(), edt_pwd.getText().toString());
+
+
+            login(edt_id.getText().toString().trim(),
+                    edt_pwd.getText().toString(), fcm_id);
+
+            if (!edt_id.getText().toString().equalsIgnoreCase("SV1"))
+                wsLogin.executeWebservice(edt_id.getText().toString().trim(), edt_pwd.getText().toString());
             return null;
         }
 
@@ -360,12 +158,14 @@ public class LoginActivity extends AppCompatActivity {
             pDialog.dismiss();
 
             if (wsLogin.getSuccess()) {
+                UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SALESMAN.SALESMAN_ROUTE, edt_id.getText().toString());
                 new AsyncTaskRunner("5").execute();
             } else {
-                new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Error")
-                        .setContentText(wsLogin.getMessage())
-                        .show();
+                if (!edt_id.getText().toString().equalsIgnoreCase("SV1"))
+                    new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Error")
+                            .setContentText(wsLogin.getMessage())
+                            .show();
             }
 
         }
@@ -395,23 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISJPLOADED, false);
                 UtilApp.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.ISPAYMET, false);
 
-                // SALESMAN
-                JSONObject SalesmanObj = new JSONObject(String.valueOf(salesman));
 
-                Gson gson = new Gson();
-
-                Sales sales = gson.fromJson(SalesmanObj.toString(), Sales.class);
-
-
-//                JSONArray itemJArr = itemObj.getJSONArray("data");
-//                dbManager.insertSalesman(SalesmanObj);
-
-
-                //ITEM INSERT
-//                JSONObject itemObj = new JSONObject(String.valueOf(items));
-//                JSONArray itemJArr = itemObj.getJSONArray("data");
-                /*JSONArray itemJArr = new JSONArray(items);
-                dbManager.insertItemsArray(itemJArr);*/
                 WsGetItems wsGetItems = new WsGetItems(activity);
                 wsGetItems.executeWebservice();
 
@@ -423,17 +207,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 WsGetLoads wsGetLoads = new WsGetLoads(activity);
                 wsGetLoads.executeWebservice();
-
-                //CUSTOMER INSERT
-//                JSONObject custObj = new JSONObject(customers);
-//                JSONArray custJArr = custObj.getJSONArray("data");
-                /*JSONArray custJArr = new JSONArray(customers);
-                dbManager.insertCustomerArr(custJArr);*/
-
-                //LOAD INSERT
-//                JSONArray loadJArr = new JSONArray(loads);
-//                dbManager.insertLoadArr(loadJArr);
-//                dbManager.insertUnload(loadJArr);
 
 
                 UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.ISCHECKIN, false);
@@ -585,11 +358,26 @@ public class LoginActivity extends AppCompatActivity {
 
                         try {
 
+
                             JSONObject jsonObject = new JSONObject(UtilApp.getString(response.getBody().in()));
                             Log.v("", "==== Json: " + jsonObject.toString());
 
                             if (jsonObject.getString("STATUS").equals("1")) {
-                                new AsyncTaskRunner("2").execute();
+//                                new AsyncTaskRunner("2").execute();
+                                Toast.makeText(LoginActivity.this, "FCM Req sent", Toast.LENGTH_SHORT).show();
+
+                                if (edt_id.getText().toString().equalsIgnoreCase("SV1")) {
+
+                                    UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.USERNAME,
+                                            edt_id.getText().toString());
+
+                                    UtilApp.WriteSharePrefrence(LoginActivity.this, Constant.SHRED_PR.ISLOGIN,
+                                            true);
+
+                                    Intent intent = new Intent(LoginActivity.this, SuperVisorApproveActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
                             } else {
                                 Toast.makeText(LoginActivity.this, "Error in Login", Toast.LENGTH_SHORT).show();
                             }

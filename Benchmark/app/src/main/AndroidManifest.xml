@@ -161,6 +161,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.JourneyPlanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- SERVICES -->
         <service android:name=".util.MyFirebaseMessagingService">
             <intent-filter>

@@ -80,8 +80,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
+                                android:singleLine="true"
                                 android:textColor="@color/white_200"
-                                android:textSize="@dimen/_19sdp" />
+                                android:textSize="@dimen/_16sdp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -117,8 +118,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
+                                android:singleLine="true"
                                 android:textColor="@color/white_200"
-                                android:textSize="@dimen/_19sdp" />
+                                android:textSize="@dimen/_16sdp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -155,8 +157,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
+                                android:singleLine="true"
                                 android:textColor="@color/white_200"
-                                android:textSize="@dimen/_19sdp" />
+                                android:textSize="@dimen/_16sdp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -267,7 +270,7 @@
             android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_fan_discount_sel"
+            android:src="@mipmap/icon_fan_order_sel"
             fab:fab_label="Order"
             fab:fab_size="mini" />
 
@@ -275,7 +278,7 @@
             android:id="@+id/fab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_fan_discount_sel"
+            android:src="@mipmap/icon_fan_shop_set"
             fab:fab_label="Sales"
             fab:fab_size="mini" />
 
@@ -302,7 +305,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_fan_shop_set"
-            android:visibility="gone"
+            android:visibility="visible"
             fab:fab_label="Return"
             fab:fab_size="mini" />
 

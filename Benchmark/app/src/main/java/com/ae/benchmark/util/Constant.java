@@ -9,14 +9,14 @@ public class Constant {
     public static String AppNameSuper = "Benchmark";
 
     // Newly Final created production
-//    public static String URL = "http://192.254.133.11/~staging/newproject/";
+    public static String URLPHP = "http://192.254.133.11/~staging/newproject/";
     public static String URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV";
 
     public static String checkBoxValue = "";
     public static String checkBoxFalse = "no";
 
     public static String NAV_AUDIT = "no";
-    public static String VAN_STOCK = "no";
+    public static String IS_VAN_STOCK = "no";
     public static String PRINT = "no";
 
     public static int TARGET_DTD_MTD = 10000;
@@ -28,6 +28,22 @@ public class Constant {
     public static String CUSTOMER_LAST = "CUSTOMER_LAST";
     public static String PAYMENT_LAST = "PAYMENT_LAST";
     public static String LOAD_REQUEST_LAST = "LOAD_REQUEST_LAST";
+
+    //Printing
+    public static final String REQUEST = "REQUEST";
+    public static final String LOAD_SUMMARY_REQUEST = "LoadSummaryRequest";
+    public static final String LOAD_REQUEST = "LoadRequest";
+    public static final String ORDER_REQUEST = "OrderRequest";
+    public static final String SALES_INVOICE = "Invoice";
+    public static final String DELIVERY = "Delivery";
+    public static final String COLLECTION = "Collection";
+    public static final String DRIVER_COLLECTION = "driverCollection";
+    public static final String UNLOAD = "unload";
+    public static final String DEPOSIT_REPORT = "depositreport";
+    public static final String ROUTE_SALES = "routeSales";
+    public static final String SALES_SUMMARY = "salessummary";
+    public static final String BAD_RETURN_REPORT = "badreturnreport";
+    public static final String VAN_STOCK = "vanstock";
 
 
     public static class SHRED_PR {
@@ -53,6 +69,7 @@ public class Constant {
     }
 
     public static class SALESMAN {
+        public static final String SALESMAN_ROUTE = "route";
         public static final String SALESMAN_ID = "SALESMAN";
         public static final String SALESMAN_NAME = "name1";
         public static final String SALESMAN_SALES_ORG = "salesorg";
@@ -60,6 +77,19 @@ public class Constant {
         public static final String SALESMAN_DIVISION = "Division";
         public static final String SALESMAN_VEHICLE = "Vehicle";
         public static final String SALESMAN_SUPERVISOR = "supervisor";
+    }
+
+    public static class BARCODE {
+        public static final String LEAFLET_HOME = "62877017110036";
+        public static final String LEAFLET_BUSINESS = "6287017110074";
+
+        public static final String COUPON_HOME_20 = "6287017110005";
+        public static final String COUPON_HOME_50 = "6287017110012";
+        public static final String COUPON_HOME_100 = "6287017110029";
+
+        public static final String COUPON_BUSINESS_20 = "6287017110043";
+        public static final String COUPON_BUSINESS_50 = "6287017110050";
+        public static final String COUPON_BUSINESS_100 = "6287017110067";
 
 
     }
@@ -75,6 +105,7 @@ public class Constant {
         public static final String TT_CUST_CREATED = "tt_cust_created";
         public static final String TT_UNLOAD = "tt_unload";
         public static final String TT_OREDER_CREATED = "tt_order_created";
+        public static final String TT_RETURN_CREATED = "tt_return_created";
         public static final String TT_END_DAY = "tt_end_day";
         public static final String TT_LOAD_CREATE = "tt_load_create";
     }

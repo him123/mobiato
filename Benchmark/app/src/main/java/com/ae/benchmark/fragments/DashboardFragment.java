@@ -118,7 +118,7 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -134,9 +134,9 @@ public class DashboardFragment extends Fragment {
                     FragmentDashboardTwo fragmentAnimation2 = new FragmentDashboardTwo();
                     return fragmentAnimation2;
 
-               /* case 2:
+                case 2:
                     FragmentDashboardThree fragmentAnimation3 = new FragmentDashboardThree();
-                    return fragmentAnimation3;*/
+                    return fragmentAnimation3;
 
             }
             return null;

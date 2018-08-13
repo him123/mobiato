@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.activities.SplashActivity;
+import com.ae.benchmark.data.Const;
 
 import org.json.JSONObject;
 
@@ -189,7 +190,7 @@ public class UtilApp {
         alertDialog.show();
     }
 
-    public static void askForPrint(final Activity contextIntent, final Context context, final Intent redirectIntent) {
+    public static void askForPrintNoFinish(final Context context, final JSONObject jsonObject) {
 
         final Dialog alertDialog = new Dialog(context);
         alertDialog.setCancelable(false);
@@ -203,10 +204,10 @@ public class UtilApp {
             @Override
             public void onClick(View v) {
                 //your business logic
-
                 alertDialog.dismiss();
-                context.startActivity(redirectIntent);
-                contextIntent.finish();
+
+                PrinterHelper printerHelper = new PrinterHelper(context, (Activity) context);
+                printerHelper.execute(jsonObject);
 
             }
         });
@@ -216,9 +217,47 @@ public class UtilApp {
             public void onClick(View v) {
                 //your business logic
                 alertDialog.dismiss();
-                context.startActivity(redirectIntent);
-                contextIntent.finish();
 
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    public static void askForPrint(final Activity contextIntent, final Context context, final JSONObject outterData) {
+
+        final Dialog alertDialog = new Dialog(context);
+        alertDialog.setCancelable(false);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.dialog_print_donot_print);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        ImageView img_print = alertDialog.findViewById(R.id.img_pring);
+
+        img_print.setColorFilter(ContextCompat.getColor(context, R.color.theme_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+        alertDialog.findViewById(R.id.rl_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+
+                alertDialog.dismiss();
+
+                try {
+                    PrinterHelper printerHelper = new PrinterHelper(context, contextIntent);
+                    printerHelper.execute(outterData);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        alertDialog.findViewById(R.id.rl_donot_print).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertDialog.dismiss();
             }
         });
 
@@ -243,9 +282,14 @@ public class UtilApp {
                 //your business logic
 
                 alertDialog.dismiss();
-//                context.startActivity(redirectIntentirectIntent);
-                contextIntent.finish();
 
+                try {
+                    PrinterHelper printerHelper = new PrinterHelper(context, contextIntent);
+//                    printerHelper.execute(outterData);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -254,9 +298,6 @@ public class UtilApp {
             public void onClick(View v) {
                 //your business logic
                 alertDialog.dismiss();
-//                context.startActivity(redirectIntent);
-                contextIntent.finish();
-
             }
         });
 

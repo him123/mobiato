@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.CustomerDetailOperationActivity;
@@ -37,6 +38,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Collection> mItemList;
     Customer customer;
     double remainingAmount = 0.0;
+    double remainnigAmt = 0.0;
 
     public CollectionAdapter(List<Collection> itemList, Context context, Customer customer) {
         this.mItemList = itemList;
@@ -68,39 +70,65 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (collection.coll_last_col_amt == null)
             collection.coll_last_col_amt = "0.0";
 
+        if (collection.coll_amount.equalsIgnoreCase(""))
+            collection.coll_amount = "0.0";
+
+        if (collection.coll_last_col_amt.equalsIgnoreCase(""))
+            collection.coll_last_col_amt = "0.0";
+
         if (Double.parseDouble(collection.coll_amount) > Double.parseDouble(collection.coll_last_col_amt)) {
             remainingAmount = Double.parseDouble(collection.coll_amount) -
                     Double.parseDouble(collection.coll_last_col_amt);
-
-            holder.txt_due_amt.setText("" + remainingAmount);
-        } else {
-            holder.txt_due_amt.setText(collection.coll_amount);
         }
+
+        holder.txt_due_amt.setText("" + remainingAmount);
+//        } else {
+//            holder.txt_due_amt.setText(collection.coll_amount);
+//        }
 
         holder.txt_due_amt.setEnabled(false);
 
         holder.rl_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (collection
-                        .coll_cust_pay_method.equals("credit")) {
 
-                    Intent i = new Intent(mContext, PaymentActivity.class);
-//<<<<<<< HEAD
-                    i.putExtra("amount", remainingAmount + "");
-                    i.putExtra("col_doc_no", collection.coll_doc_no);
-//=======
-                    i.putExtra("amt", collection.coll_amount);
-//>>>>>>> 21c334a48f6a85e7ca04640c5fd56ed69100b27d
-                    i.putExtra("cust", customer);
-                    i.putExtra("invDate", collection.coll_inv_date);
+                if (Double.parseDouble(collection.coll_amount) > Double.parseDouble(collection.coll_last_col_amt)) {
+                    remainnigAmt = Double.parseDouble(collection.coll_amount) -
+                            Double.parseDouble(collection.coll_last_col_amt);
+                }
+                if (remainnigAmt == 0.0) {
+                    Toast.makeText(mContext, "Payment is already done", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!collection.coll_cust_pay_method.equalsIgnoreCase("cash")) {
 
-                    if (!collection.coll_amount.equalsIgnoreCase("0")) {
+//                    if (Double.parseDouble(collection.coll_last_col_amt) <= 0.0) {
+
+                    if (collection.coll_is_payable.equalsIgnoreCase("yes")) {
+                        Intent i = new Intent(mContext, PaymentActivity.class);
+                        i.putExtra("col_doc_no", collection.coll_doc_no);
+                        i.putExtra("amt", "" + remainnigAmt);
+                        i.putExtra("cust", customer);
+                        i.putExtra("invDate", collection.coll_inv_date);
+                        i.putExtra("invNo", collection.coll_inv_no);
+
                         mContext.startActivity(i);
                     }
 
-
                 }
+//                else {
+////                    Toast.makeText(mContext, "This is not credit customer", Toast.LENGTH_SHORT).show();
+//                    remainnigAmt = Double.parseDouble(collection.coll_amount) -
+//                            Double.parseDouble(collection.coll_last_col_amt);
+//
+//                    Intent i = new Intent(mContext, PaymentActivity.class);
+//                    i.putExtra("col_doc_no", collection.coll_doc_no);
+//                    i.putExtra("amt", "" + remainnigAmt);
+//                    i.putExtra("cust", customer);
+//                    i.putExtra("invDate", collection.coll_inv_date);
+//
+//                    mContext.startActivity(i);
+//                }
             }
         });
 

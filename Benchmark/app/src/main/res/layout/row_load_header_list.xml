@@ -20,8 +20,8 @@
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_9sdp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_9sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,10 +48,10 @@
 
 
                 <TextView
-                    android:id="@+id/txt_desc"
+                    android:id="@+id/txt_del_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Delivery Date: 2018-14-05"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 

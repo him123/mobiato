@@ -38,18 +38,10 @@ import butterknife.InjectView;
 public class FragmentCOReturns extends Fragment {
 
 
-//    private Toolbar toolbar;
-
-//    @InjectView(R.id.recyclerview_recent_orders)
-//    RecyclerView recyclerview_recent_orders;
 
     @InjectView(R.id.fab)
     FloatingActionButton fab;
     private KKViewPager viewPager;
-
-    //    LinearLayoutManager mLayoutManager_recent;
-//
-//    RecyclerAdapterOrdersRecent recyclerAdapter_recent;
     List<Item> itemList;
     Item item;
 
@@ -119,21 +111,11 @@ public class FragmentCOReturns extends Fragment {
                 intent.putExtra("tag", tag);
                 intent.putExtra("cust", customer);
                 intent.putExtra("with_load", "no");
+                intent.putExtra("is_return", "yes");
+
                 startActivity(intent);
             }
         });
-//        itemCustList = new ArrayList<>();
-
-//        for (int i = 0; i < 10; i++) {
-//            recentCustomer = new Customer();
-//
-//            recentCustomer.cust_id = "2012462260";
-//            recentCustomer.name = "Load No. 800302051";
-//            recentCustomer.address = "Delivery Date: 2017.02.10";
-//
-//            itemCustList.add(recentCustomer);
-//        }
-
 
         return v;
     }
@@ -181,7 +163,7 @@ public class FragmentCOReturns extends Fragment {
 
         itemList = new ArrayList<>();
         itemList.clear();
-        itemList = db.getAllOrdersForCustomer(customer.cust_num);
+        itemList = db.getAllReturnsForCustomer(customer.cust_num);
 
 
         viewPager.setAdapter(new TestFragmentAdapter(getChildFragmentManager(),

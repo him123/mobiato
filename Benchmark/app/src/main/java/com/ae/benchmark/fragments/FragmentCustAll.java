@@ -63,7 +63,6 @@ public class FragmentCustAll extends Fragment {
         View v = inflater.inflate(R.layout.activity_select_cust_list, container, false);
         ButterKnife.inject(this, v);
 
-
         LayoutInflater mInflater = LayoutInflater.from(getActivity());
 //
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);

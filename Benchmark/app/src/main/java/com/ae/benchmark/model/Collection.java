@@ -20,6 +20,7 @@ public class Collection implements Parcelable {
     public String coll_due_amt;
     public String coll_type;
     public String coll_last_col_amt;
+    public String coll_is_payable;
 
     public Collection() {
     }
@@ -36,6 +37,7 @@ public class Collection implements Parcelable {
         coll_due_amt = in.readString();
         coll_type = in.readString();
         coll_last_col_amt = in.readString();
+        coll_is_payable = in.readString();
     }
 
     @Override
@@ -56,6 +58,7 @@ public class Collection implements Parcelable {
         dest.writeString(coll_due_amt);
         dest.writeString(coll_type);
         dest.writeString(coll_last_col_amt);
+        dest.writeString(coll_is_payable);
     }
 
     @SuppressWarnings("unused")

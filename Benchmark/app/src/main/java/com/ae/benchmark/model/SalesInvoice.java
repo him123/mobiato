@@ -25,6 +25,9 @@ public class SalesInvoice implements Parcelable {
     public String cust_sales_org;
     public String del_date;
 
+    public String empty_bottles;
+    public String empty_type;
+
     public SalesInvoice() {
 
     }
@@ -165,6 +168,9 @@ public class SalesInvoice implements Parcelable {
         inv_header_vat_val = in.readString();
         cust_sales_org = in.readString();
         del_date = in.readString();
+
+        empty_bottles = in.readString();
+        empty_type = in.readString();
     }
 
     @Override
@@ -189,6 +195,9 @@ public class SalesInvoice implements Parcelable {
         dest.writeString(cust_sales_org);
         dest.writeString(del_date);
         dest.writeString(inv_header_dis_val);
+
+        dest.writeString(empty_bottles);
+        dest.writeString(empty_type);
     }
 
     @SuppressWarnings("unused")

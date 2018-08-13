@@ -47,6 +47,7 @@ public interface CommonService {
     @POST("/accept_reject_approval.php")
     void accept_reject_approval(
             @Field("salesman_id") String salesman_id,
+            @Field("no_of_bottles") String no_of_bottles,
             @Field("status") String status,
 
             Callback<Response> user);
