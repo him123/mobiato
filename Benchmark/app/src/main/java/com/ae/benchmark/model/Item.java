@@ -31,6 +31,7 @@ public class Item implements Parcelable {
     public String item_vat_val;
     public String is_empty;
     public String order_id;
+    public String cust_id;
 
     public Item() {
 
@@ -196,6 +197,14 @@ public class Item implements Parcelable {
         this.order_id = order_id;
     }
 
+    public String getCust_id() {
+        return cust_id;
+    }
+
+    public void setCust_id(String cust_id) {
+        this.cust_id = cust_id;
+    }
+
     protected Item(Parcel in) {
         item_code = in.readString();
         item_name_en = in.readString();
@@ -217,6 +226,7 @@ public class Item implements Parcelable {
         is_empty = in.readString();
         order_id = in.readString();
         item_emp_qty = in.readString();
+        cust_id = in.readString();
     }
 
     @Override
@@ -247,6 +257,7 @@ public class Item implements Parcelable {
         dest.writeString(is_empty);
         dest.writeString(order_id);
         dest.writeString(item_emp_qty);
+        dest.writeString(cust_id);
     }
 
     @SuppressWarnings("unused")

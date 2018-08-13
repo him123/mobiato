@@ -34,7 +34,7 @@ public class WsLogin {
     }
 
     public void executeWebservice(String username, String password) {
-        final String url = Const.WS_URL + "UserauthSet?$filter=USERID%20eq%20%27" + username + "%27%20and%20PASSWORD%20eq%20%27" + password + "%27&$format=json";
+        final String url = Const.WS_URL + "ZSFA_5G_DOWNLOAD_SRV/UserauthSet?$filter=USERID%20eq%20%27" + username + "%27%20and%20PASSWORD%20eq%20%27" + password + "%27&$format=json";
         parseResponse(NetworkUtility.getApiData(context, url), username);
     }
 
@@ -58,7 +58,14 @@ public class WsLogin {
                         UtilApp.WriteSharePrefrence(context, Constant.SHRED_PR.USERNAME, username);
 
 
-                        if (jsonObject.optString("inv_last").equalsIgnoreCase(""))
+                        UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, "0");
+                        UtilApp.WriteSharePrefrence(context, Constant.ORD_LAST, "0");
+                        UtilApp.WriteSharePrefrence(context, Constant.LOAD_LAST, "0");
+                        UtilApp.WriteSharePrefrence(context, Constant.COLLECTION_LAST, "0");
+                        UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, "0");
+
+                        //TODO Need to change
+                        /*if (jsonObject.optString("inv_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, "0");
                         else
                             UtilApp.WriteSharePrefrence(context, Constant.INV_LAST, jsonObject.optString("inv_last"));
@@ -81,7 +88,7 @@ public class WsLogin {
                         if (jsonObject.optString("customer_last").equalsIgnoreCase(""))
                             UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, "0");
                         else
-                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last"));
+                            UtilApp.WriteSharePrefrence(context, Constant.CUSTOMER_LAST, jsonObject.optString("customer_last"));*/
 //                        UtilApp.WriteSharePrefrence(context, Constant.PAYMENT_LAST, jsonObject.optString("message"));
 //                        UtilApp.WriteSharePrefrence(context, Constant.LOAD_REQUEST_LAST, jsonObject.optString("message"));
 

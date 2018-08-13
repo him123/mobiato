@@ -23,12 +23,15 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPostHC4;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.StringEntityHC4;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -86,6 +89,40 @@ public class NetworkUtility {
         HttpResponse httpResponse;
         try {
             httpResponse = httpclient.execute(httpget);
+            Log.e(TAG ,httpResponse.getStatusLine().toString());
+
+            HttpEntity entity = httpResponse.getEntity();
+            if (entity != null) {
+
+                InputStream instream = entity.getContent();
+                response = convertStreamToString(instream);
+                Log.e(TAG , "Response\n"+response);
+                instream.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    public static String postApiData(Context context, String targetUrl, String requestJson) {
+
+        String response = "";
+        HttpClient httpclient = getDefaultHttpClient(context, targetUrl);
+        Log.e(TAG , "Request URL = "+targetUrl);
+        Log.e(TAG , "Request = "+requestJson);
+        HttpPostHC4 httpPostHC4 = new HttpPostHC4(targetUrl);
+
+        HttpResponse httpResponse;
+        try {
+            httpPostHC4.setEntity(new StringEntityHC4(requestJson, "UTF-8"));
+            httpPostHC4.setHeader("Content-Type", "application/json; charset=utf-8");
+            httpPostHC4.setHeader("Accept", "application/json");
+            httpPostHC4.setHeader("X-Requested-With", "application/json");
+
+            httpResponse = httpclient.execute(httpPostHC4);
             Log.e(TAG ,httpResponse.getStatusLine().toString());
 
             HttpEntity entity = httpResponse.getEntity();

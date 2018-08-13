@@ -338,12 +338,12 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            activity = LoginActivity.this;
+            pDialog = new SweetAlertDialog(activity, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             pDialog.setTitleText("Please Wait...");
             pDialog.setCancelable(false);
             pDialog.show();
-            this.activity = LoginActivity.this;
             wsLogin = new WsLogin(activity);
         }
 
