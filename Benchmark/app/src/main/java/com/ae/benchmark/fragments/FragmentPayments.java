@@ -1,8 +1,12 @@
 package com.ae.benchmark.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +17,22 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.activities.DashBoardActivity;
 import com.ae.benchmark.activities.EndInventoryRITActivity;
 import com.ae.benchmark.activities.LoginActivity;
+import com.ae.benchmark.activities.NetworkUtility;
+import com.ae.benchmark.data.Const;
 import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Payment;
+import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
+import com.ae.benchmark.webservice.WsLogin;
+import com.ae.benchmark.webservice.WsPushData;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -29,7 +45,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 
 public class FragmentPayments extends Fragment {
-
 
     @InjectView(R.id.btn_day_end)
     Button btn_day_end;
@@ -90,8 +105,9 @@ public class FragmentPayments extends Fragment {
             @Override
             public void onClick(View v) {
 
+                new PushDataTask().execute();
 
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                /*new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Done")
                         .setContentText("Your day ended, See you Tomorrow!")
                         .setConfirmText("Ok!")
@@ -112,7 +128,7 @@ public class FragmentPayments extends Fragment {
                                 getActivity().finish(); // call this to finish the current activity
                             }
                         })
-                        .show();
+                        .show();*/
 
 
             }
@@ -120,6 +136,45 @@ public class FragmentPayments extends Fragment {
 
         return v;
     }
+
+    private final class PushDataTask extends AsyncTask<Void, Void, Void> {
+
+        private Activity activity;
+        private SweetAlertDialog pDialog;
+        private WsPushData wsPushData;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            activity = getActivity();
+            wsPushData = new WsPushData(activity);
+            pDialog = new SweetAlertDialog(activity, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Please Wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            wsPushData.executeWebservice();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            /*new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Success")
+                    .setContentText("Success")
+                    .show();*/
+
+        }
+    }
+
 
     @Override
     public void onDestroyView() {

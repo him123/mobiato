@@ -78,6 +78,6 @@ public class Const {
     }
 
     //    public final static String WS_URL = "https://gbcportal.gbc.sa/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
-    public final static String WS_URL = "http://46.235.93.243:8047/sap/opu/odata/sap/ZSFA_5G_DOWNLOAD_SRV/";
+    public final static String WS_URL = "http://46.235.93.243:8047/sap/opu/odata/sap/";
 
 }

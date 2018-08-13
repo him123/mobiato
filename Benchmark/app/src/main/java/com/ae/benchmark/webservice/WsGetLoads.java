@@ -39,8 +39,12 @@ public class WsGetLoads {
 
 
     public void executeWebservice() {
-        final String url = Const.WS_URL + "LoadSet?$filter=Route%20eq%20%27" +
-                UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME) + "%27&$expand=MatDoc&$format=json";
+//<<<<<<< HEAD
+//        final String url = Const.WS_URL + "LoadSet?$filter=Route%20eq%20%27" +
+//                UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME) + "%27&$expand=MatDoc&$format=json";
+//=======
+        final String url = Const.WS_URL + "ZSFA_5G_DOWNLOAD_SRV/LoadSet?$filter=Route%20eq%20%27"+ UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$expand=MatDoc&$format=json";
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
         parseResponse(NetworkUtility.getApiData(context, url));
     }
 

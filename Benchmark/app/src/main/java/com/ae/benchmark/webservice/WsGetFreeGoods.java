@@ -33,7 +33,7 @@ public class WsGetFreeGoods {
     }
 
     public void executeWebservice() {
-        final String url = Const.WS_URL + "FreeGoodsSet?$filter=route%20eq%20%27"+ UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$format=json";
+        final String url = Const.WS_URL + "ZSFA_5G_DOWNLOAD_SRV/FreeGoodsSet?$filter=route%20eq%20%27"+ UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$format=json";
         parseResponse(NetworkUtility.getApiData(context, url));
     }
 

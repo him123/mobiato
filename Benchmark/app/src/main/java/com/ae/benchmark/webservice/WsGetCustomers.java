@@ -33,8 +33,12 @@ public class WsGetCustomers {
     }
 
     public void executeWebservice() {
-        final String url = Const.WS_URL + "CustomerSet?$filter=route%20eq%20%27"+
-                UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$format=json";
+//<<<<<<< HEAD
+//        final String url = Const.WS_URL + "CustomerSet?$filter=route%20eq%20%27"+
+//                UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$format=json";
+//=======
+        final String url = Const.WS_URL + "ZSFA_5G_DOWNLOAD_SRV/CustomerSet?$filter=route%20eq%20%27"+ UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME)+"%27&$format=json";
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
         parseResponse(NetworkUtility.getApiData(context, url));
     }
 

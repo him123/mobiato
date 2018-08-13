@@ -18,6 +18,7 @@ import com.ae.benchmark.model.Item;
 import com.ae.benchmark.model.Load;
 import com.ae.benchmark.model.Payment;
 import com.ae.benchmark.model.RecentCustomer;
+import com.ae.benchmark.model.Sales;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.Constant;
@@ -473,6 +474,41 @@ public class DBManager {
         return list;
     }
 
+    public ArrayList<Item> getAllInvoicItem(String sv_code) {
+
+        ArrayList<Item> list = new ArrayList<>();
+        openDatabsse();
+
+        try {
+            Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_INVOICE_ITEMS + " WHERE " + DatabaseHelper.SVH_CODE + "=?", new String[]{sv_code});
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                Item salesInvoice = new Item();
+
+                salesInvoice.setSales_inv_nun(cursor.getString(cursor.getColumnIndex(DatabaseHelper.SVH_CODE)));
+                salesInvoice.setItem_name_en(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN)));
+                salesInvoice.setItem_price(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE)));
+                salesInvoice.setItem_qty(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY)));
+                salesInvoice.setItem_code(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE)));
+                salesInvoice.setItem_barcode(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_COUPON_CODE)));
+                salesInvoice.setItem_disc_per(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_DISCOUNT_PER)));
+                salesInvoice.setItem_disc_val(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_DISCOUNT_VAL)));
+                salesInvoice.setItem_vat_per(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_VAT_PER)));
+                salesInvoice.setItem_vat_val(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_VAT_VAL)));
+
+                list.add(salesInvoice);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            close();
+        } catch (Exception e) {
+            Log.e("dbError", e.toString());
+        }
+
+        return list;
+    }
+
     public void insertSalesInvoiceItem(Item salesInvoiceItem) {
 
         try {
@@ -908,7 +944,7 @@ public class DBManager {
                 contentValue.put(DatabaseHelper.ITEM_CODE, singleObj.getString("material"));
                 contentValue.put(DatabaseHelper.ITEM_NAME_EN, singleObj.getString("name1"));
                 contentValue.put(DatabaseHelper.ITEM_NAME_AR, singleObj.getString("name2"));
-                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("type"));
+                contentValue.put(DatabaseHelper.ITEM_TYPE, singleObj.getString("item_type"));
                 contentValue.put(DatabaseHelper.ITEM_PRICE, singleObj.getString("Price"));
                 contentValue.put(DatabaseHelper.ITEM_BARCODE, singleObj.getString("barcode"));
                 contentValue.put(DatabaseHelper.ITEM_DIVISION, singleObj.getString("channel"));
@@ -1882,7 +1918,7 @@ public class DBManager {
     }
 
 
-    //Item List
+    //    //Item List
     public ArrayList<Item> getAllReturnsForCustomer(String cust_num) {
 
         ArrayList<Item> list = new ArrayList<Item>();
@@ -1890,6 +1926,58 @@ public class DBManager {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_RETURN_HEADER +
                 " WHERE " + DatabaseHelper.CUST_NUM + " = " + cust_num;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+//<<<<<<< HEAD
+//                        //only one column
+//                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+//                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+//                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+//
+//                        //you could add additional columns here..
+//=======
+                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+                        item.cust_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM));
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    //=======
+    public ArrayList<Item> getAllOrders() {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_HEADER;
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
@@ -1901,12 +1989,19 @@ public class DBManager {
                 if (cursor.moveToFirst()) {
                     do {
                         Item item = new Item();
-                        //only one column
+//<<<<<<< HEAD
+//                        //only one column
+//                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+//                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+//                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+//
+//                        //you could add additional columns here..
+//=======
                         item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
                         item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
                         item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
-
-                        //you could add additional columns here..
+                        item.cust_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM));
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
                         list.add(item);
 
                     } while (cursor.moveToNext());
