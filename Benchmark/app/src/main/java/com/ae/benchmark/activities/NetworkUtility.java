@@ -121,6 +121,7 @@ public class NetworkUtility {
             httpPostHC4.setHeader("Content-Type", "application/json; charset=utf-8");
             httpPostHC4.setHeader("Accept", "application/json");
             httpPostHC4.setHeader("X-Requested-With", "application/json");
+            httpPostHC4.setHeader("Accept-Language", "en-US");
 
             httpResponse = httpclient.execute(httpPostHC4);
             Log.e(TAG ,httpResponse.getStatusLine().toString());

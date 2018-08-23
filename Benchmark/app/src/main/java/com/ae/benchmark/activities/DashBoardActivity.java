@@ -622,6 +622,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 }
 
+                nav_payment.setEnabled(true);
+
             }
         };
 
