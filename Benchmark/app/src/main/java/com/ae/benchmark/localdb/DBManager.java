@@ -1971,6 +1971,107 @@ public class DBManager {
         return list;
     }
 
+    //    //Item List
+    public ArrayList<Item> getAllReturns() {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_RETURN_HEADER;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+//<<<<<<< HEAD
+//                        //only one column
+//                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+//                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+//                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+//
+//                        //you could add additional columns here..
+//=======
+                        item.order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_NO));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_AMOUNT));
+                        item.load_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ORDER_DATE));
+                        item.cust_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUST_NUM));
+//>>>>>>> 7a8b40e24f63805078c9b45c5deecdb729c3c7b9
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    //Item List
+    public ArrayList<Item> getReturnItems(String order_no) {
+
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_ORDER_ITEMS +
+                " WHERE " + DatabaseHelper.ORDER_NO + " = " + order_no;
+        ;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Item item = new Item();
+                        //only one column
+                        item.item_code = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_CODE));
+                        item.item_name_en = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_NAME_EN));
+                        item.item_price = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_PRICE));
+                        item.item_qty = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_QTY));
+                        item.item_uom = cursor.getString(cursor.getColumnIndex(DatabaseHelper.ITEM_UOM));
+
+                        list.add(item);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
     //=======
     public ArrayList<Item> getAllOrders() {
 
@@ -2264,6 +2365,64 @@ public class DBManager {
 
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER +
                 " WHERE " + DatabaseHelper.COL_CUST_NO + "='" + custNum + "'";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Collection collection = new Collection();
+                        //only one column
+                        collection.coll_doc_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DOC_CODE));
+                        collection.coll_inv_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_INVOICE_NO));
+                        collection.coll_cust_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_CUST_NAME));
+                        collection.coll_cust_no = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_CUST_NO));
+                        collection.coll_cust_pay_method = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_PAY_METHOD));
+
+                        collection.coll_amount = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_AMOUNT));
+                        collection.coll_inv_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_INVOICE_DATE));
+                        collection.coll_due_date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
+                        collection.coll_due_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_DUE_DATE));
+                        collection.coll_last_col_amt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_LAST_COLLECTED_AMT));
+                        collection.coll_is_payable = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_IS_PAYABLE));
+
+                        //you could add additional columns here..
+                        list.add(collection);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
+    //Get all Collection irrespective of any customer
+    public ArrayList<Collection> getAllCollections() {
+
+        ArrayList<Collection> list = new ArrayList<Collection>();
+
+        // Select All Query
+//        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER;
+
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_COLLECTION_HEADER +
+                " WHERE " + DatabaseHelper.IS_UPLOADED + "='" + 0 + "'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
