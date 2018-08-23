@@ -7,7 +7,9 @@ import com.ae.benchmark.R;
 import com.ae.benchmark.activities.NetworkUtility;
 import com.ae.benchmark.data.Const;
 import com.ae.benchmark.localdb.DBManager;
+import com.ae.benchmark.model.Collection;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.model.Load;
 import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.util.Constant;
 import com.ae.benchmark.util.UtilApp;
@@ -49,7 +51,7 @@ public class WsPushData {
             if (salesInvoices.get(i).getInv_type().equalsIgnoreCase("Sale")) {
                 String json = generateInvoiceJson(salesInvoices.get(i));
                 String response = NetworkUtility.postApiData(context, url, json);
-                Log.e("Publish", "Response "+response);
+                Log.e("Publish", "INVOICE Response "+response);
 
             }
         }
@@ -59,11 +61,43 @@ public class WsPushData {
         for (int i = 0; i < orderList.size(); i++) {
             String json = generateOrderJson(orderList.get(i));
             String response = NetworkUtility.postApiData(context, url, json);
-            Log.e("Publish", "Response "+response);
+            Log.e("Publish", "ORDER Response "+response);
         }
 
+
+
+        //Load Request
+        ArrayList<Load> loadList = db.getAllLoad("1");
+        for (int i = 0; i < loadList.size(); i++) {
+            String json = generateLoadRequestJson(loadList.get(i));
+            String response = NetworkUtility.postApiData(context, url, json);
+            Log.e("Publish", "LOAD Response "+response);
+        }
+
+        //Collection
+        ArrayList<Collection> collectionList = db.getAllCollections();
+        for (int i = 0; i < collectionList.size(); i++) {
+            String json = generateCollectionJson(collectionList.get(i));
+            String response = NetworkUtility.postApiData(context, url, json);
+            Log.e("Publish", "COLLECTION Response "+response);
+        }
+
+        //Return
+        ArrayList<Item> returnList = db.getAllReturns();
+        for (int i = 0; i < returnList.size(); i++) {
+            String json = generateReturnJson(orderList.get(i));
+            String response = NetworkUtility.postApiData(context, url, json);
+            Log.e("Publish", "RETURN Response "+response);
+        }
+
+        //Unload
+        String json = generateUnloadJson();
+        String response = NetworkUtility.postApiData(context, url, json);
+        Log.e("Publish", "UNLOAD Response "+response);
+        
     }
 
+    //INVOICE BODY
     private String generateInvoiceJson(SalesInvoice salesInvoice){
 
         String jsonInvoice = "";
@@ -121,7 +155,7 @@ public class WsPushData {
         return jsonInvoice;
     }
 
-
+    //ORDER BODY
     private String generateOrderJson(Item salesInvoice){
 
         String jsonInvoice = "";
@@ -178,7 +212,214 @@ public class WsPushData {
 
         return jsonInvoice;
     }
-    
+
+    //LOAD REQUEST BODY
+    private String generateLoadRequestJson(Load load){
+
+        String jsonInvoice = "";
+        try {
+
+            JSONObject jsonObjectMain = new JSONObject();
+            JSONObject jsonObjectD = new JSONObject();
+            double totalSale = 0;
+
+            JSONArray array = new JSONArray();
+            ArrayList<Item> loadItem = db.getLoadItem(load.load_no);
+
+            for (int i = 0; i < loadItem.size(); i++) {
+                JSONObject raw = new JSONObject();
+                Item item = loadItem.get(i);
+                double total = Double.parseDouble(item.getItem_price()) * Double.parseDouble(item.getItem_qty());
+                totalSale += total;
+                raw.put("Storagelocation", "");
+                raw.put("Material", item.getItem_code());
+                raw.put("ItemValue", item.getItem_price());
+                raw.put("Plant", "");
+                raw.put("Description", item.getItem_name_en());
+                raw.put("UoM", item.getItem_uom());
+                raw.put("Value", String.valueOf(total));
+                raw.put("Quantity", item.getItem_qty());
+                raw.put("Item", "00"+(i+1)+"0");
+                raw.put("Route", UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME));
+                array.put(raw);
+            }
+
+            jsonObjectD.put("Longitude", "0.0");
+            jsonObjectD.put("Latitude", "0.0");
+            jsonObjectD.put("OrderValue", String.valueOf(totalSale));
+            jsonObjectD.put("Division", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_DIVISION));
+            jsonObjectD.put("Currency", "SAR");
+            jsonObjectD.put("OrderId", load.load_no);
+            jsonObjectD.put("TripId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("SalesOrg",  "");
+            jsonObjectD.put("DistChannel", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_CHANNEL));
+            jsonObjectD.put("Function", "ORDERREQ");
+            jsonObjectD.put("PurchaseNum", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("CustomerId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("DocumentType", "Z5SO");
+            jsonObjectD.put("SOItems", array);
+
+
+            jsonObjectMain.put("d", jsonObjectD);
+            jsonInvoice = jsonObjectMain.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonInvoice;
+    }
+
+    //COLLECTION BODY
+    private String generateCollectionJson(Collection collection){
+
+        String jsonInvoice = "";
+        try {
+
+            JSONObject jsonObjectMain = new JSONObject();
+            JSONObject jsonObjectD = new JSONObject();
+
+            JSONArray array = new JSONArray();
+
+            JSONObject soItem = new JSONObject();
+            soItem.put("OrderId", collection.coll_inv_no);
+            soItem.put("Payreference", "");
+            array.put(soItem);
+
+
+            jsonObjectD.put("OrderValue", collection.coll_amount);
+            jsonObjectD.put("Function", "COLLECTION");
+            jsonObjectD.put("RefCust", collection.coll_cust_no);
+            jsonObjectD.put("CustomerId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("DocumentType", "Z5SO");
+            jsonObjectD.put("SOItems", array);
+
+
+            jsonObjectMain.put("d", jsonObjectD);
+            jsonInvoice = jsonObjectMain.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonInvoice;
+    }
+
+    //RETURNS BODY
+    private String generateReturnJson(Item salesInvoice){
+
+        String jsonInvoice = "";
+        try {
+
+            JSONObject jsonObjectMain = new JSONObject();
+            JSONObject jsonObjectD = new JSONObject();
+            double totalSale = 0;
+
+            JSONArray array = new JSONArray();
+            ArrayList<Item> salesItem = db.getReturnItems(salesInvoice.getItem_code());
+
+            for (int i = 0; i < salesItem.size(); i++) {
+                JSONObject raw = new JSONObject();
+                Item item = salesItem.get(i);
+                double total = Double.parseDouble(item.getItem_price()) * Double.parseDouble(item.getItem_qty());
+                totalSale += total;
+                raw.put("Storagelocation", "");
+                raw.put("Material", item.getItem_code());
+                raw.put("ItemValue", item.getItem_price());
+                raw.put("Plant", "");
+                raw.put("Description", item.getItem_name_en());
+                raw.put("UoM", "");
+                raw.put("Value", String.valueOf(total));
+                raw.put("Quantity", item.getItem_qty());
+                raw.put("Item", "00"+(i+1)+"0");
+                raw.put("Route", UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME));
+                array.put(raw);
+            }
+
+            jsonObjectD.put("Longitude", "0.0");
+            jsonObjectD.put("Latitude", "0.0");
+            jsonObjectD.put("OrderValue", String.valueOf(totalSale));
+            jsonObjectD.put("Division", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_DIVISION));
+            jsonObjectD.put("Currency", "SAR");
+            jsonObjectD.put("OrderId", salesInvoice.getItem_code());
+            jsonObjectD.put("TripId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("Assignment", salesInvoice.getItem_code());
+            jsonObjectD.put("SalesOrg",  "");
+            jsonObjectD.put("DistChannel", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_CHANNEL));
+            jsonObjectD.put("Function", "RETURNS");
+            jsonObjectD.put("PurchaseNum", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("CustomerId", salesInvoice.getCust_id());
+            jsonObjectD.put("DocumentType", "Z5SO");
+            jsonObjectD.put("SOItems", array);
+
+
+            jsonObjectMain.put("d", jsonObjectD);
+            jsonInvoice = jsonObjectMain.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonInvoice;
+    }
+
+    //UNLOAD BODY
+    private String generateUnloadJson(){
+
+        String jsonInvoice = "";
+        try {
+
+            JSONObject jsonObjectMain = new JSONObject();
+            JSONObject jsonObjectD = new JSONObject();
+            double totalSale = 0;
+
+            JSONArray array = new JSONArray();
+            ArrayList<Item> salesItem = db.getUnload();
+
+            for (int i = 0; i < salesItem.size(); i++) {
+                JSONObject raw = new JSONObject();
+                Item item = salesItem.get(i);
+                double total = Double.parseDouble(item.getItem_price()) * Double.parseDouble(item.getItem_qty());
+                totalSale += total;
+                raw.put("Storagelocation", "");
+                raw.put("Material", item.getItem_code());
+                raw.put("ItemValue", item.getItem_price());
+                raw.put("Plant", "");
+                raw.put("Description", item.getItem_name_en());
+                raw.put("UoM", "");
+                raw.put("Value", String.valueOf(total));
+                raw.put("Quantity", item.getItem_qty());
+                raw.put("Item", "00"+(i+1)+"0");
+                raw.put("Route", UtilApp.ReadSharePrefrenceString(context, Constant.SHRED_PR.USERNAME));
+                array.put(raw);
+            }
+
+            jsonObjectD.put("Longitude", "0.0");
+            jsonObjectD.put("Latitude", "0.0");
+            jsonObjectD.put("OrderValue", String.valueOf(totalSale));
+            jsonObjectD.put("Division", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_DIVISION));
+            jsonObjectD.put("Currency", "SAR");
+            jsonObjectD.put("OrderId", "0");
+            jsonObjectD.put("TripId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("SalesOrg",  "");
+            jsonObjectD.put("DistChannel", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_CHANNEL));
+            jsonObjectD.put("Function", "UNLOAD");
+            jsonObjectD.put("PurchaseNum", "");
+            jsonObjectD.put("CustomerId", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("DocumentType", "Z5SO");
+            jsonObjectD.put("SOItems", array);
+
+
+            jsonObjectMain.put("d", jsonObjectD);
+            jsonInvoice = jsonObjectMain.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonInvoice;
+    }
+
     private void parseResponse(final String response) {
 
         try {
