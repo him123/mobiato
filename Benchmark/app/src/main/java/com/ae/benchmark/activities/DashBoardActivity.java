@@ -146,7 +146,6 @@ public class DashBoardActivity extends AppCompatActivity {
             "\"Berain 48*200ml Carton\",\"UoM\":\"CAR\",\"Value\":\"17.50\",\"Quantity\":" +
             "\"5\",\"Item\":\"0010\",\"Route\":\"C11100\"}]}}";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

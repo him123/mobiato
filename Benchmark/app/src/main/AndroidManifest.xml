@@ -150,19 +150,24 @@
             android:name=".activities.ALLItemsListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.VanStockActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.CustomerPrintActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.JourneyPlanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.LoadUnloadHistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CustodyListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -199,7 +204,11 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".activities.CustomerDetailActivity" />
         <activity android:name=".activities.SaleHistoyyActivity" />
-        <activity android:name=".activities.SelectedOrderItemActivity"></activity>
+        <activity android:name=".activities.SelectedOrderItemActivity" />
+
+        <service
+            android:name=".bgservices.UploadIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

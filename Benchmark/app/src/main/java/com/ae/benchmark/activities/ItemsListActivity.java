@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +58,9 @@ public class ItemsListActivity extends AppCompatActivity {
     @InjectView(R.id.card_date)
     CardView card_date;
 
+    @InjectView(R.id.checkbox)
+    CheckBox checkbox;
+
     RecyclerItemsAdapter recyclerAdapter;
 
     List<Item> itemList;
@@ -74,6 +78,8 @@ public class ItemsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_list);
         ButterKnife.inject(this);
+
+        checkbox.setVisibility(View.GONE);
 
         card_date.setVisibility(View.GONE);
 

@@ -43,7 +43,8 @@ public class FragmentIMVanStock extends Fragment {
     LinearLayoutManager mLayoutManager;
     private Toolbar toolbar;
 //    DBManager dbManager;
-
+private Boolean isStarted = false;
+    private Boolean isVisible = false;
     public FragmentIMVanStock() {
         // Required empty public constructor
     }
@@ -84,51 +85,43 @@ public class FragmentIMVanStock extends Fragment {
     }
 
     @Override
-    public void setMenuVisibility(final boolean visible) {
-        super.setMenuVisibility(visible);
-        if (visible) {
+    public void onStart() {
+        super.onStart();
 
-
-//            Toast.makeText(getActivity(), "VAN SALE VISIBLE", Toast.LENGTH_SHORT).show();
-
-            try {
-                DBManager dbManager = new DBManager(getActivity());
-                dbManager.open();
-                itemList = new ArrayList<>();
-
-                itemList.clear();
-                itemList = dbManager.getFullVanStock(true);
-
-                mLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerview_items.setLayoutManager(mLayoutManager);
-
-                recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
-                recyclerview_items.setAdapter(recyclerAdapter);
-
-                recyclerAdapter.notifyDataChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        isStarted = true;
+        if (isVisible && isStarted){
+            viewInitVanstock();
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
+        if (isStarted && isVisible) {
+            viewInitVanstock();
+        }
+    }
 
-//        dbManager = new DBManager(getContext());
-//        dbManager.open();
-//        itemList = new ArrayList<>();
-//
-//        itemList.clear();
-//        itemList = dbManager.getVanStock();
-//
-//        mLayoutManager = new LinearLayoutManager(getActivity());
-//        recyclerview_items.setLayoutManager(mLayoutManager);
-//
-//        recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
-//        recyclerview_items.setAdapter(recyclerAdapter);
-//
-//        recyclerAdapter.notifyDataChanged();
+
+    private void viewInitVanstock(){
+        try {
+            DBManager dbManager = new DBManager(getActivity());
+            dbManager.open();
+            itemList = new ArrayList<>();
+
+            itemList.clear();
+            itemList = dbManager.getFullVanStock(true);
+
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerview_items.setLayoutManager(mLayoutManager);
+
+            recyclerAdapter = new RecyclerItemsAdapter(itemList, getActivity(), true);
+            recyclerview_items.setAdapter(recyclerAdapter);
+
+            recyclerAdapter.notifyDataChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

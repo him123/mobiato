@@ -2148,6 +2148,61 @@ public class DBManager {
         return list;
     }
 
+
+    public ArrayList<Transaction> getConfLoadUnloadTransactions(String tr_type) {
+
+        open();
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION +
+                " WHERE " + DatabaseHelper.TR_TYPE+" = ?";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+
+            Cursor cursor = db.rawQuery(selectQuery, new String[]{tr_type});
+            try {
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        Transaction transaction = new Transaction();
+                        //only one column
+                        transaction.tr_type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_TYPE));
+                        transaction.tr_date_time = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_DATE));
+                        transaction.tr_salesman_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_SALESMAN_ID));
+                        transaction.tr_customer_name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NAME));
+                        transaction.tr_customer_num = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_CUSTOMER_NUM));
+                        transaction.tr_collection_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_COLLECTION_ID));
+                        transaction.tr_order_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_ORDER_ID));
+                        transaction.tr_invoice_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_INVOICE_ID));
+                        transaction.tr_pyament_id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_PYAMENT_ID));
+                        transaction.tr_is_posted = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TR_IS_POSTED));
+
+                        //you could add additional columns here..
+                        list.add(transaction);
+
+                    } while (cursor.moveToNext());
+                }
+
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
+            }
+
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return list;
+    }
+
     public ArrayList<Transaction> getAllTransactionsToday() {
 
         open();
@@ -3233,17 +3288,8 @@ public class DBManager {
         ArrayList<Load> list = new ArrayList<Load>();
 
         // Select All Query
-//        String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_LOAD_HEADER + " WHERE "
-//                + DatabaseHelper.IS_REQ + "=" + is_req +
-//                " AND " + DatabaseHelper.LOAD_DEL_DATE + "=" + UtilApp.getCurrentDate();
-
         String selectQuery = "SELECT  * FROM " +
                 DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ?";
-
-//        "select docid as _id, recipeID from " +
-//                DatabaseHelper.TABLE_LOAD_HEADER + " where " + DatabaseHelper.IS_REQ + " = ? AND "
-//                + DatabaseHelper.LOAD_DEL_DATE +" = ?",
-//                new String[] { is_req,  UtilApp.getCurrentDate()}
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransaction();
@@ -3401,7 +3447,7 @@ public class DBManager {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DatabaseHelper.TABLE_TRANSACTION +
                 " WHERE " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + id + "'"
-                + " AND " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + "Custody";
+                + " AND " + DatabaseHelper.TR_CUSTOMER_NUM + " = '" + "Custody'";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {

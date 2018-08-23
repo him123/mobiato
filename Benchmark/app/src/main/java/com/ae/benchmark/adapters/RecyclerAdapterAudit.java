@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,14 +26,17 @@ import android.widget.TextView;
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ALLItemsListActivity;
 import com.ae.benchmark.activities.ItemsListActivity;
+import com.ae.benchmark.activities.PaymentActivity;
 import com.ae.benchmark.activities.PreOrderRequestActivity;
 import com.ae.benchmark.data.Const;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.localdb.DatabaseHelper;
 import com.ae.benchmark.model.Customer;
 import com.ae.benchmark.model.Item;
+import com.ae.benchmark.model.SalesInvoice;
 import com.ae.benchmark.model.Transaction;
 import com.ae.benchmark.util.Constant;
+import com.ae.benchmark.util.PrinterHelper;
 import com.ae.benchmark.util.UtilApp;
 
 import org.json.JSONArray;
@@ -107,6 +112,16 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
         if (type.equalsIgnoreCase("")) {
             holder.imgIsPosted.setBackgroundResource(R.drawable.ico_magni_glass);
         }
+
+        holder.imgIsPosted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (type.equalsIgnoreCase("")) {
+                    ArrayList<Item> items = db.getAllInvoicItem(item.tr_invoice_id);
+                    makeDilog(items);
+                }
+            }
+        });
 
         holder.imgPrint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -617,5 +632,76 @@ public class RecyclerAdapterAudit extends RecyclerView.Adapter<RecyclerView.View
         return mainArr;
     }
 
+
+    private void makeDilog(final ArrayList<Item> arrItem) {
+
+        LayoutInflater factory = LayoutInflater.from(mContext);
+        final View deleteDialogView = factory.inflate(R.layout.dialog_receipt_summary, null);
+        final AlertDialog deleteDialog = new AlertDialog.Builder(mContext).create();
+        deleteDialog.setView(deleteDialogView);
+
+        LinearLayout ll_items = deleteDialogView.findViewById(R.id.ll_items);
+        LinearLayout ll_qty = deleteDialogView.findViewById(R.id.ll_qty);
+        LinearLayout ll_price = deleteDialogView.findViewById(R.id.ll_price);
+
+        LinearLayout ll_button = deleteDialogView.findViewById(R.id.ll_button);
+        ll_button.setVisibility(View.GONE);
+        TextView txt_sub_tot = deleteDialogView.findViewById(R.id.txt_sub_tot);
+        TextView txt_vat = deleteDialogView.findViewById(R.id.txt_vat);
+        TextView txt_vat_value = deleteDialogView.findViewById(R.id.txt_vat_value);
+        TextView txt_grand_tot = deleteDialogView.findViewById(R.id.txt_grand_tot);
+        TextView txtBack = deleteDialogView.findViewById(R.id.txtBack);
+        TextView txtProceed = deleteDialogView.findViewById(R.id.txtProceed);
+
+        double subTot = 0;
+        for (int i = 0; i < arrItem.size(); i++) {
+
+            TextView itemTV = new TextView(mContext);
+            TextView qtyTV = new TextView(mContext);
+            TextView priceTV = new TextView(mContext);
+
+            itemTV.setTypeface(null, Typeface.BOLD);
+            qtyTV.setTypeface(null, Typeface.BOLD);
+            priceTV.setTypeface(null, Typeface.BOLD);
+
+            itemTV.setText(arrItem.get(i).item_name_en);
+            qtyTV.setText(arrItem.get(i).item_qty);
+            priceTV.setText(arrItem.get(i).item_price);
+
+            subTot += Double.parseDouble(arrItem.get(i).item_price);
+
+            ll_items.addView(itemTV);
+            ll_qty.addView(qtyTV);
+            ll_price.addView(priceTV);
+        }
+
+        txt_sub_tot.setText(subTot + "");
+        final double grandTot = subTot;
+        txt_grand_tot.setText(grandTot + "");
+
+        deleteDialogView.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                deleteDialog.dismiss();
+            }
+        });
+
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog.dismiss();
+            }
+        });
+
+        deleteDialog.show();
+
+        txtProceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
 
 }

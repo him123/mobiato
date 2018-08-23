@@ -78,6 +78,8 @@ public class FragmentIMVUnload extends Fragment {
         FragmentIMVUnload partThreeFragment = new FragmentIMVUnload();
         return partThreeFragment;
     }
+    private Boolean isStarted = false;
+    private Boolean isVisible = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -376,11 +378,33 @@ public class FragmentIMVUnload extends Fragment {
         deleteDialog.show();
     }
 
-    @Override
-    public void setMenuVisibility(final boolean visible) {
-        super.setMenuVisibility(visible);
-        if (visible) {
+//    @Override
+//    public void setMenuVisibility(final boolean visible) {
+//        super.setMenuVisibility(visible);
+//        if (visible) {
+//
+//            try {
+//                if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
+//                    btn_checkin.setEnabled(true);
+//                    btn_checkin.setClickable(true);
+//                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+//                } else {
+//                    btn_checkin.setEnabled(false);
+//                    btn_checkin.setClickable(false);
+//                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
+        if (isStarted && isVisible) {
             try {
                 if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
                     btn_checkin.setEnabled(true);
@@ -396,6 +420,7 @@ public class FragmentIMVUnload extends Fragment {
             }
         }
     }
+
 
     private void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
@@ -453,5 +478,28 @@ public class FragmentIMVUnload extends Fragment {
 
     public void callback(){
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        isStarted = true;
+        if (isVisible && isStarted){
+            try {
+                if (UtilApp.ReadSharePrefrence(getActivity(), Constant.SHRED_PR.ISCHECKIN)) {
+                    btn_checkin.setEnabled(true);
+                    btn_checkin.setClickable(true);
+                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_green));
+                } else {
+                    btn_checkin.setEnabled(false);
+                    btn_checkin.setClickable(false);
+                    btn_checkin.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_gray));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -535,7 +535,7 @@ public class CustomerDetailOperationActivity extends AppCompatActivity {
                 break;
 
             case R.id.coupon_custody:
-                startActivity(new Intent(CustomerDetailOperationActivity.this, CustodyListActivity.class));
+                startActivity(new Intent(CustomerDetailOperationActivity.this, CustodyListActivity.class).putExtra("cust", customer));
 //                Toast.makeText(getBaseContext(), "You selected Promotion", Toast.LENGTH_SHORT).show();
                 break;
 

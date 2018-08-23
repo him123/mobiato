@@ -74,6 +74,9 @@ public class FragmentDashboardOne extends Fragment {
     @InjectView(R.id.btn_test_print)
     Button btn_test_print;
 
+    private Boolean isStarted = false;
+    private Boolean isVisible = false;
+
     String jsonString = "{\n" +
             "\"print_type\":\"OrderRequest\",\n" +
             "\"TripID\":\"\",\n" +
@@ -163,46 +166,46 @@ public class FragmentDashboardOne extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_dashboard_one, container, false);
         ButterKnife.inject(this, v);
-
-        txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
-        db = new DBManager(getActivity());
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        txtDate.setText(UtilApp.getCurrentDate());
-        setDtd();
-        swcDtdMtd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
-                    setDtd();
-                } else {
-                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD));
-                    setMtd();
-                }
-            }
-        });
-
-        btn_test_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    PrinterHelper printerHelper = new PrinterHelper(getActivity(), getActivity());
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    printerHelper.execute(jsonObject);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+//
+//        txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
+//        db = new DBManager(getActivity());
+//
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+//
+//        txtDate.setText(UtilApp.getCurrentDate());
+////        setDtd();
+//        swcDtdMtd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (!isChecked) {
+//                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
+//                    setDtd();
+//                } else {
+//                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD));
+//                    setMtd();
+//                }
+//            }
+//        });
+//
+//        btn_test_print.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    PrinterHelper printerHelper = new PrinterHelper(getActivity(), getActivity());
+//                    JSONObject jsonObject = new JSONObject(jsonString);
+//                    printerHelper.execute(jsonObject);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
         return v;
     }
 
@@ -438,47 +441,52 @@ public class FragmentDashboardOne extends Fragment {
 
                             try {
 
-                                txtMainSell.post(new Runnable() {
+                                if (txtMiddleSmall != null)
+                                    txtMainSell.post(new Runnable() {
 
-                                    public void run() {
-                                        try {
-                                            txtMainSell.setText("" + counterSell);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                                        public void run() {
+                                            try {
+                                                if (txtMiddleSmall != null)
+                                                    txtMainSell.setText("" + counterSell);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+
                                         }
 
+                                    });
+                                if (txtSell != null)
+                                    txtSell.post(new Runnable() {
 
-                                    }
+                                        public void run() {
+                                            try {
+                                                if (txtSell != null)
+                                                    txtSell.setText("" + counterSell);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
 
-                                });
-
-                                txtSell.post(new Runnable() {
-
-                                    public void run() {
-                                        try {
-                                            txtSell.setText("" + counterSell);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
                                         }
 
-                                    }
-
-                                });
+                                    });
                                 counterSell++;
 
-                                txtCollection.post(new Runnable() {
+                                if (txtCollection != null)
+                                    txtCollection.post(new Runnable() {
 
-                                    public void run() {
-                                        try {
-                                            txtCollection.setText("" + counterCollection);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                                        public void run() {
+                                            try {
+                                                if (txtCollection != null)
+                                                    txtCollection.setText("" + counterCollection);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+
                                         }
 
-
-                                    }
-
-                                });
+                                    });
                                 counterCollection++;
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -501,5 +509,78 @@ public class FragmentDashboardOne extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+//    @Override
+//    public void setMenuVisibility(final boolean visible) {
+//        super.setMenuVisibility(visible);
+//        if (visible) {
+////            txtDate.setText(UtilApp.getCurrentDate());
+//            setDtd();
+//        }
+//    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        isStarted = true;
+        if (isVisible && isStarted){
+            viewInit();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
+        if (isStarted && isVisible) {
+            viewInit();
+        }
+    }
+
+    private void viewInit(){
+        txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
+        db = new DBManager(getActivity());
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        txtDate.setText(UtilApp.getCurrentDate());
+//        setDtd();
+        swcDtdMtd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD / 30));
+                    setDtd();
+                } else {
+                    txtMiddleSmall.setText("of " + String.valueOf(Constant.TARGET_DTD_MTD));
+                    setMtd();
+                }
+            }
+        });
+
+        btn_test_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    PrinterHelper printerHelper = new PrinterHelper(getActivity(), getActivity());
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    printerHelper.execute(jsonObject);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        setDtd();
     }
 }

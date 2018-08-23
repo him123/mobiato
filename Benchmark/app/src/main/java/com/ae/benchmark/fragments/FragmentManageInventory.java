@@ -1,6 +1,7 @@
 package com.ae.benchmark.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.ae.benchmark.R;
 import com.ae.benchmark.activities.ItemsListActivity;
+import com.ae.benchmark.activities.LoadUnloadHistoryActivity;
 import com.ae.benchmark.localdb.DBManager;
 import com.ae.benchmark.util.Constant;
 
@@ -194,17 +196,19 @@ public class FragmentManageInventory extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
+        Intent intent = new Intent(getActivity(), LoadUnloadHistoryActivity.class);
         switch (item.getItemId()) {
 
             case R.id.action_load_history:
-                Toast.makeText(getActivity(), "LOAD HISTORY", Toast.LENGTH_SHORT).show();
+                intent.putExtra("type","load");
                 break;
             case R.id.action_unload_history:
-                Toast.makeText(getActivity(), "UNLOAD HISTORY", Toast.LENGTH_SHORT).show();
+                intent.putExtra("type","unload");
                 break;
             default:
         }
+
+        startActivity(intent);
 
         return true;
     }
