@@ -306,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "" + COL_CUST_NO + " TEXT NOT NULL, " + COL_CUST_NAME + " TEXT NOT NULL, " + COL_IS_COLLECTED + " TEXT NOT NULL, " + ""
             + COL_AMOUNT + " TEXT NOT NULL, " + COL_INVOICE_DATE + " TEXT NOT NULL, " +
             COL_DUE_AMOUNT + " TEXT NOT NULL, " + COL_DUE_DATE + " TEXT NOT NULL, " + COL_IS_PAYABLE + " TEXT, " +
-            "" + COL_LAST_COLLECTED_AMT + " TEXT, " +
+            "" + COL_LAST_COLLECTED_AMT + " TEXT, " +"" + IS_UPLOADED + " TEXT, " +
             "" + COL_PAY_METHOD + " TEXT NOT NULL);";
 
     //CREATE COLLECTION ITEMS

@@ -41,7 +41,7 @@ public class WsPushData {
     public void executeWebservice() {
         db = new DBManager(context);
         db.open();
-        final String url = Const.WS_URL + "opu/odata/sap/ZSFA_CUSTOMER_ORDER_SRV/SOHeaders";
+        final String url = Const.WS_URL + "ZSFA_CUSTOMER_ORDER_SRV/SOHeaders";
 
         //Invoices
         ArrayList<SalesInvoice> salesInvoices = db.getAllInvoiceHead();
@@ -61,7 +61,7 @@ public class WsPushData {
             String response = NetworkUtility.postApiData(context, url, json);
             Log.e("Publish", "Response "+response);
         }
-        
+
     }
 
     private String generateInvoiceJson(SalesInvoice salesInvoice){
@@ -105,9 +105,9 @@ public class WsPushData {
             jsonObjectD.put("SalesOrg",  salesInvoice.getCust_sales_org());
             jsonObjectD.put("DistChannel", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_CHANNEL));
             jsonObjectD.put("Function", "HHTIV");
-            jsonObjectD.put("PurchaseNum", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
+            jsonObjectD.put("PurchaseNum", salesInvoice.getInv_no());
             jsonObjectD.put("CustomerId", salesInvoice.getCust_code());
-            jsonObjectD.put("DocumentType", "ZVAN");
+            jsonObjectD.put("DocumentType", "Z5SO");
             jsonObjectD.put("SOItems", array);
 
 
@@ -165,7 +165,7 @@ public class WsPushData {
             jsonObjectD.put("Function", "ORDERREQ");
             jsonObjectD.put("PurchaseNum", UtilApp.ReadSharePrefrenceString(context, Constant.SALESMAN.SALESMAN_ID));
             jsonObjectD.put("CustomerId", salesInvoice.getCust_id());
-            jsonObjectD.put("DocumentType", "ZPRE");
+            jsonObjectD.put("DocumentType", "Z5SO");
             jsonObjectD.put("SOItems", array);
 
 
